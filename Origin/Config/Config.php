@@ -36,10 +36,10 @@ return array(
     // 资源目录
     'ROOT_RESOURCE' => 'Resource/', // 资源主目录
     //web结构下应用
-    'ROOT_RESOURCE_JS' => 'Jscript/', // javascript资源目录
-    'ROOT_RESOURCE_MEDIA' => 'Media/', // 多媒体资源目录
-    'ROOT_RESOURCE_STYLE' => 'Style/', // 样式表资源目录
-    'ROOT_RESOURCE_TEMP' => 'Template/', // 模板资源目录
+    'ROOT_RESOURCE_JS' => 'Jscript', // javascript资源目录
+    'ROOT_RESOURCE_MEDIA' => 'Media', // 多媒体资源目录
+    'ROOT_RESOURCE_STYLE' => 'Style', // 样式表资源目录
+    'ROOT_RESOURCE_TEMP' => 'Template', // 模板资源目录
     'ROOT_RESOURCE_PLUGIN' => 'Plug-In', //第三方插件
     // 控制器限定名
     'SECOND_NAME' => 'Controller', // 控制器副文件名
