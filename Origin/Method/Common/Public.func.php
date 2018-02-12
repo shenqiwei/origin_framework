@@ -201,7 +201,7 @@ function J($guide, $throws='enable')
      * @var mixed $_receipt
      * @var string $_regular
      * @var string $_exception
-     * @var string $_guide
+     * @var mixed $_guide
      */
     $_receipt = null;
     # 创建引导信息验证正则表达式变量
