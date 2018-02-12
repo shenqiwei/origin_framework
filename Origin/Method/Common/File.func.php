@@ -11,8 +11,8 @@
  * designer: 沈启威 *
  * developer: 沈启威 *
  * partner: 沈启威 *
- * create Time: 2017/04/23 15:26
- * update Time: 2017/04/23 15:26
+ * create Time: 2018/02/13 00:16
+ * update Time: 2018/02/13 00:16
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 0.1
  * @since 0.1
@@ -33,13 +33,11 @@ function indexFiles($uri)
         # 实例化文件类对象
         $_files = new FileClass();
         # 调用结构验证方法
-        $_files->resource($uri);
-        # 通过错误信息判断
-        if($_files->error_number() != '00000'){
-            # 将错误信息传入回传至变量
-            $_receipt = $_files->error_msg();
-        }else{
+        try{
+            $_files->resource($uri);
             $_receipt = true;
+        }catch (Exception $e){
+            $_receipt = $e->getMessage();
         }
     }else{
         $_receipt = 'Uri['.$uri.'] format is invalid';
@@ -65,13 +63,11 @@ function createFiles($uri,$full=false)
             $_operate = 'full';
         }
         # 调用结构验证方法
-        $_files->manage($uri,$_operate);
-        # 通过错误信息判断
-        if($_files->error_number() != '00000'){
-            # 将错误信息传入回传至变量
-            $_receipt = $_files->error_msg();
-        }else{
+        try{
+            $_files->manage($uri,$_operate);
             $_receipt = true;
+        }catch (Exception $e){
+            $_receipt = $e->getMessage();
         }
     }else{
         $_receipt = 'Uri['.$uri.'] format is invalid';
@@ -93,13 +89,11 @@ function renameFiles($uri,$new_name)
             # 实例化文件类对象
             $_files = new FileClass();
             # 调用结构验证方法
-            $_files->manage($uri,'rename',$new_name);
-            # 通过错误信息判断
-            if($_files->error_number() != '00000'){
-                # 将错误信息传入回传至变量
-                $_receipt = $_files->error_msg();
-            }else{
+            try{
+                $_files->manage($uri,'rename',$new_name);
                 $_receipt = true;
+            }catch (Exception $e){
+                $_receipt = $e->getMessage();
             }
         }else{
             $_receipt = 'New name['.$new_name.'] format is invalid';
@@ -121,13 +115,11 @@ function removeFile($uri)
         # 实例化文件类对象
         $_files = new FileClass();
         # 调用结构验证方法
-        $_files->manage($uri,'remove');
-        # 通过错误信息判断
-        if($_files->error_number() != '00000'){
-            # 将错误信息传入回传至变量
-            $_receipt = $_files->error_msg();
-        }else{
+        try{
+            $_files->manage($uri,'remove');
             $_receipt = true;
+        }catch (Exception $e){
+            $_receipt = $e->getMessage();
         }
     }else{
         $_receipt = 'Uri['.$uri.'] format is invalid';
@@ -152,13 +144,11 @@ function readToFile($uri,$type='r')
             $_operate = $type;
         }
         # 调用结构验证方法
-        $_files->write($uri,$_operate);
-        # 通过错误信息判断
-        if($_files->error_number() != '00000'){
-            # 将错误信息传入回传至变量
-            $_receipt = $_files->error_msg();
-        }else{
+        try{
+            $_files->write($uri,$_operate);
             $_receipt = true;
+        }catch (Exception $e){
+            $_receipt = $e->getMessage();
         }
     }else{
         $_receipt = 'Uri['.$uri.'] format is invalid';
@@ -180,10 +170,17 @@ function writeInFile($uri,$msg,$type='w')
         $_files = new FileClass();
         # 操作类型变量
         $_operate = 'w';
-        if(in_array($type,array('w','lw','cw','bw','fw','re')))
-        # 调用结构验证方法
-        $_files->write($uri,$_operate,$msg);
-        $_receipt = true;
+        if(in_array($type,array('w','lw','cw','bw','fw','re'))){
+            # 调用结构验证方法
+            try{
+                $_files->write($uri,$_operate,$msg);
+                $_receipt = true;
+            }catch (Exception $e){
+                $_receipt = $e->getMessage();
+            }
+        }else{
+            $_receipt = 'Operation type is invalid';
+        }
     }else{
         $_receipt = 'Uri['.$uri.'] format is invalid';
     }
