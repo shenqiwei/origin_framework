@@ -297,7 +297,7 @@ class File
      * @param string $guide 文件路径
      * @param string $operate 操作类型
      * @param string $msg 写入值
-     * @return null/boolean/string/object
+     * @return mixed
      * @contact 内容信息更新
      * Operate 说明：
      * r:读取操作 操作方式：r
@@ -310,8 +310,6 @@ class File
      * fw：补充写入 操作方式：a+
      * rr: 读取全文 调用对应函数 file_get_contents
      * re：重写 调用对应函数 file_put_contents
-     * cx：暂不支持 操作方式：x
-     * fx；暂不支持 操作方式：x+
      */
     function write($guide=null,$operate='r',$msg=null)
     {

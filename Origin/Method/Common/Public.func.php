@@ -234,7 +234,7 @@ function J($guide, $throws='enable')
             # 根据执行结构获取文件路径指向信息
             $_dir = isset($_master) ? $_master:__APPLICATION__;
             # 使用钩子公共方法引入文件
-            $_receipt = Hook(str_replace('/',':',Config('ROOT_APPLICATION').$_dir.$guide), 'auto', $_suffix, $throws);
+            $_receipt = Hook(str_replace('/',':',Config('ROOT_APPLICATION').$_dir.$guide), $_suffix, $throws);
         }
     }
     return $_receipt;

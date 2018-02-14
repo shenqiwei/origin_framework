@@ -27,7 +27,14 @@ function Common($guide)
     if(strpos($guide,':')){
         $_url = str_replace(SLASH,':',str_replace('/', SLASH, Config('ROOT_APPLICATION'))).$guide;
         $_obj = explode(':', $guide);
-        $_receipt = Hook($_url, strtolower($_obj[0]));
+        if(strtolower($_obj[0]) === 'config'){
+            $_suffix = Config('CONFIG_SUFFIX');
+        }elseif(strtolower($_obj[0]) === 'controller' or strtolower($_obj[0]) === 'class'){
+            $_suffix = Config('CLASS_SUFFIX');
+        }else{
+            $_suffix = Config('METHOD_SUFFIX');
+        }
+        $_receipt = Hook($_url,$_suffix);
     }
     return $_receipt;
 }

@@ -10,7 +10,7 @@ namespace Apply\Home\Controller;
 
 use Origin\Controller;
 
-class IndexController extends Controller
+class Index extends Controller
 {
     function __construct()
     {

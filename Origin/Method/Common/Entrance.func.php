@@ -110,9 +110,9 @@ function path()
         # 公共方法包引导地址
         $_func_guide = str_replace(SLASH, ':', str_replace('/', SLASH, Config('ROOT_APPLICATION').$_catalogue.'Common/Public'));
         # 使用钩子模型引入方法文件
-        Hook($_func_guide, 'auto', Config('METHOD_SUFFIX'), 'method');
+        Hook($_func_guide,Config('METHOD_SUFFIX'),'disable');
         # 根据配置信息拼接控制器路径
-        $_path = $_catalogue.Config('APPLICATION_CONTROLLER').$_files.Config('SECOND_NAME');
+        $_path = $_catalogue.Config('APPLICATION_CONTROLLER').$_files;
         # 设置引导地址
         set_include_path(ROOT);
         # 判断文件是否存在

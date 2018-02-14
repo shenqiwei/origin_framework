@@ -3,12 +3,12 @@
  * 文件检索及加载函数,处理预设结构类型
  * @access public
  * @param string $guide 文件路径，使用 :（冒号）作为连接符
- * @param string $type 文件类型，用于区分不同作用文件，基础类型class（类），func（函数），cfg（配置）
+ * !- 原结构参数param string $type 文件类型，用于区分不同作用文件，基础类型class（类），func（函数），cfg（配置）取消该结构
  * @param string $suffix 文件扩展名，文件扩展与文件类型名组成，完整的文件扩展名。例如：.class.php / .cfg.php
  * @param string $throws 是否抛出异常信息
  * @return null
  */
-function Hook($guide, $type=null, $suffix=null, $throws='enable')
+function Hook($guide, $suffix=null, $throws='enable')
 {
     /**
      * @var mixed $_hook 指引结构数组
@@ -30,25 +30,10 @@ function Hook($guide, $type=null, $suffix=null, $throws='enable')
             $_hook = explode(':',$guide);
             # 创建根路径信息
             $_folder = ROOT;
-            # 创建文件域类型作用范围
-            $_type = '/^(class|func|function|impl|implements|interface|controller|method|common|cfg|config|action|data|file|
-            graph|math|message|info|param|bean|beans|map|mapping|filter|model||auto)$/';
-            # 双结构解释数组
-            $_array = array(
-                'controller' => 'class', 'function' => 'func', 'method' => 'func', 'common' => 'func',
-                'config' => 'cfg', 'action' => 'act', 'message' => 'info', 'param' => 'bean', 'beans' => 'bean',
-                'map' => 'mapping', 'implements' => 'impl', 'interface' => 'impl',
-            );
-            # 自定义文件域名公式
-            $_regular = '/^[\.][^\_\W]+([\.][^\_\W]+)*$/';
-            # 非法结构
-            $_danger = '/([\W\_])+/';
-            # 替换结构
-            $_replace = '.';
             # 创建文件名空变量
             $_file = null;
             # 限定文件扩展名
-            $_suffix = '.php';
+            $_suffix = '.class.php';
             # 循环指引路径数组
             for($i=0;$i<count($_hook);$i++){
                 # 判断是否是最后一个组数元素，当遍历到最后一个元素时，跳过验证结构
@@ -67,7 +52,7 @@ function Hook($guide, $type=null, $suffix=null, $throws='enable')
                         continue;
                     }else{
                         # 异常提示：文件夹地址不存在
-                        if($throws != 'disabled') {
+                        if(strtolower($throws) != 'disabled') {
                             try {
                                 throw new Exception('Origin Method Error[1001]: The folder address ' . $_folder . ' does not exist');
                             } catch (Exception $e) {
@@ -79,27 +64,9 @@ function Hook($guide, $type=null, $suffix=null, $throws='enable')
                     }
                 }
             }
-            # 判断文件类型是否符合要求
-            if(preg_match($_type, $type)){
-                # 判断例外规则
-                if($type == 'auto'){
-                    # 调用用户自定义文件类型，当文件不为空时，使用用户自定义类型拼接扩展名，反之使用默认扩展名
-                    if($suffix != null){
-                        if(preg_match($_regular, $suffix)){
-                            $_suffix = $suffix;
-                        }else{
-                            $_suffix = preg_replace($_danger, $_replace, $suffix);
-                        }
-                    }
-                }else{
-                    # 当文件类型符合作用域要求时，使用文件类型拼接扩展名
-                    if($type !== null){
-                        if(array_key_exists($type, $_array)){
-                            $type = $_array[$type];
-                        }
-                        $_suffix = '.'.$type.$_suffix;
-                    }
-                }
+            # 调用用户自定义文件类型，当文件不为空时，使用用户自定义类型拼接扩展名，反之使用默认扩展名
+            if($suffix != null){
+                $_suffix = $suffix;
             }
             # 判断完整文件路径是否存在，存在时，直接引入文件，反之抛出异常信息
             if(is_file($_folder.$_file.$_suffix)){
@@ -163,21 +130,21 @@ function Import($guide)
         $_array = explode(':', $guide);
         if($_array[0] == 'Application'){
             $_url = str_replace(SLASH,':',RING).$guide;
-            Hook($_url, 'controller');
+            Hook($_url, '.class.php');
         }
         elseif($_array[0] == 'Config'){
             $_url = str_replace(SLASH,':',RING).$guide;
-            $_receipt = Hook($_url, null, null, 'config');
+            $_receipt = Hook($_url, '.cfg.php');
         }
         elseif($_array[0] == 'Interface'){
             array_shift($_array);
             $guide = implode(':', $_array);
             $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
-            Hook($_url,'interface');
+            Hook($_url,'.impl.php');
         }
         else{
             $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
-            Hook($_url,'controller');
+            Hook($_url,'.class.php');
         }
     }
     return $_receipt;

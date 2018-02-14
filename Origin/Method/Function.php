@@ -56,6 +56,10 @@ define('__JSCRIPT__',__RESOURCE__.Config('ROOT_RESOURCE_JS'));
 define('__MEDIA__',__RESOURCE__.Config('ROOT_RESOURCE_MEDIA'));
 define('__STYLE__',__RESOURCE__.Config('ROOT_RESOURCE_STYLE'));
 define('__TEMP__',__RESOURCE__.Config('ROOT_RESOURCE_TEMP'));
+# 插件地址常量
+define('__PLUG_IN__',__RESOURCE__.Config('ROOT_RESOURCE_PLUGIN'));
+# 上传文件常量
+define('__UPLOAD__',__RESOURCE__.Config('ROOT_RESOURCE_UPLOAD'));
 
 # 加载函数封装类
 Import('File:File'); # 文件控制类

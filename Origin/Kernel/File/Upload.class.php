@@ -16,7 +16,6 @@
  * update Time: 2017/06/19 22:07
  * chinese Context: IoC 上传模块封装
  */
-
 namespace Origin\Kernel\File;
 
 use Origin\Kernel\File\File as UploadEx;
@@ -266,7 +265,7 @@ class Upload
     /**
      * @access public
      * @param boolean $custom 上传文件类型
-     * @return boolean|null
+     * @return mixed
      */
     function update($custom=true)
     {

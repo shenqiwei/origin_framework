@@ -41,8 +41,7 @@ return array(
     'ROOT_RESOURCE_STYLE' => 'Style', // 样式表资源目录
     'ROOT_RESOURCE_TEMP' => 'Template', // 模板资源目录
     'ROOT_RESOURCE_PLUGIN' => 'Plug-In', //第三方插件
-    // 控制器限定名
-    'SECOND_NAME' => 'Controller', // 控制器副文件名
+    'ROOT_RESOURCE_UPLOAD' => 'Upload', //上传目录
     // 命名空间跟名
     'ROOT_NAMESPACE' => '\\Apply', //根命名空间
     // 日志主目录
@@ -58,13 +57,11 @@ return array(
     'DEFAULT_VIEW' => 'index', // 默认访问模板名
     'CLASS_SUFFIX' => '.class.php', // 类默认扩展名
     'METHOD_SUFFIX' => '.func.php', // 方法默认扩展名，内建应用
-    'FUNCTION_SUFFIX' => '.func.php', // 方法默认扩展名
     'CONFIG_SUFFIX' => '.cfg.php', // 配置默认扩展名
     'MAPPING_SUFFIX' => '.mapping.php', //映射结构扩展名
     'FILTER_SUFFIX' => '.filter.php', //过滤结构扩展名
     'MODEL_SUFFIX' => '.model.php', //数据模型扩展名
     'VIEW_SUFFIX' => '.html', //显示模板扩展名
-    'INTERFACE_SUFFIX' => '.impl.php', //接口类型扩展名
     'IMPL_SUFFIX' => '.impl.php', //接口类型扩展名
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用
     'SESSION' => array(
