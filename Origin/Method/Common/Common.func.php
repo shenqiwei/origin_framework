@@ -69,6 +69,7 @@ function message($model, $message='this is a message',$url='#',$time=5)
 {
     $_temp = file_get_contents($model);
     $_temp = str_replace('{$time}', htmlspecialchars(trim($time)), $_temp);
+    if (is_array($message)) $message = 'this is a default message';
     $_temp = str_replace('{$message}', htmlspecialchars(trim($message)), $_temp);
     $_temp = str_replace('{$url}', htmlspecialchars(trim($url)), $_temp);
     echo($_temp);

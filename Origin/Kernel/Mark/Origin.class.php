@@ -19,9 +19,7 @@
  * 所以当数据维度超过一维结构时结构解释将返回null字节，同结构标签将无法完成维度解析
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
  */
-
 namespace Origin\Kernel\Mark;
-
 # 调用标记接口
 use Origin\Kernel\Mark\Impl\Label as Impl;
 
@@ -92,7 +90,6 @@ class Origin implements Impl
      * @var array $_Param_Array
      */
     private $_Param_Array = array();
-
     /**
      * 构造方法 获取引用页面地址信息
      * @access public
@@ -104,7 +101,6 @@ class Origin implements Impl
         $this->_Obj = $page;
         $this->_Param_Array = $param;
     }
-
     /**
      * 默认函数，用于对模板中标签进行转化和结构重组
      * @access public
@@ -214,7 +210,6 @@ class Origin implements Impl
         $_obj = preg_replace('/\s+/', ' ', $_obj);
         return $_obj;
     }
-
     /**
      * 变量标签解释方法
      * @access protected
@@ -482,30 +477,6 @@ class Origin implements Impl
         }
         return $obj;
     }
-
-    /**
-     * 函数动态调用解释方法
-     * @access protected
-     * @param string $function
-     * @param string $param
-     * @return string
-     */
-    function assign($function, $param)
-    {
-        # 创建返回值变量
-        # 判断函数名基本命名规则是否符合标记要求
-        $_obj = null;
-        if (is_true($this->_Basic_Variable, $function) === true) {
-            # 调用函数方法, 被调用函数必须包含返回值,值类型不能是对象（或者数组，数组涉及超二维运算）
-            $_obj = $function($param);
-            # 当返回值为对象或者数组时，返回值为空
-            if (is_object($_obj) or is_array($_obj)) {
-                $_obj = null;
-            }
-        }
-        return $_obj;
-    }
-
     /**
      * 逻辑判断标签解释方法
      * @access protected
@@ -753,7 +724,6 @@ class Origin implements Impl
         }
         return $obj;
     }
-
     /**
      * 逻辑批处理方法
      * @access protected
@@ -796,7 +766,6 @@ class Origin implements Impl
         }
         return $_receipt;
     }
-
     /**
      * for循环标签解释方法
      * @access protected
@@ -916,7 +885,6 @@ class Origin implements Impl
         }
         return $obj;
     }
-
     /**
      * foreach标签结构解释方法
      * @access public
@@ -1028,5 +996,28 @@ class Origin implements Impl
             }
         }
         return $obj;
+    }
+
+    /**
+     * 函数动态调用解释方法
+     * @access protected
+     * @param string $function
+     * @param string $param
+     * @return string
+     */
+    function assign($function, $param)
+    {
+        # 创建返回值变量
+        # 判断函数名基本命名规则是否符合标记要求
+        $_obj = null;
+        if (is_true($this->_Basic_Variable, $function) === true) {
+            # 调用函数方法, 被调用函数必须包含返回值,值类型不能是对象（或者数组，数组涉及超二维运算）
+            $_obj = $function($param);
+            # 当返回值为对象或者数组时，返回值为空
+            if (is_object($_obj) or is_array($_obj)) {
+                $_obj = null;
+            }
+        }
+        return $_obj;
     }
 }

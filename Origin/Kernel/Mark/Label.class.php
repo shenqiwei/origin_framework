@@ -20,7 +20,6 @@
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
  */
 namespace Origin\Kernel\Mark;
-
 # 调用标记接口
 use Origin\Kernel\Mark\Impl\Label as Impl;
 

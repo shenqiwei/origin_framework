@@ -36,7 +36,7 @@ class Index extends Controller
         );
         $this->param('welcome', $welcomes);
         $this->param('author', 'ShenQiwei');
-        $this->param('time', '2018/03/01');
+        $this->param('time', '2017/03/31');
         $this->view();
     }
 

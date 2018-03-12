@@ -19,9 +19,7 @@
  * @copyright 2015-2017
  * @deprecated Zero 模板执行单元
  */
-
 namespace Package\Listen;
-
 # 调用文件控制函数
 use Library\Config as Config;
 use Library\Files as Files;
@@ -76,7 +74,6 @@ class Model
      * @contact 错误信息
      */
     protected $_error_msg = null;
-
     /**
      * @access public
      * @param object $object 回调对象
@@ -89,7 +86,6 @@ class Model
             $this->set_object(new $object());
         }
     }
-
     /**
      * @access protected
      * @return mixed
@@ -105,6 +101,14 @@ class Model
     }
 
     /**
+     * @access private
+     * @var object $object
+     */
+    protected function set_object($object)
+    {
+        $this->_object = $object;
+    }
+    /**
      * @access public
      * @return object|null
      * @contact 对象信息回调函数
@@ -113,16 +117,6 @@ class Model
     {
         return $this->_object;
     }
-
-    /**
-     * @access private
-     * @var object $object
-     */
-    protected function set_object($object)
-    {
-        $this->_object = $object;
-    }
-
     /**
      * @access public
      * @param string $set_object
@@ -144,7 +138,6 @@ class Model
         }
         return $this->_object;
     }
-
     /**
      * @access public
      * @param string|int $method
@@ -165,7 +158,6 @@ class Model
         }
         return $this->_object;
     }
-
     /**
      * @access public
      * @param string $model_object
@@ -230,7 +222,6 @@ class Model
         }
         return $this->_object;
     }
-
     /**
      * 执行数据操作内容
      */
@@ -242,7 +233,6 @@ class Model
             return false;
         }
     }
-
     /**
      * @access public
      * @return string
@@ -252,7 +242,6 @@ class Model
     {
         return $this->_error_number;
     }
-
     /**
      * @access public
      * @return string

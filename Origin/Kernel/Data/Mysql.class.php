@@ -92,6 +92,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }else{
             # 起始结构
@@ -110,6 +112,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             # 连接结构信息
@@ -131,6 +135,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -142,6 +148,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -177,6 +185,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -188,6 +198,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }else {
             # 执行主函数
@@ -282,6 +294,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             # 连接结构信息
@@ -322,6 +336,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -333,6 +349,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -361,6 +379,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -372,6 +392,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -388,6 +410,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             if($this->_Data != null){
@@ -420,6 +444,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             try{
@@ -435,6 +461,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -446,6 +474,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -474,6 +504,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -485,6 +517,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -501,6 +535,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             $_sql .= ' set ';
@@ -530,6 +566,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             # 条件
@@ -547,6 +585,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -558,6 +598,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -586,6 +628,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -597,6 +641,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -613,6 +659,8 @@ class Mysql extends Query
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
+                } finally {
+                    $this->_Connect = null;
                 }
             }
             # 条件
@@ -630,6 +678,8 @@ class Mysql extends Query
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
+                    } finally {
+                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -641,6 +691,8 @@ class Mysql extends Query
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
+            } finally {
+                $this->_Connect = null;
             }
         }
         # 返回数据
