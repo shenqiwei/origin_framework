@@ -293,7 +293,8 @@ function T()
  * Url连接地址自动装载方法函数
 */
 function U()
-{}
+{
+}
 /**
  * Verify验证函数
  * @param $width

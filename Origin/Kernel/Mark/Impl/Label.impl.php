@@ -16,9 +16,7 @@
  * update Time: 2017/02/03 16:04
  * chinese Context: IoC 标签解析器接口
  */
-
 namespace Origin\Kernel\Mark\Impl;
-
 
 interface Label
 {

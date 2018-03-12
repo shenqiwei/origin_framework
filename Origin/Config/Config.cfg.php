@@ -27,7 +27,6 @@ return array(
     'APPLICATION_FUNCTION' => 'Common/', // 公共方法文件目录，系统公共方法公共调用文件存储位置
     'APPLICATION_CONFIG' => 'Config/', // 开发者或用户自定义或改写系统配置文件存储位置
     'APPLICATION_CONTROLLER' => 'Controller/', // 执行程序文件目录
-    'APPLICATION_MAPPING' => 'Mapping/', // 数据结构映射文件目录
     'APPLICATION_MODEL' => 'Model/', // 数据操作语句文件目录
     'APPLICATION_FILTER' => 'Filter/', // 数据过滤模型文件目录
     'APPLICATION_VIEW' => 'View/', // 模板（Template）文件目录

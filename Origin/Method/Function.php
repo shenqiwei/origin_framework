@@ -79,6 +79,7 @@ include('Common/Public.func.php'); # 文件操作函数包
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
 Import('Data:'.C('DATA_TYPE')); # 调用数据库对象组件
+Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import('Mark:Label'); # 调用标签解析器控制类
 Import('Export:Verify'); # 调用验证码组件
 Import('Graph:View'); # 调用界面模板匹配控制类

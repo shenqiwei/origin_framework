@@ -16,7 +16,7 @@ class Index extends Controller
     {
         parent::__construct();
         $this->param('title','Origin架构开发版');
-        $Origin = array('title' => 'Origin', 'version'=> 'Ver.0.1');
+        $Origin = array('title' => 'Origin', 'version' => 'Ver.0.2');
         $this->param('o', $Origin);
     }
 
@@ -34,9 +34,9 @@ class Index extends Controller
             '8'=>array('statement' => 'Xin chào!Chào mừng Origin sử dụng khung'),
             '9'=>array('statement' => 'szia!üdvözlöm Origin keret alkalmazása'),
         );
-        $this->param('wel', $welcomes);
+        $this->param('welcome', $welcomes);
         $this->param('author', 'ShenQiwei');
-        $this->param('time', '2017/03/31');
+        $this->param('time', '2018/03/01');
         $this->view();
     }
 
