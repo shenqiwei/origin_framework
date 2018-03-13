@@ -63,7 +63,7 @@ class Origin implements Impl
      * @var string $_Judge_El end </o:if>
      */
     private $_Judge_Si = '/\s(eq|gt|ge|lt|le|neq|heq|nheq\s)/';
-    private $_Judge_If = '/\<o:if\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
+    private $_Judge_If = '/\<o:if\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $_Judge_EF = '/\<o:elif\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
     private $_Judge_El = '/\<o:else\s*\/\>/';
     private $_Judge_Ie = '/\<\/o:if\s*\>/';
