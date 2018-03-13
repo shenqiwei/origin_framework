@@ -57,34 +57,34 @@ class Label implements Impl
      * 逻辑判断标记规则
      * @var string $_Judge_Ci condition_information : 'variable eq conditions_variable'
      * @var string $_Judge_Si Symbol
-     * @var string $_Judge_If if <if:condition = 'variable eq conditions_variable'>
-     * @var string $_Judge_EF elseif <elseif:condition = 'variable eq conditions_variable'>
-     * @var string $_Judge_El else <if:else/> or <if:else>
-     * @var string $_Judge_El end <if:end/> or <if:end>
+     * @var string $_Judge_If if <if condition = 'variable eq conditions_variable'>
+     * @var string $_Judge_EF elseif <elseif condition = 'variable eq conditions_variable'/>
+     * @var string $_Judge_El else <else/>
+     * @var string $_Judge_El end </if>
      */
     private $_Judge_Si ='/\s(eq|gt|ge|lt|le|neq|heq|nheq\s)/';
-    private $_Judge_If = '/\<if:condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Judge_EF = '/\<elseif:condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Judge_El = '/\<if:else\>/';
-    private $_Judge_Ie = '/\<if:end\s*\>/';
+    private $_Judge_If = '/\<if\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_Judge_EF = '/\<elseif\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
+    private $_Judge_El = '/\<else[\/]?\>/';
+    private $_Judge_Ie = '/\<[\/]if\s*\>/';
     /**
      * 循环执行标签规则
      * @var string $_For_Operation 'variable to circulation_count'
-     * @var string $_For_Begin <for:operation = 'variable to circulation_count'>
-     * @var string $_For_End <for:end/> or <for:end>
+     * @var string $_For_Begin <for operation = 'variable to circulation_count'>
+     * @var string $_For_End </for>
      */
     private $_For_Operate = '/^.+(\s(to)\s.+(\s(by)\s.+)?)?$/';
-    private $_For_Begin = '/\<for:operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_For_End = '/\<for:end\s*\>/';
+    private $_For_Begin = '/\<for\s*operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_For_End = '/\<[\/]for\s*\>/';
     /**
      * foreach循环标签规则
      * @var string $_Foreach_Operation 'variable (as mark_variable)'
-     * @var string $_Foreach_Begin <foreach:operation = '(as mark_variable)'>
-     * @var string $_Foreach_End <foreach:end>
+     * @var string $_Foreach_Begin <foreach operation = '(as mark_variable)'>
+     * @var string $_Foreach_End </foreach>
      */
     private $_Foreach_Operate= '/^.+(\s(as)\s.+)?$/';
-    private $_Foreach_Begin = '/\<foreach:operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Foreach_End = '/\<foreach:end\s*\>/';
+    private $_Foreach_Begin = '/\<foreach\s*operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_Foreach_End = '/\<[\/]foreach\s*\>/';
     /**
      * 对象数据存储
      * @var array $_Param_Array
