@@ -86,6 +86,8 @@ class Mysql extends Query
                 $_statement = $this->_Connect->query($this->_Query);
                 # 返回查询结构
                 $_receipt = $_statement->fetch()[0];
+                # 释放连接
+                $_statement->closeCursor();
             }catch(\PDOException $e) {
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
@@ -141,6 +143,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->fetch()[0];
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -191,6 +195,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->fetchAll();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -342,6 +348,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->fetchAll();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -385,6 +393,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $this->_Connect->lastInsertId();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -467,6 +477,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $this->_Connect->lastInsertId();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -510,6 +522,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->rowCount();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -591,6 +605,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->rowCount();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -634,6 +650,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->rowCount();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
@@ -684,6 +702,8 @@ class Mysql extends Query
                 }else{
                     # 返回查询结构
                     $_receipt = $_statement->rowCount();
+                    # 释放连接
+                    $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
                 errorLogs($e->getMessage());
