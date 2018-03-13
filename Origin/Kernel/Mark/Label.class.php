@@ -63,8 +63,8 @@ class Label implements Impl
      * @var string $_Judge_El end </if>
      */
     private $_Judge_Si ='/\s(eq|gt|ge|lt|le|neq|heq|nheq\s)/';
-    private $_Judge_If = '/\<if\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Judge_EF = '/\<elseif\s*condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
+    private $_Judge_If = '/\<if\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_Judge_EF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
     private $_Judge_El = '/\<else[\/]?\>/';
     private $_Judge_Ie = '/\<[\/]if\s*\>/';
     /**
@@ -74,7 +74,7 @@ class Label implements Impl
      * @var string $_For_End </for>
      */
     private $_For_Operate = '/^.+(\s(to)\s.+(\s(by)\s.+)?)?$/';
-    private $_For_Begin = '/\<for\s*operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_For_Begin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $_For_End = '/\<[\/]for\s*\>/';
     /**
      * foreach循环标签规则
@@ -83,7 +83,7 @@ class Label implements Impl
      * @var string $_Foreach_End </foreach>
      */
     private $_Foreach_Operate= '/^.+(\s(as)\s.+)?$/';
-    private $_Foreach_Begin = '/\<foreach\s*operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $_Foreach_Begin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $_Foreach_End = '/\<[\/]foreach\s*\>/';
     /**
      * 对象数据存储
