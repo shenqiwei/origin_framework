@@ -75,14 +75,14 @@ abstract class Query
      * @var string $_Distinct 查询单字段不重复值
      */
     protected $_Distinct = null;
-    /**
-     * @var string $_JoinOn 多表联合匹配条件
-     */
-    protected $_JoinOn = null;
-    /**
-     * @var array 连接表名
-     */
-    protected $_JoinTable = null;
+//    /**
+//     * @var string $_JoinOn 多表联合匹配条件
+//     */
+//    protected $_JoinOn = null;
+//    /**
+//     * @var array 连接表名
+//     */
+//    protected $_JoinTable = null;
     /**
      * @var array $_Union 低效相同列，相同数，支持单个或多个
      */
@@ -438,188 +438,32 @@ abstract class Query
      * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
      * 当有多个条件时，可以使用数组进行结构导入
      * @access public
-     * @param string $table
-     * @param string $field
+     * @param string|array $table
+     * @param string|array $field
      * @param string $type Join关系方式分别为 inner，left，right，full
      * @return object
      */
-    function join($table,$field, $type='inner')
-    {
+//    function join($table,$field, $type='inner')
+//    {
         /**
          * 进行传入值结构判断
          */
-        # 限定join类型，目的是防止误操作
-        $_regular_type = '/^(inner|left|right|full|cross|straight)$/';
-        # 判断传入表名是否合规，传入值为空或者格式不对，都会抛出表格名称不符合命名规范异常
-        if(is_true($this->_Regular_Name_Confine, $table) === true){
-            # 判断匹配类型是否正确，如果格式不对，则默认使用full匹配方式
-            if(is_true($_regular_type, strtolower($type)) === true){
-                if($type == 'straight')
-                    $this->_JoinOn .= ' straight_join';
-                else
-                    $this->_JoinOn .= ' '.strtolower($type).' join';
-            }else
-                $this->_JoinOn = ' full join';
-            if(is_array($table)){
-                $this->_JoinOn .= array_keys($table)[0].' as '.$table[array_keys($table)[0]];
-                $this->_JoinTable = $table[array_keys($table)[0]];
-            }else{
-                $this->_JoinOn .= ' '.$table;
-                $this->_JoinTable = $table;
-            }
-            /**
-             * 根据使用情况分别设置两种正则表达式，用来验证on条件信息
-             * on条件信息分别处理3种情况，单参数字符串变量，表达式字符串变量，长度为1数组变量，长度大于1数组变量
-             * 单参数字符串变量：对参数进行命名规则验证，然后根据预设逻辑匹配表达式
-             * 表达式字符串变量：通过固定标记结构正则匹配内容
-             * 长度为1数组变量：通过拆分进行结构匹配
-             * 长度大于1数组变量：只对前两组数组元素进行执行匹配，其他直接忽略
-             */
-            if($field){
-                # 判断传入参数是否为数组
-                if(is_array($field)){
-                    # 当数组长度为1时候
-                    if(count($field) == 1){
-                        # 验证命名规则，当符合规则是将字段信息存入数组中
-                        if(is_true($this->_Regular_Name_Confine, array_keys($field)[0]) === true and
-                            is_true($this->_Regular_Name_Confine, $field[array_keys($field)[0]]) === true)
-                            $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$field[array_keys($field)[0]].' = '.$this->_JoinTable.'.'.$field[array_keys($field)[0]];
-                        else{
-                            # 异常处理：匹配条件字段名不符合数据库调用规则
-                            try{
-                                throw new \Exception('Matching conditions the field name is not in conformity with the rules of database calls');
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                echo('Origin (Query) Class Error: '.$e->getMessage());
-                                exit(0);
-                            }
-                        }
-                        # 传入值数组长度大于1，系统值按照长度为2进行数组拆分
-                    }elseif(count($field) > 1){
-                        if(is_numeric(array_keys($field)[0]) or is_numeric(array_keys($field)[1])){
-                            if(is_numeric(array_keys($field)[0])){
-                                if(array_keys($field)[1] == $this->_JoinTable){
-                                    $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$field[array_keys($field)[0]].' = '.$this->_JoinTable.'.'.$field[array_keys($field)[1]];
-                                }else{
-                                    # 异常处理：无效表信息
-                                    try{
-                                        throw new \Exception('Invalid table information');
-                                    }catch(\Exception $e){
-                                        var_dump(debug_backtrace(0,1));
-                                        echo("<br />");
-                                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                                        exit(0);
-                                    }
-                                }
-                            }else{
-                                if(array_keys($field)[0] == $this->_JoinTable) {
-                                    $this->_JoinOn .= ' on ' . $this->_As_Table . '.' . $field[array_keys($field)[1]] . ' = ' . $this->_JoinTable . '.' . $field[array_keys($field)[0]];
-                                }else{
-                                    # 异常处理：无效表信息
-                                    try{
-                                        throw new \Exception('Invalid table information');
-                                    }catch(\Exception $e){
-                                        var_dump(debug_backtrace(0,1));
-                                        echo("<br />");
-                                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                                        exit(0);
-                                    }
-                                }
-                            }
-                        }else{
-                            if(array_keys($field)[0] == $this->_Table){
-                                if(array_keys($field)[1] == $this->_JoinTable){
-                                    $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$field[array_keys($field)[0]].' = '.$this->_JoinTable.'.'.$field[array_keys($field)[1]];
-                                }else{
-                                    # 异常处理：无效表信息
-                                    try{
-                                        throw new \Exception('Invalid table information');
-                                    }catch(\Exception $e){
-                                        var_dump(debug_backtrace(0,1));
-                                        echo("<br />");
-                                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                                        exit(0);
-                                    }
-                                }
-                            }elseif(array_keys($field)[1] == $this->_Table){
-                                if(array_keys($field)[1] == $this->_JoinTable){
-                                    $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$field[array_keys($field)[1]].' = '.$this->_JoinTable.'.'.$field[array_keys($field)[0]];
-                                }else{
-                                    # 异常处理：无效表信息
-                                    try{
-                                        throw new \Exception('Invalid table information');
-                                    }catch(\Exception $e){
-                                        var_dump(debug_backtrace(0,1));
-                                        echo("<br />");
-                                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                                        exit(0);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }else{
-                    # 当传入值为字符串，验证传入值结构
-                    # 当传入值为单字段结构，直接装入数组
-                    if(is_true($this->_Regular_Name_Confine, $field) === true){
-                        $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$field.' = '.$this->_JoinTable.'.'.$field;
-                    }elseif(is_true($this->_Regular_Exp_Confine, $field) === true){
-                        # 当传入值为公式结构，拆分传入值，并对数组进行条件验证
-                        preg_match_all($this->_Regular_Period, $field, $_return);
-                        if($_return[1] == 'eq'){
-                            preg_match_all($this->_Regular_Name, $_return[0], $_first);
-                            preg_match_all($this->_Regular_Name, $_return[2], $_second);
-                            # 判断转化后为参数字段名结构（或为table.field结构），并根据不同参数结构进行区别封装
-                            if(is_true($this->_Regular_Period_Confine, $_return[0]) === true
-                                and is_true($this->_Regular_Period_Confine, $_return[2]) === true)
-                                if($_first[0] == $this->_As_Table and $_second[0] == $this->_JoinTable){
-                                    $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$_first[1].' = '.$this->_JoinTable.'.'.$_second[1];
-                                }elseif($_first[0] == $this->_JoinTable and $_second[0] == $this->_As_Table){
-                                    $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$_second[1].' = '.$this->_JoinTable.'.'.$_first[1];
-                                }else{
-                                    # 异常处理：无效表信息
-                                    try{
-                                        throw new \Exception('Invalid table information');
-                                    }catch(\Exception $e){
-                                        var_dump(debug_backtrace(0,1));
-                                        echo("<br />");
-                                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                                        exit(0);
-                                    }
-                                }
-                            elseif(is_true($this->_Regular_Period_Confine, $_return[0]) === true
-                                or is_true($this->_Regular_Period_Confine, $_return[2]) === true)
-                                $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$_first[0].' = '.$this->_JoinTable.'.'.$_second[0];
-                            else
-                                $this->_JoinOn .= ' on '.$this->_As_Table.'.'.$_first[count($_first)-1].' = '.$this->_JoinTable.'.'.$_second[count($_first)-1];
-                        }else{
-                            # 异常处理：查询不到条件运算符
-                            try{
-                                throw new \Exception('The query is less than conditional operator');
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                echo('Origin (Query) Class Error: '.$e->getMessage());
-                                exit(0);
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
-            # 异常处理：表格名称不符合命名规范
-            try{
-                throw new \Exception('Field name is not in conformity with the naming conventions');
-            }catch(\Exception $e){
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (Query) Class Error: '.$e->getMessage());
-                exit(0);
-            }
-        }
-        return $this->__getSQL();
-    }
+//        # 限定join类型，目的是防止误操作
+//        $_regular_type = '/^(inner|left|right|full|cross|straight)$/';
+//        if(is_array($table)){
+//            if(is_numeric(array_keys($table)[0])){
+//                for($_i = 0;$_i < count($table);$_i++){
+//                }
+//            }else{
+//                foreach($table as $_key => $_value){
+//                }
+//            }
+//        }else{
+//            if(is_true($this->_Regular_Name,$table)){
+//            }
+//        }
+//        return $this->__getSQL();
+//    }
     /**
      * 对多个查询语句的相同字段中的相同数据进行合并,当前版本仅支持两个表单字段查询，并对输入结构进行验证和隔离
      * @access public

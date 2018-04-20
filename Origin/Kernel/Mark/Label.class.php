@@ -11,7 +11,7 @@
  * email: cheerup.shen@foxmail.com *
  * designer: 沈启威 *
  * developer: 沈启威 *
- * partner: 沈启威 , 任彦明 *
+ * partner: 沈启威 *
  * create Time: 2017/02/03 16:04
  * update Time: 2018/02/18 16:04
  * chinese Context: IoC 标签二维解析器

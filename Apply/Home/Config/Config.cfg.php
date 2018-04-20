@@ -17,11 +17,4 @@
  * IoC 框架配置文件
  */
 return array(
-    //SQL设置信息
-    'DATA_TYPE' => 'mysql', //选择数据库类型,当前版本只支持mysql
-    'DATA_HOST' => 'localhost', // mysql服务访问地址
-    'DATA_USER' => 'shenqiwei', // mysql登录用户
-    'DATA_PWD' => '125478963', // mysql登录密码
-    'DATA_PORT' => '3306', // mysql默认访问端口
-    'DATA_DB' => 'ring', // mysql访问数据库
 );

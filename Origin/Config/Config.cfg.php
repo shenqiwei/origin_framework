@@ -28,7 +28,6 @@ return array(
     'APPLICATION_CONFIG' => 'Config/', // 开发者或用户自定义或改写系统配置文件存储位置
     'APPLICATION_CONTROLLER' => 'Controller/', // 执行程序文件目录
     'APPLICATION_MODEL' => 'Model/', // 数据操作语句文件目录
-    'APPLICATION_FILTER' => 'Filter/', // 数据过滤模型文件目录
     'APPLICATION_VIEW' => 'View/', // 模板（Template）文件目录
     // 插件目录
     'ROOT_PLUGIN' => 'PlugIn/', // 应用插件目录
@@ -46,10 +45,11 @@ return array(
     // 日志主目录
     'ROOT_LOG' => 'Logs/',
     // 日志目录
+    'LOG_ACCESS' => 'Access/', // 服务请求链接日志
     'LOG_CONNECT' => 'Connect/', // 数据库连接日志
-    'LOG_EXCEPTION' => 'Exception/', // 系统异常信息日志
+    'LOG_EXCEPTION' => 'Error/', // 系统异常信息日志
     'LOG_INITIALIZE' => 'Initialize/', // 框架初始化日志
-    'LOG_OPERATE' => 'Operate/', // 系统操作日志
+    'LOG_OPERATE' => 'Action/', // 系统操作日志
     // 引导信息
     'DEFAULT_CONTROLLER' => 'index', // 默认访问方法名
     'DEFAULT_METHOD' => 'index', // 默认访问文件名
@@ -57,11 +57,10 @@ return array(
     'CLASS_SUFFIX' => '.class.php', // 类默认扩展名
     'METHOD_SUFFIX' => '.func.php', // 方法默认扩展名，内建应用
     'CONFIG_SUFFIX' => '.cfg.php', // 配置默认扩展名
-    'MAPPING_SUFFIX' => '.mapping.php', //映射结构扩展名
-    'FILTER_SUFFIX' => '.filter.php', //过滤结构扩展名
     'MODEL_SUFFIX' => '.model.php', //数据模型扩展名
     'VIEW_SUFFIX' => '.html', //显示模板扩展名
     'IMPL_SUFFIX' => '.impl.php', //接口类型扩展名
+    'LOG_SUFFIX' => '.log', //日志类型扩展名
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用
     'SESSION' => array(
         'SAVE_PATH'=> '', // session存储位置，一般php.ini设置,如果需要修改存储位置,再填写
@@ -114,10 +113,10 @@ return array(
         'ADDRESS'=> '',
         'CAPACITY'=> 0,
     ),
-    // mysql缓冲服务器地址
+    // 数据库服务器配置(多地址结构)
     'DATA_MATRIX_CONFIG' => array(
         array(
-            'DATA_TYPE' => 'mysql', //选择数据库类型,当前版本只支持mysql
+            "DATA_NAME" =>"", // 当前数据源名称
             'DATA_HOST' => 'localhost', // mysql服务访问地址
             'DATA_USER' => 'root', // mysql登录用户
             'DATA_PWD' => '', // mysql登录密码

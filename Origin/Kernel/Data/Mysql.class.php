@@ -61,6 +61,42 @@ class Mysql extends Query
         }
     }
     /**
+     * 切换数据库源配置信息
+     * @access public
+     * @param string $connect_name 配置源名称
+     * @return object
+    */
+    function cutConnect($connect_name)
+    {
+        $_connect_config = C('DATA_MATRIX_CONFIG');
+        if(is_array($_connect_config)){
+            for($_i = 0;$_i < count($_connect_config);$_i++){
+                if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
+                    try{
+                        # 创建数据库链接地址，端口，应用数据库信息变量
+                        $_DSN = 'mysql:host='.$_connect_config[$_i]['DATA_HOST'].';port='.$_connect_config[$_i]['DATA_PORT'].';dbname='.$_connect_config[$_i]['DATA_DB'];
+                        $_username = $_connect_config[$_i]['DATA_USER']; # 数据库登录用户
+                        $_password = $_connect_config[$_i]['DATA_PWD']; # 登录密码
+                        $_option = array(
+                            # 设置数据库编码规则
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                        );
+                        # 创建数据库连接对象
+                        $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
+                        # 设置数据库参数信息
+                        $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                    }catch(\PDOException $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        print('Error:'.$e->getMessage());
+                        exit();
+                    }
+                }
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
      * 返回查询信息的总数
      * @access public
      * @return int
@@ -89,13 +125,12 @@ class Mysql extends Query
                 # 释放连接
                 $_statement->closeCursor();
             }catch(\PDOException $e) {
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }else{
             # 起始结构
@@ -110,12 +145,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('No valid data table name');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             # 连接结构信息
@@ -147,13 +181,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -184,13 +217,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -199,13 +231,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }else {
             # 执行主函数
@@ -296,12 +327,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('No valid data table name');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             # 连接结构信息
@@ -337,13 +367,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -352,13 +381,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -382,13 +410,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -397,13 +424,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -416,12 +442,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('No valid data table name');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             if($this->_Data != null){
@@ -450,12 +475,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('Operation information is invalid');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             try{
@@ -466,13 +490,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -481,13 +504,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -511,13 +533,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -526,13 +547,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -545,12 +565,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('No valid data table name');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             $_sql .= ' set ';
@@ -577,11 +596,10 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('Operation information is invalid');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             # 条件
@@ -594,13 +612,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -609,13 +626,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }
         # 返回数据
@@ -639,13 +655,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -654,13 +669,12 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }else{
             # 执行主函数
@@ -673,12 +687,11 @@ class Mysql extends Query
                 try{
                     throw new \PDOException('No valid data table name');
                 }catch(\PDOException $e){
+                    $this->_Connect = null;
                     errorLogs($e->getMessage());
                     var_dump(debug_backtrace(0,1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                } finally {
-                    $this->_Connect = null;
                 }
             }
             # 条件
@@ -691,13 +704,12 @@ class Mysql extends Query
                     try{
                         throw new \PDOException('SQL query error!Please check the statement before execution.');
                     }catch(\PDOException $e){
+                        $this->_Connect = null;
                         errorLogs($e->getMessage());
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
                         echo('Origin (mysql) Class Error:'.$e->getMessage());
                         exit(0);
-                    } finally {
-                        $this->_Connect = null;
                     }
                 }else{
                     # 返回查询结构
@@ -706,16 +718,23 @@ class Mysql extends Query
                     $_statement->closeCursor();
                 }
             }catch(\PDOException $e){
+                $this->_Connect = null;
                 errorLogs($e->getMessage());
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
                 echo('Origin (mysql) Class Error:'.$e->getMessage());
                 exit(0);
-            } finally {
-                $this->_Connect = null;
             }
         }
         # 返回数据
         return $_receipt;
+    }
+    /**
+     * @access public
+     * @contact 析构函数：数据库链接释放
+    */
+    function __destruct()
+    {
+        $this->_Connect = null;
     }
 }

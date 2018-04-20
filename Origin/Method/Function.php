@@ -10,7 +10,7 @@
 -*- structure: common framework -*-
 -*- designer: 沈启威 -*-
 -*- developer: 沈启威 -*-
--*- partner: 沈启威 , 任彦明 -*-
+-*- partner: 沈启威-*-
 -*- chinese Context:
 -*- create Time: 2017/01/09 15:34
 -*- update Time: 2017/01/09 15:34
