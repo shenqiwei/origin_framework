@@ -126,8 +126,13 @@ class Upload
         }else{
             if(!is_null($type)){
                 if(is_array($type)){
-                    $this->_Suffix = key_exists($_FILES[$this->_Input_Name]['type'],$this->_Type_Array)?
-                        $this->_Type_Array[$_FILES[$this->_Input_Name]['type']]:$_FILES[$this->_Input_Name]['type'];
+                    # 装载扩展名信息
+                    $this->_Suffix = $_FILES[$this->_Input_Name]['type'];
+                    # 判断文件类型信息是否存在特例内容
+                    if(key_exists($this->_Suffix,$this->_Type_Array)){
+                        $this->_Suffix = $this->_Type_Array[$_FILES[$this->_Input_Name]['type']];
+                    }
+                    # 判断扩展名是否符合设置要求
                     if(!in_array($this->_Suffix,$type)){
                         try{
                             throw new \Exception('Files type is invalid!');
