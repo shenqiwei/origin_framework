@@ -60,6 +60,9 @@ class Upload
         'application/vnd.ms-powerpoint' => 'ppt',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
         'text/html' => 'html',
+        'image/png' => 'png',
+        'image/jpeg' => 'jpg',
+        'image/gif' => 'gif',
     );
     /**
      * @access private
