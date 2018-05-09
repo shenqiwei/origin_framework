@@ -353,7 +353,7 @@ class Mysql extends Query
             if(!is_null($this->_Group)){
                 $_sql = $this->_Field.$_sql;
             }else{
-                if(!is_null($this->_Avg) and !is_null($this->_Sum) and !is_null($this->_Max) and !is_null($this->_Min) and !is_null($this->_Total)) {
+                if(is_null($this->_Avg) and is_null($this->_Sum) and is_null($this->_Max) and is_null($this->_Min) and is_null($this->_Total)) {
                     $_sql = $this->_Field . $_sql;
                 }
             }
