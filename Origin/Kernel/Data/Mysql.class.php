@@ -107,7 +107,7 @@ class Mysql extends Query
         # 创建返回信息变量
         $_receipt = null;
         # 判断语句直接使用语句
-        if(!empty($this->_Query) and $this->_Query != null){
+        if(!empty($this->_Query) and !is_null($this->_Query)){
             # 判断语句结构，区分处理，组成新的查询语句
             if(is_true($this->_Regular_Select_Count, strtolower($this->_Query)) === true){
                 // 表示为完整的count查询语句
@@ -135,10 +135,10 @@ class Mysql extends Query
         }else{
             # 起始结构
             $_sql = 'select ';
-            if($this->_Field != null) $_sql .= ' count('.$this->_Field.')';
+            if(!is_null($this->_Field)) $_sql .= ' count('.$this->_Field.')';
             else $_sql .= ' count(*)';
             # 表名
-            if($this->_Table != null){
+            if(!is_null($this->_Table)){
                 $_sql .= ' from '.$this->_Table;
             }else{
                 # 无有效数据表名称
@@ -153,11 +153,11 @@ class Mysql extends Query
                 }
             }
             # 连接结构信息
-            if($this->_JoinOn != null) $_sql .= $this->_JoinOn;
+            if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
             # 复制结构
-            if($this->_Union != null) $_sql .= $this->_Union;
+            if(!is_null($this->_Union)) $_sql .= $this->_Union;
             # 条件
-            if($this->_Where != null) $_sql .= $this->_Where;
+            if(!is_null($this->_Where)) $_sql .= $this->_Where;
             try{
                 daoLogs($_sql);
                 # 执行查询搜索
@@ -203,7 +203,7 @@ class Mysql extends Query
         # 创建返回信息变量
         $_receipt = null;
         # 判断语句直接使用语句
-        if(!empty($this->_Query) and $this->_Query != null) {
+        if(!empty($this->_Query) and !is_null($this->_Query)) {
             if (is_true($this->_Regular_Select, strtolower($this->_Query)) === true) {
                 // 表示为完整的查询语句
             }elseif(is_true($this->_Regular_from, strtolower($this->_Query)) === true){
@@ -249,29 +249,29 @@ class Mysql extends Query
             # 末尾信息 mysql 不支持
 //            if($this->_Last!= null) $_sql .= $this->_Last;
             # 求总和
-            if($this->_Total != null){
-                if($this->_Group!=null)
+            if(!is_null($this->_Total)){
+                if(!is_null($_sql) and !is_null($this->_Group))
                     $_sql .= ','.$this->_Total;
                 else
                     $_sql .= $this->_Total;
             }
             # 平均数信息 与field冲突，需要group by配合使用
-            if($this->_Avg!= null){
-                if($this->_Group!=null)
+            if(!is_null($this->_Avg)){
+                if(!is_null($_sql) and !is_null($this->_Group))
                     $_sql .= ','.$this->_Avg;
                 else{
-                    if($this->_Total != null)
+                    if(!is_null($_sql) and !is_null($this->_Total))
                         $_sql .= ','.$this->_Avg;
                     else
                         $_sql .= $this->_Avg;
                 }
             }
             # 最大值 与field冲突，需要group by配合使用
-            if($this->_Max!= null){
-                if($this->_Group!=null)
+            if(!is_null($this->_Max)){
+                if(!is_null($_sql) and !is_null($this->_Group))
                     $_sql .= ','.$this->_Max;
                 else{
-                    if($this->_Total != null or $this->_Avg!= null)
+                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg)))
                         $_sql .= ','.$this->_Max;
                     else
                         $_sql .= $this->_Max;
@@ -279,11 +279,11 @@ class Mysql extends Query
 
             }
             # 最小值 与field冲突，需要group by配合使用
-            if($this->_Min!= null){
-                if($this->_Group!=null)
+            if(!is_null($this->_Min)){
+                if(!is_null($_sql) and !is_null($this->_Group))
                     $_sql .= ','.$this->_Min;
                 else{
-                    if($this->_Total != null or $this->_Avg!= null or $this->_Max!= null)
+                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max)))
                         $_sql .= ','.$this->_Min;
                     else
                         $_sql .= $this->_Min;
@@ -291,11 +291,11 @@ class Mysql extends Query
 
             }
             # 求和 与field冲突，需要group by配合使用
-            if($this->_Sum!= null){
-                if($this->_Group!=null)
+            if(!is_null($this->_Sum)){
+                if(!is_null($_sql) and !is_null($this->_Group))
                     $_sql .= ','.$this->_Sum;
                 else{
-                    if($this->_Total != null or $this->_Avg!= null or $this->_Max!= null or $this->_Min!= null)
+                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min)))
                         $_sql .= ','.$this->_Sum;
                     else
                         $_sql .= $this->_Sum;
@@ -303,24 +303,24 @@ class Mysql extends Query
 
             }
             # 信息大写
-            if($this->_UpperCase!= null) $_sql .= $this->_UpperCase;
+            if(!is_null($this->_UpperCase)) $_sql .= $this->_UpperCase;
             # 信息小写
-            if($this->_LowerCase!= null) $_sql .= $this->_LowerCase;
+            if(!is_null($this->_LowerCase)) $_sql .= $this->_LowerCase;
             # 信息截取
-            if($this->_Mid!= null) $_sql .= $this->_Mid;
+            if(!is_null($this->_Mid)) $_sql .= $this->_Mid;
             # 信息长度 mysql中使用length
 //            if($this->_Len!= null) $_sql .= $this->_Len;
-            if($this->_Length!=null) $_sql .= $this->_Length;
+            if(!is_null($this->_Length)) $_sql .= $this->_Length;
             # 信息四舍五入
-            if($this->_Round!= null) $_sql .= $this->_Round;
+            if(!is_null($this->_Round)) $_sql .= $this->_Round;
             # 当前数据服务器时间
-            if($this->_Now!= null) $_sql .= $this->_Now;
+            if(!is_null($this->_Now)) $_sql .= $this->_Now;
             # 信息格式化
-            if($this->_Format!= null) $_sql .= $this->_Format;
+            if(!is_null($this->_Format)) $_sql .= $this->_Format;
             # 单字段不重复值
-            if($this->_Distinct != null) $_sql .= $this->_Distinct;
+            if(!is_null($this->_Distinct)) $_sql .= $this->_Distinct;
             # 表名
-            if($this->_Table != null){
+            if(!is_null($this->_Table)){
                 $_sql .= ' from '.$this->_Table;
             }else{
                 # 无有效数据表名称
@@ -335,25 +335,25 @@ class Mysql extends Query
                 }
             }
             # 连接结构信息
-            if($this->_JoinOn != null) $_sql .= $this->_JoinOn;
+            if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
             # 复制结构
-            if($this->_Union != null) $_sql .= $this->_Union;
+            if(!is_null($this->_Union)) $_sql .= $this->_Union;
             # 条件
-            if($this->_Where != null) $_sql .= $this->_Where;
+            if(!is_null($this->_Where)) $_sql .= $this->_Where;
             # 去重
-            if($this->_Group != null) $_sql .= $this->_Group;
+            if(!is_null($this->_Group)) $_sql .= $this->_Group;
             # 排序
-            if($this->_Order != null) $_sql .= $this->_Order;
+            if(!is_null($this->_Order)) $_sql .= $this->_Order;
             # 函数调用
-            if($this->_Having != null) $_sql .= $this->_Having;
+            if(!is_null($this->_Having)) $_sql .= $this->_Having;
             # 标尺
-            if($this->_Limit != null) $_sql .= $this->_Limit;
+            if(!is_null($this->_Limit)) $_sql .= $this->_Limit;
             # 判定结构然后
             # 字段名信息
-            if($this->_Group != null){
+            if(!is_null($this->_Group)){
                 $_sql = $this->_Field.$_sql;
             }else{
-                if($this->_Avg == null and $this->_Sum == null and $this->_Max == null and $this->_Min == null and $this->_Total == null) {
+                if(!is_null($this->_Avg) and !is_null($this->_Sum) and !is_null($this->_Max) and !is_null($this->_Min) and !is_null($this->_Total)) {
                     $_sql = $this->_Field . $_sql;
                 }
             }
@@ -401,7 +401,7 @@ class Mysql extends Query
     {
         // TODO: Implement insert() method.
         $_receipt = null;
-        if(!empty($this->_Query) and $this->_Query != null){
+        if(!empty($this->_Query) and is_null($this->_Query)){
             try{
                 daoLogs($this->_Query);
                 # 执行查询搜索
@@ -435,7 +435,7 @@ class Mysql extends Query
             # 执行主函数
             $_sql = 'insert into';
             # 表名
-            if($this->_Table != null){
+            if(!is_null($this->_Table)){
                 $_sql .= ' '.$this->_Table;
             }else{
                 # 无有效数据表名称
@@ -449,7 +449,7 @@ class Mysql extends Query
                     echo('Origin (mysql select) Class Error:'.$e->getMessage());
                 }
             }
-            if($this->_Data != null){
+            if(!is_null($this->_Data)){
                 $_columns = null;
                 $_values = null;
                 for($_i = 0; $_i < count($this->_Data); $_i++){
@@ -524,7 +524,7 @@ class Mysql extends Query
     {
         // TODO: Implement update() method.
         $_receipt = null;
-        if(!empty($this->_Query) and $this->_Query != null){
+        if(!empty($this->_Query) and !is_null($this->_Query)){
             try{
                 daoLogs($this->_Query);
                 # 执行查询搜索
@@ -558,7 +558,7 @@ class Mysql extends Query
             # 执行主函数
             $_sql = 'update';
             # 表名
-            if($this->_Table != null){
+            if(!is_null($this->_Table)){
                 $_sql .= ' '.$this->_Table;
             }else{
                 # 无有效数据表名称
@@ -573,7 +573,7 @@ class Mysql extends Query
                 }
             }
             $_sql .= ' set ';
-            if($this->_Data != null){
+            if(!is_null($this->_Data)){
                 $_columns = null;
                 for($_i = 0; $_i < count($this->_Data); $_i++){
                     foreach($this->_Data[$_i] as $_key => $_value){
@@ -603,7 +603,7 @@ class Mysql extends Query
                 }
             }
             # 条件
-            if($this->_Where != null) $_sql .= $this->_Where;
+            if(!is_null($this->_Where)) $_sql .= $this->_Where;
             try{
                 daoLogs($_sql);
                 # 执行查询搜索
@@ -646,7 +646,7 @@ class Mysql extends Query
     {
         // TODO: Implement delete() method.
         $_receipt = null;
-        if(!empty($this->_Query) and $this->_Query != null){
+        if(!empty($this->_Query) and !is_null($this->_Query)){
             try{
                 daoLogs($this->_Query);
                 # 执行查询搜索
@@ -680,7 +680,7 @@ class Mysql extends Query
             # 执行主函数
             $_sql = 'delete ';
             # 表名
-            if($this->_Table != null){
+            if(!is_null($this->_Table)){
                 $_sql .= 'from '.$this->_Table;
             }else{
                 # 无有效数据表名称
@@ -695,7 +695,7 @@ class Mysql extends Query
                 }
             }
             # 条件
-            if($this->_Where != null) $_sql .= $this->_Where;
+            if(!is_null($this->_Where)) $_sql .= $this->_Where;
             try{
                 daoLogs($_sql);
                 # 执行查询搜索
