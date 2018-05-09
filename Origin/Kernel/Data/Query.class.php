@@ -648,7 +648,7 @@ abstract class Query
         }else{
             # 使用多条件结构正则验证字符串内容
             if(is_true($this->_Regular_Comma_Confine, $field) === true)
-                $this->_Group = $field;
+                $this->_Group = ' group by '.$field;
             else{
                 # 异常处理：GROUP语法字段名结构不符合SQL使用规则
                 try{
