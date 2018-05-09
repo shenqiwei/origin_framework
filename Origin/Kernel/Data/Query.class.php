@@ -198,7 +198,7 @@ abstract class Query
      * @param mixed $table
      * @return object
      */
-    function table($table,$major)
+    function table($table)
     {
         /**
          * 根据SQL命名规范，及同行开发要求对表名信息进行，基本过滤验证
