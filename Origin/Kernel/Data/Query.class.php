@@ -684,7 +684,7 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field) === true)
-                $this->_Avg = ', avg('.$field.')';
+                $this->_Avg = ' avg('.$field.')';
         }
         return $this->__getSQL();
     }

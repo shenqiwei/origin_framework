@@ -250,17 +250,17 @@ class Mysql extends Query
 //            if($this->_Last!= null) $_sql .= $this->_Last;
             # 求总和
             if(!is_null($this->_Total)){
-                if(!is_null($_sql) and !is_null($this->_Group))
+                if(!is_null($_sql) or !is_null($this->_Group))
                     $_sql .= ','.$this->_Total;
                 else
                     $_sql .= $this->_Total;
             }
             # 平均数信息 与field冲突，需要group by配合使用
             if(!is_null($this->_Avg)){
-                if(!is_null($_sql) and !is_null($this->_Group))
+                if(!is_null($_sql) or !is_null($this->_Group))
                     $_sql .= ','.$this->_Avg;
                 else{
-                    if(!is_null($_sql) and !is_null($this->_Total))
+                    if(!is_null($_sql) or !is_null($this->_Total))
                         $_sql .= ','.$this->_Avg;
                     else
                         $_sql .= $this->_Avg;
@@ -268,10 +268,10 @@ class Mysql extends Query
             }
             # 最大值 与field冲突，需要group by配合使用
             if(!is_null($this->_Max)){
-                if(!is_null($_sql) and !is_null($this->_Group))
+                if(!is_null($_sql) or !is_null($this->_Group))
                     $_sql .= ','.$this->_Max;
                 else{
-                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg)))
+                    if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg))
                         $_sql .= ','.$this->_Max;
                     else
                         $_sql .= $this->_Max;
@@ -280,10 +280,10 @@ class Mysql extends Query
             }
             # 最小值 与field冲突，需要group by配合使用
             if(!is_null($this->_Min)){
-                if(!is_null($_sql) and !is_null($this->_Group))
+                if(!is_null($_sql) or !is_null($this->_Group))
                     $_sql .= ','.$this->_Min;
                 else{
-                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max)))
+                    if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max))
                         $_sql .= ','.$this->_Min;
                     else
                         $_sql .= $this->_Min;
@@ -292,10 +292,10 @@ class Mysql extends Query
             }
             # 求和 与field冲突，需要group by配合使用
             if(!is_null($this->_Sum)){
-                if(!is_null($_sql) and !is_null($this->_Group))
+                if(!is_null($_sql) or !is_null($this->_Group))
                     $_sql .= ','.$this->_Sum;
                 else{
-                    if(!is_null($_sql) and (!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min)))
+                    if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min))
                         $_sql .= ','.$this->_Sum;
                     else
                         $_sql .= $this->_Sum;
