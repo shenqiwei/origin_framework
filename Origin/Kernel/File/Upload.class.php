@@ -302,7 +302,7 @@ class Upload
                 }
             }
         }
-        return $this->_Save_Add.SLASH.$_file_name;
+        return $this->_Save_Add.'/'.$_file_name;
     }
 
 }
