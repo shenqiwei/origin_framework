@@ -75,14 +75,14 @@ abstract class Query
      * @var string $_Distinct 查询单字段不重复值
      */
     protected $_Distinct = null;
-//    /**
-//     * @var string $_JoinOn 多表联合匹配条件
-//     */
-//    protected $_JoinOn = null;
-//    /**
-//     * @var array 连接表名
-//     */
-//    protected $_JoinTable = null;
+    /**
+     * @var string $_JoinOn 多表联合匹配条件
+     */
+    protected $_JoinOn = null;
+    /**
+     * @var array 连接表名
+     */
+    protected $_JoinTable = null;
     /**
      * @var array $_Union 低效相同列，相同数，支持单个或多个
      */
@@ -198,7 +198,7 @@ abstract class Query
      * @param mixed $table
      * @return object
      */
-    function table($table)
+    function table($table,$major)
     {
         /**
          * 根据SQL命名规范，及同行开发要求对表名信息进行，基本过滤验证
@@ -445,9 +445,9 @@ abstract class Query
      */
 //    function join($table,$field, $type='inner')
 //    {
-        /**
-         * 进行传入值结构判断
-         */
+//        /**
+//         * 进行传入值结构判断
+//         */
 //        # 限定join类型，目的是防止误操作
 //        $_regular_type = '/^(inner|left|right|full|cross|straight)$/';
 //        if(is_array($table)){
@@ -805,10 +805,13 @@ abstract class Query
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
         if(is_array($field)){
-            # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            foreach($field as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key) === true){
-                    $this->_UpperCase .= ', ucase('.$_key.') as '.$_value;
+            for($_i=0;$_i<count($field);$_i++){
+                $_symbol = '';
+                if($_i!=0) $_symbol = ',';
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_LowerCase .= $_symbol.'ucase('.$field[$_i].')';
+                }else{
+                    $this->_LowerCase .= $_symbol.'ucase('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
                 }
             }
         }else{
@@ -831,9 +834,13 @@ abstract class Query
          */
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            foreach($field as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key) === true){
-                    $this->_LowerCase .= ', lcase('.$_key.') as '.$_value;
+            for($_i=0;$_i<count($field);$_i++){
+                $_symbol = '';
+                if($_i!=0) $_symbol = ',';
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_LowerCase .= $_symbol.'lcase('.$field[$_i].')';
+                }else{
+                    $this->_LowerCase .= $_symbol.'lcase('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
                 }
             }
         }else{
@@ -901,9 +908,13 @@ abstract class Query
          */
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            foreach($field as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key) === true){
-                    $this->_Len .= ', len('.$_key.') as '.$_value;
+            for($_i=0;$_i<count($field);$_i++){
+                $_symbol = '';
+                if($_i!=0) $_symbol = ',';
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_Len .= $_symbol.'len('.$field[$_i].')';
+                }else{
+                    $this->_Len .= $_symbol.'len('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
                 }
             }
         }else{
@@ -927,9 +938,13 @@ abstract class Query
          */
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            foreach($field as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key) === true){
-                    $this->_Len .= ', length('.$_key.') as '.$_value;
+            for($_i=0;$_i<count($field);$_i++){
+                $_symbol = '';
+                if($_i!=0) $_symbol = ',';
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_Len .= $_symbol.'length('.$field[$_i].')';
+                }else{
+                    $this->_Len .= $_symbol.'length('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
                 }
             }
         }else{
