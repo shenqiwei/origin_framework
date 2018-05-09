@@ -276,9 +276,14 @@ function Q()
 {}
 /**
  * Route路由执行操作方法函数
+ * @param string $uri
+ * @param boolean $head
+ * @return string
 */
-function R()
-{}
+function R($uri=null,$head=false)
+{
+    return null;
+}
 /**
  *
 */

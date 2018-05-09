@@ -47,7 +47,7 @@ function Request($key, $default=null, $operate='rw')
             $_request = $key;
         }
         # 判断默认值信息状态,并根据特例进行转换
-        if(!$default){
+        if($default){
             if(is_int($default)){
                 $default = intval($default);
             }elseif(is_float($default) or is_double($default)){

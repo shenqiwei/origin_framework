@@ -128,15 +128,11 @@ class Request
                         continue;
                     }
                 }
-            }else{
-                # 当查询变量名不存在与数组中时，装载默认值
-                if($this->_Default != null){
-                    $_receipt = addslashes($this->_Default);
-                }
             }
-        }else{
+        }
+        if((empty($_receipt) and $_receipt != 0 and $_receipt != '0' )or is_null($_receipt)){
             # 当数组无效时，装载默认值
-            if($this->_Default != null){
+            if(!is_null($this->_Default)){
                 $_receipt = addslashes($this->_Default);
             }
         }
