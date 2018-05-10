@@ -1125,7 +1125,7 @@ abstract class Query
     {
         if(is_int($start) and $start > 0){
             if(is_int($length) and $length > 0){
-                $this->_Limit = ' limit ('.$start.','.$length.')';
+                $this->_Limit = ' limit '.$start.','.$length.'';
             }else{
                 $this->_Limit = ' limit '.$start;
             }
