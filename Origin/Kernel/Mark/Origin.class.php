@@ -206,7 +206,7 @@ class Origin implements Impl
         $_obj = str_replace('__MEDIA__', __HOST__ . __MEDIA__, $_obj);
         $_obj = str_replace('__STYLE__', __HOST__ . __STYLE__, $_obj);
         $_obj = str_replace('__TEMP__', __HOST__ . __TEMP__, $_obj);
-        $_obj = str_replace('__UPLOAD__',__HOST__.__TEMP__, $_obj);
+        $_obj = str_replace('__UPLOAD__',__HOST__.__UPLOAD__, $_obj);
         # 去去空白符结构
         $_obj = preg_replace('/\s+/', ' ', $_obj);
         return $_obj;
