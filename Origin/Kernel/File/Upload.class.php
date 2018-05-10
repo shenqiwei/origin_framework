@@ -48,6 +48,12 @@ class Upload
     private $_Save_Add = null;
     /**
      * @access private
+     * @var string $_Error_Msg
+     * @contact 错误信息
+    */
+    private $_Error_Msg = "ERROR_0000";
+    /**
+     * @access private
      * @var array $_Type_Array
      * @contact 文件扩展名比对数组
     */
@@ -119,13 +125,7 @@ class Upload
     function type($type=null)
     {
         if(is_null($this->_Input_Name)){
-            try{
-                throw new \Exception('Upload file input is invalid!');
-            }catch(\Exception $e){
-                echo("<br />");
-                echo('Directory Error:'.$e->getMessage());
-                exit(0);
-            }
+            $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(!is_null($type)){
                 if(is_array($type)){
@@ -137,33 +137,15 @@ class Upload
                     }
                     # 判断扩展名是否符合设置要求
                     if(!in_array($this->_Suffix,$type)){
-                        try{
-                            throw new \Exception('Files type is invalid!');
-                        }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
-                        }
+                        $this->_Error_Msg = "Files type is invalid!";
                     }
                 }else{
                     if($_FILES[$this->_Input_Name]['type'] != strval($type)){
-                        try{
-                            throw new \Exception('Files type is invalid!');
-                        }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
-                        }
+                        $this->_Error_Msg = "Files type is invalid!";
                     }
                 }
             }else{
-                try{
-                    throw new \Exception('Undefined file type!');
-                }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
-                }
+                $this->_Error_Msg = "Undefined file type!";
             }
         }
         return $this->_Object;
@@ -176,42 +158,18 @@ class Upload
     function size($size=null)
     {
         if(is_null($this->_Input_Name)){
-            try{
-                throw new \Exception('Upload file input is invalid!');
-            }catch(\Exception $e){
-                echo("<br />");
-                echo('Directory Error:'.$e->getMessage());
-                exit(0);
-            }
+            $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(!is_null($size)){
                 if(!empty(intval($size))){
                     if($_FILES[$this->_Input_Name]['size'] > intval($size)){
-                        try{
-                            throw new \Exception('Files size greater than defined value!');
-                        }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
-                        }
+                        $this->_Error_Msg = "Files size greater than defined value!";
                     }
                 }else{
-                    try{
-                        throw new \Exception('Files size value is invalid!');
-                    }catch(\Exception $e){
-                        echo("<br />");
-                        echo('Directory Error:'.$e->getMessage());
-                        exit(0);
-                    }
+                    $this->_Error_Msg = "Files size value is invalid!";
                 }
             }else{
-                try{
-                    throw new \Exception('Undefined file size!');
-                }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
-                }
+                $this->_Error_Msg = "Undefined file size!";
             }
         }
         return $this->_Object;
@@ -225,13 +183,7 @@ class Upload
     function save($guide=null,$mark=true)
     {
         if(is_null($this->_Input_Name)){
-            try{
-                throw new \Exception('Upload file input is invalid!');
-            }catch(\Exception $e){
-                echo("<br />");
-                echo('Directory Error:'.$e->getMessage());
-                exit(0);
-            }
+            $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(!is_null($guide)){
                 if(strpos($guide,SLASH)){
@@ -278,13 +230,7 @@ class Upload
     function update($custom=true)
     {
         if(is_null($this->_Input_Name)){
-            try{
-                throw new \Exception('Upload file input is invalid!');
-            }catch(\Exception $e){
-                echo("<br />");
-                echo('Directory Error:'.$e->getMessage());
-                exit(0);
-            }
+            $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(is_bool($custom) and $custom === true){
                 $_file_name = $_FILES[$this->_Input_Name]['name'];
@@ -293,16 +239,20 @@ class Upload
             }
             if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
                 $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
-                try{
-                    throw new \Exception('Files upload failed!');
-                }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
-                }
+                $this->_Error_Msg = "Files upload failed!";
             }
         }
-        return $this->_Save_Add.'/'.$_file_name;
+        if(isset($_file_name))
+            return $this->_Save_Add.'/'.$_file_name;
+        else
+            return null;
     }
-
+    /**
+     * @access public
+     * @return mixed
+     */
+    function getErrorMsg()
+    {
+        return $this->_Error_Msg;
+    }
 }
