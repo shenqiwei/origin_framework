@@ -22,6 +22,7 @@
 namespace Origin\Kernel\Mark;
 # 调用标记接口
 use Origin\Kernel\Mark\Impl\Label as Impl;
+# 调用files控制类
 
 /**
  * 标签解析主函数类
@@ -53,6 +54,11 @@ class Origin implements Impl
      * @var string $_Var_Regular
      */
     private $_Variable = '/\{\$[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?(\.[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?)?(\s*\|\s*[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?)?\}/';
+    /**
+     * 页面引入标签规则
+     * @var string $_Include_Regular
+    */
+    private $_Include_Regular = '/\<o:include\s+href\s*=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/';
     /**
      * 逻辑判断标记规则
      * @var string $_Judge_Ci condition_information : 'variable eq conditions_variable'
@@ -190,6 +196,8 @@ class Origin implements Impl
                 $_obj = $this->$_initialize($_obj);
             }
         }
+        # 转义引入结构
+        $_obj = $this->include($_obj);
         # 转义变量标签
         $_obj = $this->variable($_obj);
         # 去除空白注释
@@ -210,6 +218,30 @@ class Origin implements Impl
         # 去去空白符结构
         $_obj = preg_replace('/\s+/', ' ', $_obj);
         return $_obj;
+    }
+    /**
+     * 引入结构标签解释方法
+     * @access protected
+     * @param string $obj
+     * @return string
+    */
+    function include($obj)
+    {
+        # 获取include标签信息
+        $_count = preg_match_all($this->_Include_Regular, $obj, $_include, PREG_SET_ORDER);
+        # 遍历include对象内容
+        for($_i = 0;$_i < $_count; $_i++){
+            # 拼接引入文件地址信息
+            $_files = __PUBLIC__.'/'.$_include[$_i][1];
+            # 判断文件完整度
+            if(indexFiles($_files)){
+                # 读取引入对象内容
+                $_mark = file_get_contents(ROOT.SLASH.str_replace('/',SLASH,$_files));
+                # 执行结构内容替换
+                $obj = str_replace($_include[$_i][1],$_mark,$obj);
+            }
+        }
+        return $obj;
     }
     /**
      * 变量标签解释方法

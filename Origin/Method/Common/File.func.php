@@ -34,8 +34,11 @@ function indexFiles($uri)
         $_files = new FileClass();
         # 调用结构验证方法
         try{
-            $_files->resource($uri);
-            $_receipt = true;
+            if(is_null($_files->resource($uri))){
+                $_receipt = true;
+            }else{
+                $_receipt = false;
+            }
         }catch (Exception $e){
             $_receipt = $e->getMessage();
         }

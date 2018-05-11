@@ -39,6 +39,7 @@ return array(
     'ROOT_RESOURCE_STYLE' => 'Style', // 样式表资源目录
     'ROOT_RESOURCE_TEMP' => 'Template', // 模板资源目录
     'ROOT_RESOURCE_PLUGIN' => 'Plug-In', //第三方插件
+    'ROOT_RESOURCE_PUBLIC' => 'Public', //公共文件目录
     'ROOT_RESOURCE_UPLOAD' => 'Upload', //上传目录
     // 命名空间跟名
     'ROOT_NAMESPACE' => '\\Apply', //根命名空间

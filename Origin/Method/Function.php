@@ -56,6 +56,7 @@ define('__JSCRIPT__',__RESOURCE__.Config('ROOT_RESOURCE_JS'));
 define('__MEDIA__',__RESOURCE__.Config('ROOT_RESOURCE_MEDIA'));
 define('__STYLE__',__RESOURCE__.Config('ROOT_RESOURCE_STYLE'));
 define('__TEMP__',__RESOURCE__.Config('ROOT_RESOURCE_TEMP'));
+define('__PUBLIC__',__RESOURCE__.Config('ROOT_RESOURCE_PUBLIC'));
 # 插件地址常量
 define('__PLUG_IN__',__RESOURCE__.Config('ROOT_RESOURCE_PLUGIN'));
 # 上传文件常量
@@ -89,6 +90,9 @@ Import('Protocol:Route'); # 调用路由控制函数包
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
 Import('Application:Controller');
+echo(preg_match_all('/\<include\s+href=(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/', '<include href="src/tts/c.html"/>',
+    $_include, PREG_SET_ORDER));
+var_dump($_include);
+echo(intval(indexFiles(__PUBLIC__.'/'.'src/tts/c.html')));
 # 动态加载文件
 include('Common/Entrance.func.php'); # 引入入口文件包
-# 公共资源信息
