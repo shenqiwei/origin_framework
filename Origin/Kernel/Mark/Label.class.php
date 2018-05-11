@@ -118,6 +118,8 @@ class Label implements Impl
         $_obj = file_get_contents($this->_Obj);
         # 去标签差异化
         $_obj = preg_replace('/\s*\:\s*(end)\s*\>/', ':end>',$_obj);
+        # 转义引入结构
+        $_obj = $this->include($_obj);
         # 判断初始标签结构
         # 分析初始标签信息, 并定义分析器类型
         # 包含一个合法条件
@@ -199,8 +201,6 @@ class Label implements Impl
                 $_obj = $this->$_initialize($_obj);
             }
         }
-        # 转义引入结构
-        $_obj = $this->include($_obj);
         # 转义变量标签
         $_obj = $this->variable($_obj);
         # 去除空白注释

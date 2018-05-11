@@ -117,6 +117,8 @@ class Origin implements Impl
         # 创建初始标签标记变量
         $_initialize = null;
         $_obj = file_get_contents($this->_Obj);
+        # 转义引入结构
+        $_obj = $this->include($_obj);
         # 判断初始标签结构,分析初始标签信息, 并定义分析器类型,包含一个合法条件
         while (true) {
             if ($_if_count = preg_match_all($this->_Judge_If, $_obj, $_if, PREG_SET_ORDER) > 0) $_initialize = 'judge';
@@ -196,8 +198,6 @@ class Origin implements Impl
                 $_obj = $this->$_initialize($_obj);
             }
         }
-        # 转义引入结构
-        $_obj = $this->include($_obj);
         # 转义变量标签
         $_obj = $this->variable($_obj);
         # 去除空白注释
