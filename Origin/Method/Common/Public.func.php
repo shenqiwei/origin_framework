@@ -259,15 +259,15 @@ function M()
  * @param array $page 分页数组
  * @param array $style 分页样式
  * @param array $search 搜索条件
- * @param string $row 页码数量
+ * @param string $cols 页码数量
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function N($page,$style,$search,$row){
+function N($page,$style,$search,$cols){
     //执行数字页码
     $n=array();
-    if($page['count']>$row){
-        $k=($row%2==0)?$row/2:($row-1)/2;
+    if($page['count']>$cols){
+        $k=($cols%2==0)?$cols/2:($cols-1)/2;
         if(($page['current']-$k)>1 && ($page['current']+$k)<$page['count']){
             $page['num_begin']=$page['current']-$k;
             $page['num_end']=$page['current']+$k;
@@ -281,7 +281,7 @@ function N($page,$style,$search,$row){
         }else{
             if(($page['current']-$k)<=1){
                 $page['num_begin']=1;
-                $page['num_end']=$row;
+                $page['num_end']=$cols;
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
                         array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
@@ -290,7 +290,7 @@ function N($page,$style,$search,$row){
                     }
                 }
             }elseif(($page['current']+$k)>=$page['count']){
-                $page['num_begin']=$page['count']-($row-1);
+                $page['num_begin']=$page['count']-($cols-1);
                 $page['num_end']=$page['count'];
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
@@ -301,7 +301,7 @@ function N($page,$style,$search,$row){
                 }
             }else{
                 $page['num_begin']=1;
-                $page['num_end']=$row;
+                $page['num_end']=$cols;
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
                         array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
