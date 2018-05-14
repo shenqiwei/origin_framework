@@ -256,67 +256,67 @@ function M()
 {}
 /**
  * @access public
- * @param array $p 分页数组
- * @param array $a 分页样式
- * @param array $f 搜索条件
- * @param string $s 页码数量
+ * @param array $page 分页数组
+ * @param array $style 分页样式
+ * @param array $search 搜索条件
+ * @param string $row 页码数量
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function N($p,$a,$f,$s){
+function N($page,$style,$search,$row){
     //执行数字页码
     $n=array();
-    if($p['count']>$s){
-        $k=($s%2==0)?$s/2:($s-1)/2;
-        if(($p['current']-$k)>1 && ($p['current']+$k)<$p['count']){
-            $p['num_begin']=$p['current']-$k;
-            $p['num_end']=$p['current']+$k;
-            for($i=$p['num_begin'];$i<=$p['num_end'];$i++){
-                if($i==$p['current']){
-                    array_push($n,array('page'=>$i,'class'=>$a['mouse_on'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+    if($page['count']>$row){
+        $k=($row%2==0)?$row/2:($row-1)/2;
+        if(($page['current']-$k)>1 && ($page['current']+$k)<$page['count']){
+            $page['num_begin']=$page['current']-$k;
+            $page['num_end']=$page['current']+$k;
+            for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
+                if($i==$page['current']){
+                    array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                 }else{
-                    array_push($n,array('page'=>$i,'class'=>$a['mouse_off'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                    array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                 }
             }
         }else{
-            if(($p['current']-$k)<=1){
-                $p['num_begin']=1;
-                $p['num_end']=$s;
-                for($i=$p['num_begin'];$i<=$p['num_end'];$i++){
-                    if($i==$p['current']){
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_on'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+            if(($page['current']-$k)<=1){
+                $page['num_begin']=1;
+                $page['num_end']=$row;
+                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
+                    if($i==$page['current']){
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_off'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }
                 }
-            }elseif(($p['current']+$k)>=$p['count']){
-                $p['num_begin']=$p['count']-($s-1);
-                $p['num_end']=$p['count'];
-                for($i=$p['num_begin'];$i<=$p['num_end'];$i++){
-                    if($i==$p['current']){
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_on'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+            }elseif(($page['current']+$k)>=$page['count']){
+                $page['num_begin']=$page['count']-($row-1);
+                $page['num_end']=$page['count'];
+                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
+                    if($i==$page['current']){
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_off'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }
                 }
             }else{
-                $p['num_begin']=1;
-                $p['num_end']=$s;
-                for($i=$p['num_begin'];$i<=$p['num_end'];$i++){
-                    if($i==$p['current']){
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_on'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                $page['num_begin']=1;
+                $page['num_end']=$row;
+                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
+                    if($i==$page['current']){
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$a['mouse_off'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
                     }
                 }
             }
         }
     }else{
-        for($i=1;$i<=$p['count'];$i++){
-            if($i==$p['current']){
-                array_push($n,array('page'=>$i,'class'=>$a['mouse_on'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+        for($i=1;$i<=$page['count'];$i++){
+            if($i==$page['current']){
+                array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
             }else{
-                array_push($n,array('page'=>$i,'class'=>$a['mouse_off'],'url'=>$p['url'].'?page='.$i.$f['search_page']));
+                array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
             }
         }
     }
@@ -329,56 +329,56 @@ function O()
 {}
 /**
  * @access public
- * @param string $u 链接
- * @param string $c 总数
- * @param string $t 当前页数
- * @param array $a 分页样式
- * @param string $s 分页大小
- * @param array $f 搜索条件
+ * @param string $url 链接
+ * @param string $count 总数
+ * @param string $current 当前页数
+ * @param array $style 分页样式
+ * @param string $row 分页大小
+ * @param array $search 搜索条件
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function P($u,$c,$t,$a,$s,$f){
-    $p=array(
-        'url'=>$u,
-        'size'=>intval($s),'num_begin'=>0,'num_end'=>0,'count'=>0,'limit'=>0,'current'=>1,//翻页基本参数
-        'first_class'=>$a['first'],'first_url'=>'','first'=>0,//第一页参数
-        'last_class'=>$a['previous'],'last_url'=>'','last'=>0,//上一页参数
-        'next_class'=>$a['next'],'next_url'=>'','next'=>0,//下一页参数
-        'end_class'=>$a['last'],'end_url'=>'','end'=>0,//最后一页参数
+function P($url,$count,$current,$style,$row,$search){
+    $page=array(
+        'url'=>$url,
+        'size'=>intval($row),'num_begin'=>0,'num_end'=>0,'count'=>0,'limit'=>0,'current'=>1,//翻页基本参数
+        'first_class'=>$style['first'],'first_url'=>'','first'=>0,//第一页参数
+        'last_class'=>$style['previous'],'last_url'=>'','last'=>0,//上一页参数
+        'next_class'=>$style['next'],'next_url'=>'','next'=>0,//下一页参数
+        'end_class'=>$style['last'],'end_url'=>'','end'=>0,//最后一页参数
         'num'=>5,//页码翻页参数
     );
-    $p['current']=intval($t);
-    $p['count']=$c%$p['size']!=0?intval(($c/$p['size'])+1):intval($c/$p['size']);
+    $page['current']=intval($current);
+    $page['count']=$count%$page['size']!=0?intval(($count/$page['size'])+1):intval($count/$page['size']);
     //判断页标状态
-    if($p['current']<=0) $p['current']=1;
-    if($p['current']>$p['count']) $p['current']=$p['count'];
-    if($p['count']<=0) $p['current']=$p['count']=1;
-    $p['limit']=$p['size']*($p['current']-1);//其实点运算
-    $p['page_one']=$p['limit']+1;
-    $p['page_end']=($p['limit']+$p['size'])>$c?$c:$p['limit']+$p['size'];
+    if($page['current']<=0) $page['current']=1;
+    if($page['current']>$page['count']) $page['current']=$page['count'];
+    if($page['count']<=0) $page['current']=$page['count']=1;
+    $page['limit']=$page['size']*($page['current']-1);//其实点运算
+    $page['page_one']=$page['limit']+1;
+    $page['page_end']=($page['limit']+$page['size'])>$count?$count:$page['limit']+$page['size'];
     //判断翻页状态1
-    if($p['current']>1){
-        $p['last']=$p['current']-1;
+    if($page['current']>1){
+        $page['last']=$page['current']-1;
     }else{
-        $p['last']=1;
-        $p['first_class'].=$a['mouse_off'];
-        $p['last_class'].=$a['mouse_off'];
+        $page['last']=1;
+        $page['first_class'].=$style['mouse_off'];
+        $page['last_class'].=$style['mouse_off'];
     }
 
     //判断翻页状态2
-    if($p['current']>=$p['count']){
-        $p['next']=$p['count'];
-        $p['next_class'].=$a['mouse_off'];
-        $p['end_class'].=$a['mouse_off'];
+    if($page['current']>=$page['count']){
+        $page['next']=$page['count'];
+        $page['next_class'].=$style['mouse_off'];
+        $page['end_class'].=$style['mouse_off'];
     }else{
-        $p['next']=$p['current']+1;
+        $page['next']=$page['current']+1;
     }
-    $p['first_url']=$p['url'].'?page=1'.$f['search_page'];//第一页
-    $p['last_url']=$p['url'].'?page='.$p['last'].$f['search_page'];//上一页
-    $p['next_url']=$p['url'].'?page='.$p['next'].$f['search_page'];//下一页
-    $p['end_url']=$p['url'].'?page='.$p['count'].$f['search_page'];//最后一页
-    return $p;
+    $page['first_url']=$page['url'].'?page=1'.$search['search_page'];//第一页
+    $page['last_url']=$page['url'].'?page='.$page['last'].$search['search_page'];//上一页
+    $page['next_url']=$page['url'].'?page='.$page['next'].$search['search_page'];//下一页
+    $page['end_url']=$page['url'].'?page='.$page['count'].$search['search_page'];//最后一页
+    return $page;
 }
 /**
  * 预设Query语句控制单元执行方法，与Model公共控制架构结合使用
