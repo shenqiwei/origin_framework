@@ -235,13 +235,13 @@ class Label implements Impl
         # 遍历include对象内容
         for($_i = 0;$_i < $_count; $_i++){
             # 拼接引入文件地址信息
-            $_files = __PUBLIC__.'/'.$_include[$_i][1];
+            $_files = __PUBLIC__.'/'.str_replace('"','',$_include[$_i][1]);
             # 判断文件完整度
             if(indexFiles($_files)){
                 # 读取引入对象内容
-                $_mark = file_get_contents(ROOT.SLASH.str_replace('/',SLASH,$_files));
+                $_mark = file_get_contents(ROOT.str_replace('/',SLASH,$_files));
                 # 执行结构内容替换
-                $obj = str_replace($_include[$_i][1],$_mark,$obj);
+                $obj = str_replace($_include[$_i][0],$_mark,$obj);
             }
         }
         return $obj;
