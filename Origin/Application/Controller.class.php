@@ -39,10 +39,15 @@ namespace Origin;
 class Controller
 {
     /**
-     * 获取当前操作类型信息
+     * 获取当前操作类信息
      * @var string $_Name_Class
     */
     private $_Name_Class = null;
+    /**
+     * 获取当前执行方法信息
+     * @var string $_Name_Function
+    */
+    private $_Name_Function = null;
     /**
      * 装载参数信息数组
      * @var array $_Param_Array
@@ -108,36 +113,58 @@ class Controller
      * @return null
      */
     protected function view($view=null)
-{
-    $_page = null;
-    $_method = null;
-    $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-    if(is_true($_regular, C('DEFAULT_VIEW')) === true){
-        $_page = C('DEFAULT_VIEW');
+    {
+        $_page = null;
+        $_method = null;
+        $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
+        if(is_true($_regular, C('DEFAULT_VIEW')) === true){
+            $_page = C('DEFAULT_VIEW');
+        }
+        $_dir = str_replace('Controller', '',
+            str_replace(C('APPLICATION_CONTROLLER'), '',
+                str_replace(C('DEFAULT_APPLICATION'), '',
+                    str_replace(C('ROOT_APPLICATION'), '',
+                        str_replace('\\', '/', $this->_Name_Class)))));
+        if(!is_null($this->get_function())){
+            $_page = $this->get_function();
+        }
+        if($view !== null and is_true($_regular, $view) === true){
+            $_page = $view;
+        }
+        $_obj = new \Origin\Kernel\Graph\View($_dir, $_page);
+        $_obj->view($this->_Param_Array[$this->_Name_Class]);
+        return null;
     }
-    $_dir = str_replace('Controller', '',
-        str_replace(C('APPLICATION_CONTROLLER'), '',
-            str_replace(C('DEFAULT_APPLICATION'), '',
-                str_replace(C('ROOT_APPLICATION'), '',
-                    str_replace('\\', '/', $this->_Name_Class)))));
-    if(is_array(debug_backtrace())){
-        $_get_history = debug_backtrace();
-        for($i=0; $i<count($_get_history); $i++){
-            if($_get_history[$i]['class'] == $this->_Name_Class){
-                $_page = $_get_history[$i]['function'];
-                break;
-            }else{
-                continue;
+    /**
+     * 返回执行对象类名
+     * @access protected
+     * @return string
+     */
+    protected function get_class()
+    {
+        return $this->_Name_Class;
+    }
+    /**
+     * 返回执行对象方法名
+     * @access protected
+     * @return string
+     */
+    protected function get_function()
+    {
+        $this->_Name_Function = C('DEFAULT_VIEW');
+        if(is_array(debug_backtrace())){
+            $_get_history = debug_backtrace();
+            for($i=0; $i<count($_get_history); $i++){
+                if($_get_history[$i]['class'] == $this->_Name_Class){
+                    $this->_Name_Function = $_get_history[$i]['function'];
+                    break;
+                }else{
+                    continue;
+                }
             }
         }
+        return $this->_Name_Function;
     }
-    if($view !== null and is_true($_regular, $view) === true){
-        $_page = $view;
-    }
-    $_obj = new \Origin\Kernel\Graph\View($_dir, $_page);
-    $_obj->view($this->_Param_Array[$this->_Name_Class]);
-    return null;
-}
     /**
      * 执行成功提示信息
      * @access protected
