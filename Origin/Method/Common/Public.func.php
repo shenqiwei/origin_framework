@@ -13,26 +13,15 @@
  * developer: 沈启威 *
  * partner: 沈启威 *
  * chinese Context:
- * IoC 单字母函数包
+ * IoC 公共函数包
  */
-/**
- * Action：行为指向及行为控制方法函数
-*/
-function A()
-{
-}
-/**
- * Backtrack行踪回溯方法
-*/
-function B()
-{}
 /**
  * Config公共配置信息调用方法,优先调用用户配置文件，在用户配置文件不存在或者无配置项时，调用系统配置文件
  * @access public
  * @param string $guide
  * @return null
 */
-function C($guide)
+function Config($guide)
 {
     /**
      * 执行结构为两种，一种是直接调用公共配置文件或者主配置文件，另一种是筛查配置信息位置，在读取配置信息
@@ -57,7 +46,7 @@ function C($guide)
             # 拆分数组
             $_guide = explode(':', $guide);
             # 引入自定义配置文件
-            $_config = J('Config:'.$_guide[0], 'disabled');
+            $_config = Call('Config:'.$_guide[0], 'disabled');
             # 判断有无返回信息数组
             if(!$_config){
                 for($i=1;$i<count($_guide);$i++){
@@ -71,7 +60,7 @@ function C($guide)
             }
             if($_receipt == null){
                 # 使用钩子函数调用公共配置文件
-                $_config = J('Config:Config', 'disabled');
+                $_config = Call('Config:Config', 'disabled');
                 # 判断返回信息
                 if($_config){
                     # 引导信息数组，并对数据内容进行匹配
@@ -114,7 +103,7 @@ function C($guide)
             }
         }else{
             # 调用默认配置文件信息
-            $_config = J('Config:Config', 'disabled');
+            $_config = Call('Config:Config', 'disabled');
             if($_config[$guide]){
                $_receipt = $_config[$guide];
             }else{
@@ -124,7 +113,7 @@ function C($guide)
                     $_receipt = $_config[$guide];
                 }else{
                     # 调取主配置信息
-                    $_receipt = Config($guide);
+                    $_receipt = Configurate($guide);
                 }
             }
         }
@@ -137,12 +126,12 @@ function C($guide)
  * @param string $table
  * @return object
 */
-function D($table=null)
+function Data($table=null)
 {
     /**
      * 调用数据库核心包
     */
-    $_source = '\Origin\Kernel\Data\\'.C('DATA_TYPE');
+    $_source = '\Origin\Kernel\Data\\'.Config('DATA_TYPE');
     $d = new $_source();
     if($table != null){
         $d->table($table);
@@ -151,50 +140,25 @@ function D($table=null)
     return $d;
 }
 /**
- * Exception异常处理方法
-*/
-function E()
-{}
-/**
- * Filter过滤器执行方法
-*/
-function F()
-{}
-/**
- *
-*/
-function G()
-{}
-/**
- * header文件头结构使用函数
- * @access public
- * @param string $guide
- * @return mixed
-*/
-function H($guide)
-{
-    return $guide;
-}
-/**
  * Input表单提交信息请求方法函数
  * @access public
  * @param string $key
  * @param mixed $default
  * @return string
 */
-function I($key, $default=null)
+function Input($key, $default=null)
 {
     # 直接调用Request请求器函数
     return Request($key, $default);
 }
 /**
- * fishhook(鱼钩)钩子调用插件及公共组件方法，也可以用于调用新增公共控制器文件，或者函数包
+ * call(呼叫)调用插件及公共组件方法，也可以用于调用新增公共控制器文件，或者函数包
  * @access public
  * @param $guide
  * @param $throws
  * @return mixed
  */
-function J($guide, $throws='enable')
+function Call($guide, $throws='enable')
 {
     /**
      * 使用正则表达式对文件引导信息进行过滤
@@ -215,11 +179,11 @@ function J($guide, $throws='enable')
             # 拆分为数组结构
             $_guide = explode(':', $guide);
             # 创建默认扩展名
-            $_suffix = Config('CLASS_SUFFIX');
+            $_suffix = Configurate('CLASS_SUFFIX');
             # 拼接参数信息，并判断是否存在于配置文件中
-            if(Config('APPLICATION_'.strtoupper($_guide[0])) and Config(strtoupper($_guide[0]).'_SUFFIX')){
-                $_suffix = Config(strtoupper($_guide[0]).'_SUFFIX');
-                $_guide[0] = str_replace('/','',Config('APPLICATION_'.strtoupper($_guide[0])));
+            if(Configurate('APPLICATION_'.strtoupper($_guide[0])) and Configurate(strtoupper($_guide[0]).'_SUFFIX')){
+                $_suffix = Configurate(strtoupper($_guide[0]).'_SUFFIX');
+                $_guide[0] = str_replace('/','',Configurate('APPLICATION_'.strtoupper($_guide[0])));
             }
             $guide= implode(':',$_guide);
             # 判断地址栏中路径信息是否不为空
@@ -229,31 +193,16 @@ function J($guide, $throws='enable')
                 # 判断获取值与默认应用文件名是否相同
                 if($_map != __APPLICATION__)
                     # 判断该值是否问应用目录
-                    if(is_dir(ROOT.SLASH.Config('ROOT_APPLICATION').$_map))
+                    if(is_dir(ROOT.SLASH.Configurate('ROOT_APPLICATION').$_map))
                         $_master = $_map.'/';
             # 根据执行结构获取文件路径指向信息
             $_dir = isset($_master) ? $_master:__APPLICATION__;
             # 使用钩子公共方法引入文件
-            $_receipt = Hook(str_replace('/',':',Config('ROOT_APPLICATION').$_dir.$guide), $_suffix, $throws);
+            $_receipt = Loading(str_replace('/',':',Configurate('ROOT_APPLICATION').$_dir.$guide), $_suffix, $throws);
         }
     }
     return $_receipt;
 }
-/**
- *
-*/
-function K()
-{}
-/**
- * Location 位置跳转方法函数
-*/
-function L()
-{}
-/**
- * Mapping数据映射执行方法
-*/
-function M()
-{}
 /**
  * @access public
  * @param array $page 分页数组
@@ -263,7 +212,7 @@ function M()
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function N($page,$style,$search,$cols){
+function Number($page,$style,$search,$cols){
     //执行数字页码
     $n=array();
     if($page['count']>$cols){
@@ -323,11 +272,6 @@ function N($page,$style,$search,$cols){
     return $n;
 }
 /**
- *
-*/
-function O()
-{}
-/**
  * @access public
  * @param string $url 链接
  * @param string $count 总数
@@ -338,7 +282,7 @@ function O()
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function P($url,$count,$current,$style,$row,$search){
+function Page($url,$count,$current,$style,$row,$search){
     $page=array(
         'url'=>$url,
         'size'=>intval($row),'num_begin'=>0,'num_end'=>0,'count'=>0,'limit'=>0,'current'=>1,//翻页基本参数
@@ -381,63 +325,12 @@ function P($url,$count,$current,$style,$row,$search){
     return $page;
 }
 /**
- * 预设Query语句控制单元执行方法，与Model公共控制架构结合使用
-*/
-function Q()
-{}
-/**
- * Route路由执行操作方法函数
- * @param string $uri
- * @param boolean $head
- * @return string
-*/
-function R($uri=null,$head=false)
-{
-    return null;
-}
-/**
- *
-*/
-function S()
-{}
-/**
- * Template模板执行方法函数
-*/
-function T()
-{}
-/**
- * Url连接地址自动装载方法函数
-*/
-function U()
-{
-}
-/**
  * Verify验证函数
  * @param $width
  * @param $height
  * @return object
 */
-function V($width=120, $height=50)
+function Verify($width=120, $height=50)
 {
     return new \Origin\Kernel\Export\Verify($width,$height);
 }
-/**
- *
-*/
-function W()
-{}
-/**
- *
-*/
-function X()
-{}
-/**
- *
- */
-function Y()
-{}
-/**
- *
-*/
-function Z()
-{}

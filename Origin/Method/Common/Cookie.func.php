@@ -32,7 +32,7 @@ function Cookie($key, $value=null)
     # 创建session键名过滤正则
     $_validate_key = '/^[^\_\W]+([\.\_\-]?[^\_\W]+)?$/';
     # 获取cookie配置表
-    $_cookie = Config('CONFIG');
+    $_cookie = Configurate('CONFIG');
     # 进行验证，如果键名结构验证失败，则抛出异常
     if(is_true($_validate_key, $key) === true){
         if(strpos($key, ':')){

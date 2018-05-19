@@ -54,13 +54,13 @@ class Route
         # 创建返回变量
         $_receipt = implode('/', $_path);
         # 创建路由文件目录变量
-        $_files = str_replace('/', SLASH, ROOT.Config('ROOT_APPLICATION').Config('ROUTE_CATALOGUE'));
+        $_files = str_replace('/', SLASH, ROOT.Configurate('ROOT_APPLICATION').Configurate('ROUTE_CATALOGUE'));
         # 判断文件是否存在
         if(is_dir($_files)){
             # 判断路由文件是否存在
-            if(is_file($_files.Config('ROUTE_FILES'))){
+            if(is_file($_files.Configurate('ROUTE_FILES'))){
                 # 获取路由配置信息
-                $_obj = require_once($_files.Config('ROUTE_FILES'));
+                $_obj = require_once($_files.Configurate('ROUTE_FILES'));
             }
         }
         # 判断路径信息是否有效

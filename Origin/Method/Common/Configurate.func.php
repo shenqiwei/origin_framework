@@ -6,7 +6,7 @@
  * @param string $guide 配置名称，不区分大小写
  * @return string
  */
-function Config($guide)
+function Configurate($guide)
 {
     /**
      * @var array $_array

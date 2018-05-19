@@ -40,7 +40,7 @@ function write($uri,$msg,$found=true)
 function daoLogs($msg)
 {
     # 数据库操作日志
-    $_uri = Config('ROOT_LOG').Config('LOG_CONNECT').date('Ymd').Config('LOG_SUFFIX');
+    $_uri = Configurate('ROOT_LOG').Configurate('LOG_CONNECT').date('Ymd').Configurate('LOG_SUFFIX');
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg,true);
 }
@@ -52,7 +52,7 @@ function daoLogs($msg)
 function actionLogs($msg)
 {
     # 访问行为日志
-    $_uri = Config('ROOT_LOG').Config('LOG_OPERATE').date('Ymd').Config('LOG_SUFFIX');
+    $_uri = Configurate('ROOT_LOG').Configurate('LOG_OPERATE').date('Ymd').Configurate('LOG_SUFFIX');
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg,true);
 }
@@ -64,7 +64,7 @@ function actionLogs($msg)
 function accessLogs($msg)
 {
     # 链接记录日志
-    $_uri =Config('ROOT_LOG').Config('LOG_ACCESS').date('Ymd').Config('LOG_SUFFIX');
+    $_uri = Configurate('ROOT_LOG').Configurate('LOG_ACCESS').date('Ymd').Configurate('LOG_SUFFIX');
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg,true);
 }
@@ -76,7 +76,7 @@ function accessLogs($msg)
 function errorLogs($msg)
 {
     # 异常记录日志
-    $_uri = Config('ROOT_LOG').Config('LOG_EXCEPTION').date('Ymd').Config('LOG_SUFFIX');
+    $_uri = Configurate('ROOT_LOG').Configurate('LOG_EXCEPTION').date('Ymd').Configurate('LOG_SUFFIX');
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg,true);
 }

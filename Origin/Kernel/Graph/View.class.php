@@ -54,7 +54,7 @@ class View
         # 转化文件路径
         $_guide = explode('/',$this->_Dir);
         # 判断结构模型
-        $_dir = C('DEFAULT_APPLICATION');
+        $_dir = Config('DEFAULT_APPLICATION');
         # 判断引导路径中是否存在多级文件
         if(count($_guide) > 1){
             for($i=0; $i<count($_guide);$i++){
@@ -65,17 +65,17 @@ class View
             }
         }
         # 获取应用目录
-        $_url = str_replace('/', SLASH, C('ROOT_APPLICATION').$_dir);
+        $_url = str_replace('/', SLASH, Config('ROOT_APPLICATION').$_dir);
         # 判断应用目录是否有效
         if(is_dir($_url)){
             # 获得前台模板目录
-            $_url_view = str_replace('/', SLASH, $_url.C('APPLICATION_VIEW'));
+            $_url_view = str_replace('/', SLASH, $_url.Config('APPLICATION_VIEW'));
             # 判断前台模板目录是否有效
             if(is_dir($_url_view)){
                 # 判断应用控制器对应前台模板目录是否有效
                 if(is_dir($_url_view.$this->_Dir)){
                     # 调用模板
-                    $_page = $_url_view.$this->_Dir.SLASH.$this->_Page.C('VIEW_SUFFIX');
+                    $_page = $_url_view.$this->_Dir.SLASH.$this->_Page.Config('VIEW_SUFFIX');
                     if(is_file($_page)){
                         $_label = new \Origin\Kernel\Mark\Label($_page, $param);
                         echo($_label->execute());

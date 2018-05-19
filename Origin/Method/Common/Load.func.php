@@ -8,7 +8,7 @@
  * @param string $throws 是否抛出异常信息
  * @return null
  */
-function Hook($guide, $suffix=null, $throws='enable')
+function Loading($guide, $suffix=null, $throws='enable')
 {
     /**
      * @var mixed $_hook 指引结构数组
@@ -130,21 +130,21 @@ function Import($guide)
         $_array = explode(':', $guide);
         if($_array[0] == 'Application'){
             $_url = str_replace(SLASH,':',RING).$guide;
-            Hook($_url, '.class.php');
+            Loading($_url, '.class.php');
         }
         elseif($_array[0] == 'Config'){
             $_url = str_replace(SLASH,':',RING).$guide;
-            $_receipt = Hook($_url, '.cfg.php');
+            $_receipt = Loading($_url, '.cfg.php');
         }
         elseif($_array[0] == 'Interface'){
             array_shift($_array);
             $guide = implode(':', $_array);
             $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
-            Hook($_url,'.impl.php');
+            Loading($_url,'.impl.php');
         }
         else{
             $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
-            Hook($_url,'.class.php');
+            Loading($_url,'.class.php');
         }
     }
     return $_receipt;

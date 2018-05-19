@@ -25,16 +25,16 @@ function Common($guide)
 {
     $_receipt = null;
     if(strpos($guide,':')){
-        $_url = str_replace(SLASH,':',str_replace('/', SLASH, Config('ROOT_APPLICATION'))).$guide;
+        $_url = str_replace(SLASH,':',str_replace('/', SLASH, Configurate('ROOT_APPLICATION'))).$guide;
         $_obj = explode(':', $guide);
         if(strtolower($_obj[0]) === 'config'){
-            $_suffix = Config('CONFIG_SUFFIX');
+            $_suffix = Configurate('CONFIG_SUFFIX');
         }elseif(strtolower($_obj[0]) === 'controller' or strtolower($_obj[0]) === 'class'){
-            $_suffix = Config('CLASS_SUFFIX');
+            $_suffix = Configurate('CLASS_SUFFIX');
         }else{
-            $_suffix = Config('METHOD_SUFFIX');
+            $_suffix = Configurate('METHOD_SUFFIX');
         }
-        $_receipt = Hook($_url,$_suffix);
+        $_receipt = Loading($_url,$_suffix);
     }
     return $_receipt;
 }
