@@ -149,3 +149,55 @@ function Import($guide)
     }
     return $_receipt;
 }
+/**
+ * call(呼叫)调用插件及公共组件方法，也可以用于调用新增公共控制器文件，或者函数包
+ * @access public
+ * @param $guide
+ * @param $throws
+ * @return mixed
+ */
+function Call($guide, $throws='enable')
+{
+    /**
+     * 使用正则表达式对文件引导信息进行过滤
+     * @var mixed $_receipt
+     * @var string $_regular
+     * @var string $_exception
+     * @var mixed $_guide
+     */
+    $_receipt = null;
+    # 创建引导信息验证正则表达式变量
+    $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
+    # 创建特例变量
+    $_exception = null;
+    # 验证引导信息是否符合要求
+    if(is_true($_regular, $guide) === true){
+        # 判断是否存在连接符号
+        if(strpos($guide, ':')){
+            # 拆分为数组结构
+            $_guide = explode(':', $guide);
+            # 创建默认扩展名
+            $_suffix = Configurate('CLASS_SUFFIX');
+            # 拼接参数信息，并判断是否存在于配置文件中
+            if(Configurate('APPLICATION_'.strtoupper($_guide[0])) and Configurate(strtoupper($_guide[0]).'_SUFFIX')){
+                $_suffix = Configurate(strtoupper($_guide[0]).'_SUFFIX');
+                $_guide[0] = str_replace('/','',Configurate('APPLICATION_'.strtoupper($_guide[0])));
+            }
+            $guide= implode(':',$_guide);
+            # 判断地址栏中路径信息是否不为空
+            if($_SERVER['PATH_INFO']) $_map = explode('/', $_SERVER['PATH_INFO'])[1];
+            # 判断函数处理变量是否被创建
+            if(isset($_map))
+                # 判断获取值与默认应用文件名是否相同
+                if($_map != __APPLICATION__)
+                    # 判断该值是否问应用目录
+                    if(is_dir(ROOT.SLASH.Configurate('ROOT_APPLICATION').$_map))
+                        $_master = $_map.'/';
+            # 根据执行结构获取文件路径指向信息
+            $_dir = isset($_master) ? $_master:__APPLICATION__;
+            # 使用钩子公共方法引入文件
+            $_receipt = Loading(str_replace('/',':',Configurate('ROOT_APPLICATION').$_dir.$guide), $_suffix, $throws);
+        }
+    }
+    return $_receipt;
+}

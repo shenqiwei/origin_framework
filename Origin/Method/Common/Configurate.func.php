@@ -52,3 +52,109 @@ function Configurate($guide)
     }
     return $_receipt;
 }
+
+/**
+ * Config公共配置信息调用方法,优先调用用户配置文件，在用户配置文件不存在或者无配置项时，调用系统配置文件
+ * @access public
+ * @param string $guide
+ * @return null
+ */
+function Config($guide)
+{
+    /**
+     * 执行结构为两种，一种是直接调用公共配置文件或者主配置文件，另一种是筛查配置信息位置，在读取配置信息
+     * 筛查配置信息，会先检索公共配置信息，然后是主配置信息，最后检索自定义配置文件.
+     * 公共配置文件及主配置文件始于框架本体共同存在，所以只在最后检索自定义配置文件是，才会报错异常错误.
+     * @var string $_receipt
+     * @var array $_config
+     * @var string $_regular
+     * @var array $_guide
+     * @var int $i
+     */
+    # 创建返回值变量
+    $_receipt = null;
+    # 创建配置信息初始变量
+    $_config = null;
+    # 创建引导信息验证正则表达式变量
+    $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
+    # 验证指引结构信息
+    if(is_true($_regular, $guide) === true){
+        # 判断是否存在预设连接符号
+        if(strpos($guide, ':')){
+            # 拆分数组
+            $_guide = explode(':', $guide);
+            # 引入自定义配置文件
+            $_config = Call('Config:'.$_guide[0], 'disabled');
+            # 判断有无返回信息数组
+            if(!$_config){
+                for($i=1;$i<count($_guide);$i++){
+                    if(is_array($_guide[$i])){
+                        $_guide = $_guide[$i];
+                    }else{
+                        $_receipt = $_guide[$i];
+                        break;
+                    }
+                }
+            }
+            if($_receipt == null){
+                # 使用钩子函数调用公共配置文件
+                $_config = Call('Config:Config', 'disabled');
+                # 判断返回信息
+                if($_config){
+                    # 引导信息数组，并对数据内容进行匹配
+                    for($i=0;$i<count($_guide);$i++){
+                        if(is_array($_config[$_guide[$i]])){
+                            $_guide = $_config[$_guide[$i]];
+                        }else{
+                            $_receipt = $_config[$_guide[$i]];
+                            break;
+                        }
+                    }
+                }
+            }
+            if($_receipt == null){
+                # 调取公共配置信息
+                $_config = Common('Config:Config');
+                # 判断返回信息
+                if($_config){
+                    # 引导信息数组，并对数据内容进行匹配
+                    for($i=0;$i<count($_guide);$i++){
+                        if(is_array($_config[$_guide[$i]])){
+                            $_guide = $_config[$_guide[$i]];
+                        }else{
+                            $_receipt = $_config[$_guide[$i]];
+                            break;
+                        }
+                    }
+                }
+            }
+            if($_receipt == null){
+                # 引导信息数组，并对数据内容进行匹配
+                for($i=0;$i<count($_guide);$i++){
+                    if(is_array($_config[$_guide[$i]])){
+                        $_guide = $_config[$_guide[$i]];
+                    }else{
+                        $_receipt = $_config[$_guide[$i]];
+                        break;
+                    }
+                }
+            }
+        }else{
+            # 调用默认配置文件信息
+            $_config = Call('Config:Config', 'disabled');
+            if($_config[$guide]){
+                $_receipt = $_config[$guide];
+            }else{
+                # 调取公共配置信息
+                $_config = Common('Config:Config');
+                if($_config[$guide]){
+                    $_receipt = $_config[$guide];
+                }else{
+                    # 调取主配置信息
+                    $_receipt = Configurate($guide);
+                }
+            }
+        }
+    }
+    return $_receipt;
+}

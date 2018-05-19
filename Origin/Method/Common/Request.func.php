@@ -75,3 +75,15 @@ function Request($key, $default=null, $operate='rw')
     }
     return $_receipt;
 }
+/**
+ * Input表单提交信息请求方法函数
+ * @access public
+ * @param string $key
+ * @param mixed $default
+ * @return string
+ */
+function Input($key, $default=null)
+{
+    # 直接调用Request请求器函数
+    return Request($key, $default);
+}

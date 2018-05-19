@@ -74,12 +74,13 @@ include('Common/Validate.func.php');
 include('Common/Filter.func.php');
 include('Common/Session.func.php');
 include('Common/Cookie.func.php');
-# 应用公共函数文件
-include('Common/Log.func.php'); # 引用日志函数包
-include('Common/Public.func.php'); # 文件操作函数包
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
 Import('Data:' . Config('DATA_TYPE')); # 调用数据库对象组件
+# 应用公共函数文件
+include('Common/Log.func.php'); # 引用日志函数包
+include('Common/Database.func.php'); # 文件操作函数包
+# 图形支持函数
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import('Mark:Label'); # 调用标签解析器控制类
 Import('Export:Verify'); # 调用验证码组件

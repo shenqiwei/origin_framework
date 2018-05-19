@@ -61,8 +61,6 @@ function path()
         $_catalogue = Config('DEFAULT_APPLICATION');
         # 默认控制器文件名
         $_files = Config('DEFAULT_CONTROLLER');
-        # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-        # $_class = Configurate('DEFAULT_CONTROLLER');
         # 默认控制器方法名
         $_method = Config('DEFAULT_METHOD');
         # 转换信息
