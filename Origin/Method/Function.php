@@ -91,5 +91,3 @@ Import('Protocol:Route'); # 调用路由控制函数包
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
 Import('Application:Controller');
-# 动态加载文件
-include('Common/Entrance.func.php'); # 引入入口文件包

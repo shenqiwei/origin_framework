@@ -52,3 +52,7 @@ elseif(ERROR == 8)
 else error_reporting(0);
 # 引入主方法文件
 include('Method'.SLASH.'Function.php');
+# 引入入口文件
+include('Kernel'.SLASH.'Entrance.class.php');
+# 启动入口文件
+Origin\Kernel\Entrance::starting();

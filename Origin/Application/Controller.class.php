@@ -12,25 +12,6 @@
  * developer: 沈启威 *
  * partner: 沈启威 *
  * chinese Context: IoC 公共控制器
- * ━━━━━━━━━━━━━━━━神兽出没━━━━━━━━━━━━━━━━━━━
- * 　　　┏┓　　　┏┓　　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┏┛┻━━━┛┻┓　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃      ━      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃  ┳┛  ┗┳  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃      ┻      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┗━┓      ┏━┛Code is far away from bug with the animal protecting *
- * 　　　　┃      ┃　　神兽保佑,代码无bug　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃      ┗━━━┓　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃              ┣┓　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃              ┏┛　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┗┓┓┏━┳┓┏┛　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　　┃┫┫　┃┫┫　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　　┗┻┛　┗┻┛　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * ━━━━━━━━━━━━━━━━感觉萌萌哒━━━━━━━━━━━━━━━━━━
  */
 namespace Origin;
 /**
@@ -59,7 +40,20 @@ class Controller
     */
     function __construct()
     {
-        $this->_Name_Class = get_class($this);
+        # 判断自动加载单元返回类型信息是否有效
+        if(!is_null(\Origin\Kernel\Entrance::$_Class)){
+            # 判断是否包含起始符号
+            if(strpos(\Origin\Kernel\Entrance::$_Class,"\\") === 0){
+                # 消除起始符号
+                $this->_Name_Class = substr(\Origin\Kernel\Entrance::$_Class,1);
+            }else{
+                $this->_Name_Class = \Origin\Kernel\Entrance::$_Class;
+            }
+        }else{
+            # 使用PHP类信息函数调用类信息
+            $this->_Name_Class = get_class($this);
+        }
+
     }
     /**
      * 创建欢迎页
@@ -125,8 +119,8 @@ class Controller
                 str_replace(Config('DEFAULT_APPLICATION'), '',
                     str_replace(Config('ROOT_APPLICATION'), '',
                         str_replace('\\', '/', $this->_Name_Class)))));
-        if(!is_null($this->get_function())){
-            $_page = $this->get_function();
+        if(!is_null(\Origin\Kernel\Entrance::$_Function)){
+            $_page = \Origin\Kernel\Entrance::$_Function;
         }
         if($view !== null and is_true($_regular, $view) === true){
             $_page = $view;
