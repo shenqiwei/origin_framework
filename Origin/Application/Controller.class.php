@@ -122,7 +122,7 @@ class Controller
         if(!is_null(\Origin\Kernel\Entrance::$_Function)){
             $_page = \Origin\Kernel\Entrance::$_Function;
         }
-        if($view !== null and is_true($_regular, $view) === true){
+        if(!is_null($view ) and is_true($_regular, $view) === true){
             $_page = $view;
         }
         $_obj = new \Origin\Kernel\Graph\View($_dir, $_page);

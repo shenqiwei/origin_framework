@@ -65,7 +65,7 @@ function Loading($guide, $suffix=null, $throws='enable')
                 }
             }
             # 调用用户自定义文件类型，当文件不为空时，使用用户自定义类型拼接扩展名，反之使用默认扩展名
-            if($suffix != null){
+            if(!is_null($suffix)){
                 $_suffix = $suffix;
             }
             # 判断完整文件路径是否存在，存在时，直接引入文件，反之抛出异常信息

@@ -98,7 +98,7 @@ function Session($key, $value=null)
                     if($_resource !='php' and $_resource != 'config')
                         $_resource = 'auto';
                     # 当操作类型为set时，session将激活ini_set方法
-                    if($value != null){
+                    if(!is_null($value)){
                         # 判断配置信息来源
                         if($_resource == 'config'){
                             if(array_key_exists(strtoupper($_set), $_session))
@@ -163,7 +163,7 @@ function Session($key, $value=null)
                     # 符合维度要求
                     if(count($key) == 3){
                         # 根据值状态进行session操作
-                        if($value == null){
+                        if(is_null($value)){
                             # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                             if(isset($_SESSION[$key[0]][$key[1]][$key[2]]))
                                 $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]][$key[$_array_key[2]]];
@@ -175,7 +175,7 @@ function Session($key, $value=null)
                         }
                     }elseif(count($key) == 2){
                         # 根据值状态进行session操作
-                        if($value == null){
+                        if(is_null($value)){
                             # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                             if(isset($_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]]))
                                 $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]];
@@ -187,7 +187,7 @@ function Session($key, $value=null)
                         }
                     }else{
                         # 根据值状态进行session操作
-                        if($value == null){
+                        if(is_null($value)){
                             # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                             if(isset($_SESSION[$key[$_array_key[0]]]))
                                 $_receipt = $_SESSION[$key[$_array_key[0]]];
@@ -201,7 +201,7 @@ function Session($key, $value=null)
                 }
             }else{
                 # 根据值状态进行session操作
-                if($value == null){
+                if(is_null($value)){
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                     if(isset($_SESSION[$key]))
                         $_receipt = $_SESSION[$key];

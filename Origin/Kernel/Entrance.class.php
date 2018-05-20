@@ -86,7 +86,7 @@ class Entrance
             accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
             # 重定义指针， 起始位置0
             $_i = 0;
-            if(!empty($_path) and $_path != null){
+            if(!empty($_path) and !is_null($_path)){
                 # 转化路径为数组结构
                 $_path_array = explode('/',$_path);
                 # 判断首元素结构是否与默认应用目录相同

@@ -81,7 +81,7 @@ function Cookie($key, $value=null)
                 if($_resource !='php' and $_resource != 'config')
                     $_resource = 'auto';
                 # 当操作类型为set时，session将激活ini_set方法
-                if($value != null){
+                if(!is_null($value)){
                     # 判断配置信息来源
                     if($_resource == 'config'){
                         if(array_key_exists(strtoupper($_set), $_cookie))

@@ -259,7 +259,7 @@ class Label implements Impl
     function variable($obj, $variable=null, $param=null, $mapping=null)
     {
         # 判断传入参数是否为初始化值
-        if($param == null){
+        if(is_null($param)){
             # 传入参数为初始化状态，对代码段进行筛选过滤
             preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
             # 迭代标记信息

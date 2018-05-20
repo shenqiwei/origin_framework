@@ -243,11 +243,11 @@ class Mysql extends Query
             # 起始结构
             $_sql = null;
             # top关键字信息 mysql 不支持
-//            if($this->_Top != null) $_sql .= $this->_Top;
+//            if(!is_null($this->_Top)) $_sql .= $this->_Top;
             # 首条信息 mysql 不支持
-//            if($this->_First!= null) $_sql .= $this->_First;
+//            if(!is_null($this->_First)) $_sql .= $this->_First;
             # 末尾信息 mysql 不支持
-//            if($this->_Last!= null) $_sql .= $this->_Last;
+//            if(!is_null($this->_Last)) $_sql .= $this->_Last;
             # 求总和
             if(!is_null($this->_Total)){
                 if(!is_null($_sql) or !is_null($this->_Group))

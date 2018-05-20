@@ -21,18 +21,23 @@
  * @param string $table
  * @return object
 */
-function Data($table=null)
+function Dao($table=null)
 {
     /**
      * 调用数据库核心包
     */
-    $_source = '\Origin\Kernel\Data\\'.Config('DATA_TYPE');
-    $d = new $_source();
-    if($table != null){
-        $d->table($table);
+    switch(strtolower(trim(Config('DATA_TYPE')))){
+        case 'mysql':
+        default:
+            $_dao = new \Origin\Kernel\Data\Mysql();
+            break;
     }
-    $d->__setSQL($d);
-    return $d;
+    if(!is_null($table)){
+        $_dao->table($table);
+    }
+    $_dao->__setSQL($_dao);
+
+    return $_dao;
 }
 /**
  * @access public
