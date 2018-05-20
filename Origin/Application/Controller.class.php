@@ -121,8 +121,6 @@ class Controller
                         str_replace('\\', '/', $this->_Name_Class)))));
         if(!is_null(\Origin\Kernel\Entrance::$_Function)){
             $_page = \Origin\Kernel\Entrance::$_Function;
-        }else{
-            $_page = $this->get_function();
         }
         if($view !== null and is_true($_regular, $view) === true){
             $_page = $view;
