@@ -200,6 +200,7 @@ abstract class Query
      */
     function table($table)
     {
+        $this->_Table = null;
         /**
          * 根据SQL命名规范，及同行开发要求对表名信息进行，基本过滤验证
          * 支持as语句，使用数组及字符串双重结构管理，当需要进行别名设置时，使用数组结构
@@ -315,6 +316,7 @@ abstract class Query
      */
     function top($number, $percent=false)
     {
+        $this->_Top = null;
         # top 关键字后边只能接数组，所以在拼接语句时，要对number进行类型转化
         $this->_Top .=' top '.intval($number);
         # 判断是否使用百分比进行查询
@@ -332,6 +334,7 @@ abstract class Query
      */
     function total($field)
     {
+        $this->_Total = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -357,6 +360,7 @@ abstract class Query
      */
     function field($field)
     {
+        $this->_Field = null;
         /**
          * 进行传入值结构判断，如果传入值为数组并且数组元素总数大于0
          * @var int $i; 计数变量
@@ -473,6 +477,7 @@ abstract class Query
      */
     function union($table, $field)
     {
+        $this->_Union = null;
         /**
          * 使用SQL命名规则对输入的表名和字段名进行验证
          */
@@ -512,6 +517,7 @@ abstract class Query
      */
     function data($field)
     {
+        $this->_Data = null;
         /**
          * 验证传入值结构，符合数组要求时，进行内容验证
          * @var string $_key
@@ -560,6 +566,7 @@ abstract class Query
      */
     function where($field)
     {
+        $this->_Where = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -613,6 +620,7 @@ abstract class Query
      */
     function group($field)
     {
+        $this->_Group = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          * @var string int $_key
@@ -672,6 +680,7 @@ abstract class Query
      */
     function avg($field)
     {
+        $this->_Avg = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -728,6 +737,7 @@ abstract class Query
      */
     function max($field)
     {
+        $this->_Max = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -752,6 +762,7 @@ abstract class Query
      */
     function min($field)
     {
+        $this->_Min = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -776,6 +787,7 @@ abstract class Query
      */
     function sum($field)
     {
+        $this->_Sum = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -801,6 +813,7 @@ abstract class Query
      */
     function toUpper($field)
     {
+        $this->_UpperCase = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -829,6 +842,7 @@ abstract class Query
      */
     function toLower($field)
     {
+        $this->_LowerCase = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -859,6 +873,7 @@ abstract class Query
     */
     function mid($field, $start=0, $length=0)
     {
+        $this->_Mid = null;
         /**
          * @var string $_key
          * @var array $_value
@@ -903,6 +918,7 @@ abstract class Query
     */
     function len($field)
     {
+        $this->_Len = null;
         /**
          * @var array $_value
          */
@@ -933,6 +949,7 @@ abstract class Query
      */
     function length($field)
     {
+        $this->_Len = null;
         /**
          * @var array $_value
          */
@@ -963,6 +980,7 @@ abstract class Query
     */
     function round($field, $decimals = 0)
     {
+        $this->_Round = null;
         /**
          * @var string $_key
          * @var array $_value
@@ -1010,11 +1028,12 @@ abstract class Query
     */
     function format($field, $format = null)
     {
+        $this->_Format = null;
         /**
          * 格式结构验证，仅对一般xss攻击进行符号过滤
          * @var string $_regular
          * @var string $_key
-         * @var string $_value
+         * @var array $_value
         */
         # 创建验证正则
         $_regular = '/^[^\<\>]+$/';
@@ -1081,6 +1100,7 @@ abstract class Query
     */
     function order($field, $type='asc')
     {
+        $this->_Order = null;
         /**
          * 使用字符串作为唯一数据类型，通过对参数进行验证，判断参数数据结构
          * @var string $_regular_order
