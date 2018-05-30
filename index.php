@@ -20,5 +20,7 @@ define('ROOT_INDEX','index');
 define('DEBUG',TRUE);
 # 设置错误提示
 define('ERROR',TRUE);
+# 代码重加载
+define('MARK_RELOAD',FALSE);
 # 调用通道入口文件
 include('Origin/Door.php');

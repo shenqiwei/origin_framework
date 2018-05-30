@@ -67,7 +67,7 @@ class Label implements Impl
      * @var string $_Judge_El else <else/>
      * @var string $_Judge_El end </if>
      */
-    private $_Judge_Si ='/\s(eq|gt|ge|lt|le|neq|heq|nheq\s)/';
+    private $_Judge_Si ='/\s(eq|gt|ge|lt|le|neq|heq|nheq|in)\s/';
     private $_Judge_If = '/\<if\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $_Judge_EF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
     private $_Judge_El = '/\<else[\/]?\>/';
@@ -219,8 +219,9 @@ class Label implements Impl
         $_obj = str_replace('__TEMP__', __HOST__ . __TEMP__, $_obj);
         $_obj = str_replace('__PUBLIC__',__HOST__.__PUBLIC__, $_obj);
         $_obj = str_replace('__UPLOAD__',__HOST__.__UPLOAD__, $_obj);
-        # 去去空白符结构
-        $_obj = preg_replace('/\s+/',' ', $_obj);
+        if(MARK_RELOAD){
+            $_obj = preg_replace('/\s+/', ' ', $_obj);
+        }
         return $_obj;
     }
     /**
@@ -795,6 +796,10 @@ class Label implements Impl
                 break;
             case 'nheq':
                 if($var !== $param) $_receipt = true;
+                break;
+            case 'in':
+                $param = explode(",",$param);
+                if(in_array($var,$param)) $_receipt = true;
                 break;
             case 'eq':
             default:
