@@ -25,13 +25,10 @@ if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
 # 功能设置常量
 if(!defined('DEBUG')) define('DEBUG',FALSE);
 if(!defined('ERROR')) define('ERROR',FALSE);
-# 地址访问规则
-
-# 开发目录常量
-
+# 是否启用编码混成
+if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
 # 调试状态
 # 原结构中使用debug结构嵌入工具类中，并将错误信息返回日志中，并将错误信息格式化放回到页面中
-
 # 错误信息显示
 # E_ALL = 11 所有的错误信息
 # E_ERROR = 1 报致命错误
