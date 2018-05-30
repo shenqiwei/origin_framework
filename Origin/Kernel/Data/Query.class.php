@@ -564,7 +564,7 @@ abstract class Query
      * @param mixed $field
      * @return object
      */
-    function where($field)
+    function where($field=null)
     {
         $this->_Where = null;
         /**
@@ -605,10 +605,12 @@ abstract class Query
         }else{
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
-            foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
-                $field = str_replace($key, $value, $field);
+            if(!is_null($field) and !empty($field)){
+                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                    $field = str_replace($key, $value, $field);
+                }
+                $this->_Where = ' where '.$field;
             }
-            $this->_Where = ' where '.$field;
         }
         return $this->__getSQL();
     }
