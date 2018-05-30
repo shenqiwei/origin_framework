@@ -885,9 +885,9 @@ class Label implements Impl
                 # 判断内建属性信息合法性
                 if (preg_match_all($this->_For_Operate, $_operate)) {
                     # 判断转义参数是否存在
-                    if (strpos($_operate, 'to')) {
+                    if (strpos($_operate, ' to ')) {
                         # 拆分属性信息
-                        $_operate = explode('to', $_operate);
+                        $_operate = explode(' to ', $_operate);
                         $_mapping['mapping_key'] = trim($_operate[0]);
                         $_mapping[$_mapping['mapping_key']] = $this->_Param_Array[$_mapping['mapping_key']];
                         if (intval(trim($_operate[1]) <= count($_mapping[$_mapping['mapping_key']]))) {
@@ -1003,9 +1003,9 @@ class Label implements Impl
                 # 判断内建属性信息合法性
                 if (preg_match_all($this->_Foreach_Operate, $_operate)) {
                     # 判断转义参数是否存在
-                    if (strpos($_operate, 'as')) {
+                    if (strpos($_operate, ' as ')) {
                         # 拆分属性信息
-                        $_operate = explode('as', $_operate);
+                        $_operate = explode(' as ', $_operate);
                         $_mapping['mapping_key'] = trim($_operate[1]);
                         $_mapping[$_mapping['mapping_key']] = $this->_Param_Array[trim($_operate[0])];
                     } else {
