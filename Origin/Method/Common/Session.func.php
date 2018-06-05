@@ -48,7 +48,7 @@ function Session($key, $value=null)
         if(!ini_get('session.auto_start')) session_start();
         if(strpos($key, ':')){
             # 将字符串转为数组，根据php特性数组最小长度为 2
-            $_operate = explode(':',$key);
+            $_operate = explode(':',strtolower($key));
             if(count($_operate)){
                 if(count($_operate) > 3){
                     # 异常提示：超出程序最大执行范围
@@ -62,7 +62,7 @@ function Session($key, $value=null)
                     }
                 }
                 # 判断session设置基本条件是否符合预设语法规则
-                if(strtolower($_operate[0]) == 'session' and ((count($_operate) == 3
+                if($_operate[0] == 'session' and ((count($_operate) == 3
                             and (is_true($_validate_operate,$_operate[1] !== true)
                                 and is_true($_validate_operate,$_operate[2]) !== true))
                         or (count($_operate) == 2 and is_true($_validate_operate,$_operate[1]) !== true))){
@@ -113,7 +113,7 @@ function Session($key, $value=null)
                     }
                 }else{
                     $_set = null;
-                    if(strtolower($_operate[0]) == 'session'){
+                    if($_operate[0] == 'session'){
                         if(is_true($_validate_operate, $_operate[1]) === true)
                             $_set = $_operate[1];
                     }else{
