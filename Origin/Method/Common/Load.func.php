@@ -128,15 +128,15 @@ function Import($guide)
     $_receipt = null;
     if(strpos($guide,':')){
         $_array = explode(':', $guide);
-        if($_array[0] == 'Application'){
+        if(strtolower($_array[0]) == 'application'){
             $_url = str_replace(SLASH,':',RING).$guide;
             Loading($_url, '.class.php');
         }
-        elseif($_array[0] == 'Config'){
+        elseif(strtolower($_array[0]) == 'config'){
             $_url = str_replace(SLASH,':',RING).$guide;
             $_receipt = Loading($_url, '.cfg.php');
         }
-        elseif($_array[0] == 'Interface'){
+        elseif(strtolower($_array[0]) == 'interface'){
             array_shift($_array);
             $guide = implode(':', $_array);
             $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
