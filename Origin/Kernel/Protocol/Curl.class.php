@@ -41,25 +41,10 @@ class Curl
         $_receipt = null;
         if(!is_null($url)){
             $_curl = curl_init();
-            if(!is_null($param)){
-                if(is_array($param)){
-                    $_param = null;
-                    foreach($param as $_key => $_value){
-                        $_param .= $_key.'='.$_value;
-                    }
-                    $url .= '?'.$_param;
-                }else{
-                    if(strpos($param,'?') === 0 && strpos($param,'=') >= 2){
-                        $url .= $param;
-                    }else{
-                        if(strpos($param,'?') === false && strpos($param,'=') >= 2){
-                            $url .= '?'.$param;
-                        }
-                    }
-                }
-            }
             curl_setopt($_curl,CURLOPT_URL,$url);
-            curl_setopt($_curl,CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($_curl,CURLOPT_POST,false);
+            curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
             $_receipt = curl_exec($_curl);
             $this->_curl_receipt['errno'] = curl_errno($_curl);
             $this->_curl_receipt['error'] = curl_error($_curl);
