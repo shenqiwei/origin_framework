@@ -17,7 +17,7 @@ namespace Origin;
 /**
  * 功能控制器，负责内核功能方法的预加载调用
 */
-class Controller
+abstract class Controller
 {
     /**
      * 获取当前操作类信息
