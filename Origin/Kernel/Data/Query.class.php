@@ -1174,4 +1174,8 @@ abstract class Query
      * 修改指定数据记录，并返回执行结果信息
      */
     abstract function update();
+    /**
+     * 执行表创建
+    */
+    abstract function create();
 }

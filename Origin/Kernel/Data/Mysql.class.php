@@ -730,6 +730,46 @@ class Mysql extends Query
         return $_receipt;
     }
     /**
+     * 执行表创建
+     */
+    function create(){
+        // TODO: Implement delete() method.
+        $_receipt = null;
+        if(!empty($this->_Query) and !is_null($this->_Query)){
+            try{
+                daoLogs($this->_Query);
+                # 执行查询搜索
+                $_statement = $this->_Connect->query($this->_Query);
+                if($_statement === false){
+                    try{
+                        throw new \PDOException('SQL query error!Please check the statement before execution.');
+                    }catch(\PDOException $e){
+                        $this->_Connect = null;
+                        errorLogs($e->getMessage());
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (mysql) Class Error:'.$e->getMessage());
+                        exit(0);
+                    }
+                }else{
+                    # 返回查询结构
+                    $_receipt = $_statement->rowCount();
+                    # 释放连接
+                    $_statement->closeCursor();
+                }
+            }catch(\PDOException $e){
+                $this->_Connect = null;
+                errorLogs($e->getMessage());
+                var_dump(debug_backtrace(0,1));
+                echo("<br />");
+                echo('Origin (mysql) Class Error:'.$e->getMessage());
+                exit(0);
+            }
+        }
+        # 返回数据
+        return $_receipt;
+    }
+    /**
      * @access public
      * @contact 析构函数：数据库链接释放
     */
