@@ -44,7 +44,7 @@ if(Config('URL_HOST_ONLY') != 0){
 # 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
 if(!defined('__APPLICATION__')) define('__APPLICATION__', Config('DEFAULT_APPLICATION'));
 # 协议类型
-if(!defined('__PROTOCOL__')) define('__PROTOCOL__', empty($_SERVER['HTTP_X_CLIENT_PROTO'])? 'http://' : 'https://');
+if(!defined('__PROTOCOL__')) define('__PROTOCOL__', $_SERVER['HTTPS']? 'https://' : 'http://');
 # 地址信息
 if(!defined('__HOST__')) define('__HOST__',__PROTOCOL__.$_SERVER['HTTP_HOST'].'/');
 # 插件应用常量
