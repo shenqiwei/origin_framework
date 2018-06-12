@@ -89,7 +89,6 @@ class Curl
                     );
                 }
             }
-            curl_setopt($_curl,CURLOPT_SAFE_UPLOAD,false);
             curl_setopt($_curl,CURLOPT_TIMEOUT,30);
             curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
             $_receipt = curl_exec($_curl);
