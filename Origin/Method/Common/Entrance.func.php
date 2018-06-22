@@ -59,7 +59,18 @@ function Entrance()
         # 调用日志结构函数
         accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
         # 判断执行对象是否为程序单元
-        if(Ex($_request)){
+        $_bool = false;
+        $_suffix = array(".html",".htm",".php");
+        for($_i = 0;$_i < count($_suffix);$_i++){
+            if(!empty(strpos($_request,$_suffix[$_i]))){
+                $_bool = true;
+                break;
+            }
+        }
+        # 忽略其他资源类型文件索引
+        if(!$_bool)
+            if(strpos($_request,".") === false) $_bool = true;
+        if($_bool){
             # 重定义指针， 起始位置0
             $_i = 0;
             if(!empty($_path) and $_path != null){
@@ -140,34 +151,7 @@ function Entrance()
                     exit(0);
                 }
             }
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Loading Resource Object is Invalid');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
         }
     }
     return null;
-}
-/**
- * 资源类型过滤
- * @access public
- * @param string $url 地址内容
- * @return boolean
-*/
-function Ex($url)
-{
-    $_bool = false;
-    $_suffix = array(".html",".htm",".php");
-    for($_i = 0;$_i < count($_suffix);$_i++){
-        if(!empty(strpos($url,$_suffix[$_i]))){
-            $_bool = true;
-            break;
-        }
-    }
-    if(!$_bool)
-        if(strpos($url,".") === false) $_bool = true;
-    return $_bool;
 }
