@@ -92,8 +92,6 @@ return array(
         'USE_COOKIES' => 1, // 指定是否在客户端用 cookie 来存放会话 ID,默认为 1
         'USE_ONLY_COOKIES' => 1, // 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为1
     ),
-    'RETRIEVER_CLASS' => 'c', // 类标记名
-    'RETRIEVER_METHOD' => 'm', // 方法标记名
     // 数据库执行设置
     'DEFAULT_ENGINE_TYPE' => 'innodb', // 数据驱动类型
     'DATA_USE_TRANSACTION' => true, // 数据驱动类型为innodb时，事务操作设置才会生效
@@ -137,9 +135,6 @@ return array(
     'BUFFER_TIME' => 0, //缓存器生命周期（0:不设限制,内容发生变化,缓存器执行更新,大于0时以秒为时间单位进行周期更新）
     // 路由类型用于决定程序使用地址解析结构
     // default：使用伪静态路径结构进行访问
-    // developer：开发者模式，使用get参数进行路径引导
-    // numeric：数字模式，使用数字作为参数进行路径引导，可与条件混合使用
-    'ROUTE_TYPE' => 'default',
     'ROUTE_CATALOGUE' => 'Route/', // 路由主目录
     'ROUTE_FILES' => 'Route.php', // 路由文件
     // web地址控制及地址监听模式设置

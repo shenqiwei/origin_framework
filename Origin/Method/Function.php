@@ -67,6 +67,16 @@ Import('File:File'); # 文件控制类
 Import('Parameter:Request'); # 调用请求控制器
 Import('Parameter:Validate'); # 调用验证控制器
 Import('Parameter:Filter');
+# 基础操作方法包应用
+include('Common/File.func.php');
+include('Common/Request.func.php');
+include('Common/Validate.func.php');
+include('Common/Filter.func.php');
+include('Common/Session.func.php');
+include('Common/Cookie.func.php');
+# 应用公共函数文件
+include('Common/Log.func.php'); # 引用日志函数包
+include('Common/Public.func.php'); # 文件操作函数包
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
 Import('Data:'.C('DATA_TYPE')); # 调用数据库对象组件
@@ -80,16 +90,6 @@ Import('Protocol:Route'); # 调用路由控制函数包
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
 Import('Application:Controller');
-# 基础操作方法包应用
-include('Common/File.func.php');
-include('Common/Request.func.php');
-include('Common/Validate.func.php');
-include('Common/Filter.func.php');
-include('Common/Session.func.php');
-include('Common/Cookie.func.php');
-# 应用公共函数文件
-include('Common/Log.func.php'); # 引用日志函数包
-include('Common/Public.func.php'); # 文件操作函数包
 # 动态加载文件
 include('Common/Entrance.func.php'); # 引入入口文件包
 // 调用方法体
