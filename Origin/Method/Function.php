@@ -82,7 +82,7 @@ include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Database.func.php'); # 文件操作函数包
 # 图形支持函数
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
-Import('Mark:Label'); # 调用标签解析器控制类
+Import("Mark:Analysis"); # 调用模板主控制类
 Import('Export:Verify'); # 调用验证码组件
 Import('Graph:View'); # 调用界面模板匹配控制类
 # 引入路由控制函数包
