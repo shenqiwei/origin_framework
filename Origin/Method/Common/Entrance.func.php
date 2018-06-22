@@ -18,36 +18,11 @@
  * IoC 自动加载方法函数
  */
 /**
- * 自动化加载路口文件
- * @access public
- * @return null
-*/
-function Entrance()
-{
-    /**
-     * 使用请求器和验证结构进行入口保护
-     * @var string $_class 带命名空间信息的类信息
-     * @var string $_object 类实例化对象
-     * @var string $_method 类对象方法
-    */
-    # 根据配置路由模式，调用不同的路由解析模块
-    switch(C('ROUTE_TYPE')){
-        case 'developer':
-            developer(); // 调用开发者模式
-            break;
-        case 'default':
-        default:
-            path(); //调用路径模式
-            break;
-    }
-    return null;
-}
-/**
  * 默认模式，自动加载入口
  * @access public
  * @return null
 */
-function path()
+function Entrance()
 {
     /**
      * 使用请求器和验证结构进行入口保护
@@ -166,86 +141,3 @@ function path()
     }
     return null;
 }
-/**
- * 开发模式，自动加载入口
- * @access public
- * @return null;
-*/
-function developer()
-{
-    /**
-     * 使用请求器和验证结构进行入口保护
-     * @var string $_class 带命名空间信息的类信息
-     * @var string $_object 类实例化对象
-     * @var string $_method 类对象方法
-     */
-    # 判断自动加载方法
-    if(function_exists('spl_autoload_register')){
-        # 使用预加载方法，动态加载控制器载入方法
-        /**
-         * @var string $_path 控制完整路径信息
-         */
-        # 根据配置信息拼接控制器路径
-        $_path = __APPLICATION__.Config('APPLICATION_CONTROLLER').SLASH.Request('GET.'.C('RETRIEVER_CLASS'), C('DEFAULT_CONTROLLER')).C('SECOND_NAME');
-        # 设置引导地址
-        set_include_path(ROOT);
-        # 判断文件是否存在
-        if(is_file(str_replace('/', SLASH, C('ROOT_APPLICATION').$_path.CLASS_SUFFIX))){
-            # 使用预注册加载函数，实现自动化加载
-            spl_autoload_register(function($_path){
-                require_once(str_replace('/', SLASH, C('ROOT_APPLICATION').$_path.CLASS_SUFFIX));
-            });
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Not Fount Control Document');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
-        }
-        # 删除预设控制参数信息
-        Request('GET.'.C('RETRIEVER_CLASS'), 'delete');
-        # 创建控制器名变量
-        $_class = str_replace('/', '\\',C('ROOT_NAMESPACE').SLASH.$_path);
-        # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
-        if(class_exists($_class)){
-            # 声明类对象
-            $_object = new $_class();
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Not Fount Control Class');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
-        }
-        # 判断是否有方法标记信息
-        if(Request('GET.'.C('RETRIEVER_METHOD'))){
-            # 如果判断标记信息，是否为控制中方法名
-            if(method_exists($_object, Request('GET.'.C('RETRIEVER_METHOD')))){
-                $_method = Request('GET.'.C('RETRIEVER_METHOD'));
-            }else{
-                $_method = C('DEFAULT_METHOD');
-            }
-            # 删除预设方法参数信息
-            Request('GET.'.C('RETRIEVER_METHOD'), 'delete');
-        }else{
-            $_method = C('DEFAULT_METHOD');
-        }
-        # 判断方法信息是否可以被调用
-        if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
-            # 执行方法调用
-            $_object->$_method();
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Not Fount Function Object');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
-        }
-    }
-    return null;
-}
-// 调用方法体
-Entrance();
