@@ -58,81 +58,91 @@ function Entrance()
         $_use = $_SERVER["REMOTE_ADDR"];
         # 调用日志结构函数
         accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
-        # 重定义指针， 起始位置0
-        $_i = 0;
-        if(!empty($_path) and $_path != null){
-            # 转化路径为数组结构
-            $_path_array = explode('/',$_path);
-            # 判断首元素结构是否与默认应用目录相同
-            if($_path_array[$_i] != C('DEFAULT_APPLICATION') and is_dir(str_replace('/', SLASH, ROOT.C('ROOT_APPLICATION').$_path_array[0]))){
-                # 变更应用文件夹位置
-                $_catalogue = $_path_array[$_i].SLASH;
-                # 指针下移
-                $_i += 1;
-                if($_i < count($_path_array)){
+        # 判断执行对象是否为程序单元
+        if(Ex($_request)){
+            # 重定义指针， 起始位置0
+            $_i = 0;
+            if(!empty($_path) and $_path != null){
+                # 转化路径为数组结构
+                $_path_array = explode('/',$_path);
+                # 判断首元素结构是否与默认应用目录相同
+                if($_path_array[$_i] != C('DEFAULT_APPLICATION') and is_dir(str_replace('/', SLASH, ROOT.C('ROOT_APPLICATION').$_path_array[0]))){
+                    # 变更应用文件夹位置
+                    $_catalogue = $_path_array[$_i].SLASH;
+                    # 指针下移
+                    $_i += 1;
+                    if($_i < count($_path_array)){
+                        # 变更控制文件信息
+                        $_files = $_path_array[$_i];
+                        # 指针下移
+                        $_i += 1;
+                    }
+                }else{
                     # 变更控制文件信息
                     $_files = $_path_array[$_i];
                     # 指针下移
                     $_i += 1;
                 }
+            }
+            # 公共方法包引导地址
+            $_func_guide = str_replace(SLASH, ':', str_replace('/', SLASH, C('ROOT_APPLICATION').$_catalogue.'Common/Public'));
+            # 使用钩子模型引入方法文件
+            Hook($_func_guide,C('METHOD_SUFFIX'),'disable');
+            # 根据配置信息拼接控制器路径
+            $_path = $_catalogue.C('APPLICATION_CONTROLLER').$_files;
+            # 设置引导地址
+            set_include_path(ROOT);
+            # 判断文件是否存在
+            if(is_file(str_replace('/', SLASH, C('ROOT_APPLICATION').$_path.CLASS_SUFFIX))){
+                # 使用预注册加载函数，实现自动化加载
+                # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
+                spl_autoload_register(function($_path){
+                    require_once(str_replace('/', SLASH, $_path.CLASS_SUFFIX));
+                });
             }else{
-                # 变更控制文件信息
-                $_files = $_path_array[$_i];
-                # 指针下移
-                $_i += 1;
+                try {
+                    throw new Exception('Origin Method Error: Not Fount Control Document');
+                }catch(Exception $e){
+                    echo($e->getMessage());
+                    exit(0);
+                }
             }
-        }
-        # 公共方法包引导地址
-        $_func_guide = str_replace(SLASH, ':', str_replace('/', SLASH, C('ROOT_APPLICATION').$_catalogue.'Common/Public'));
-        # 使用钩子模型引入方法文件
-        Hook($_func_guide,C('METHOD_SUFFIX'),'disable');
-        # 根据配置信息拼接控制器路径
-        $_path = $_catalogue.C('APPLICATION_CONTROLLER').$_files;
-        # 设置引导地址
-        set_include_path(ROOT);
-        # 判断文件是否存在
-        if(is_file(str_replace('/', SLASH, C('ROOT_APPLICATION').$_path.CLASS_SUFFIX))){
-            # 使用预注册加载函数，实现自动化加载
-            # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
-            spl_autoload_register(function($_path){
-                require_once(str_replace('/', SLASH, $_path.CLASS_SUFFIX));
-            });
+            # 创建class完整信息变量
+            $_class = str_replace('/', '\\',C('ROOT_NAMESPACE').SLASH.$_path);
+            # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
+            if(class_exists($_class)){
+                # 声明类对象
+                $_object = new $_class();
+            }else{
+                try {
+                    throw new Exception('Origin Method Error: Not Fount Control Class');
+                }catch(Exception $e){
+                    echo($e->getMessage());
+                    exit(0);
+                }
+            }
+            # 判断是否有方法标记信息
+            if($_path_array[$_i]){
+                # 如果判断标记信息，是否为控制中方法名
+                if(method_exists($_object, $_path_array[$_i])){
+                    $_method = $_path_array[$_i];
+                }
+            }
+            # 判断方法信息是否可以被调用
+            if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
+                # 执行方法调用
+                $_object->$_method();
+            }else{
+                try {
+                    throw new Exception('Origin Method Error: Not Fount Function Object');
+                }catch(Exception $e){
+                    echo($e->getMessage());
+                    exit(0);
+                }
+            }
         }else{
             try {
-                throw new Exception('Origin Method Error: Not Fount Control Document');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
-        }
-        # 创建class完整信息变量
-        $_class = str_replace('/', '\\',C('ROOT_NAMESPACE').SLASH.$_path);
-        # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
-        if(class_exists($_class)){
-            # 声明类对象
-            $_object = new $_class();
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Not Fount Control Class');
-            }catch(Exception $e){
-                echo($e->getMessage());
-                exit(0);
-            }
-        }
-        # 判断是否有方法标记信息
-        if($_path_array[$_i]){
-            # 如果判断标记信息，是否为控制中方法名
-            if(method_exists($_object, $_path_array[$_i])){
-                $_method = $_path_array[$_i];
-            }
-        }
-        # 判断方法信息是否可以被调用
-        if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
-            # 执行方法调用
-            $_object->$_method();
-        }else{
-            try {
-                throw new Exception('Origin Method Error: Not Fount Function Object');
+                throw new Exception('Origin Method Error: Loading Resource Object is Invalid');
             }catch(Exception $e){
                 echo($e->getMessage());
                 exit(0);
@@ -140,4 +150,24 @@ function Entrance()
         }
     }
     return null;
+}
+/**
+ * 资源类型过滤
+ * @access public
+ * @param string $url 地址内容
+ * @return boolean
+*/
+function Ex($url)
+{
+    $_bool = false;
+    $_suffix = array(".html",".htm",".php");
+    for($_i = 0;$_i < count($_suffix);$_i++){
+        if(!empty(strpos($url,$_suffix[$_i]))){
+            $_bool = true;
+            break;
+        }
+    }
+    if(!$_bool)
+        if(strpos($url,".") === false) $_bool = true;
+    return $_bool;
 }
