@@ -163,15 +163,19 @@ class Entrance
     static function Ex($url)
     {
         $_bool = false;
-        $_suffix = array(".html",".htm",".php");
-        for($_i = 0;$_i < count($_suffix);$_i++){
-            if(!empty(strpos($url,$_suffix[$_i]))){
-                $_bool = true;
-                break;
+        if(is_bool(Config("USE_DEFAULT_ACCESS")) and !Config("USE_DEFAULT_ACCESS")){
+            $_suffix = array(".html",".htm",".php");
+            for($_i = 0;$_i < count($_suffix);$_i++){
+                if(!empty(strpos($url,$_suffix[$_i]))){
+                    $_bool = true;
+                    break;
+                }
             }
+            if(!$_bool)
+                if(strpos($url,".") === false) $_bool = true;
+        }else{
+            $_bool = true;
         }
-        if(!$_bool)
-            if(strpos($url,".") === false) $_bool = true;
         return $_bool;
     }
 }
