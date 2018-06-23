@@ -56,9 +56,9 @@ return array(
     'DEFAULT_METHOD' => 'index', # 默认访问文件名
     'DEFAULT_VIEW' => 'index', # 默认访问模板名
     'USE_DEFAULT_ACCESS' => false, # 启用默认地址加载
-    'USE_EMPTY_ACCESS' => false, # 启用空对象地址加载
-    'EMPTY_ACCESS_CONTROLLER' => '',# 空控制器地址对象
-    'EMPTY_ACCESS_FUNCTION' => '',# 空函数地址对象
+    'USE_LOSE_ACCESS' => false, # 启用失效对象地址加载
+    'LOSE_ACCESS_CONTROLLER' => '',# 失效控制器地址对象
+    'LOSE_ACCESS_FUNCTION' => '',# 失效函数地址对象
     # 文件约束类型
     'CLASS_SUFFIX' => '.class.php', # 类默认扩展名
     'METHOD_SUFFIX' => '.func.php', # 方法默认扩展名，内建应用
