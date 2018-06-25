@@ -176,7 +176,7 @@ class Controller
     protected function success($message='success',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Success.html');
-        message($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
         return null;
     }
     /**
@@ -190,7 +190,7 @@ class Controller
     protected function error($message='error',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Error.html');
-        message($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
         return null;
     }
     /**
@@ -204,7 +204,38 @@ class Controller
     protected function failed($message='failed',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Failed.html');
-        message($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
+        return null;
+    }
+    /**
+     * @access public
+     * @param array $array
+     * @return null
+    */
+    protected function json($array=null)
+    {
+        \Origin\Kernel\Parameter\Output::json($array);
+        return null;
+    }
+    /**
+     * @access public
+     * @param array $array
+     * @return null
+     */
+    protected function xml($array=null)
+    {
+        \Origin\Kernel\Parameter\Output::xml($array);
+        return null;
+    }
+    /**
+     * @access public
+     * @param string $head
+     * @param string $body
+     * @return null
+    */
+    protected function html($head=null,$body=null)
+    {
+        \Origin\Kernel\Parameter\Output::html($head,$body);
         return null;
     }
 }
