@@ -176,7 +176,7 @@ class Controller
     protected function success($message='success',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Success.html');
-        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file, $time, $message, $url);
         return null;
     }
     /**
@@ -190,7 +190,7 @@ class Controller
     protected function error($message='error',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Error.html');
-        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file,$time, $message, $url);
         return null;
     }
     /**
@@ -204,7 +204,7 @@ class Controller
     protected function failed($message='failed',$url='#',$time=5)
     {
         $_file = str_replace('/',SLASH,ROOT.RING.'Template/Failed.html');
-        \Origin\Kernel\Parameter\Output::output($_file, $message, $url, $time);
+        \Origin\Kernel\Parameter\Output::output($_file, $time, $message, $url);
         return null;
     }
     /**
