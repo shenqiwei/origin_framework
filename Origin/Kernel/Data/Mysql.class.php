@@ -46,6 +46,7 @@ class Mysql extends Query
             $_option = array(
                 # 设置数据库编码规则
                 \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                \PDO::ATTR_PERSISTENT => true,
                 # 该设置与setAttribute功能相同
 //                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING,
             );
