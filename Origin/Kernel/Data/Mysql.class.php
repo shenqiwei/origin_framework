@@ -80,6 +80,7 @@ class Mysql extends Query
                         $_option = array(
                             # 设置数据库编码规则
                             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                            \PDO::ATTR_PERSISTENT => true,
                         );
                         # 创建数据库连接对象
                         $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
