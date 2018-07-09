@@ -69,6 +69,8 @@ class Entrance
             $_use = $_SERVER["REMOTE_ADDR"];
             # 调用日志结构函数
             accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
+            # 对请求对象地址请求内容进行截取
+            $_request = substr($_request,0,strpos($_request,'?'));
             # 判断执行对象是否为程序单元
             if(self::Ex($_request)) {
                 # 重定义指针， 起始位置0
