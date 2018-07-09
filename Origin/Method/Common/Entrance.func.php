@@ -56,6 +56,8 @@ function Entrance()
         $_type = $_SERVER["REQUEST_METHOD"];
         # 获取用户ip
         $_use = $_SERVER["REMOTE_ADDR"];
+        # 对请求对象地址请求内容进行截取
+        $_request = substr($_request,0,strpos($_request,'?'));
         # 调用日志结构函数
         accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
         # 判断执行对象是否为程序单元
