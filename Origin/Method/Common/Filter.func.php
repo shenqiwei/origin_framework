@@ -12,8 +12,7 @@
  * designer: 沈启威 *
  * developer: 沈启威 *
  * partner: 沈启威 *
- * chinese Context:
- * IoC 拦截器函数包
+ * chinese Context: IoC 拦截器函数包
  */
 /**
  * 参数信息强制转化函数方法

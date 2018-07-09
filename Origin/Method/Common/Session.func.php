@@ -1,21 +1,5 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Function.Method.Session *
- * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC Session函数包
- */
-/**
  * session会话操作函数
  * @access public
  * @param string $key

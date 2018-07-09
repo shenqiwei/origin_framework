@@ -1,21 +1,5 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Function.Method.Request *
- * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC 请求器函数包
- */
-/**
  * 请求器函数，通过调用内核控制器，实现请求结构功能，现有版本不支持put，delete请求支持
  * @access public
  * @param string $key

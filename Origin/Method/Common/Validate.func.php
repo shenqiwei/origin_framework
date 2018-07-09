@@ -1,19 +1,5 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Function.Method.validate *
- * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC 变量验证函数包，用户对数据结构进行，预设验证，也会针对特定字符结构进行验证
  * 基础验证模块一共14
  * telephone：固定电话
  * mobile：移动电话 仅支持国内所有运营商号段
@@ -29,8 +15,6 @@
  * strong：健壮密码 必须同时存在大写，小写，数字或部分特殊符号
  * safety：强密码 必须同时存在大写，小写，数据及部分特殊符号
  * 函数包将更加精确的使用验证结构包中的功能，比如在验证固定电话的模块中，派生出支持400,800的增强模块
-*/
-/**
  * 验证中文姓名方法，支持中文英文混写，也可以用来支持名字中出现单字母的名字
  * @access public
  * @param string $name

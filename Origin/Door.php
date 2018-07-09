@@ -52,4 +52,4 @@ include('Method'.SLASH.'Function.php');
 # 引入入口文件
 include('Kernel'.SLASH.'Entrance.class.php');
 # 启动入口文件
-Origin\Kernel\Entrance::starting();
+Origin\Kernel\Entrance::loading();

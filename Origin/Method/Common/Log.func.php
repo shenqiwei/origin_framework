@@ -1,22 +1,5 @@
 <?php
 /**
--*- coding: utf-8 -*-
--*- system OS: windows2008 -*-
--*- work Tools:Phpstorm -*-
--*- language Ver: php7.1 -*-
--*- agreement: PSR-1 to PSR-11 -*-
--*- filename: IoC.Origin.Function.function-*-
--*- version: 0.1-*-
--*- structure: common framework -*-
--*- designer: 沈启威 -*-
--*- developer: 沈启威 -*-
--*- partner: 沈启威 , 任彦明 -*-
--*- chinese Context:
--*- create Time: 2017/01/09 15:34
--*- update Time: 2017/01/09 15:34
--*- IoC 日志操作包
- */
-/**
  * @access public
  * @param string $uri 日志路径
  * @param string $msg 日志模板

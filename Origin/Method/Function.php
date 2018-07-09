@@ -61,7 +61,6 @@ define('__PUBLIC__', __RESOURCE__ . Configurate('ROOT_RESOURCE_PUBLIC'));
 define('__PLUG_IN__', __RESOURCE__ . Configurate('ROOT_RESOURCE_PLUGIN'));
 # 上传文件常量
 define('__UPLOAD__', __RESOURCE__ . Configurate('ROOT_RESOURCE_UPLOAD'));
-
 # 加载函数封装类
 Import('File:File'); # 文件控制类
 Import('Parameter:Request'); # 调用请求控制器

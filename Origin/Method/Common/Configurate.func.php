@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 公共配置信息引导函数
  * @access public

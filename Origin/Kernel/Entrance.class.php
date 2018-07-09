@@ -1,11 +1,21 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: DELL
- * Date: 2018/5/20
- * Time: 0:17
+ * coding: utf-8 *
+ * system OS: windows2008 *
+ * work Tools:Phpstorm *
+ * language Ver: php7.1 *
+ * agreement: PSR-1 to PSR-11 *
+ * filename: IoC.Origin.Kernel.Data.Mysql *
+ * version: 1.0 *
+ * structure: common framework *
+ * email: cheerup.shen@foxmail.com *
+ * designer: 沈启威 *
+ * developer: 沈启威 *
+ * partner: 沈启威 *
+ * create Time: 2017/06/05 11:04
+ * update Time: 2017/06/11 14:59
+ * chinese Context: IoC 入口加载封装类
  */
-
 namespace Origin\Kernel;
 
 class Entrance
@@ -25,7 +35,7 @@ class Entrance
      * @access public
      * @return null
      */
-    static function starting()
+    static function loading()
     {
         /**
          * 使用请求器和验证结构进行入口保护
