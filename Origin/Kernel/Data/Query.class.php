@@ -55,7 +55,7 @@ abstract class Query
      * 当预设功能无法满足实际要求时，可以直接使用查询语句，
      * 该功能与映射结构及Model结构一致，但推荐是用映射及Model结构开发
      */
-    protected $_Query = null;
+//    protected $_Query = null;
     /**
      * @var string $_Top
      * 用于select查询中Top应用
@@ -188,6 +188,11 @@ abstract class Query
      */
     protected $_Limit = null;
     /**
+     * @var string $_fetch_type
+     * 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
+    */
+    protected $_Fetch_Type = 'all';
+    /**
      * 构造器函数
     */
     function __construct()
@@ -302,11 +307,11 @@ abstract class Query
      * @param string $query
      * @return object
      */
-    function query($query)
-    {
-        $this->_Query = $query;
-        return $this->__getSQL();
-    }
+//    function query($query)
+//    {
+//        $this->_Query = $query;
+//        return $this->__getSQL();
+//    }
     /**
      * Top 语句结构
      * @access public
@@ -1155,6 +1160,23 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * 加载列表显示结构限制
+     * @access public
+     * @param mixed $fetch_type
+     * @return object
+    */
+    function fetchType($fetch_type)
+    {
+        if(in_array(strtolower(trim($fetch_type)),array('all','nv','kv'))){
+            $this->_Fetch_Type = strtolower(trim($fetch_type));
+        }else{
+            if(intval($fetch_type) < 3){
+                $this->_Fetch_Type = array('all','nv','kv')[intval($fetch_type)];
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
      * 查询总数结构方法，返回一个整数结果
     */
     abstract function count();
@@ -1174,4 +1196,9 @@ abstract class Query
      * 修改指定数据记录，并返回执行结果信息
      */
     abstract function update();
+    /**
+     * 执行自定义查询语句,并返回执行结果
+     * @param string $query
+    */
+    abstract function query($query);
 }
