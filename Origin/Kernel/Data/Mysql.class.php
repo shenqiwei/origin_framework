@@ -118,6 +118,9 @@ class Mysql extends Query
                 $this->_Query = 'select count(*) '.strtolower($this->_Query);
             }
             try{
+                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                    $this->_Query = str_replace($key, $value, $this->_Query);
+                }
                 daoLogs($this->_Query);
                 # 执行查询搜索
                 $_statement = $this->_Connect->query($this->_Query);
@@ -211,6 +214,9 @@ class Mysql extends Query
                 $this->_Query = 'select * '.strtolower($this->_Query);
             }
             try{
+                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                    $this->_Query = str_replace($key, $value, $this->_Query);
+                }
                 daoLogs($this->_Query);
                 # 执行查询搜索
                 $_statement = $this->_Connect->query($this->_Query);
@@ -532,6 +538,9 @@ class Mysql extends Query
         $_receipt = null;
         if(!empty($this->_Query) and !is_null($this->_Query)){
             try{
+                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                    $this->_Query = str_replace($key, $value, $this->_Query);
+                }
                 daoLogs($this->_Query);
                 # 执行查询搜索
                 $_statement = $this->_Connect->query($this->_Query);
@@ -654,6 +663,9 @@ class Mysql extends Query
         $_receipt = null;
         if(!empty($this->_Query) and !is_null($this->_Query)){
             try{
+                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                    $this->_Query = str_replace($key, $value, $this->_Query);
+                }
                 daoLogs($this->_Query);
                 # 执行查询搜索
                 $_statement = $this->_Connect->query($this->_Query);
