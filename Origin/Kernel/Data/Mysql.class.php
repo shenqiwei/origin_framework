@@ -585,6 +585,13 @@ class Mysql extends Query
         # 创建返回信息变量
         $_receipt = null;
         try{
+            if(is_true($this->_Regular_Select_Count, strtolower($query)) === true){
+                $_select_count = null;
+            }elseif(is_true($this->_Regular_Select, strtolower($query)) === true) {
+                // 表示为完整的查询语句
+            }elseif(is_true($this->_Regular_from, strtolower($query)) === true){
+                $query = 'select * '.strtolower($query);
+            }
             if(strpos(strtolower($query),"select ") === 0){
                 $_query_type = "select";
             }elseif(strpos(strtolower($query),"insert into ") === 0){
@@ -614,7 +621,11 @@ class Mysql extends Query
                     elseif($this->_Fetch_Type === 'kv')
                         $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
                     else
-                        $_receipt = $_statement->fetchAll();
+                        if(isset($_select_count)){
+                            $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
+                        }else{
+                            $_receipt = $_statement->fetchAll();
+                        }
                 }elseif($_query_type === "insert")
                     $_receipt = $this->_Connect->lastInsertId();
                 else
