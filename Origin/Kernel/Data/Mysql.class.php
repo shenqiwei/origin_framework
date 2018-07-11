@@ -599,6 +599,11 @@ class Mysql extends Query
             }else{
                 $_query_type = "change";
             }
+            # 条件运算结构转义
+            foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
+                $query = str_replace($key, $value, $query);
+            }
+            # 接入执行日志
             daoLogs(trim($query));
             # 执行查询搜索
             $_statement = $this->_Connect->query(trim($query));
