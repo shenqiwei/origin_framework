@@ -188,6 +188,11 @@ abstract class Query
      */
     protected $_Limit = null;
     /**
+     * @var string $_fetch_type
+     * 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
+     */
+    protected $_Fetch_Type = 'all';
+    /**
      * 构造器函数
     */
     function __construct()
@@ -1150,6 +1155,23 @@ abstract class Query
                 $this->_Limit = ' limit '.$start.','.$length.'';
             }else{
                 $this->_Limit = ' limit '.$start;
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 加载列表显示结构限制
+     * @access public
+     * @param mixed $fetch_type
+     * @return object
+     */
+    function fetchType($fetch_type)
+    {
+        if(in_array(strtolower(trim($fetch_type)),array('all','nv','kv'))){
+            $this->_Fetch_Type = strtolower(trim($fetch_type));
+        }else{
+            if(intval($fetch_type) < 3){
+                $this->_Fetch_Type = array('all','nv','kv')[intval($fetch_type)];
             }
         }
         return $this->__getSQL();

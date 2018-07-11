@@ -177,7 +177,7 @@ class Mysql extends Query
                     }
                 }else{
                     # 返回查询结构
-                    $_receipt = $_statement->fetch()[0];
+                    $_receipt = $_statement->fetch(\PDO::FETCH_COLUMN)[0];
                     # 释放连接
                     $_statement->closeCursor();
                 }
@@ -377,7 +377,12 @@ class Mysql extends Query
                     }
                 }else{
                     # 返回查询结构
-                    $_receipt = $_statement->fetchAll();
+                    if($this->_Fetch_Type === 'nv')
+                        $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN);
+                    elseif($this->_Fetch_Type === 'kv')
+                        $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+                    else
+                        $_receipt = $_statement->fetchAll();
                     # 释放连接
                     $_statement->closeCursor();
                 }
