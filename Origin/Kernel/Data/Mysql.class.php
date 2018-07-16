@@ -33,6 +33,8 @@ class Mysql extends Query
     private $_Regular_Select_Count = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
     # from 为起始词
     private $_Regular_from = '/^(from)\s.*/';
+    # 获取select查询响应条数信息
+    private $_Row_Count = 0;
     # 只有table
     # 构造函数
     function __construct()
@@ -311,6 +313,8 @@ class Mysql extends Query
                     exit(0);
                 }
             }else{
+                # 回写select查询条数
+                $this->_Row_Count = $_statement->rowCount();
                 # 返回查询结构
                 if($this->_Fetch_Type === 'nv')
                     $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN);
@@ -621,6 +625,8 @@ class Mysql extends Query
             }else{
                 # 返回查询结构
                 if($_query_type === "select"){
+                    # 回写select查询条数
+                    $this->_Row_Count = $_statement->rowCount();
                     if($this->_Fetch_Type === 'nv')
                         $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN);
                     elseif($this->_Fetch_Type === 'kv')
@@ -647,6 +653,14 @@ class Mysql extends Query
             exit(0);
         }
         return $_receipt;
+    }
+    /**
+     * @access public
+     * @contact 返回select查询条数信息
+    */
+    function getRowCount()
+    {
+        return $this->_Row_Count;
     }
     /**
      * @access public
