@@ -18,8 +18,6 @@
  */
 namespace Origin\Kernel\File;
 
-use Origin\Kernel\File\File as UploadEx;
-
 class Upload
 {
     /**
@@ -215,7 +213,7 @@ class Upload
                 }
 
             }
-            $_files = new UploadEx();
+            $_files = new File();
             if(!is_null($_files->resource(__UPLOAD__.'/'.$this->_Save_Add))){
                 $_files->manage(__UPLOAD__.'/'.$this->_Save_Add,'full',null);
             }
