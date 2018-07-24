@@ -54,7 +54,7 @@ class Entrance
             # 转换信息
             $_path_array = array();
             # 获取的路径信息
-            $_path = \Origin\Kernel\Protocol\Route::execute($_SERVER['PATH_INFO']);
+            $_path = Protocol\Route::execute($_SERVER['PATH_INFO']);
             # 获取协议信息
             $_protocol = $_SERVER["SERVER_PROTOCOL"];
             # 获取服务软件信息
