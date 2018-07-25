@@ -238,7 +238,7 @@ class Mysql extends Query
                     $this->_Row_Count = $_statement->rowCount();
                     # 返回查询结构
                     if($this->_Fetch_Type === 'nv')
-                        $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN);
+                        $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
                     elseif($this->_Fetch_Type === 'kv')
                         $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
                     else
@@ -395,7 +395,7 @@ class Mysql extends Query
                     $this->_Row_Count = $_statement->rowCount();
                     # 返回查询结构
                     if($this->_Fetch_Type === 'nv')
-                        $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN);
+                        $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
                     elseif($this->_Fetch_Type === 'kv')
                         $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
                     else
