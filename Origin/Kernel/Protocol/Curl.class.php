@@ -25,7 +25,7 @@ class Curl
      * @var array $_curl_receipt
      * @contact 请求返回信息
     */
-    private $_curl_receipt = array();
+    protected $_curl_receipt = array();
     # 构造方法
     function __construct()
     {}

@@ -26,12 +26,12 @@ class View
      * 模板文件夹信息
      * @var string $_Dir
     */
-    private $_Dir = null;
+    protected $_Dir = null;
     /**
      * 模板页名称信息
      * @var string $_Page
     */
-    private $_Page = null;
+    protected $_Page = null;
     /**
      * 构造方法用于获取模板对象
      * @access public

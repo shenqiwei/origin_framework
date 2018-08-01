@@ -29,28 +29,28 @@ class Request
      * @access private
      * @var string $_Method
     */
-    private $_Method = 'request';
+    protected $_Method = 'request';
     /**
      * 全局变量，用于方法间值的传递
      * 请求器，需调用的参数对象
      * @access private
      * @var $_Validate_Name
     */
-    private $_Validate_Name = null;
+    protected $_Validate_Name = null;
     /**
      * 全局变量，用于方法间值的传递
      * 请求器，被调用的参数对象的数据类型
      * @access private
      * @var string $_Type
     */
-    private $_Type = 'string';
+    protected $_Type = 'string';
     /**
      * 全局变量，用于方法间值的传递
      * 请求其，当请求内容为空或不存在时，系统会放回默认值信息
      * @access private
      * @var $_Default
     */
-    private $_Default = null;
+    protected $_Default = null;
     /**
      * 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断
      * 对象参数

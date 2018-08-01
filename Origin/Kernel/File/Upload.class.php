@@ -25,37 +25,37 @@ class Upload
      * @var string $_Uri
      * @contact 原始路径变量
      */
-    private $_Dir = ROOT;
+    protected $_Dir = ROOT;
     /**
      * @access private
      * @var object $_Object
      * @contact 实例化对象
      */
-    private $_Object = null;
+    protected $_Object = null;
     /**
      * @access private
      * @var string $_Input_Name
      * @contact 表单名称
      */
-    private $_Input_Name = null;
+    protected $_Input_Name = null;
     /**
      * @access private
      * @var string $_Save_Add
      * @contact 存储地址
      */
-    private $_Save_Add = null;
+    protected $_Save_Add = null;
     /**
      * @access private
      * @var string $_Error_Msg
      * @contact 错误信息
     */
-    private $_Error_Msg = "ERROR_0000";
+    protected $_Error_Msg = "ERROR_0000";
     /**
      * @access private
      * @var array $_Type_Array
      * @contact 文件扩展名比对数组
     */
-    private $_Type_Array = array(
+    protected $_Type_Array = array(
         'text/plain' => 'txt',
         'application/vnd.ms-excel' =>  'xls',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
@@ -73,7 +73,7 @@ class Upload
      * @var string $_Suffix
      * @contact 文件扩展名
     */
-    private $_Suffix = null;
+    protected $_Suffix = null;
     /**
      * 回传类对象信息
      * @access public

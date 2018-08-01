@@ -29,21 +29,21 @@ class Filter
      * @access private
      * @var mixed $_Filter
     */
-    private $_Filter = null;
+    protected $_Filter = null;
     /**
      * 全局变量，用于方法间值传递
      * 传递值的限定类型
      * @access private
      * @var string $_type
     */
-    private $_Type = null;
+    protected $_Type = null;
     /**
      * 全局变量，用于方法间值传递
      * 设定默认值，在验证失效后，系统会自动用默认值补充，前提是默认值合规
      * @access private
      * @var mixed $_Default
     */
-    private $_Default = null;
+    protected $_Default = null;
     /**
      * 构造函数，对过滤对象及对应信息进行装在
      * @access public

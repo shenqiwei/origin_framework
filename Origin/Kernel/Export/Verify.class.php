@@ -27,22 +27,22 @@ class Verify
      * 画布宽度
      * @var $_Width
     */
-    private $_Width = 120;
+    protected $_Width = 120;
     /**
      * 画布高度
      * @var $_Height
     */
-    private $_Height = 50;
+    protected $_Height = 50;
     /**
      * 初始宽度差值
      * @var $_Width_Fold
     */
-    private $_Width_Fold = 1;
+    protected $_Width_Fold = 1;
     /**
      * 初始高度差值
      * @var $_Height_Fold
     */
-    private $_Height_Fold = 1;
+    protected $_Height_Fold = 1;
     /**
      * 构造方法，对参数结构进行预设
      * @param $width

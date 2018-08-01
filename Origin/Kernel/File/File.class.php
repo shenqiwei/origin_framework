@@ -25,17 +25,17 @@ class File
      * @var object $_object
      * @contact 实例化对象
      */
-    private $_Object = null;
+    protected $_Object = null;
     /**
      * 对象文件夹信息
      * @var string $_Dir
      */
-    private $_Dir = null;
+    protected $_Dir = null;
     /**
      * 导引路径信息
      * @var string $_Guide
      */
-    private $_Guide = null;
+    protected $_Guide = null;
     /**
      * @access public
      * @contact 构造函数

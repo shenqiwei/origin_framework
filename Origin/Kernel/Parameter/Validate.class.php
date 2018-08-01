@@ -31,35 +31,35 @@ class Validate
      * @access private
      * @var mixed $_Variable
      */
-    private $_Variable = null;
+    protected $_Variable = null;
     /**
      * 全局变量 用户方法间值得传递
      * 传递验证类型
      * @access private
      * @var string $_Type
      */
-    private $_Type = null;
+    protected $_Type = null;
     /**
      * 全局变量 用户方法间值得传递
      * 传递最小值域
      * @access private
      * @var int $_Min
      */
-    private $_Min = 0;
+    protected $_Min = 0;
     /**
      * 全局变量 用户方法间值得传递
      * 传递最大值域
      * @access private
      * @var int $_Max
      */
-    private $_Max = 0;
+    protected $_Max = 0;
     /**
      * 全局变量 用户方法间值得传递
      * 传递至是否进行空验证，并根据选择状态，来进行其他验证执行
      * @access private
      * @var boolean $_Null
      */
-    private $_Null = true;
+    protected $_Null = true;
     /**
      * 构造函数 对验证值及参数条件进行装载
      * @access public
