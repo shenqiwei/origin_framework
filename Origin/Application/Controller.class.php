@@ -145,17 +145,10 @@ abstract class Controller
      */
     protected function get_function()
     {
-        $this->_Name_Function = Config('DEFAULT_VIEW');
-        if(is_array(debug_backtrace())){
-            $_get_history = debug_backtrace();
-            for($i=0; $i<count($_get_history); $i++){
-                if($_get_history[$i]['class'] == $this->_Name_Class){
-                    $this->_Name_Function = $_get_history[$i]['function'];
-                    break;
-                }else{
-                    continue;
-                }
-            }
+        if(!is_null(Kernel\Entrance::$_Function)){
+            $this->_Name_Function = Kernel\Entrance::$_Function;
+        }else{
+            $this->_Name_Function = Config('DEFAULT_VIEW');
         }
         return $this->_Name_Function;
     }
