@@ -182,7 +182,7 @@ class Mysql extends Query
                     }
                 }else{
                     # 返回查询结构
-                    $_receipt = $_statement->fetch(\PDO::FETCH_COLUMN)[0];
+                    $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
                     # 释放连接
                     $_statement->closeCursor();
                 }
