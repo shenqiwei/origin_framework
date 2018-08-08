@@ -87,6 +87,7 @@ Import('Graph:View'); # 调用界面模板匹配控制类
 Import('Parameter:Output'); # 调用数据结构输出控制类
 # 引入路由控制函数包
 Import('Protocol:Route'); # 调用路由控制函数包
+Import('Protocol:Curl'); # 调用远程请求函数包
 # 应用结构包调用
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
