@@ -1,11 +1,11 @@
 <?php
 /**
- * Database数据库操作方法
+ * Mysql数据库操作方法
  * @access public
  * @param string $table
  * @return object
 */
-function Dao($table=null)
+function Mysql($table=null)
 {
     /**
      * 调用数据库核心包
@@ -21,6 +21,22 @@ function Dao($table=null)
     }
     $_dao->__setSQL($_dao);
 
+    return $_dao;
+}
+/**
+ * Redis数据库操作方法
+ * @access public
+ * @return object
+*/
+function Redis()
+{
+    switch(strtolower(trim(Config('DATA_TYPE')))){
+        case 'redis':
+        default:
+            $_dao = new \Origin\Kernel\Data\Redis();
+            break;
+    }
+    $_dao->__setSQL($_dao);
     return $_dao;
 }
 /**
