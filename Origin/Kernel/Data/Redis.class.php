@@ -37,25 +37,37 @@ class Redis
     # 构造函数
     /**
      * @access public
-     * @param string|int $connect_type redis链接类型
+     * @param string $connect_name 配置源名称
+     * @param string $connect_type redis链接类型
     */
-    function __construct($connect_type="normal")
+    function __construct($connect_name,$connect_type="normal")
     {
-        try{
-            # 创建数据库链接地址，端口，应用数据库信息变量
-            $_redis_host = Config('DATA_HOST');
-            $_redis_port = intval(Config('DATA_PORT'))?intval(Config("DATA_PORT")):6379;
-            $this->_Connect = new \Redis();
-            if($connect_type==="persistent" or $connect_type===1){
-                $this->_Connect->pconnect($_redis_host,$_redis_port);
-            }else{
-                $this->_Connect->connect($_redis_host,$_redis_port);
+        $_connect_config = Config('DATA_MATRIX_CONFIG');
+        if(is_array($_connect_config)){
+            for($_i = 0;$_i < count($_connect_config);$_i++){
+                # 判断数据库类型，框架结构默认系统类型为mysql
+                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis"){
+                    # 搜索指向配置信息名称
+                    if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
+                        try{
+                            # 创建数据库链接地址，端口，应用数据库信息变量
+                            $_redis_host = Config('DATA_HOST');
+                            $_redis_port = intval(Config('DATA_PORT'))?intval(Config("DATA_PORT")):6379;
+                            $this->_Connect = new \Redis();
+                            if($connect_type==="persistent" or $connect_type===1){
+                                $this->_Connect->pconnect($_redis_host,$_redis_port);
+                            }else{
+                                $this->_Connect->connect($_redis_host,$_redis_port);
+                            }
+                        }catch(\Exception $e){
+                            var_dump(debug_backtrace(0,1));
+                            echo("<br />");
+                            print('Error:'.$e->getMessage());
+                            exit();
+                        }
+                    }
+                }
             }
-        }catch(\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
         }
     }
     /**

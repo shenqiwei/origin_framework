@@ -105,7 +105,7 @@ return array(
     'DATA_CONNECT_THREAD' => 0, # 连接是否使用线程,当前版本暂不支持线程
     'DATA_USE_FACTORY' => 0, # 是否是用数据工厂模式,当前版本暂不支持线程
     //SQL设置信息
-    'DATA_TYPE' => 'mysql', //选择数据库类型,当前版本只支持mysql
+    'DATA_TYPE' => 'mysql', # 选择默认数据库类型
     'DATA_HOST' => 'localhost', # mysql服务访问地址
     'DATA_USER' => 'root', # mysql登录用户
     'DATA_PWD' => '', # mysql登录密码
@@ -120,7 +120,16 @@ return array(
     # 数据库服务器配置(多地址结构)
     'DATA_MATRIX_CONFIG' => array(
         array(
-            "DATA_NAME" =>"", # 当前数据源名称
+            "DATA_NAME" =>"redis_test", # 当前数据源名称
+            "DATA_TYPE"=>"redis",
+            "DATA_CONN" => "normal",# 连接类型 redis下设置生效
+            'DATA_HOST' => 'localhost', # mysql服务访问地址
+            'DATA_PWD' => '', # mysql登录密码
+            'DATA_PORT' => '6379', # mysql默认访问端口
+        ),
+        array(
+            "DATA_NAME" =>"mysql_test", # 当前数据源名称
+            "DATA_TYPE"=>"mysql",# 连接类型 redis下设置生效
             'DATA_HOST' => 'localhost', # mysql服务访问地址
             'DATA_USER' => 'root', # mysql登录用户
             'DATA_PWD' => '', # mysql登录密码
