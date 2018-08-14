@@ -75,7 +75,8 @@ include('Common/Session.func.php');
 include('Common/Cookie.func.php');
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
-Import('Data:' . Config('DATA_TYPE')); # 调用数据库对象组件
+Import('Data:Mysql'); # 调用Mysql数据库对象组件
+Import('Data:Redis'); # 调用Redis数据库对象组件
 # 应用公共函数文件
 include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Database.func.php'); # 文件操作函数包
