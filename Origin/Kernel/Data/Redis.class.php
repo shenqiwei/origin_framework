@@ -53,7 +53,7 @@ class Redis
                             # 创建数据库链接地址，端口，应用数据库信息变量
                             $_redis_host = Config('DATA_HOST');
                             $_redis_port = intval(Config('DATA_PORT'))?intval(Config("DATA_PORT")):6379;
-                            $this->_Connect = new \redis();
+                            $this->_Connect = new \Redis();
                             if($connect_type==="persistent" or $connect_type===1){
                                 $this->_Connect->pconnect($_redis_host,$_redis_port);
                             }else{
