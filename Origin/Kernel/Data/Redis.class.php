@@ -2584,7 +2584,6 @@ class Redis
         return $this->_Object;
     }
     /**
-     * Auth 检测给定的密码和配置文件中的密码是否相符
      * Echo 打印给定的字符串
      * Ping 客户端向 Redis 服务器发送一个 PING
      * Quit 关闭与当前客户端与redis服务的连接
