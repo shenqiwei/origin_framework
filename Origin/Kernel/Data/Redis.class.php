@@ -52,6 +52,9 @@ class Redis
                 }else{
                     $this->_Connect->connect($_redis_host,$_redis_port);
                 }
+                if(!is_null(Config('DATA_PWD')) and !empty(Config('DATA_PWD'))){
+                    $this->_Connect->auth(Config('DATA_PWD'));
+                }
             }catch(\Exception $e){
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
@@ -75,6 +78,9 @@ class Redis
                                     $this->_Connect->pconnect($_redis_host,$_redis_port);
                                 }else{
                                     $this->_Connect->connect($_redis_host,$_redis_port);
+                                }
+                                if(!is_null($_connect_config[$_i]['DATA_PWD']) and !empty($_connect_config[$_i]['DATA_PWD'])){
+                                    $this->_Connect->auth($_connect_config[$_i]['DATA_PWD']);
                                 }
                             }catch(\Exception $e){
                                 var_dump(debug_backtrace(0,1));
