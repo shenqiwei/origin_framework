@@ -1,41 +1,54 @@
 <?php
 /**
- * Mysql数据库操作方法
+ * 默认数据库操作方法
  * @access public
- * @param string $table
+ * @param string $object 操作对象，关系数据库状态下，为表对象，非关系数据库下，为集合对象或操作列表对象，默认值为空
  * @return object
 */
-function Mysql($table=null)
+function Dao($object=null)
 {
-    /**
-     * 调用数据库核心包
-    */
     switch(strtolower(trim(Config('DATA_TYPE')))){
+        case 'redis':
+            $_dao = new \Origin\Kernel\Data\Redis();
+            break;
         case 'mysql':
         default:
             $_dao = new \Origin\Kernel\Data\Mysql();
+            if(!is_null($object)){
+                $_dao->table($object);
+            }
             break;
     }
-    if(!is_null($table)){
-        $_dao->table($table);
-    }
     $_dao->__setSQL($_dao);
-
+    return $_dao;
+}
+/**
+ * Mysql数据库操作方法
+ * @access public
+ * @param string $connect_name 链接名
+ * @return object
+*/
+function Mysql($connect_name)
+{
+    /**
+     * 调用Mysql数据库核心包
+    */
+    $_dao = new \Origin\Kernel\Data\Mysql($connect_name);
+    $_dao->__setSQL($_dao);
     return $_dao;
 }
 /**
  * Redis数据库操作方法
  * @access public
+ * @param string $connect_name 链接名
  * @return object
 */
-function Redis()
+function Redis($connect_name)
 {
-    switch(strtolower(trim(Config('DATA_TYPE')))){
-        case 'redis':
-        default:
-            $_dao = new \Origin\Kernel\Data\Redis();
-            break;
-    }
+    /**
+     * 调用Redis数据库核心包
+     */
+    $_dao = new \Origin\Kernel\Data\Redis($connect_name);
     $_dao->__setSQL($_dao);
     return $_dao;
 }
