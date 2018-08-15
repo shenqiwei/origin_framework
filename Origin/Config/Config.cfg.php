@@ -111,6 +111,7 @@ return array(
     'DATA_PWD' => '', # mysql登录密码
     'DATA_PORT' => '3306', # mysql默认访问端口
     'DATA_DB' => 'test', # mysql访问数据库
+    "DATA_P_CONNECT" => false, # 是否使用持久链接（暂时仅支持 redis）
     'DATA_USE_MEMCACHE' => 0, # mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
     # 如果需要多地缓冲还需搭建多个缓冲服务器，否则该功能无法生效
     'MEMCACHE_SET_ADDRESS' => array(
@@ -123,9 +124,10 @@ return array(
             "DATA_NAME" =>"redis_test", # 当前数据源名称
             "DATA_TYPE"=>"redis",
             "DATA_CONN" => "normal",# 连接类型 redis下设置生效
-            'DATA_HOST' => 'localhost', # mysql服务访问地址
-            'DATA_PWD' => '', # mysql登录密码
-            'DATA_PORT' => '6379', # mysql默认访问端口
+            'DATA_HOST' => 'localhost', # redis服务访问地址
+            'DATA_PWD' => '', # redis登录密码
+            'DATA_PORT' => '6379', # redis默认访问端口
+            "DATA_P_CONNECT" => false, # 是否使用持久链接
         ),
         array(
             "DATA_NAME" =>"mysql_test", # 当前数据源名称
