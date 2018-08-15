@@ -800,6 +800,15 @@ class Mysql extends Query
     }
     /**
      * @access public
+     * @return int
+     * @contact 返回响应信息条数
+    */
+    function getRowCount()
+    {
+        return $this->_Row_Count;
+    }
+    /**
+     * @access public
      * @contact 析构函数：数据库链接释放
     */
     function __destruct()
