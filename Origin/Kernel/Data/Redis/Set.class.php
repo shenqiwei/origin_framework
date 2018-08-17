@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: DELL
  * Date: 2018/8/17
- * Time: 15:47
+ * Time: 15:49
  */
 
 namespace Origin\Kernel\Data\Redis;
 
 
-class RedisKey
+class Set
 {
     /**
      * @var object $_Connect 数据库链接对象
@@ -52,219 +52,17 @@ class RedisKey
         return $this->_Object;
     }
     /**
-     * 删除元素对象内容
+     * 集合：向集合添加一个或多个成员
      * @access public
-     * @param string $key 被检索对象键名
+     * @param string $key 索引元素对象键
+     * @param mixed $value 存入值
      * @return object
      */
-    function del($key)
+    function add($key,$value)
     {
         try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->get($key);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-                $this->_Connect->delete($key);
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 序列化元素对象内容
-     * @access public
-     * @param string $key 被检索对象键名
-     * @return object
-     */
-    function dump($key)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->dump($key);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 使用时间戳设置元素对象生命周期
-     * @access public
-     * @param string $key 被检索对象键名
-     * @param int $timestamp 时间戳
-     * @return object
-     */
-    function setTSC($key,$timestamp)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->expireAt($key,$timestamp);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 使用秒计时单位设置元素对象生命周期
-     * @access public
-     * @param string $key 被检索对象键名
-     * @param int $second 时间戳
-     * @return object
-     */
-    function setSec($key,$second)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->expire($key,$second);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 使用毫秒时间戳设置元素对象生命周期
-     * @access public
-     * @param string $key 被检索对象键名
-     * @param int $timestamp 时间戳
-     * @return object
-     */
-    function setTSM($key,$timestamp)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->pExpireAt($key,$timestamp);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 使用毫秒计时单位设置元素对象生命周期
-     * @access public
-     * @param string $key 被检索对象键名
-     * @param int $millisecond 时间戳
-     * @return object
-     */
-    function setMil($key,$millisecond)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->pExpire($key,$millisecond);
-                if($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 移除元素目标生命周期限制
-     * @access public
-     * @param string $key 被检索对象键名
-     * @return object
-     */
-    function rmCycle($key)
-    {
-        try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->persist($key);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 获取元素对象剩余周期时间(毫秒)
-     * @access public
-     * @param string $key 被检索对象键名
-     * @return object
-     */
-    function pTTL($key)
-    {
-        try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->pttl($key);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 获取元素对象剩余周期时间(秒)
-     * @access public
-     * @param string $key 被检索对象键名
-     * @return object
-     */
-    function TTL($key)
-    {
-        try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->ttl($key);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 获取搜索相近元素对象键
-     * @access public
-     * @param string $closeKey 相近元素对象（key*）
-     * @return object
-     */
-    function keys($closeKey)
-    {
-        try{
-            $this->_Value = $this->_Connect->keys($closeKey);
-            if($this->_Value === "nil")
+            $this->_Value = $this->_Connect->sAdd($key,$value);
+            if ($this->_Value === "nil")
                 $this->_Value = null;
         }catch (\Exception $e){
             var_dump(debug_backtrace(0,1));
@@ -275,15 +73,16 @@ class RedisKey
         return $this->_Object;
     }
     /**
-     * 随机返回元素键
+     * 获取集合内元素数量
      * @access public
+     * @param string $key 索引元素对象键
      * @return object
      */
-    function randKey()
+    function count($key)
     {
         try{
-            $this->_Value = $this->_Connect->randomKey();
-            if($this->_Value === "nil")
+            $this->_Value = $this->_Connect->sCard($key);
+            if ($this->_Value === "nil")
                 $this->_Value = null;
         }catch (\Exception $e){
             var_dump(debug_backtrace(0,1));
@@ -294,66 +93,68 @@ class RedisKey
         return $this->_Object;
     }
     /**
-     * 重命名元素对象
+     * 获取两集合差值
      * @access public
-     * @param string $key 被检索对象键名
-     * @param string $newKey 新命名
+     * @param string $key 索引元素对象键
+     * @param string $second 比对元素对象键
      * @return object
      */
-    function rnKey($key,$newKey)
+    function diff($key,$second)
     {
-        try {
+        try{
+            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
+                $this->_Value = $this->_Connect->sDiff($key,$second);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 获取两集合之间的差值，并存入新集合中
+     * @access public
+     * @param string $new 新集合元素对象
+     * @param string $key 索引元素对象
+     * @param string $second 比对元素对象键
+     * @return object
+     */
+    function different($new=null,$key,$second)
+    {
+        try{
+            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
+                if(!is_null($new)){
+                    $this->_Value = $this->_Connect->sDiffStore($new,$key,$second);
+                    if ($this->_Value === "nil")
+                        $this->_Value = null;
+                }else{
+                    $this->_Value = "INVALID_COLUMN_OBJECT";
+                }
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 判断集合元素对象值是否存在元素对象中
+     * @access public
+     * @param string $key 索引元素对象键
+     * @param string $value 验证值
+     * @return object
+     */
+    function member($key,$value)
+    {
+        try{
             if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->rename($key, $newKey);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }else{
-                $this->_Value = "ERROR_NOT_HAS_KEY_OBJECT";
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 非重名元素对象重命名
-     * @access public
-     * @param string $key 被检索对象键名
-     * @param string $newKey 新命名
-     * @return object
-     */
-    function irnKey($key,$newKey)
-    {
-        try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->renameNx($key, $newKey);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }else{
-                $this->_Value = "ERROR_NOT_HAS_KEY_OBJECT";
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 获取元素对象内容数据类型
-     * @access public
-     * @param string $key 被检索对象键名
-     * @return object
-     */
-    function type($key)
-    {
-        try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->type($key);
+                $this->_Value = $this->_Connect->sIsMember($key,$value);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }
@@ -366,17 +167,186 @@ class RedisKey
         return $this->_Object;
     }
     /**
-     * 将元素对象存入数据库
+     * 返回元素对象集合内容
      * @access public
-     * @param string $key 被检索对象键名
-     * @param string $database 对象数据库名
+     * @param string $key 索引元素对象键
      * @return object
      */
-    function inDB($key,$database)
+    function return($key)
     {
         try{
-            if($this->_Connect->exists($key)) {
-                $this->_Value = $this->_Connect->move($key, $database);
+            if($this->_Connect->exists($key)){
+                $this->_Value = $this->_Connect->sMembers($key);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 元素对象集合值迁移至其他集合中
+     * @param string $key 索引元素对象键
+     * @param string $second 迁移集合对象
+     * @param mixed $value 迁移值
+     * @return object
+     */
+    function move($key,$second,$value)
+    {
+        try{
+            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
+                if(!is_null($value)){
+                    $this->_Value = $this->_Connect->sMove($key,$second,$value);
+                    if ($this->_Value === "nil")
+                        $this->_Value = null;
+                }else{
+                    $this->_Value = "INVALID_COLUMN_OBJECT";
+                }
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 移除元素对象随机内容值
+     * @access public
+     * @param string $key 索引元素对象
+     * @return object
+     */
+    function pop($key)
+    {
+        try{
+            if($this->_Connect->exists($key)){
+                $this->_Value = $this->_Connect->sPop($key);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 随机从元素对象中抽取指定数量元素内容值
+     * @access public
+     * @param string $key 索引元素对象键
+     * @param int $count 随机抽调数量
+     * @return object
+     */
+    function randMember($key,$count=1)
+    {
+        try{
+            if($this->_Connect->exists($key)){
+                if($count > 1)
+                    $this->_Value = $this->_Connect->sRandMember($key);
+                else
+                    $this->_Value = $this->_Connect->sRandMember($key,$count);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 移除元素对象中指定元素内容
+     * @access public
+     * @param string $key 索引元素对象键
+     * @param mixed $value 移除值
+     * @return object
+     */
+    function remove($key,$value)
+    {
+        try{
+            if($this->_Connect->exists($key)){
+                $this->_Value = $this->_Connect->sRem($key,$value);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 返回指定两个集合对象的并集
+     * @access public
+     * @param string $key 索引元素对象键
+     * @param string $second 索引元素对象键
+     * @return object
+     */
+    function merge($key,$second)
+    {
+        try{
+            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
+                $this->_Value = $this->_Connect->sUnion($key,$second);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 返回指定两个集合对象的并集
+     * @access public
+     * @param string $new 存储指向集合键
+     * @param string $key 索引元素对象键
+     * @param string $second 索引元素对象键
+     * @return object
+     */
+    function mergeTo($new,$key,$second)
+    {
+        try{
+            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
+                $this->_Value = $this->_Connect->sUnionStore($new,$key,$second);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 迭代元素对象指定结构内容
+     * @access public
+     * @param string $key 索引元素对象
+     * @param int $cursor 执行标尺
+     * @param string $pattern 操作参数
+     * @param string $value 索引值
+     * @return object
+     */
+    function tree($key,$cursor=0,$pattern="match",$value)
+    {
+        try{
+            if($this->_Connect->exists($key)){
+                $this->_Value = $this->_Connect->sScan($key,$cursor,$pattern,$value);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }

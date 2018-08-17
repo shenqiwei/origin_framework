@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: DELL
  * Date: 2018/8/17
- * Time: 15:49
+ * Time: 15:56
  */
 
 namespace Origin\Kernel\Data\Redis;
 
 
-class RedisSet
+class Hash
 {
     /**
      * @var object $_Connect 数据库链接对象
@@ -52,16 +52,41 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 集合：向集合添加一个或多个成员
+     * 创建hash元素对象内容
      * @access public
-     * @param string $key 索引元素对象键
-     * @param mixed $value 存入值
+     * @param string $key 创建对象元素键
+     * @param string $field hash对象字段名(域)
+     * @param mixed $value 内容值
      * @return object
      */
-    function add($key,$value)
+    function create($key,$field,$value)
     {
         try{
-            $this->_Value = $this->_Connect->sAdd($key,$value);
+            if (!$this->_Connect->hExists($key, $field)) {
+                $this->_Value = $this->_Connect->hSet($key, $field, $value);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 覆盖创建hash元素对象内容
+     * @access public
+     * @param string $key 创建对象元素键
+     * @param string $field hash对象字段名(域)
+     * @param mixed $value 内容值
+     * @return object
+     */
+    function reCreate($key,$field,$value)
+    {
+        try{
+            $this->_Value = $this->_Connect->hSet($key, $field, $value);
             if ($this->_Value === "nil")
                 $this->_Value = null;
         }catch (\Exception $e){
@@ -73,15 +98,39 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 获取集合内元素数量
      * @access public
-     * @param string $key 索引元素对象键
+     * @param string $key 创建对象元素键
+     * @param array $array 字段数组列表
      * @return object
      */
-    function count($key)
+    function createList($key,$array)
+    {
+        try {
+            if (is_array($array)) {
+                $this->_Value = $this->_Connect->hMset($key,$array);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 非替换创建hash元素对象内容
+     * @access public
+     * @param string $key 创建对象元素键
+     * @param string $field hash对象字段名(域)
+     * @param mixed $value 内容值
+     * @return object
+     */
+    function createNE($key,$field,$value)
     {
         try{
-            $this->_Value = $this->_Connect->sCard($key);
+            $this->_Value = $this->_Connect->hSetNx($key,$field,$value);
             if ($this->_Value === "nil")
                 $this->_Value = null;
         }catch (\Exception $e){
@@ -93,46 +142,20 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 获取两集合差值
+     * 获取hash元素对象内容
      * @access public
-     * @param string $key 索引元素对象键
-     * @param string $second 比对元素对象键
+     * @param string $key 索引对象元素键
+     * @param string $field hash对象字段名(域)
      * @return object
      */
-    function diff($key,$second)
+    function hashGet($key,$field)
     {
         try{
-            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
-                $this->_Value = $this->_Connect->sDiff($key,$second);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 获取两集合之间的差值，并存入新集合中
-     * @access public
-     * @param string $new 新集合元素对象
-     * @param string $key 索引元素对象
-     * @param string $second 比对元素对象键
-     * @return object
-     */
-    function different($new=null,$key,$second)
-    {
-        try{
-            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
-                if(!is_null($new)){
-                    $this->_Value = $this->_Connect->sDiffStore($new,$key,$second);
+            if($this->_Connect->exists($key)) {
+                if ($this->_Connect->hExists($key, $field)) {
+                    $this->_Value = $this->_Connect->hGet($key, $field);
                     if ($this->_Value === "nil")
                         $this->_Value = null;
-                }else{
-                    $this->_Value = "INVALID_COLUMN_OBJECT";
                 }
             }
         }catch (\Exception $e){
@@ -144,17 +167,16 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 判断集合元素对象值是否存在元素对象中
+     * 返回hash元素对象列表
      * @access public
-     * @param string $key 索引元素对象键
-     * @param string $value 验证值
+     * @param string $key 索引对象元素键
      * @return object
      */
-    function member($key,$value)
+    function list($key)
     {
         try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->sIsMember($key,$value);
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hGetAll($key);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }
@@ -167,16 +189,17 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 返回元素对象集合内容
+     * 获取hash元素对象内容
      * @access public
-     * @param string $key 索引元素对象键
+     * @param string $key 索引对象元素键
+     * @param array $array 字段数组列表
      * @return object
      */
-    function return($key)
+    function getList($key,$array)
     {
         try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->sMembers($key);
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hMGet($key,$array);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }
@@ -189,22 +212,67 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 元素对象集合值迁移至其他集合中
-     * @param string $key 索引元素对象键
-     * @param string $second 迁移集合对象
-     * @param mixed $value 迁移值
+     * 获取hash元素对象区间列表内容(用于redis翻页功能)
+     * @access public
+     * @param string $key 索引对象元素键
+     * @param int $start 起始位置标记
+     * @param string $pattern 执行模板(搜索模板)
+     * @param int $count 显示总数
      * @return object
      */
-    function move($key,$second,$value)
+    function limit($key,$start,$pattern,$count)
     {
         try{
-            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
-                if(!is_null($value)){
-                    $this->_Value = $this->_Connect->sMove($key,$second,$value);
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hScan($key,$start,$pattern,$count);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 返回hash元素对象列表
+     * @access public
+     * @param string $key 索引对象元素键
+     * @return object
+     */
+    function values($key)
+    {
+        try{
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hVals($key);
+                if ($this->_Value === "nil")
+                    $this->_Value = null;
+            }
+        }catch (\Exception $e){
+            var_dump(debug_backtrace(0,1));
+            echo("<br />");
+            print('Error:'.$e->getMessage());
+            exit();
+        }
+        return $this->_Object;
+    }
+    /**
+     * 删除元素对象内容
+     * @access public
+     * @param string $key 索引对象元素键
+     * @param string $field hash对象字段名(域)
+     * @return object
+     */
+    function del($key,$field)
+    {
+        try{
+            if($this->_Connect->exists($key)){
+                if($this->_Connect->hExists($key,$field)) {
+                    $this->_Value = $this->_Connect->hDel($key,$field);
                     if ($this->_Value === "nil")
                         $this->_Value = null;
-                }else{
-                    $this->_Value = "INVALID_COLUMN_OBJECT";
                 }
             }
         }catch (\Exception $e){
@@ -216,18 +284,26 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 移除元素对象随机内容值
+     * 设置hash元素对象增量值
      * @access public
-     * @param string $key 索引元素对象
+     * @param string $key 索引对象元素键
+     * @param string $field hash对象字段名(域)
+     * @param int $value 增量值
      * @return object
      */
-    function pop($key)
+    function plus($key,$field,$value)
     {
         try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->sPop($key);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
+            if($this->_Connect->exists($key)) {
+                if ($this->_Connect->hExists($key, $field)) {
+                    if (is_float($value)) {
+                        $this->_Value = $this->_Connect->hIncrByFloat($key, $field, $value);
+                    } else {
+                        $this->_Value = $this->_Connect->hIncrBy($key, $field, intval($value));
+                    }
+                    if ($this->_Value === "nil")
+                        $this->_Value = null;
+                }
             }
         }catch (\Exception $e){
             var_dump(debug_backtrace(0,1));
@@ -238,20 +314,16 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 随机从元素对象中抽取指定数量元素内容值
+     * 获取hash元素对象全部字段名(域)
      * @access public
      * @param string $key 索引元素对象键
-     * @param int $count 随机抽调数量
      * @return object
      */
-    function randMember($key,$count=1)
+    function fields($key)
     {
         try{
-            if($this->_Connect->exists($key)){
-                if($count > 1)
-                    $this->_Value = $this->_Connect->sRandMember($key);
-                else
-                    $this->_Value = $this->_Connect->sRandMember($key,$count);
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hKeys($key);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }
@@ -264,89 +336,16 @@ class RedisSet
         return $this->_Object;
     }
     /**
-     * 移除元素对象中指定元素内容
+     * 获取hash元素对象字段内容（域）长度
      * @access public
-     * @param string $key 索引元素对象键
-     * @param mixed $value 移除值
+     * @param string $key 索引元素对象键s
      * @return object
      */
-    function remove($key,$value)
+    function len($key)
     {
         try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->sRem($key,$value);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 返回指定两个集合对象的并集
-     * @access public
-     * @param string $key 索引元素对象键
-     * @param string $second 索引元素对象键
-     * @return object
-     */
-    function merge($key,$second)
-    {
-        try{
-            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
-                $this->_Value = $this->_Connect->sUnion($key,$second);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 返回指定两个集合对象的并集
-     * @access public
-     * @param string $new 存储指向集合键
-     * @param string $key 索引元素对象键
-     * @param string $second 索引元素对象键
-     * @return object
-     */
-    function mergeTo($new,$key,$second)
-    {
-        try{
-            if($this->_Connect->exists($key) and $this->_Connect->exists($second)){
-                $this->_Value = $this->_Connect->sUnionStore($new,$key,$second);
-                if ($this->_Value === "nil")
-                    $this->_Value = null;
-            }
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            print('Error:'.$e->getMessage());
-            exit();
-        }
-        return $this->_Object;
-    }
-    /**
-     * 迭代元素对象指定结构内容
-     * @access public
-     * @param string $key 索引元素对象
-     * @param int $cursor 执行标尺
-     * @param string $pattern 操作参数
-     * @param string $value 索引值
-     * @return object
-     */
-    function tree($key,$cursor=0,$pattern="match",$value)
-    {
-        try{
-            if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->sScan($key,$cursor,$pattern,$value);
+            if($this->_Connect->exists($key)) {
+                $this->_Value = $this->_Connect->hLen($key);
                 if ($this->_Value === "nil")
                     $this->_Value = null;
             }

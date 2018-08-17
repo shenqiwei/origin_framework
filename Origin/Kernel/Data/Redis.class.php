@@ -18,25 +18,25 @@
  */
 namespace Origin\Kernel\Data;
 
-include("Redis/RedisKey.class.php");
-include("Redis/RedisString.class.php");
-include("Redis/RedisSet.class.php");
-include("Redis/RedisHash.class.php");
-include("Redis/RedisList.class.php");
-include("Redis/RedisSeq.class.php");
-include("Redis/RedisSub.class.php");
-include("Redis/RedisHLL.class.php");
-include("Redis/RedisTS.class.php");
+include("Redis/Key.class.php");
+include("Redis/String.class.php");
+include("Redis/Set.class.php");
+include("Redis/Hash.class.php");
+include("Redis/Listing.class.php");
+include("Redis/Sequence.class.php");
+include("Redis/Subscription.class.php");
+include("Redis/HLL.class.php");
+include("Redis/Transaction.class.php");
 
-use Origin\Kernel\Data\Redis\RedisKey;
-use Origin\Kernel\Data\Redis\RedisString;
-use Origin\Kernel\Data\Redis\RedisSet;
-use Origin\Kernel\Data\Redis\RedisHash;
-use Origin\Kernel\Data\Redis\RedisList;
-use Origin\Kernel\Data\Redis\RedisSeq;
-use Origin\Kernel\Data\Redis\RedisSub;
-use Origin\Kernel\Data\Redis\RedisHLL;
-use Origin\Kernel\Data\Redis\RedisTS;
+use Origin\Kernel\Data\Redis\Key;
+use Origin\Kernel\Data\Redis\String;
+use Origin\Kernel\Data\Redis\Set;
+use Origin\Kernel\Data\Redis\Hash;
+use Origin\Kernel\Data\Redis\Listing;
+use Origin\Kernel\Data\Redis\Sequence;
+use Origin\Kernel\Data\Redis\Subscription;
+use Origin\Kernel\Data\Redis\HLL;
+use Origin\Kernel\Data\Redis\Transaction;
 
 class Redis
 {
@@ -135,55 +135,55 @@ class Redis
 
     function key()
     {
-        $_redis = new RedisKey($this->_Connect);
+        $_redis = new Key($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function string()
     {
-        $_redis = new RedisString($this->_Connect);
+        $_redis = new String($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function set()
     {
-        $_redis = new RedisSet($this->_Connect);
+        $_redis = new Set($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function hash()
     {
-        $_redis = new RedisHash($this->_Connect);
+        $_redis = new Hash($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function list()
     {
-        $_redis = new RedisList($this->_Connect);
+        $_redis = new Listing($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function seq()
     {
-        $_redis = new RedisSeq($this->_Connect);
+        $_redis = new Sequence($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function sub()
     {
-        $_redis = new RedisSub($this->_Connect);
+        $_redis = new Subscription($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function hll()
     {
-        $_redis = new RedisHLL($this->_Connect);
+        $_redis = new HLL($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }
     function transaction()
     {
-        $_redis = new RedisTS($this->_Connect);
+        $_redis = new Transaction($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }

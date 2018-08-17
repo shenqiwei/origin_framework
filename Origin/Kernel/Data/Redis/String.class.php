@@ -9,7 +9,7 @@
 namespace Origin\Kernel\Data\Redis;
 
 
-class RedisString
+class String
 {
     /**
     * @var object $_Connect 数据库链接对象
