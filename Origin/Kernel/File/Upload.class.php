@@ -247,6 +247,31 @@ class Upload
     }
     /**
      * @access public
+     * @param boolean $custom 上传文件原始名
+     * @return mixed
+    */
+    function multiUpload($custom=true)
+    {
+        if(is_null($this->_Input_Name)){
+            $this->_Error_Msg = "Upload file input is invalid!";
+        }else{
+            if(is_bool($custom) and $custom === true){
+                $_file_name = $_FILES[$this->_Input_Name]['name'];
+            }else{
+                $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
+            }
+            if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
+                $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
+                $this->_Error_Msg = "Files upload failed!";
+            }
+        }
+        if(isset($_file_name))
+            return $this->_Save_Add.'/'.$_file_name;
+        else
+            return null;
+    }
+    /**
+     * @access public
      * @return mixed
      */
     function getErrorMsg()
