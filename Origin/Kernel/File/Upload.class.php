@@ -224,6 +224,7 @@ class Upload
      * @access public
      * @param boolean $custom 上传文件原始名
      * @return mixed
+     * @context 单文件上传使用方法
      */
     function update($custom=true)
     {
@@ -249,6 +250,7 @@ class Upload
      * @access public
      * @param boolean $custom 上传文件原始名
      * @return mixed
+     * @context 多文件上传时使用方法
     */
     function multiUpload($custom=true)
     {
