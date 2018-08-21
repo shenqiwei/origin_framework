@@ -131,7 +131,7 @@ return array(
         ),
         array(
             "DATA_NAME" =>"mongo_test", # 当前数据源名称
-            "DATA_TYPE"=>"mongo",
+            "DATA_TYPE"=>"mongoDB",
             'DATA_HOST' => 'localhost', #  mongodb服务访问地址
             'DATA_USER' => 'root', #登录用户
             'DATA_PWD' => '', # mongodb登录密码
