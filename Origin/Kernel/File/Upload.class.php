@@ -235,7 +235,7 @@ class Upload
             if(is_bool($custom) and $custom === true){
                 $_file_name = $_FILES[$this->_Input_Name]['name'];
             }else{
-                $_file_name = date('YmdHis',time()).'.'.$this->_Suffix;
+                $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
             }
             if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
                 $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
