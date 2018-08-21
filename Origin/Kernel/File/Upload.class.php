@@ -222,7 +222,7 @@ class Upload
     }
     /**
      * @access public
-     * @param boolean $custom 上传文件类型
+     * @param boolean $custom 上传文件原始名
      * @return mixed
      */
     function update($custom=true)
