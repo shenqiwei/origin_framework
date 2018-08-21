@@ -8,4 +8,5 @@ Origin 架构用来开发动态密库PHP端功能开发的主要协议架构. Or
 
 4) set/get方法函数： set/get方法函数指的的 Origin 公共函数中一些特定函数结构，该类型函数都具备有双向转化或者双向执行的功能.
 
-5) 数据库组件： 原始设计中 Origin 架构将会支持 Oracle，Sql server，DB2， Mysql，Mariadb等主流关系数据库，也会支持 Mongodb，Sequoiadb(巨杉数据)，Redis等非关系数据库. 前期版本中，Origin 将优先支持Mysql，Mariadb关系数据库，然后集成Redis应用结构.
+5) 数据库组件： 在当前版本中Origin已优先集成了Mysql，Mariadb，Redis，MongoDB数据应用结构，后续Origin还将会支持 Oracle，Sql server，DB2，Sequoiadb(巨杉数据).
+
