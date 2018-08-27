@@ -78,7 +78,6 @@ Import('File:Upload'); # 文件上传控制类
 Import('Data:Mysql'); # 调用Mysql数据库对象组件
 Import('Data:Redis'); # 调用Redis数据库对象组件
 Import("Data:Mongo"); # 调用MongoDB 70+支持包
-Import("Data:Mongodb"); # 调用MongoDB 56支持包
 # 应用公共函数文件
 include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Database.func.php'); # 文件操作函数包
