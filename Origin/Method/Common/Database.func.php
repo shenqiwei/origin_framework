@@ -14,12 +14,6 @@ function Dao($object=null)
                 $_dao->set($object);
             }
             break;
-        case 'mongodb':
-            $_dao = new \Origin\Kernel\Data\Mongodb();
-            if(!is_null($object)){
-                $_dao->set($object);
-            }
-            break;
         case 'redis':
             $_dao = new \Origin\Kernel\Data\Redis();
             break;
