@@ -45,6 +45,11 @@ abstract class Query
      */
     protected $_Object = null;
     /**
+     * @var string $_Err_Msg
+     * 数据库错误信息变量
+    */
+    protected $_Err_Msg = null;
+    /**
      * @var string $_Table 数据库表名，
      * 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
      */
@@ -251,13 +256,17 @@ abstract class Query
                             }
                         }else{
                             # 异常处理：表格名称不符合命名规范
-                            try{
-                                throw new \Exception('Table name is not in conformity with the naming conventions');
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                echo('Origin (Query) Class Error: '.$e->getMessage());
-                                exit(0);
+                            if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                                $this->_Err_Msg = 'Table name is not in conformity with the naming conventions';
+                            }else{
+                                try{
+                                    throw new \Exception('Table name is not in conformity with the naming conventions');
+                                }catch(\Exception $e){
+                                    var_dump(debug_backtrace(0,1));
+                                    echo("<br />");
+                                    echo('Origin (Query) Class Error: '.$e->getMessage());
+                                    exit(0);
+                                }
                             }
                         }
                     }
@@ -269,13 +278,17 @@ abstract class Query
                 $this->_Table = strtolower($table);
             }else{
                 # 异常处理：表格名称不符合命名规范
-                try{
-                    throw new \Exception('Table name is not in conformity with the naming conventions');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                    $this->_Err_Msg = 'Table name is not in conformity with the naming conventions';
+                }else{
+                    try{
+                        throw new \Exception('Table name is not in conformity with the naming conventions');
+                    }catch(\Exception $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (Query) Class Error: '.$e->getMessage());
+                        exit(0);
+                    }
                 }
             }
         }
@@ -397,13 +410,17 @@ abstract class Query
                         $i += 1;
                     }else{
                         # 异常处理：字段名不符合命名规范
-                        try{
-                            throw new \Exception('Field name is not in conformity with the naming conventions');
-                        }catch(\Exception $e){
-                            var_dump(debug_backtrace(0,1));
-                            echo("<br />");
-                            echo('Origin (Query) Class Error: '.$e->getMessage());
-                            exit(0);
+                        if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                            $this->_Err_Msg = 'Field name is not in conformity with the naming conventions';
+                        }else{
+                            try{
+                                throw new \Exception('Field name is not in conformity with the naming conventions');
+                            }catch(\Exception $e){
+                                var_dump(debug_backtrace(0,1));
+                                echo("<br />");
+                                echo('Origin (Query) Class Error: '.$e->getMessage());
+                                exit(0);
+                            }
                         }
                     }
                 }
@@ -414,13 +431,17 @@ abstract class Query
                 $this->_Field = $field;
             else{
                 # 异常处理：字段名称不符合命名规范
-                try{
-                    throw new \Exception('Field name is not in conformity with the naming conventions');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                    $this->_Err_Msg = 'Field name is not in conformity with the naming conventions';
+                }else{
+                    try{
+                        throw new \Exception('Field name is not in conformity with the naming conventions');
+                    }catch(\Exception $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (Query) Class Error: '.$e->getMessage());
+                        exit(0);
+                    }
                 }
             }
         }
@@ -492,23 +513,31 @@ abstract class Query
         else{
             if(is_true($this->_Regular_Name_Confine, $table) === true){
                 # 异常处理：字段名不符合SQL命名规则
-                try{
-                    throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                    $this->_Err_Msg = 'The field name is not in conformity with the SQL naming rules';
+                }else{
+                    try{
+                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
+                    }catch(\Exception $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (Query) Class Error: '.$e->getMessage());
+                        exit(0);
+                    }
                 }
             }else{
                 # 异常处理：表名名不符合SQL命名规则
-                try{
-                    throw new \Exception('The table name is not in conformity with the SQL naming rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                    $this->_Err_Msg = 'The table name is not in conformity with the SQL naming rules';
+                }else{
+                    try{
+                        throw new \Exception('The table name is not in conformity with the SQL naming rules');
+                    }catch(\Exception $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (Query) Class Error: '.$e->getMessage());
+                        exit(0);
+                    }
                 }
             }
         }
@@ -538,26 +567,35 @@ abstract class Query
                     # this->_Data[$_key] = $_value;
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
-                    try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                    if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                        $this->_Err_Msg = 'The field name is not in conformity with the SQL naming rules';
+                    }else{
+                        try{
+                            throw new \Exception('The field name is not in conformity with the SQL naming rules');
+                        }catch(\Exception $e){
+                            var_dump(debug_backtrace(0,1));
+                            echo("<br />");
+                            echo('Origin (Query) Class Error: '.$e->getMessage());
+                            exit(0);
+                        }
                     }
                 }
             }
         }else{
             # 异常处理：参数结构需使用数组
-            try{
-                throw new \Exception('Need to use an array parameter structure');
-            }catch(\Exception $e){
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (Query) Class Error: '.$e->getMessage());
-                exit(0);
+            if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                $this->_Err_Msg = 'Need to use an array parameter structure';
+            }else{
+                try{
+                    throw new \Exception('Need to use an array parameter structure');
+                }catch(\Exception $e){
+                    var_dump(debug_backtrace(0,1));
+                    echo("<br />");
+                    echo('Origin (Query) Class Error: '.$e->getMessage());
+                    exit(0);
+                }
             }
+
         }
         return $this->__getSQL();
     }
@@ -596,14 +634,19 @@ abstract class Query
                     }
                 else{
                     # 异常处理：字段名不符合SQL命名规则
-                    try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                    if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                        $this->_Err_Msg = 'The field name is not in conformity with the SQL naming rules';
+                    }else{
+                        try{
+                            throw new \Exception('The field name is not in conformity with the SQL naming rules');
+                        }catch(\Exception $e){
+                            var_dump(debug_backtrace(0,1));
+                            echo("<br />");
+                            echo('Origin (Query) Class Error: '.$e->getMessage());
+                            exit(0);
+                        }
                     }
+
                 }
                 $_i++;
             }
@@ -650,13 +693,17 @@ abstract class Query
                     $_i++;
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
-                    try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                    if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                        $this->_Err_Msg = 'The field name is not in conformity with the SQL naming rules';
+                    }else{
+                        try{
+                            throw new \Exception('The field name is not in conformity with the SQL naming rules');
+                        }catch(\Exception $e){
+                            var_dump(debug_backtrace(0,1));
+                            echo("<br />");
+                            echo('Origin (Query) Class Error: '.$e->getMessage());
+                            exit(0);
+                        }
                     }
                 }
             }
@@ -666,14 +713,19 @@ abstract class Query
                 $this->_Group = ' group by '.$field;
             else{
                 # 异常处理：GROUP语法字段名结构不符合SQL使用规则
-                try{
-                    throw new \Exception('Group of grammatical structure of the field name is not in
+                if(boolval(Config("DATA_BEGIN_TRANSACTION"))){
+                    $this->_Err_Msg = 'Group of grammatical structure of the field name is not in
+                                               conformity with the SQL using rules';
+                }else{
+                    try{
+                        throw new \Exception('Group of grammatical structure of the field name is not in
                                                conformity with the SQL using rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                    }catch(\Exception $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (Query) Class Error: '.$e->getMessage());
+                        exit(0);
+                    }
                 }
             }
         }
@@ -1068,13 +1120,13 @@ abstract class Query
     /**
      * 函数结构应用, 单项内容操作
      * @access public
-     * @param string $function
+     * @param string $func
      * @param string $field
      * @param string $symbol
      * @param int $value
      * @return object
     */
-    function having($function='sum', $field, $symbol, $value)
+    function having($func='sum', $field, $symbol, $value)
     {
         /**
          * 因为having运算主要用于范围所以当前版本仅支持对数字运算
@@ -1086,12 +1138,12 @@ abstract class Query
         # 创建运算符匹配正则
         $_regular_symbol_confine = '/^(gt|lt|eq|ge|le|neq)$/';
         # 判断参数是否符合预限定结果
-        if(is_true($_regular_function_confine, $function) === true){
+        if(is_true($_regular_function_confine, $func) === true){
             if(is_true($this->_Regular_Name_Confine, $field) === true){
                 if(is_true($_regular_symbol_confine, $symbol) === true){
                     if(is_numeric($value)){
                         # 创建having信息数组
-                        $this->_Having = ' having '.$function.'('.$field.') '.Symbol($symbol).' '.$value;
+                        $this->_Having = ' having '.$func.'('.$field.') '.Symbol($symbol).' '.$value;
                     }
                 }
             }
@@ -1201,4 +1253,12 @@ abstract class Query
      * @param string $query
     */
     abstract function query($query);
+    /**
+     * 返回错误信息
+     * @return string
+    */
+    function getErrorMsg()
+    {
+        return $this->_Err_Msg;
+    }
 }

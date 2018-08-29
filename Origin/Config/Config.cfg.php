@@ -112,6 +112,7 @@ return array(
     'DATA_PORT' => '3306', #默认访问端口，mysql/mariaDB：3306，redis：6379，mongoDB：27017
     'DATA_DB' => 'test', #访问数据库
     "DATA_P_CONNECT" => false, # 是否使用持久链接
+    'DATA_BEGIN_TRANSACTION' => false, # 事务使用状态
     'DATA_AUTO' => false, # mysql自动提交单语句
     'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
     'DATA_BUFFER' => 1024*1024*200, # mysql缓冲大小,设置为0 不启用
@@ -150,6 +151,7 @@ return array(
             'DATA_PORT' => '3306', # mysql默认访问端口
             'DATA_DB' => 'test', # mysql访问数据库
             "DATA_P_CONNECT" => false, # 是否使用持久链接
+            'DATA_BEGIN_TRANSACTION' => false, # 事务使用状态
             'DATA_AUTO' => false, # mysql自动提交单语句
             'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
             'DATA_BUFFER' => 1024*1024*200, # mysql缓冲大小,设置为0 不启用
