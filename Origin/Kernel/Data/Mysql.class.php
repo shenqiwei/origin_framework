@@ -40,7 +40,7 @@ class Mysql extends Query
     function __construct($connect_name=null)
     {
         parent::__construct();
-        if(is_null($connect_name)){
+        if(is_null($connect_name) or (empty($connect_name) and !is_numeric($connect_name))){
             try{
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_DSN = 'mysql:host='.Config('DATA_HOST').';port='.Config('DATA_PORT').';dbname='.Config('DATA_DB');

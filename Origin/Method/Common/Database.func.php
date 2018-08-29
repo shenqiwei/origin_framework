@@ -34,7 +34,7 @@ function Dao($object=null)
  * @param string $connect_name 链接名
  * @return object
 */
-function Mysql($connect_name)
+function Mysql($connect_name=null)
 {
     /**
      * 调用Mysql数据库核心包
@@ -49,7 +49,7 @@ function Mysql($connect_name)
  * @param string $connect_name 链接名
  * @return object
 */
-function Redis($connect_name)
+function Redis($connect_name=null)
 {
     /**
      * 调用Redis数据库核心包
@@ -64,7 +64,7 @@ function Redis($connect_name)
  * @param string $connect_name 链接名
  * @return object
 */
-function Mongodb($connect_name)
+function Mongodb($connect_name=null)
 {
     $_dao = new \Origin\Kernel\Data\Mongodb($connect_name);
     $_dao->__setSQL($_dao);
