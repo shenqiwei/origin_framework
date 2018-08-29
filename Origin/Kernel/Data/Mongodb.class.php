@@ -79,7 +79,7 @@ class Mongodb
      */
     function __construct($connect_name=null)
     {
-        if(is_null($connect_name)){
+        if(is_null($connect_name) or (empty($connect_name) and !is_numeric($connect_name))){
             try{
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_mongo_host = Config('DATA_HOST');
