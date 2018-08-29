@@ -19,7 +19,7 @@
 namespace Origin\Kernel\Data;
 
 include("Redis/Key.class.php");
-include("Redis/String.class.php");
+include("Redis/Str.class.php");
 include("Redis/Set.class.php");
 include("Redis/Hash.class.php");
 include("Redis/Listing.class.php");
@@ -29,7 +29,7 @@ include("Redis/HLL.class.php");
 include("Redis/Transaction.class.php");
 
 use Origin\Kernel\Data\Redis\Key;
-use Origin\Kernel\Data\Redis\String;
+use Origin\Kernel\Data\Redis\Str;
 use Origin\Kernel\Data\Redis\Set;
 use Origin\Kernel\Data\Redis\Hash;
 use Origin\Kernel\Data\Redis\Listing;
@@ -141,7 +141,7 @@ class Redis
     }
     function string()
     {
-        $_redis = new String($this->_Connect);
+        $_redis = new Str($this->_Connect);
         $_redis->__setSQL($_redis);
         return $_redis;
     }

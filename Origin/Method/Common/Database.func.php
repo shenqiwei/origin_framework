@@ -8,8 +8,8 @@
 function Dao($object=null)
 {
     switch(strtolower(trim(Config('DATA_TYPE')))){
-        case 'mongo':
-            $_dao = new \Origin\Kernel\Data\Mongo();
+        case 'mongodb':
+            $_dao = new \Origin\Kernel\Data\Mongodb();
             if(!is_null($object)){
                 $_dao->set($object);
             }
@@ -55,18 +55,6 @@ function Redis($connect_name)
      * 调用Redis数据库核心包
      */
     $_dao = new \Origin\Kernel\Data\Redis($connect_name);
-    $_dao->__setSQL($_dao);
-    return $_dao;
-}
-/**
- * MongoDB数据库操作方法
- * @access public
- * @param string $connect_name 链接名
- * @return object
- */
-function Mongo($connect_name)
-{
-    $_dao = new \Origin\Kernel\Data\Mongo($connect_name);
     $_dao->__setSQL($_dao);
     return $_dao;
 }

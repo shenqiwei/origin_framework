@@ -105,7 +105,7 @@ return array(
     'DATA_CONNECT_THREAD' => 0, # 连接是否使用线程,当前版本暂不支持线程
     'DATA_USE_FACTORY' => 0, # 是否是用数据工厂模式,当前版本暂不支持线程
     //SQL设置信息
-    'DATA_TYPE' => 'mysql', # 选择默认数据库类型,mysql(mysql or mariaDB),redis,mongo（old version）,mongodb(new version)
+    'DATA_TYPE' => 'mysql', # 选择默认数据库类型,mysql(mysql or mariaDB),redis,mongodb(new version)
     'DATA_HOST' => '127.0.0.1', #服务访问地址
     'DATA_USER' => 'root', #登录用户
     'DATA_PWD' => '', #登录密码
