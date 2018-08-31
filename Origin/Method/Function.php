@@ -89,6 +89,9 @@ Import('Graph:View'); # 调用界面模板匹配控制类
 # 引入路由控制函数包
 Import('Protocol:Route'); # 调用路由控制函数包
 Import('Protocol:Curl'); # 调用远程请求控制函数包
+Import('Protocol:Socket'); # 调用Socket通信控制函数包
+# 调用应用函数文件
+include('Common/Socket.func.php');
 # 应用结构包调用
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
