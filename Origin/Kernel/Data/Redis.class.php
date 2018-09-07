@@ -157,7 +157,7 @@ class Redis
         $_redis->__setSQL($_redis);
         return $_redis;
     }
-    function list()
+    function listing()
     {
         $_redis = new Listing($this->_Connect);
         $_redis->__setSQL($_redis);
