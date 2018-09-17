@@ -22,10 +22,14 @@ function write($uri,$msg,$found=true)
  */
 function daoLogs($msg)
 {
-    # 数据库操作日志
-    $_uri = Configurate('ROOT_LOG').Configurate('LOG_CONNECT').date('Ymd').Configurate('LOG_SUFFIX');
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg,true);
+    if(DEBUG or CONNECT_LOG){
+        # 数据库操作日志
+        $_uri = Configurate('ROOT_LOG').Configurate('LOG_CONNECT').date('Ymd').Configurate('LOG_SUFFIX');
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+        return write($_uri,$_model_msg,true);
+    }else{
+        return null;
+    }
 }
 /**
  * @access public
@@ -34,10 +38,15 @@ function daoLogs($msg)
  */
 function actionLogs($msg)
 {
-    # 访问行为日志
-    $_uri = Configurate('ROOT_LOG').Configurate('LOG_OPERATE').date('Ymd').Configurate('LOG_SUFFIX');
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg,true);
+    if(DEBUG or ACTION_LOG){
+        # 访问行为日志
+        $_uri = Configurate('ROOT_LOG').Configurate('LOG_OPERATE').date('Ymd').Configurate('LOG_SUFFIX');
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+        return write($_uri,$_model_msg,true);
+    }else{
+        return null;
+    }
+
 }
 /**
  * @access public
@@ -46,10 +55,15 @@ function actionLogs($msg)
  */
 function accessLogs($msg)
 {
-    # 链接记录日志
-    $_uri = Configurate('ROOT_LOG').Configurate('LOG_ACCESS').date('Ymd').Configurate('LOG_SUFFIX');
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg,true);
+    if(DEBUG or ACCESS_LOG){
+        # 链接记录日志
+        $_uri = Configurate('ROOT_LOG').Configurate('LOG_ACCESS').date('Ymd').Configurate('LOG_SUFFIX');
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+        return write($_uri,$_model_msg,true);
+    }else{
+        return null;
+    }
+
 }
 /**
  * @access public
@@ -58,8 +72,13 @@ function accessLogs($msg)
  */
 function errorLogs($msg)
 {
-    # 异常记录日志
-    $_uri = Configurate('ROOT_LOG').Configurate('LOG_EXCEPTION').date('Ymd').Configurate('LOG_SUFFIX');
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg,true);
+    if(DEBUG or ERROR_LOG){
+        # 异常记录日志
+        $_uri = Configurate('ROOT_LOG').Configurate('LOG_EXCEPTION').date('Ymd').Configurate('LOG_SUFFIX');
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+        return write($_uri,$_model_msg,true);
+    }else{
+        return null;
+    }
+
 }

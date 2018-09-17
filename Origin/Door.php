@@ -24,6 +24,12 @@ if(!defined('SLASH')) define('SLASH',DIRECTORY_SEPARATOR);
 if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
 # 功能设置常量
 if(!defined('DEBUG')) define('DEBUG',FALSE);
+# 日志状态设置
+if(!defined('ACCESS_LOG')) define('ACCESS_LOG',false); # 请求链接日志
+if(!defined('CONNECT_LOG')) define('CONNECT_LOG',false); # 数据链接日志
+if(!defined('ACTION_LOG')) define('ACTION_LOG',false); # 行为链接日志
+if(!defined('ERROR_LOG')) define('ERROR_LOG',false); # 异常信息日志
+# 错误信息显示设置
 if(!defined('ERROR')) define('ERROR',FALSE);
 # 是否启用编码混成
 if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
