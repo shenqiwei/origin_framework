@@ -172,7 +172,7 @@ class Hash
      * @param string $key 索引对象元素键
      * @return object
      */
-    function list($key)
+    function listing($key)
     {
         try{
             if($this->_Connect->exists($key)) {
