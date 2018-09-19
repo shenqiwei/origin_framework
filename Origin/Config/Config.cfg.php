@@ -51,6 +51,7 @@ return array(
     'LOG_EXCEPTION' => 'Error/', # 系统异常信息日志
     'LOG_INITIALIZE' => 'Initialize/', # 框架初始化日志
     'LOG_OPERATE' => 'Action/', # 系统操作日志
+    'LOG_SOCKET' => 'Socket/', # 通信操作日志
     # 引导信息
     'DEFAULT_CONTROLLER' => 'index', # 默认访问方法名
     'DEFAULT_METHOD' => 'index', # 默认访问文件名

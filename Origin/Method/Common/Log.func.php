@@ -82,3 +82,19 @@ function errorLogs($msg)
     }
 
 }
+/**
+ * @access public
+ * @param string $msg 日志模板信息
+ * @return mixed
+*/
+function socketLogs($msg)
+{
+    if(DEBUG or ERROR_LOG){
+        # 异常记录日志
+        $_uri = Configurate('ROOT_LOG').Configurate('LOG_SOCKET').date('Ymd').Configurate('LOG_SUFFIX');
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+        return write($_uri,$_model_msg,true);
+    }else{
+        return null;
+    }
+}

@@ -16,7 +16,7 @@
  * update Time: 2017/01/09 16:22
  * chinese Context: IoC Socket通信(TCP)
  */
-namespace Ring\Kernel\Protocol;
+namespace Origin\Kernel\Protocol;
 
 class Socket
 {
@@ -24,17 +24,17 @@ class Socket
      * @var object $_Socket
      * 通信连接对象
     */
-    private $_Socket = null;
+    protected $_Socket = null;
     /**
      * @var boolean $_Boolean
      * 返回执行状态
     */
-    private $_Boolean = true;
+    protected $_Boolean = true;
     /**
      * @var string $_Value
      * 返回内容信息
     */
-    private $_Value = null;
+    protected $_Value = null;
     /**
      * @var object $_Object
      * 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
@@ -43,22 +43,16 @@ class Socket
     # 构造方法
     function __construct()
     {
-        try{
-            # 创建socket连接对象
-            $this->_Socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
+        # 创建socket连接对象
+        $this->_Socket = socket_create(AF_INET,SOCK_STREAM,SOL_TCP);
+
     }
     /**
      * 回传类对象信息
      * @access public
      * @param object $object
      */
-    function __setSQL($object)
+    function __setObj($object)
     {
         $this->_Object = $object;
     }
@@ -67,124 +61,89 @@ class Socket
      * @access public
      * @return object
      */
-    protected function __getSQL()
+    protected function __getObj()
     {
         return $this->_Object;
     }
     /**
-     * 切换绑定地址信息
+     * Socket服务端链接函数
      * @access public
-     * @param @param string $connect_ip
-     * @param int $connect_port
+     * @throws
+     * @param string $connect_ip 链接地址
+     * @param int $connect_port 链接接口
+     * @param int $listen_len 监听数据长度
+     * @return object
+     */
+    function service($connect_ip=null,$connect_port=0,$listen_len=1024)
+    {
+        # 设定接受对象
+        if(!socket_bind($this->_Socket,$connect_ip,intval($connect_port)))
+            throw new \Exception("Socket bind setup failed");
+        # 调用监听方法
+        if(!socket_listen($this->_Socket,$listen_len))
+            throw new \Exception("Socket listen setup failed");
+        # 调用返回内容长度
+        if(!socket_accept($this->_Socket))
+            throw new \Exception("Socket accept ");
+        return $this->_Object;
+    }
+    /**
+     * Socket客户端链接函数
+     * @access public
+     * @throws
+     * @param string $connect_ip 链接地址
+     * @param string $connect_port 链接接口
+     * @return mixed
+     */
+    function client($connect_ip,$connect_port)
+    {
+        if(!socket_connect($this->_Socket,$connect_ip,intval($connect_port)))
+            throw new \Exception("Socket connection has error");
+        return $this->_Object;
+    }
+    /**
+     * Socket信息读取函数
+     * @access publi
+     * @param int $length
+     * @throws \Exception
      * @return object
     */
-    function bind($connect_ip,$connect_port)
+    function read($length)
     {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Boolean = socket_bind($this->_Socket,$connect_ip,$connect_port);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
+        if(!$_msg = socket_read($this->_Socket,intval($length)))
+            throw new \Exception(socket_last_error($this->_Socket));
+        return $this->_Socket;
     }
     /**
-     * 执行socket连接
-     * @access public
-     * @param string $connect_ip
-     * @param int $connect_port
-     * @return object
-    */
-    function connect($connect_ip,$connect_port)
-    {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Boolean = socket_connect($this->_Socket,$connect_ip,$connect_port);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
-    }
-    /**
-     * 监听socket连接
-     * @access public
-     * @param int $listen_count 监听套字数量
-     * @return object
-    */
-    function listen($listen_count=0)
-    {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Boolean = socket_listen($this->_Socket,$listen_count);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
-    }
-    /**
-     * 接受socket连接
-     * @access public
-     * @return object
-    */
-    function accept()
-    {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Boolean = socket_accept($this->_Socket);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
-    }
-    /**
-     * 读取客户端信息
-     * @access public
-     * @param int $len 获取信息长度
-     * @return object
-    */
-    function read($len)
-    {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Value = socket_read($this->_Socket,$len);
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
-    }
-    /**
-     * 发送数据信息
+     * Socket信息发送函数
      * @access public
      * @param string $msg 发送信息
+     * @throws \Exception
      * @return object
     */
     function write($msg)
     {
-        try{
-            # 设置连接对象ip及端口信息
-            $this->_Value = socket_write($this->_Socket,$msg,strlen($msg));
-        }catch (\Exception $e){
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (Query) Class Error: '.$e->getMessage());
-            exit(0);
-        }
-        return $this->_Object;
+        if(!socket_write($this->_Socket,$msg,strlen($msg)))
+            throw new \Exception(socket_last_error($this->_Socket));
+        return $this->_Socket;
+    }
+    /**
+     * 获取内容值
+     * @access public
+     * @return mixed
+    */
+    function getValue()
+    {
+        return $this->_Value;
+    }
+    /**
+     * 获取错误信息
+     * @access public
+     * @return mixed
+    */
+    function getErrMsg()
+    {
+        return socket_last_error($this->_Socket);
     }
     # 析构方法
     function __destruct()

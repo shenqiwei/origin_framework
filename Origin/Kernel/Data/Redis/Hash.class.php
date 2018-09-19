@@ -148,7 +148,7 @@ class Hash
      * @param string $field hash对象字段名(域)
      * @return object
      */
-    function hashGet($key,$field)
+    function get($key,$field)
     {
         try{
             if($this->_Connect->exists($key)) {
