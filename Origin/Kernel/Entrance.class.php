@@ -115,7 +115,7 @@ class Entrance
                     });
                 } else {
                     try {
-                        throw new \Exception('Origin Method Error: Not Fount Control Document');
+                        throw new \Exception('Origin Entrance Error: Not Fount Control Document');
                     } catch (\Exception $e) {
                         echo($e->getMessage());
                         exit(0);
@@ -130,7 +130,7 @@ class Entrance
                     $_object = new $_class();
                 } else {
                     try {
-                        throw new \Exception('Origin Method Error: Not Fount Control Class');
+                        throw new \Exception('Origin Entrance Error: Not Fount Class object');
                     } catch (\Exception $e) {
                         echo($e->getMessage());
                         exit(0);
@@ -150,7 +150,7 @@ class Entrance
                     $_object->$_method();
                 } else {
                     try {
-                        throw new \Exception('Origin Method Error: Not Fount Function Object');
+                        throw new \Exception('Origin Entrance Error: Not Fount Function Object');
                     } catch (\Exception $e) {
                         echo($e->getMessage());
                         exit(0);
@@ -158,7 +158,7 @@ class Entrance
                 }
             }else{
                 try {
-                    throw new \Exception('Origin Method Error: Loading Resource Object is Invalid');
+                    throw new \Exception('Origin Entrance Error: Loading Resource Object is Invalid');
                 } catch (\Exception $e) {
                     echo($e->getMessage());
                     exit(0);
