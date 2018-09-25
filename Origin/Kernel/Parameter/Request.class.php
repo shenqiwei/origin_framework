@@ -26,28 +26,34 @@ class Request
     /**
      * 全局变量，用于方法间值的传递
      * 请求器，请求类型
-     * @access private
+     * @access protected
      * @var string $_Method
     */
     protected $_Method = 'request';
     /**
+     * 请求器类型规则变量
+     * @access protected
+     * @var string $_Method_regular
+    */
+    protected $_Method_regular = '/^(request|post|get|delete|put){1}$/';
+    /**
      * 全局变量，用于方法间值的传递
      * 请求器，需调用的参数对象
-     * @access private
+     * @access protected
      * @var $_Validate_Name
     */
     protected $_Validate_Name = null;
     /**
      * 全局变量，用于方法间值的传递
      * 请求器，被调用的参数对象的数据类型
-     * @access private
+     * @access protected
      * @var string $_Type
     */
     protected $_Type = 'string';
     /**
      * 全局变量，用于方法间值的传递
      * 请求其，当请求内容为空或不存在时，系统会放回默认值信息
-     * @access private
+     * @access protected
      * @var $_Default
     */
     protected $_Default = null;
@@ -68,8 +74,7 @@ class Request
          * @var string $_type_regular
          */
         # 请求方式正则，涵盖基本的5中表单请求
-        $_method_regular = '/^(request|post|get|delete|put){1}$/';
-        if(is_true($_method_regular, $method) === true){
+        if(is_true($this->_Method_regular, $method) === true){
             $this->_Method = $method;
         }
         $this->_Validate_Name = $validate_name;
@@ -127,6 +132,11 @@ class Request
                     }else{
                         continue;
                     }
+                }
+            }else{
+                # 当变量对象未请求器类型时，则返回对象数组内容
+                if(is_true($this->_Method_regular, $this->_Validate_Name) === true){
+                    $_receipt = $_array;
                 }
             }
         }
