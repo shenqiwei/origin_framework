@@ -220,7 +220,7 @@ function safe_password($password, $min=0, $max=0)
  * 自定义验证方法
  * @access public
  * @param string $regular
- * @param string $param
+ * @param mixed $param
  * @param int $min
  * @param int $max
  * @return mixed
