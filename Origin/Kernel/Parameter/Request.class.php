@@ -105,17 +105,7 @@ class Request
         # 设置请求组数组对象变量， 设置值为 null
         $_array = null;
         # 判断请求类型，并将请求对象中的值存入数组对象变量
-        switch(strtolower($this->_Method)){
-            case 'get':
-                $_array = $_GET;
-                break;
-            case 'post':
-                $_array = $_POST;
-                break;
-            default:
-                $_array = $_REQUEST;
-                break;
-        }
+        $_array = $this->request_array($this->_Method);
         # 判断数组是否有有效
         if($_array){# 判断php是否在捕捉请求时，对值信息进行过滤，如果没有则进行过滤
             # 判断数组中是否存在，需查询变量名,如果存在进行数组遍历，反之执行默认值装载
@@ -136,7 +126,7 @@ class Request
             }else{
                 # 当变量对象未请求器类型时，则返回对象数组内容
                 if(is_true($this->_Method_regular, $this->_Validate_Name) === true){
-                    $_receipt = $_array;
+                    $_receipt = $this->request_array($this->_Validate_Name);
                 }
             }
         }
@@ -145,6 +135,30 @@ class Request
             if(!is_null($this->_Default)){
                 $_receipt = addslashes($this->_Default);
             }
+        }
+        return $_receipt;
+    }
+    /**
+     * 请求器对象内容抽取
+     * @access public
+     * @param string $method
+     * @return array|null
+    */
+    function request_array($method)
+    {
+        # 创建返回值变量
+        $_receipt = null;
+        # 判断请求类型，并将请求对象中的值存入数组对象变量
+        switch(strtolower($method)){
+            case 'get':
+                $_receipt = $_GET;
+                break;
+            case 'post':
+                $_receipt = $_POST;
+                break;
+            default:
+                $_receipt = $_REQUEST;
+                break;
         }
         return $_receipt;
     }
