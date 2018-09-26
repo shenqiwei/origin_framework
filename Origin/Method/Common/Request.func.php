@@ -64,7 +64,7 @@ function Request($key, $default=null, $operate='rw')
  * @access public
  * @param string $key
  * @param mixed $default
- * @return string
+ * @return mixed
  */
 function Input($key, $default=null)
 {
