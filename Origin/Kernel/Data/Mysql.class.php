@@ -59,8 +59,8 @@ class Mysql extends Query
                 $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
                 if(intval(Config('DATA_TIMEOUT')))
                     $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
-                if(intval(Config('DATA_BUFFER')))
-                    $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_MAX_BUFFER_SIZE,intval(Config('DATA_BUFFER')));
+                if(boolval(Config('DATA_USE_BUFFER')))
+                    $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
             }catch(\PDOException $e){
                 var_dump(debug_backtrace(0,1));
                 echo("<br />");
@@ -86,6 +86,12 @@ class Mysql extends Query
                             $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
                             # 设置数据库参数信息
                             $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                            $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
+                            $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
+                            if(intval(Config('DATA_TIMEOUT')))
+                                $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
+                            if(boolval(Config('DATA_USE_BUFFER')))
+                                $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
                         }catch(\PDOException $e){
                             var_dump(debug_backtrace(0,1));
                             echo("<br />");
