@@ -116,7 +116,7 @@ class Analysis implements Impl
         # 去标签差异化
         $_obj = preg_replace('/\s*\:\s*(end)\s*\>/', ':end>',$_obj);
         # 转义引入结构
-        $_obj = $this->include($_obj);
+        $_obj = $this->includes($_obj);
         # 判断初始标签结构
         # 分析初始标签信息, 并定义分析器类型
         # 包含一个合法条件
@@ -228,7 +228,7 @@ class Analysis implements Impl
      * @param string $obj
      * @return string
      */
-    function include($obj)
+    function includes($obj)
     {
         # 获取include标签信息
         $_count = preg_match_all($this->_Include_Regular, $obj, $_include, PREG_SET_ORDER);
