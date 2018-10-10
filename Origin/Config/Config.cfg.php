@@ -116,7 +116,8 @@ return array(
     'DATA_BEGIN_TRANSACTION' => false, # 事务使用状态
     'DATA_AUTO' => false, # mysql自动提交单语句
     'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
-    'DATA_BUFFER' => 1024*1024*200, # mysql缓冲大小,设置为0 不启用
+    'DATA_USE_BUFFER' => true, # mysql是否使用缓冲查询 默认值false
+//    'DATA_BUFFER' => 1024*1024*200, # msql缓冲大小,设置为0 不启用
     'DATA_USE_MEMCACHE' => 0, # mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
     # 如果需要多地缓冲还需搭建多个缓冲服务器，否则该功能无法生效
     'MEMCACHE_SET_ADDRESS' => array(
