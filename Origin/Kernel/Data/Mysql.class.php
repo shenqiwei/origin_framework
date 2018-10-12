@@ -72,32 +72,47 @@ class Mysql extends Query
             if(is_array($_connect_config)){
                 for($_i = 0;$_i < count($_connect_config);$_i++){
                     if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                        try{
-                            # 创建数据库链接地址，端口，应用数据库信息变量
-                            $_DSN = 'mysql:host='.$_connect_config[$_i]['DATA_HOST'].';port='.$_connect_config[$_i]['DATA_PORT'].';dbname='.$_connect_config[$_i]['DATA_DB'];
-                            $_username = $_connect_config[$_i]['DATA_USER']; # 数据库登录用户
-                            $_password = $_connect_config[$_i]['DATA_PWD']; # 登录密码
-                            $_option = array(
-                                # 设置数据库编码规则
-                                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                                \PDO::ATTR_PERSISTENT => true,
-                            );
-                            # 创建数据库连接对象
-                            $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
-                            # 设置数据库参数信息
-                            $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                            $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
-                            $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
-                            if(intval(Config('DATA_TIMEOUT')))
-                                $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
-                            if(boolval(Config('DATA_USE_BUFFER')))
-                                $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
-                        }catch(\PDOException $e){
-                            var_dump(debug_backtrace(0,1));
-                            echo("<br />");
-                            print('Error:'.$e->getMessage());
-                            exit();
-                        }
+                        $_connect_conf = $_connect_config[$_i];
+                        break;
+                    }
+                }
+                if(isset($_connect_conf)){
+                    try{
+                        # 创建数据库链接地址，端口，应用数据库信息变量
+                        $_DSN = 'mysql:host='.$_connect_conf['DATA_HOST'].';port='.$_connect_conf['DATA_PORT'].';dbname='.$_connect_conf['DATA_DB'];
+                        $_username = $_connect_conf['DATA_USER']; # 数据库登录用户
+                        $_password = $_connect_conf['DATA_PWD']; # 登录密码
+                        $_option = array(
+                            # 设置数据库编码规则
+                            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                            \PDO::ATTR_PERSISTENT => true,
+                        );
+                        # 创建数据库连接对象
+                        $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
+                        # 设置数据库参数信息
+                        $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                        $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
+                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
+                        if(intval(Config('DATA_TIMEOUT')))
+                            $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
+                        if(boolval(Config('DATA_USE_BUFFER')))
+                            $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
+                    }catch(\PDOException $e){
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        print('Error:'.$e->getMessage());
+                        exit();
+                    }
+                }else{
+                    # 无有效数据表名称
+                    try{
+                        throw new \PDOException('Config object is invalid');
+                    }catch(\PDOException $e){
+                        $this->_Connect = null;
+                        errorLogs($e->getMessage());
+                        var_dump(debug_backtrace(0,1));
+                        echo("<br />");
+                        echo('Origin (mysql select) Class Error:'.$e->getMessage());
                     }
                 }
             }

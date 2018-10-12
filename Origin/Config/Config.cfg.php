@@ -112,7 +112,7 @@ return array(
     'DATA_PWD' => '', #登录密码
     'DATA_PORT' => '3306', #默认访问端口，mysql/mariaDB：3306，redis：6379，mongoDB：27017
     'DATA_DB' => 'test', #访问数据库
-    'DATA_AUTO' => false, # mysql自动提交单语句
+    'DATA_AUTO' => true, # mysql自动提交单语句
     'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
     'DATA_USE_BUFFER' => false, # mysql是否使用缓冲查询 默认值false
 //    'DATA_BUFFER' => 1024*1024*200, # msql缓冲大小,设置为0 不启用
@@ -151,7 +151,7 @@ return array(
             'DATA_PORT' => '3306', # mysql默认访问端口
             'DATA_DB' => 'test', # mysql访问数据库
             "DATA_P_CONNECT" => false, # 是否使用持久链接
-            'DATA_AUTO' => false, # mysql自动提交单语句
+            'DATA_AUTO' => true, # mysql自动提交单语句
             'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
             'DATA_BUFFER' => 1024*1024*200, # mysql缓冲大小,设置为0 不启用
             'DATA_USE_MEMCACHE' => 0, # mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
