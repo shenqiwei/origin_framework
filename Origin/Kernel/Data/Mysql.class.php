@@ -55,10 +55,14 @@ class Mysql extends Query
                 $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
                 # 设置数据库参数信息
                 $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                # 是否使用持久链接
                 $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
+                # 设置数据库参数信息
                 $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
+                # mysql请求超时时间
                 if(intval(Config('DATA_TIMEOUT')))
                     $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
+                # mysql是否使用缓冲查询
                 if(boolval(Config('DATA_USE_BUFFER')))
                     $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
             }catch(\PDOException $e){
@@ -91,12 +95,16 @@ class Mysql extends Query
                         $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
                         # 设置数据库参数信息
                         $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                        $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
-                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
+                        # 是否使用持久链接
+                        $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval($_connect_conf['DATA_P_CONNECT']));
+                        # mysql自动提交单语句
+                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
+                        # mysql请求超时时间
                         if(intval(Config('DATA_TIMEOUT')))
-                            $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
+                            $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval($_connect_conf['DATA_TIMEOUT']));
+                        # mysql是否使用缓冲查询
                         if(boolval(Config('DATA_USE_BUFFER')))
-                            $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval(Config('DATA_USE_BUFFER')));
+                            $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_conf['DATA_USE_BUFFER']));
                     }catch(\PDOException $e){
                         var_dump(debug_backtrace(0,1));
                         echo("<br />");
