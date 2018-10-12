@@ -21,14 +21,22 @@ namespace Origin\Kernel\Protocol;
 class Curl
 {
     /**
-     * @access private
+     * @access protected
      * @var array $_curl_receipt
      * @contact 请求返回信息
     */
     protected $_curl_receipt = array();
+    /**
+     * @access protected
+     * @var boolean $_curl_utf_8
+     * @context 是否执行utf-8转码
+    */
+    protected $_curl_utf_8 = false;
     # 构造方法
-    function __construct()
-    {}
+    function __construct($bool=false)
+    {
+        $this->_curl_utf_8 = boolval($bool);
+    }
     /**
      * @access public
      * @param string $url 访问地址
@@ -48,6 +56,9 @@ class Curl
             curl_setopt($_curl,CURLOPT_SSL_VERIFYHOST,false);
             curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
             $_receipt = curl_exec($_curl);
+            if($this->_curl_utf_8)
+                # 将会输内容强制转化为utf-8
+                $_receipt = mb_convert_encoding($_receipt, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
             $this->_curl_receipt['errno'] = curl_errno($_curl);
             $this->_curl_receipt['error'] = curl_error($_curl);
             curl_close($_curl);
@@ -96,6 +107,9 @@ class Curl
             curl_setopt($_curl,CURLOPT_TIMEOUT,30);
             curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
             $_receipt = curl_exec($_curl);
+            if($this->_curl_utf_8)
+                # 将会输内容强制转化为utf-8
+                $_receipt = mb_convert_encoding($_receipt, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
             $this->_curl_receipt['errno'] = curl_errno($_curl);
             $this->_curl_receipt['error'] = curl_error($_curl);
             curl_close($_curl);
