@@ -64,7 +64,7 @@ abstract class Action extends Controller
         $this->_Error_code = null;
         $this->_Data_array = null;
         $this->_Action_array = null;
-        $this->_Query_array = array("data"=>null,"where"=>null);
+        $this->_Query_array = null;
         $this->_Result = null;
         # action主映射指向，默认与调用控制同名
         $_class = $this->get_class();
@@ -303,7 +303,7 @@ abstract class Action extends Controller
     */
     protected function setQuery($variable=null)
     {
-        $this->_Query_array = array("Q_variable"=>$variable);
+        $this->_Query_array = array("q_variable"=>$variable);
     }
     /**
      * @access protected
