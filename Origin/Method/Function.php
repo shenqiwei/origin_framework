@@ -81,6 +81,7 @@ Import("Data:Mongodb"); # 调用MongoDB 70+支持包
 # 应用公共函数文件
 include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Database.func.php'); # 文件操作函数包
+include('Common/Action.func.php'); # 调用action映射内容调用函数包
 # 图形支持函数
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import("Mark:Analysis"); # 调用模板主控制类
@@ -92,7 +93,20 @@ Import('Protocol:Curl'); # 调用远程请求控制函数包
 Import('Protocol:Socket'); # 调用Socket通信控制函数包
 # 调用应用函数文件
 include('Common/Socket.func.php');
+# 引用事务关系函数包
+Import('Transaction:Data:Mysql');
+Import('Transaction:Data:Redis');
+Import('Transaction:Data:Mongodb');
+Import('Transaction:Example:Model');
+Import('Transaction:Example:Query');
+Import('Transaction:Example:Pass');
+Import('Transaction:Example:Factory');
+Import('Transaction:Action');
 # 应用结构包调用
 Common('Common:Public'); # 引入公共函数包
+# 公共映射模板描述封装
+Import('Application:Model');
 # 公共控制器文件
 Import('Application:Controller');
+# 行为控制单元
+Import('Application:Action');

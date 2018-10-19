@@ -617,8 +617,8 @@ abstract class Query
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
             if(!is_null($field) and !empty($field)){
-                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
-                    $field = str_replace($key, $value, $field);
+                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+                    $field = preg_replace($key, $value, $field);
                 }
                 $this->_Where = ' where '.$field;
             }

@@ -643,8 +643,8 @@ class Mysql extends Query
             if(boolval(Config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
                 $this->_Connect->beginTransaction();
             # 条件运算结构转义
-            foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
-                $query = str_replace($key, $value, $query);
+            foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+                $query = preg_replace($key, $value, $query);
             }
             # 接入执行日志
             daoLogs(trim($query));
