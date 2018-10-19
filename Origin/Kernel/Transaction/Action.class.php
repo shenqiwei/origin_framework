@@ -277,6 +277,7 @@ class Action
                                 $this->_Error_code = $_factory->getErrorMsg();
                             }else{
                                 $_M = new Model($this->_Data_source);
+
                                 $_M->insert($_table,$_data);
                             }
                         }
