@@ -298,13 +298,12 @@ abstract class Action extends Controller
     }
     /**
      * @access protected
-     * @param array $data 接入数据内容数组
-     * @param array $where 接入条件内容数组
+     * @param array $variable 接入数据内容数组
      * @context query语句数据与条件干预函数
     */
-    protected function setQuery($data=null,$where=null)
+    protected function setQuery($variable=null)
     {
-        $this->_Query_array = array("data"=>$data,"where"=>$where);
+        $this->_Query_array = array("Q_variable"=>$variable);
     }
     /**
      * @access protected
