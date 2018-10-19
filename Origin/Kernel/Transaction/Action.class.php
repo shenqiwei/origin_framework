@@ -193,8 +193,8 @@ class Action
                             if(preg_match('/^\[:[^\[\]]+:[^\[\]:]+\]$/',$_var)){
                                 $_var = str_replace('[:',null,str_replace(']',null,$_var));
                                 $_vars = explode(':',strtolower($_var));
-                                if($_vars[0] === "Q_variable" and is_array($query_data['Q_variable']) and !empty($query_data['Q_variable']) and key_exists($_vars[1],$query_data['Q_variable'])){
-                                    $_var = $query_data['Q_variable'][$_vars[1]];
+                                if($_vars[0] === "q_variable" and is_array($query_data['q_variable']) and !empty($query_data['q_variable']) and key_exists($_vars[1],$query_data['q_variable'])){
+                                    $_var = $query_data['q_variable'][$_vars[1]];
                                 }elseif(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
                                     $_pass = new Pass();
                                     $_var = $_pass->index($_cfg,$_vars[1]);
