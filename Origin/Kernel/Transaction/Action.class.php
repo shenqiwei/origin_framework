@@ -89,11 +89,12 @@ class Action
     /**
      * @access public
      * @param array $model 执行映射模板内容
-     * @param string|int 默认访问映射地址
+     * @param array $query_data 内容干预数据数组
+     * @param string|int $default 默认访问映射地址
      * @return mixed
      * @context query语句执行结构函数，只支持mysql行为操作,控制单元内容，模块
     */
-    function query($model,$default=null)
+    function query($model,$query_data=null,$default=null)
     {
         # 创建返回值变量
         $_receipt = null;
@@ -192,7 +193,11 @@ class Action
                             if(preg_match('/^\[:[^\[\]]+:[^\[\]:]+\]$/',$_var)){
                                 $_var = str_replace('[:',null,str_replace(']',null,$_var));
                                 $_vars = explode(':',strtolower($_var));
-                                if(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
+                                if($_vars[0] === "data" and is_array($query_data['data']) and !empty($query_data['data']) and key_exists($_vars[1],$query_data['data'])){
+                                        $_var = $query_data['data'][$_vars[1]];
+                                }elseif($_vars[0] === "where" and is_array($query_data['where']) and !empty($query_data['where']) and key_exists($_vars[1],$query_data['where'])){
+                                    $_var = $query_data['where'][$_vars[1]];
+                                }elseif(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
                                     $_pass = new Pass();
                                     $_var = $_pass->index($_cfg,$_vars[1]);
                                     if(!is_null($_pass->getErrorMsg())){
