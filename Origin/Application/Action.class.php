@@ -24,22 +24,27 @@ abstract class Action extends Controller
      * @access protected
      * @var string $_Error_code 错误代码
      */
-    protected $_Error_code = null;
+    protected $_Error_code;
     /**
      * @access protected
      * @var array $_Data_array 数据数组
      */
-    protected $_Data_array = null;
+    protected $_Data_array;
     /**
      * @access protected
      * @var array $_Action_array 行为数组
      */
-    protected $_Action_array = null;
+    protected $_Action_array;
+    /**
+     * @access protected
+     * @var array $_Query_array query语句值干预数组，包含主元素内容Data数据，Where条件内容
+    */
+    protected $_Query_array;
     /**
      * @access protected
      * @var mixed $_Result 返回结果
      */
-    protected $_Result = null;
+    protected $_Result;
     # 构造方法
     function __construct()
     {
@@ -55,6 +60,12 @@ abstract class Action extends Controller
     */
     protected function initialize($mapping=null,$object=null)
     {
+        # 初始化执行变量
+        $this->_Error_code = null;
+        $this->_Data_array = null;
+        $this->_Action_array = null;
+        $this->_Query_array = array("data"=>null,"where"=>null);
+        $this->_Result = null;
         # action主映射指向，默认与调用控制同名
         $_class = $this->get_class();
         # 判断class对象内容是否为完整引述路径
@@ -287,6 +298,16 @@ abstract class Action extends Controller
     }
     /**
      * @access protected
+     * @param array $data 接入数据内容数组
+     * @param array $where 接入条件内容数组
+     * @context query语句数据与条件干预函数
+    */
+    protected function setQuery($data=null,$where=null)
+    {
+        $this->_Query_array = array("data"=>$data,"where"=>$where);
+    }
+    /**
+     * @access protected
      * @param string $obj 执行模板映射对象名称
      * @return mixed
      * @context 启动action主方法，执行action行为
@@ -321,7 +342,7 @@ abstract class Action extends Controller
                         $_transaction->setDefault($_model);
                         $_transaction->setSource($_source);
                         $_transaction->setType($_type);
-                        $_re = $_transaction->query($_model_array);
+                        $_re = $_transaction->query($_model_array,$this->_Query_array);
                         if(is_null($_transaction->getErrorMsg())){
                             $_receipt = $_re;
                         }else{
