@@ -15,6 +15,8 @@ use Origin\Kernel\Transaction\Example\Pass;
 use Origin\Kernel\Transaction\Example\Factory;
 # 模板元素表述封装
 use Origin\Model as Mapping;
+# 调用验证模型封装
+use Origin\Kernel\Parameter\Validate;
 
 class Action
 {
@@ -23,6 +25,11 @@ class Action
      * @var string $_Default 默认准入指向模板
      */
     protected $_Default = null;
+    /**
+     * @access protected
+     * @var string $_Pass 准入指向
+    */
+    protected $_Pass = null;
     /**
      * @access protected
      * @var string $_Error_code 错误编码
@@ -61,6 +68,15 @@ class Action
     public function setDefault($default)
     {
         $this->_Default = $default;
+    }
+    /**
+     * @access public
+     * @var string $pass 准入指向
+     * @context 设置准入模板指向
+    */
+    public function setPass($pass)
+    {
+        $this->_Pass = $pass;
     }
     /**
      * @access public
@@ -154,7 +170,7 @@ class Action
                                     }
                                 }elseif(Mapping::ACTION_ORDER_MARK === $_var){
                                     if(is_array($_column[$_var])){
-                                        $_mysql->Order($_column[$_var]);
+                                        $_mysql->order($_column[$_var]);
                                         $_order = preg_replace('/^\s*order\s+by\s+/',null,$_mysql->_Order);
                                         $_query = str_replace($_variable[$_i][0],$_order,$_query);
                                     }else{
@@ -162,7 +178,7 @@ class Action
                                     }
                                 }elseif(Mapping::ACTION_GROUP_MARK === $_var){
                                     if(is_array($_column[$_var])){
-                                        $_mysql->Group($_column[$_var]);
+                                        $_mysql->group($_column[$_var]);
                                         $_group = preg_replace('/^\s*group\s+by\s+/',null,$_mysql->_Group);
                                         $_query = str_replace($_variable[$_i][0],$_group,$_query);
                                     }else{
@@ -184,7 +200,7 @@ class Action
                     # 抽取关系变量内容
                     if($_count = preg_match_all($_var_format,$_query,$_variable,PREG_SET_ORDER)){
                         # 创建请求器模板内容变量
-                        $_cfg = Model($this->_Default);
+                        $_cfg = Model($this->_Default,$this->_Pass);
                         # 循环遍历比对变量内容
                         for($_i = 0;$_i < $_count;$_i++){
                             # 转存对象内容
@@ -193,23 +209,39 @@ class Action
                             if(preg_match('/^\[:[^\[\]]+:[^\[\]:]+\]$/',$_var)){
                                 $_var = str_replace('[:',null,str_replace(']',null,$_var));
                                 $_vars = explode(':',strtolower($_var));
-                                if($_vars[0] === "q_variable" and is_array($query_data['q_variable']) and !empty($query_data['q_variable']) and key_exists($_vars[1],$query_data['q_variable'])){
-                                    $_var = $query_data['q_variable'][$_vars[1]];
-                                }elseif(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
-                                    $_pass = new Pass();
-                                    $_var = $_pass->index($_cfg,$_vars[1]);
-                                    if(!is_null($_pass->getErrorMsg())){
-                                        $this->_Error_code = $_pass->getErrorMsg();
+                                if(is_array($query_data) and !empty($query_data) and key_exists($_vars[0],$query_data)){
+                                    if(is_array($query_data[$_vars[0]]) and !empty($query_data[$_vars[0]]) and key_exists($_vars[1],$query_data[$_vars[0]])){
+                                        $_var = $query_data[$_vars[0]][$_vars[1]];
+                                    }else{
+                                        if(is_array($_cfg = Model($_vars[0],$this->_Pass)) and !empty($_cfg)){
+                                            $_pass = new Pass();
+                                            $_var = $_pass->index($_cfg,$_vars[1]);
+                                            if(!is_null($_pass->getErrorMsg())){
+                                                $this->_Error_code = $_pass->getErrorMsg();
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    if(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
+                                        $_pass = new Pass();
+                                        $_var = $_pass->index($_cfg,$_vars[1]);
+                                        if(!is_null($_pass->getErrorMsg())){
+                                            $this->_Error_code = $_pass->getErrorMsg();
+                                        }
                                     }
                                 }
                             }else{
                                 # 执行默认请求器模板内容加载
                                 $_var = str_replace('[:',null,str_replace(']',null,$_var));
-                                if(is_array($_cfg) and !empty($_cfg)){
-                                    $_pass = new Pass();
-                                    $_var = $_pass->index($_cfg,$_var);
-                                    if(!is_null($_pass->getErrorMsg())){
-                                        $this->_Error_code = $_pass->getErrorMsg();
+                                if(is_array($query_data) and !empty($query_data) and key_exists($_var,$query_data)){
+                                    $_var = $query_data[$_var];
+                                }else{
+                                    if(is_array($_cfg) and !empty($_cfg)){
+                                        $_pass = new Pass();
+                                        $_var = $_pass->index($_cfg,$_var);
+                                        if(!is_null($_pass->getErrorMsg())){
+                                            $this->_Error_code = $_pass->getErrorMsg();
+                                        }
                                     }
                                 }
                             }
@@ -280,8 +312,7 @@ class Action
                                 $this->_Error_code = $_factory->getErrorMsg();
                             }else{
                                 $_M = new Model($this->_Data_source);
-
-                                $_M->insert($_table,$_data);
+                                $_receipt = $_M->insert($_table,$_data);
                             }
                         }
                         break;
@@ -297,8 +328,29 @@ class Action
                                 $this->_Error_code = $_factory->getErrorMsg();
                             }else{
                                 $_M = new Model($this->_Data_source);
-                                if(key_exists())
-                                $_M->update($_table,$_data);
+                                if(key_exists("where",$this->_Action_data)){
+                                    $_where = null;
+                                }else{
+                                    if(is_null($_major)){
+                                        $this->_Error_code = "Not found major key";
+                                    }else{
+                                        if(isset($_major_column)){
+                                            # 创建请求器模板内容变量
+                                            $_cfg = Model($this->_Default);
+                                            $_pass = new Pass();
+                                            $_var = $_pass->index($_cfg,$_major_column);
+                                            if(!is_null($_pass->getErrorMsg())){
+                                                $this->_Error_code = $_pass->getErrorMsg();
+                                            }
+                                        }
+                                        if(isset($_major_config)){
+                                        }
+                                    }
+                                    $_where = null;
+                                }
+                                if(!is_null($_where)){
+                                    $_receipt = $_M->update($_table,$_data,$_where);
+                                }
                             }
                         }
                         break;

@@ -29,11 +29,6 @@ abstract class Action extends Controller
      * @access protected
      * @var array $_Data_array 数据数组
      */
-    protected $_Data_array;
-    /**
-     * @access protected
-     * @var array $_Action_array 行为数组
-     */
     protected $_Action_array;
     /**
      * @access protected
@@ -62,7 +57,6 @@ abstract class Action extends Controller
     {
         # 初始化执行变量
         $this->_Error_code = null;
-        $this->_Data_array = null;
         $this->_Action_array = null;
         $this->_Query_array = null;
         $this->_Result = null;
@@ -153,7 +147,7 @@ abstract class Action extends Controller
         }
         if(is_array($_data) and !empty($_data)){
             # 值装载并进行标记
-            $this->_Data_array["data"] = $_data;
+            $this->_Query_array["data"] = $_data;
             # 修改状态
             $_receipt = true;
         }
@@ -172,7 +166,7 @@ abstract class Action extends Controller
         # 创建返回值变量
         $_receipt = false;
         if(is_array($field) and !empty($field)){
-            $this->_Data_array['field'] = $field;
+            $this->_Query_array['field'] = $field;
         }
         # 返回状态信息
         return $_receipt;
@@ -232,7 +226,7 @@ abstract class Action extends Controller
         }
         if(is_null($this->_Error_code)){
             # 值装载并进行标记
-            $this->_Data_array["where"] = $where;
+            $this->_Query_array["where"] = $where;
             # 修改状态
             $_receipt = true;
         }
@@ -251,7 +245,7 @@ abstract class Action extends Controller
         # 创建返回值变量
         $_receipt = false;
         if(is_null($order)){
-            $this->_Data_array["order"] = $order;
+            $this->_Query_array["order"] = $order;
             $_receipt = true;
         }
         # 返回状态信息
@@ -268,7 +262,7 @@ abstract class Action extends Controller
         # 创建返回值变量
         $_receipt = false;
         if(is_null($group)){
-            $this->_Data_array["group"] = $group;
+            $this->_Query_array["group"] = $group;
             $_receipt = true;
         }
         # 返回状态信息
@@ -287,9 +281,9 @@ abstract class Action extends Controller
         $_receipt = false;
         if($limit_count > 0){
             if(is_null($limit_begin)){
-                $this->_Data_array["limit"] = intval($limit_count);
+                $this->_Query_array["limit"] = intval($limit_count);
             }else{
-                $this->_Data_array['limit'] = array("limit_begin"=>intval($limit_begin),"limit_count"=>intval($limit_count));
+                $this->_Query_array['limit'] = array("limit_begin"=>intval($limit_begin),"limit_count"=>intval($limit_count));
             }
             $_receipt = true;
         }
@@ -298,20 +292,27 @@ abstract class Action extends Controller
     }
     /**
      * @access protected
-     * @param array $variable 接入数据内容数组
+     * @param string $key 数组元素键
+     * @param string $value 数组元素值
      * @context query语句数据与条件干预函数
     */
-    protected function setQuery($variable=null)
+    protected function setQuery($key,$value)
     {
-        $this->_Query_array = array("q_variable"=>$variable);
+        if(is_array($this->_Query_array)){
+            array_push($this->_Query_array,array($key=>$value));
+        }else{
+            $this->_Query_array = array($key=>$value);
+        }
+
     }
     /**
      * @access protected
      * @param string $obj 执行模板映射对象名称
+     * @param string $pass 准入模板指向
      * @return mixed
      * @context 启动action主方法，执行action行为
     */
-    protected function action($obj=null)
+    protected function action($obj=null,$pass=null)
     {
         # 创建返回信息变量
         $_receipt = null;
@@ -335,12 +336,18 @@ abstract class Action extends Controller
                 $_model_array = Action($_model,$obj);
                 # 判断抽取信息状态
                 if(is_array($_model_array) and !empty($_model_array)){
+                    # 实例化事务类
+                    $_transaction = new Transaction();
+                    # 设置默认请求器模板
+                    $_transaction->setDefault($_model);
+                    # 设置默认请求模板指向
+                    $_transaction->setPass($pass);
+                    # 设置默认数据源地址指向
+                    $_transaction->setSource($_source);
+                    # 设置数据操作默认执行类型
+                    $_transaction->setType($_type);
                     # 选择事务类型
                     if(key_exists(Model::ACTION_QUERY_MARK,$_model_array)){
-                        $_transaction = new Transaction();
-                        $_transaction->setDefault($_model);
-                        $_transaction->setSource($_source);
-                        $_transaction->setType($_type);
                         $_re = $_transaction->query($_model_array,$this->_Query_array);
                         if(is_null($_transaction->getErrorMsg())){
                             $_receipt = $_re;
@@ -348,11 +355,7 @@ abstract class Action extends Controller
                             $this->_Error_code = $_transaction->getErrorMsg();
                         }
                     }elseif(key_exists(Model::MAPPING_TABLE_MARK,$_model_array)){
-                        $_transaction = new Transaction();
-                        $_transaction->setDefault($_model);
-                        $_transaction->setSource($_source);
-                        $_transaction->setType($_type);
-                        $_re = $_transaction->model($_model_array,$this->_Data_array);
+                        $_re = $_transaction->model($_model_array,$this->_Query_array);
                         if(is_null($_transaction->getErrorMsg())){
                             $_receipt = $_re;
                         }else{
