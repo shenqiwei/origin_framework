@@ -299,7 +299,7 @@ abstract class Action extends Controller
     protected function setQuery($key,$value)
     {
         if(is_array($this->_Query_array)){
-            array_push($this->_Query_array,array($key=>$value));
+            $this->_Query_array[$key] = $value;
         }else{
             $this->_Query_array = array($key=>$value);
         }
