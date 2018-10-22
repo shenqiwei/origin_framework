@@ -114,6 +114,9 @@ class Factory
                 }
             }
         }
+        if(is_null($this->_Error_code)){
+            $_receipt = $_data;
+        }
         return $_receipt;
     }
     /**
