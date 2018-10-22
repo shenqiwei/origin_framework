@@ -73,7 +73,7 @@ class Factory
                 $_default = null;
                 if(key_exists($_key = Mapping::MAPPING_DEFAULT_OPTION,$_array))
                     $_default = $_array[$_key];
-                $_value = Input($_method.$_column,$_default);
+                $_value = Input($_method.".".$_column,$_default);
                 # 设置数据类型
                 $_type = "string";
                 if(key_exists($_key = Mapping::MAPPING_TYPE_OPTION,$_array)){
