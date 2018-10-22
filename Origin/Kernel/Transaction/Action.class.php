@@ -184,15 +184,45 @@ class Action
                                     }else{
                                         $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
                                     }
-                                }else{
+                                }elseif(Mapping::ACTION_FIELD_MARK === $_var){
                                     if(is_array($_column[$_var])){
                                         $_mysql->field($_column[$_var]);
                                         $_query = str_replace($_variable[$_i][0],$_mysql->_Field,$_query);
                                     }else{
                                         $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
                                     }
+                                }else{
+                                    if(is_array($_column[$_var])){
+                                        # 设置计数锚点
+                                        $_s = 0;
+                                        # 创建中间结构变量，存储数组拆分内容，并进行预设结构拼接
+                                        $_middle = null;
+                                        foreach($_column[$_var] as $_col){
+                                            if(empty($_s)){
+                                                $_middle = $_col;
+                                            }else{
+                                                $_middle .= ",".$_col;
+                                            }
+                                            $_s++;
+                                        }
+                                        $_query = str_replace($_variable[$_i][0],$_middle,$_query);
+                                    }else{
+                                        $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                    }
                                 }
                             }
+                        }
+                    }
+                    # 抽取时间结构变量
+                    $_var_format = '/\[\[\^:time\]:[^\[\]]+\]/';
+                    # 抽取时间结构变量内容
+                    if($_count = preg_match_all($_var_format,$_query,$_time,PREG_SET_ORDER)){
+                        # 遍历数据内容
+                        for($_i = 0;$_i < $_count;$_i++){
+                            # 转化变量内容
+                            $_time_format = str_replace("]",null,str_replace("[[^:time]:",null,$_time[$_i][0]));
+                            # 转义信息
+                            $_query = str_replace($_time[$_i],"'".date($_time_format)."'",$_query);
                         }
                     }
                     # 抽取变量内容规则(请求器对象元素项)
@@ -244,6 +274,11 @@ class Action
                                         }
                                     }
                                 }
+                            }
+                            if(is_integer($_var) or is_float($_var) or is_double($_var)){
+                                $_query = str_replace($_variable[$_i][0],$_var,$_query);
+                            }else{
+                                $_query = str_replace($_variable[$_i][0],"'".$_var."'",$_query);
                             }
                             $_query = str_replace($_variable[$_i][0],$_var,$_query);
                             # 条件运算结构转义

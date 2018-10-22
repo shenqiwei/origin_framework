@@ -2,20 +2,15 @@
 # 执行器结构模板
 return array(
     # 模板1
-    "user1" => array(
-        "query" => "select [:user:field:] from [:table] where [:where:] order by [:order:] group by [:group:] limit [:limit:]",
+    "user" => array(
+        "query" => "update [:table:] set user_name eq [:user_name] where id eq [:id]",
         "column" => array(
             array(
                 "table" => "user",
-                "field" => array("user_name0","name_age" => "age"),
-                "where" => "id neq 0",
-                "order" => array("id" => "desc"),
-                "group" => array("id"),
-                "limit" => array("begin" => 0,"length" => 10),
             ),
             "user" => array(
                 "table" => "user",
-                "field" => array("user_name","name_age" => "age"),
+                "field" => array("username","set_time"),
                 "where" => "id neq 0",
                 "order" => array("id" => "desc"),
                 "group" => array("id"),
@@ -33,7 +28,7 @@ return array(
     ),
 
     # 模板2
-    "user" => array(
+    "user1" => array(
         "table_name" => "user",
         "cycle_time" => 0,
 //    "major_key" => array("column" => "id", "field" => "id", "type" => "int", "size" => 0 "is_null"=> false),

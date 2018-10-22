@@ -8,11 +8,11 @@
 # 接口请求结构模板
 return array(
     "User" => array(
-        "method" => "post",
+        "method" => "get",
         "model" => array(
+            array("name"=>"id","type"=>"int","is_to"=>true,"to_valid" =>false),
             array("name" => "user_name","type"=>"string","is_to"=>false,"to_valid" => true),
             array("name"=>"user_age","type"=>"int","is_to"=>true,"to_valid" =>false),
-            array("name"=>"user_sex","type"=>"boolean","is_to"=>true),
             array("name"=>"user_address","type"=>"string","is_to"=>false,"to_valid" => true),
         ),
         "valid" => array(

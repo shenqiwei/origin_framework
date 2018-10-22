@@ -26,7 +26,7 @@ return array(
             'DATA_USER' => 'root', # mysql登录用户
             'DATA_PWD' => '', # mysql登录密码
             'DATA_PORT' => '3306', # mysql默认访问端口
-            'DATA_DB' => 'zero_pro', # mysql访问数据库
+            'DATA_DB' => 'origin', # mysql访问数据库
         ),
     ),
 );

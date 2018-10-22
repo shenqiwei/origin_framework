@@ -38,7 +38,7 @@ class Pass
         # 查看用户设置
         if(key_exists($_mark = Mapping::MODEL_METHOD_MARK,$mapping)){
             # 执行方法装载
-            $_method = in_array(strtolower($mapping[$_method]),array('get','post'))?strtolower($mapping[$_method]):"post";
+            $_method = in_array(strtolower($mapping[$_mark]),array('get','post'))?strtolower($mapping[$_mark]):"post";
         }
         # 判断主要元素
         if(key_exists($_mark = Mapping::MODEL_MAPPING_MARK,$mapping)){
@@ -80,16 +80,16 @@ class Pass
                                             # 创建错误状态变量
                                             # 判定最理想化状态
                                             if(isset($_min) and intval($_min) and isset($_max) and intval($_max)){
-                                                if($_error = is_true('/^.*$/',$_value,intval($_min),intval($_max)) !== true){
+                                                if(($_error = is_true('/^.*$/',$_value,intval($_min),intval($_max))) !== true){
                                                     $this->_Error_code = $_error;
                                                 }
                                             }else{
                                                 if(isset($_max) and intval($_max) > 0){
-                                                    if($_error = is_true('/^.*$/',$_value,0,$_max) !== true){
+                                                    if(($_error = is_true('/^.*$/',$_value,0,$_max)) !== true){
                                                         $this->_Error_code = $_error;
                                                     }
                                                 }elseif(intval($_min) > 0){
-                                                    if($_error = is_true('/^.*$/',$_value,intval($_min),0) !== true){
+                                                    if(($_error = is_true('/^.*$/',$_value,intval($_min),0)) !== true){
                                                         $this->_Error_code = $_error;
                                                     }
                                                 }
@@ -103,7 +103,7 @@ class Pass
                                             }
                                             if(is_null($this->_Error_code)){
                                                 if(key_exists($_key = Mapping::MODEL_VALID_COLUMN_FORMAT_STRING,$_arr)){
-                                                    if($_error = is_true($_arr[$_key],$_value) !== true){
+                                                    if(($_error = is_true($_arr[$_key],$_value)) !== true){
                                                         $this->_Error_code = $_error;
                                                     }
                                                 }

@@ -58,7 +58,7 @@ class Mysql extends Query
                 # 是否使用持久链接
                 $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval(Config('DATA_P_CONNECT')));
                 # 设置数据库参数信息
-                $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
+//                $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval(Config('DATA_AUTO')));
                 # mysql请求超时时间
                 if(intval(Config('DATA_TIMEOUT')))
                     $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval(Config('DATA_TIMEOUT')));
@@ -98,7 +98,7 @@ class Mysql extends Query
                         # 是否使用持久链接
                         $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval($_connect_conf['DATA_P_CONNECT']));
                         # mysql自动提交单语句
-                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
+//                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
                         # mysql请求超时时间
                         if(intval(Config('DATA_TIMEOUT')))
                             $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval($_connect_conf['DATA_TIMEOUT']));
