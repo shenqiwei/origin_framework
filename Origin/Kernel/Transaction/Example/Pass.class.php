@@ -49,7 +49,7 @@ class Pass
                 foreach($_column as $_array){
                     if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_NAME,$_array)){
                         if($_array[$_key] == $key){
-                            $_value = input($_method.$key);
+                            $_value = input($_method.".".$key);
                             if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_IS_TO,$_array) and is_bool($_array[$_key]) and $_array[$_key]){
                                 if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_TYPE,$_array)){
                                     switch($_array[$_key]){
@@ -113,6 +113,9 @@ class Pass
                                 }else{
                                     $this->_Error_code = 'Not found validate model config';
                                 }
+                            }
+                            if(is_null($this->_Error_code)){
+                                $_receipt = $_value;
                             }
                         }else{
                             $_i += 1;
