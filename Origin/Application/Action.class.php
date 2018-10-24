@@ -560,7 +560,7 @@ abstract class Action extends Controller
                             $_page_array = $_model_array[$_key];
                             # 条件信息
                             $_page_where = null;
-                            if (key_exists($_key = Model::ACTION_WHERE_MARK, $this->_Query_array)) {
+                            if (!is_null($this->_Query_array) and key_exists($_key = Model::ACTION_WHERE_MARK, $this->_Query_array)) {
                                 $_page_where = $this->_Query_array[$_key];
                             }
                             # 翻页识别标记
@@ -594,7 +594,7 @@ abstract class Action extends Controller
                             if (key_exists($_key = Model::ACTION_PAGE_QUERY, $_page_array)) {
                                 $_query = $_page_array[$_key];
                                 $_count = $_transaction->count($_query, $this->_Query_array);
-                                $this->_PageList = Page($_page_uri, $_count, $_page_current, $_page_style, $_page_size, $_page_where);
+                                $this->_PageList = Page($_page_uri, $_count[0][0], $_page_current, $_page_style, $_page_size, $_page_where);
                                 $this->setLimit($this->_PageList['limit'], $this->_PageList['size']);
                                 $_re = $_transaction->query($_model_array, $this->_Query_array);
                                 $this->_PageNum = Number($this->_PageList, $_page_style, $_page_where, $_page_number);
