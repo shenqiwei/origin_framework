@@ -122,6 +122,7 @@ class Action
 ;                # 抽取元素列表内容
                 if(key_exists($_mark = Mapping::ACTION_COLUMN_MARK,$model)){
                     $_column_list = array_change_key_case($model[$_mark],CASE_LOWER);
+                    $_mysql = new Query($this->_Data_source);
                     # 循环遍历比对变量内容
                     for($_i = 0;$_i < $_count;$_i++){
                         # 转存对象内容
@@ -149,7 +150,6 @@ class Action
                         }
                         if(isset($_column)){
                             if(key_exists($_var,$_column)){
-                                $_mysql = new Query($this->_Data_source);
                                 if(Mapping::ACTION_LIMIT_MARK === $_var){
                                     if(is_array($_column[$_var])){
                                         $_mysql->limit(intval($_column[$_var][Mapping::ACTION_LIMIT_BEGIN_MARK]),intval($_column[$_var][Mapping::ACTION_LIMIT_LENGTH_MARK]));
@@ -261,7 +261,66 @@ class Action
                                 # 执行默认请求器模板内容加载
                                 $_var = str_replace('[:',null,str_replace(']',null,$_var));
                                 if(is_array($query_data) and !empty($query_data) and key_exists($_var,$query_data)){
-                                    $_var = $query_data[$_var];
+                                    $_column = $query_data;
+                                    if(key_exists($_var,$_column)){
+                                        if(Mapping::ACTION_LIMIT_MARK === $_var){
+                                            if(is_array($_column[$_var])){
+                                                $_mysql->limit(intval($_column[$_var][Mapping::ACTION_LIMIT_BEGIN_MARK]),intval($_column[$_var][Mapping::ACTION_LIMIT_LENGTH_MARK]));
+                                                $_limit = preg_replace('/^\s*limit\s+/',null,$_mysql->_Limit);
+                                                $_query = str_replace($_variable[$_i][0],$_limit,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }elseif(Mapping::ACTION_WHERE_MARK === $_var){
+                                            if(is_array($_column[$_var])){
+                                                $_mysql->where($_column[$_var]);
+                                                $_query = str_replace($_variable[$_i][0],$_mysql->_Where,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }elseif(Mapping::ACTION_ORDER_MARK === $_var){
+                                            if(is_array($_column[$_var])){
+                                                $_mysql->order($_column[$_var]);
+                                                $_order = preg_replace('/^\s*order\s+by\s+/',null,$_mysql->_Order);
+                                                $_query = str_replace($_variable[$_i][0],$_order,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }elseif(Mapping::ACTION_GROUP_MARK === $_var){
+                                            if(is_array($_column[$_var])){
+                                                $_mysql->group($_column[$_var]);
+                                                $_group = preg_replace('/^\s*group\s+by\s+/',null,$_mysql->_Group);
+                                                $_query = str_replace($_variable[$_i][0],$_group,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }elseif(Mapping::ACTION_FIELD_MARK === $_var){
+                                            if(is_array($_column[$_var])){
+                                                $_mysql->field($_column[$_var]);
+                                                $_query = str_replace($_variable[$_i][0],$_mysql->_Field,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }else{
+                                            if(is_array($_column[$_var])){
+                                                # 设置计数锚点
+                                                $_s = 0;
+                                                # 创建中间结构变量，存储数组拆分内容，并进行预设结构拼接
+                                                $_middle = null;
+                                                foreach($_column[$_var] as $_col){
+                                                    if(empty($_s)){
+                                                        $_middle = $_col;
+                                                    }else{
+                                                        $_middle .= ",".$_col;
+                                                    }
+                                                    $_s++;
+                                                }
+                                                $_query = str_replace($_variable[$_i][0],$_middle,$_query);
+                                            }else{
+                                                $_query = str_replace($_variable[$_i][0],$_column[$_var],$_query);
+                                            }
+                                        }
+                                    }
                                 }else{
                                     if(is_array($_cfg) and !empty($_cfg)){
                                         $_pass = new Pass();
