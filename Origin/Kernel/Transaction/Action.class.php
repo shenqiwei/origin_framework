@@ -42,6 +42,11 @@ class Action
     protected $_Data_source = null;
     /**
      * @access protected
+     * @var string $_Request_Method 设置请求方式
+     */
+    protected $_Request_Method;
+    /**
+     * @access protected
      * @var string $_Action_type 执行类型
      */
     protected $_Action_type = "select";
@@ -83,6 +88,16 @@ class Action
         if(in_array(strtolower($type),array("select","insert","update","delete","count")))
             # 设置执行对象
             $this->_Action_type = strtolower($type);
+    }
+    /**
+     * @access public
+     * @param string $method 请求类型
+     * @context 请求类型
+     */
+    function setMethod($method)
+    {
+        if(in_array(strtolower($method),array("get","post")))
+            $this->_Request_Method = strtolower($method);
     }
     /**
      * @access public
@@ -307,9 +322,9 @@ class Action
         $_major = null;
         if(key_exists($_mark = Mapping::MAPPING_MAJOR_MARK,$model)){
             $_factory = new Factory();
-            $_major = $_factory->index(array(Mapping::MAPPING_COLUMN_MARK=>$model[$_mark]));
+            $_factory->setMethod($this->_Request_Method);
+            $_major = $_factory->index(array(Mapping::MAPPING_COLUMN_MARK=>array($model[$_mark])));
             if(!is_null($_factory->getErrorMsg())){
-                $this->_Error_code = $_factory->getErrorMsg();
                 $_major = null;
             }
         }else{
@@ -318,39 +333,77 @@ class Action
         if(is_null($this->_Error_code)){
             # 抽取成员内容信息
             if(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$model)){
-                # 分调数据封装
-                switch($_dataSource){
-                    case "redis":
-                        $_redis = new Redis($this->_Data_source);
-                        $_redis->setTable($_table);
-                        $_redis->setColumn($model[$_mark]);
-                        $_redis->setData($query_data);
-                        $_redis->setType($this->_Action_type);
-                        if(is_null($_redis->getError())){
-                            $_receipt = $_redis->execute();
+                $_factory = new Factory();
+                $_factory->setMethod($this->_Request_Method);
+                $_data = $_factory->index(array(Mapping::MAPPING_COLUMN_MARK=>$model[$_mark]));
+                if(is_null($_factory->getErrorMsg())){
+                    if(is_array($query_data) and !empty($query_data)){
+                        if(key_exists("data",$query_data)){
+                            if(is_array($query_data['data']) and !empty($query_data['data'])){
+                                null;
+                            }else{
+                                $query_data['data'] = $_data;
+                            }
+                        }else{
+                            $query_data['data'] = $_data;
                         }
-                        break;
-                    case "mongodb":
-                        $_mongo = new MongoDB($this->_Data_source);
-                        $_mongo->setTable($_table);
-                        $_mongo->setColumn($model[$_mark]);
-                        $_mongo->setData($query_data);
-                        $_mongo->setType($this->_Action_type);
-                        if(is_null($_mongo->getError())){
-                            $_receipt = $_mongo->execute();
-                        }
-                        break;
-                    default : # mysql
-                        $_mysql = new Mysql($this->_Data_source);
-                        $_mysql->setTable($_table);
-                        $_mysql->setMajor($_major);
-                        $_mysql->setColumn($model[$_mark]);
-                        $_mysql->setData($query_data);
-                        $_mysql->setType($this->_Action_type);
-                        if(is_null($_mysql->getError())){
-                            $_receipt = $_mysql->execute();
-                        }
-                        break;
+                    }else{
+                        $query_data['data'] = $_data;
+                    }
+                    # 分调数据封装
+                    switch($_dataSource){
+                        case "redis":
+                            $_redis = new Redis($this->_Data_source);
+                            $_redis->setTable($_table);
+                            $_redis->setColumn($model[$_mark]);
+                            $_redis->setData($query_data);
+                            $_redis->setType($this->_Action_type);
+                            if(is_null($_redis->getError())){
+                                $_receipt = $_redis->execute();
+                                if(!is_null($_redis->getError())){
+                                    $this->_Error_code = $_redis->getError();
+                                }
+                            }else{
+                                $this->_Error_code = $_redis->getError();
+                            }
+                            if(is_null($_redis->getError())){
+                                $_receipt = $_redis->execute();
+                            }
+                            break;
+                        case "mongodb":
+                            $_mongo = new MongoDB($this->_Data_source);
+                            $_mongo->setTable($_table);
+                            $_mongo->setColumn($model[$_mark]);
+                            $_mongo->setData($query_data);
+                            $_mongo->setType($this->_Action_type);
+                            if(is_null($_mongo->getError())){
+                                $_receipt = $_mongo->execute();
+                                if(!is_null($_mongo->getError())){
+                                    $this->_Error_code = $_mongo->getError();
+                                }
+                            }else{
+                                $this->_Error_code = $_mongo->getError();
+                            }
+                            break;
+                        default : # mysql
+                            $_mysql = new Mysql($this->_Data_source);
+                            $_mysql->setTable($_table);
+                            $_mysql->setMajor($_major);
+                            $_mysql->setColumn($model[$_mark]);
+                            $_mysql->setData($query_data);
+                            $_mysql->setType($this->_Action_type);
+                            if(is_null($_mysql->getError())){
+                                $_receipt = $_mysql->execute();
+                                if(!is_null($_mysql->getError())){
+                                    $this->_Error_code = $_mysql->getError();
+                                }
+                            }else{
+                                $this->_Error_code = $_mysql->getError();
+                            }
+                            break;
+                    }
+                }else{
+                    $this->_Error_code = $_factory->getErrorMsg();
                 }
             }else{
                 # 异常提示：未设置元素内容

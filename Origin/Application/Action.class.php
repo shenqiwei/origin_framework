@@ -53,13 +53,16 @@ abstract class Action extends Controller
      * @var string $_PageNum number信息列表
      */
     protected $_PageNum;
-
+    /**
+     * @access protected
+     * @var string $_Request_Method 设置请求方式
+    */
+    protected $_Request_Method;
     # 构造方法
     function __construct()
     {
         parent::__construct();
     }
-
     /**
      * @access protected
      * @param string $mapping 映射对象名称
@@ -75,6 +78,7 @@ abstract class Action extends Controller
         $this->_Action_array = null;
         $this->_Query_array = null;
         $this->_Query_type = null;
+        $this->_Request_Method = "post";
         # action主映射指向，默认与调用控制同名
         $_class = $this->get_class();
         # 判断class对象内容是否为完整引述路径
@@ -406,9 +410,17 @@ abstract class Action extends Controller
         } else {
             $this->_Query_array = array($key => $value);
         }
-
     }
-
+    /**
+     * @access protected
+     * @param string $method 请求类型
+     * @context 请求类型
+    */
+    protected function setMethod($method)
+    {
+        if(in_array(strtolower($method),array("get","post")))
+            $this->_Request_Method = strtolower($method);
+    }
     /**
      * @access protected
      * @param string $obj 执行模板映射对象名称
@@ -452,6 +464,7 @@ abstract class Action extends Controller
                     $_transaction->setType($_type);
                     # 选择事务类型
                     if (key_exists(Model::ACTION_QUERY_MARK, $_model_array)) {
+                        $_transaction->setMethod($this->_Request_Method);
                         $_re = $_transaction->query($_model_array, $this->_Query_array);
                         if (is_null($_transaction->getErrorMsg())) {
                             $_receipt = $_re;
@@ -459,6 +472,7 @@ abstract class Action extends Controller
                             $this->_Error_code = $_transaction->getErrorMsg();
                         }
                     } elseif (key_exists(Model::MAPPING_TABLE_MARK, $_model_array)) {
+                        $_transaction->setMethod($this->_Request_Method);
                         $_re = $_transaction->model($_model_array, $this->_Query_array);
                         if (is_null($_transaction->getErrorMsg())) {
                             $_receipt = $_re;

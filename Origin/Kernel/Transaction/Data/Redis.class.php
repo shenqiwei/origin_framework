@@ -123,19 +123,32 @@ class Redis
         # 选择数据执行状态
         switch(trim(strtolower($this->_Type))){
             case "insert":
-                $_receipt = $this->insert($this->_Table,$this->_Data['data'],$this->_Cycle);
+                if(is_array($this->_Data['data'] and !empty($this->_Data['data'])))
+                    $_receipt = $this->insert($this->_Table,$this->_Data['data'],$this->_Cycle);
+                else
+                    $this->_Error_code = "Not found data array information";
                 break;
             case "update":
-                $_receipt = $this->update($this->_Table,$this->_Data['data'],$this->_Cycle);
+                if(is_array($this->_Data['data'] and !empty($this->_Data['data'])))
+                    $_receipt = $this->update($this->_Table,$this->_Data['data'],$this->_Cycle);
+                else
+                    $this->_Error_code = "Not found data array information";
                 break;
             case "delete":
-                $_receipt = $this->delete($this->_Table,$this->_Data['field']);
+                if(is_array($this->_Data['field'] and !empty($this->_Data['field'])))
+                    $_receipt = $this->delete($this->_Table,$this->_Data['field']);
+                else
+                    $this->_Error_code = "Not found field array information";
                 break;
             case "count":
                 $_receipt = $this->count($this->_Table);
                 break;
             default:
-                $_receipt = $this->select($this->_Table,$this->_Data['field']);
+                if(is_array($this->_Data['field'] and !empty($this->_Data['field'])))
+                    $_receipt = $this->select($this->_Table,$this->_Data['field']);
+                else
+                    $this->_Error_code = "Not found field array information";
+
                 break;
         }
         return $_receipt;

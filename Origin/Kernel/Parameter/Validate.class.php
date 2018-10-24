@@ -113,9 +113,11 @@ class Validate
             'strong' => '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]*)+$/',
             'safety' => '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]+)+$/',
         );
-        $this->_Variable = strval(trim($variable));
+        $this->_Variable = $variable;
         if(array_key_exists(strval(trim($type)),$_regular)){
             $this->_Type = strval($_regular[trim($type)]);
+        }elseif(in_array($type,array('int','string','double','float','boolean'))){
+            $this->_Type = $type;
         }else{
             $this->_Type = 'redefine';
         }
@@ -197,13 +199,13 @@ class Validate
                 if(empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) == 0){
                     # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                     if(is_int($this->_Variable) and $this->_Variable == 0)
-                        $_return = 'complete';
+                        null;
                     elseif((is_float($this->_Variable) or is_double($this->_Variable))and $this->_Variable == 0.0)
-                        $_return = 'complete';
+                        null;
                     elseif(is_bool($this->_Variable) and $this->_Variable == false)
-                        $_return = 'complete';
+                        null;
                     elseif(is_string($this->_Variable) and $this->_Variable == '0')
-                        $_return = 'complete';
+                        null;
                     else
                         # error: Verify the value is null
                         $_return = 'value null';
@@ -297,6 +299,21 @@ class Validate
         if($this->_Type == 'redefine'){
             # Origin Class Error: Your choice of validation structure does not exist
             $_return = 'type error';
+        }elseif($this->_Type == 'int'){
+            if(!is_int($this->_Variable))
+                $_return = 'type error';
+        }elseif($this->_Type == 'string'){
+            if(!is_string($this->_Variable))
+                $_return = 'type error';
+        }elseif($this->_Type == 'double'){
+            if(!is_double($this->_Variable))
+                $_return = 'type error';
+        }elseif($this->_Type == 'float'){
+            if(!is_float($this->_Variable))
+                $_return = 'type error';
+        }elseif($this->_Type == 'boolean'){
+            if(!is_bool($this->_Variable))
+                $_return = 'type error';
         }else{
             # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
             # Origin Class Error: Unable to verify the array

@@ -96,7 +96,7 @@ class Mysql
     */
     function setType($type)
     {
-        $this->_Table = $type;
+        $this->_Type = $type;
     }
     /**
      * @access public
@@ -119,7 +119,10 @@ class Mysql
         # 选择数据执行状态
         switch(trim(strtolower($this->_Type))){
             case "insert":
-                $_receipt = $this->insert($this->_Table,$this->_Data['data']);
+                if(is_array($this->_Data['data']) and !empty($this->_Data['data']))
+                    $_receipt = $this->insert($this->_Table,$this->_Data['data']);
+                else
+                    $this->_Error_code = "Not found data array information";
                 break;
             case "update":
                 # 初始化条件变量
@@ -144,8 +147,14 @@ class Mysql
                         $this->_Error_code = "Not found [where] information";
                     }
                 }
-                if(is_null($this->_Error_code))
-                    $_receipt = $this->update($this->_Table,$this->_Data['data'],$_where);
+                if(is_null($this->_Error_code)){
+                    if(is_array($this->_Data['data']) and !empty($this->_Data['data']))
+                        $_receipt = $this->update($this->_Table,$this->_Data['data'],$_where);
+                    else
+                        $this->_Error_code = "Not found data array information";
+                    break;
+                }
+
                 break;
             case "delete":
                 # 初始化条件变量
@@ -269,7 +278,7 @@ class Mysql
             $this->_Dao_connect->data($data);
         else
             # 无效数据对象
-            $this->_Dao_connect = "Not found where information";
+            $this->_Error_code = "Not found data information";
         if(is_null($this->_Error_code))
             return $this->_Dao_connect->insert();
         else
@@ -294,12 +303,12 @@ class Mysql
             $this->_Dao_connect->data($data);
         else
             # 无效数据对象
-            $this->_Error_code = "";
+            $this->_Error_code = "Not found data information";
         if(!is_null($where))
             $this->_Dao_connect->where($where);
         else
             # 无效条件对象
-            $this->_Dao_connect = "Not found where information";
+            $this->_Error_code = "Not found where information";
         if(is_null($this->_Error_code))
             return $this->_Dao_connect->update();
         else
@@ -323,7 +332,7 @@ class Mysql
             $this->_Dao_connect->where($where);
         else
             # 无效条件对象
-            $this->_Dao_connect = "Not found where information";
+            $this->_Error_code = "Not found where information";
         if(is_null($this->_Error_code))
             return $this->_Dao_connect->delete();
         else

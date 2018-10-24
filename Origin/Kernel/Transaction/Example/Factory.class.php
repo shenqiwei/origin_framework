@@ -12,6 +12,7 @@ namespace Origin\Kernel\Transaction\Example;
 use Origin\Model as Mapping;
 # 调用内核验证模块
 use Origin\Kernel\Parameter\Validate;
+use function PHPSTORM_META\type;
 
 class Factory
 {
@@ -135,6 +136,7 @@ class Factory
                     $_data[$_column] = $_value;
                 }
             }
+
         }elseif(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$model)){
             # 遍历字段列表
             foreach($model[$_mark] as $_array){
@@ -160,7 +162,8 @@ class Factory
                     # 设置数据类型
                     $_type = "string";
                     if(key_exists($_key = Mapping::MAPPING_TYPE_OPTION,$_array)){
-                        switch(strtolower($_array[$_key])){
+                        $_type = strtolower($_array[$_key]);
+                        switch($_type){
                             case "string":
                                 $_value = strval($_value);
                                 break;
@@ -190,7 +193,7 @@ class Factory
                         $_not_null = boolval($_array[$_key]);
                     }
                     # 调用验证封装函数库
-                    $_validate = new Validate($_value,null,0,$_size,$_not_null);
+                    $_validate = new Validate($_value,$_type,0,$_size,$_not_null);
                     # 调用主验证函数
                     $_status_value = $_validate->main();
                     if($_status_value !== true){
