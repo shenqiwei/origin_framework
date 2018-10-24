@@ -657,7 +657,7 @@ abstract class Action extends Controller
                             if (key_exists($_key = Model::MAPPING_PAGE_NUMBER, $_page_array)) {
                                 $_page_number = $_page_array[$_key];
                             }
-                            $_count = $_transaction->count(array("table"=>$_page_array[Model::MAPPING_TABLE_MARK]), $this->_Query_array);
+                            $_count = $_transaction->count(array("table"=>$_model_array[Model::MAPPING_TABLE_MARK]), $this->_Query_array);
                             $this->_PageList = Page($_page_uri, $_count, $_page_current, $_page_style, $_page_size, $_page_where);
                             $this->setLimit($this->_PageList['limit'], $this->_PageList['size']);
                             $_re = $_transaction->model($_model_array, $this->_Query_array);
