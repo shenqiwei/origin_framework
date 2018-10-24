@@ -128,7 +128,7 @@ class Mysql
                 # 初始化条件变量
                 $_where = null;
                 # 判断条件结构内容是否有效
-                if(key_exists("where",$this->_Data)){
+                if(!is_array($this->_Data) and key_exists("where",$this->_Data)){
                     # 判断条件内容状态
                     if(!is_null($this->_Data['where']) and !empty($this->_Data['where'])){
                         $_where = $this->_Data['where'];
@@ -178,7 +178,7 @@ class Mysql
                 # 初始化条件变量
                 $_where = null;
                 # 判断条件结构内容是否有效
-                if(key_exists("where",$this->_Data)){
+                if(!is_null($this->_Data) and key_exists("where",$this->_Data)){
                     # 判断条件内容状态
                     if(!is_null($this->_Data['where']) and !empty($this->_Data['where'])){
                         $_where = $this->_Data['where'];
@@ -222,7 +222,7 @@ class Mysql
                 # 初始化条件变量
                 $_where = null;
                 # 判断条件结构内容是否有效
-                if(key_exists("where",$this->_Data)){
+                if(!is_null($this->_Data) and key_exists("where",$this->_Data)){
                     # 判断条件内容状态
                     if(!is_null($this->_Data['where']) and !empty($this->_Data['where'])){
                         if(is_array($this->_Major)){
@@ -270,7 +270,7 @@ class Mysql
                 # 初始化条件变量
                 $_where = null;
                 # 判断条件结构内容是否有效
-                if(key_exists("where",$this->_Data)){
+                if(!is_null($this->_Data) and key_exists("where",$this->_Data)){
                     # 判断条件内容状态
                     if(!is_null($this->_Data['where']) and !empty($this->_Data['where'])){
                         $_where = $this->_Data['where'];
@@ -335,7 +335,7 @@ class Mysql
         if(!is_null($order))
             $this->_Dao_connect->order($where);
         if(!is_null($limit))
-            $this->_Dao_connect->limit($limit);
+            $this->_Dao_connect->limit(intval($limit['begin']),intval($limit['length']));
         if(is_null($this->_Error_code))
             return $this->_Dao_connect->select();
         else
