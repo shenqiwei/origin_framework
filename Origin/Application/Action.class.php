@@ -16,7 +16,10 @@
 namespace Origin;
 # 调用映射描述模板封装
 use Origin\Kernel\Transaction\Action as Transaction;
-# 继承Origin主控制器
+# 调用工厂结构模块
+use Origin\Kernel\Transaction\Example\Factory;
+# 调用入口结构模块
+use Origin\Kernel\Transaction\Example\Pass;
 # 行为控制主类，控制器单元出口，抽象结构模型
 abstract class Action extends Controller
 {
@@ -35,6 +38,11 @@ abstract class Action extends Controller
      * @var array $_Query_array query语句值干预数组，包含主元素内容Data数据，Where条件内容
     */
     protected $_Query_array;
+    /**
+     * @access protected
+     * @var string $_Query_type
+    */
+    protected $_Query_type;
     /**
      * @access protected
      * @var mixed $_Result 返回结果
@@ -59,6 +67,7 @@ abstract class Action extends Controller
         $this->_Error_code = null;
         $this->_Action_array = null;
         $this->_Query_array = null;
+        $this->_Query_type = null;
         $this->_Result = null;
         # action主映射指向，默认与调用控制同名
         $_class = $this->get_class();
@@ -95,7 +104,7 @@ abstract class Action extends Controller
         }else{
             # 异常提示：行为配置文件无效
             try{
-                throw new \Exception('Origin Action Config Error: Master config mapping key is invalid');
+                throw new \Exception('Origin Action Config Error: Master config mapping key['.$_mapping.'] is invalid');
             }catch(\Exception $e){
                 echo($e->getMessage());
                 exit();
@@ -107,7 +116,7 @@ abstract class Action extends Controller
         }else{
             # 异常提示：行为配置文件无效
             try{
-                throw new \Exception('Origin Action Config Error: Action config mapping key is invalid');
+                throw new \Exception('Origin Action Config Error: Action config mapping key['.$_object.'] is invalid');
             }catch(\Exception $e){
                 echo($e->getMessage());
                 exit();
@@ -119,39 +128,69 @@ abstract class Action extends Controller
      * @access public
      * @param string $mapping 执行映射名称，默认状态下自动获取当前执行对象名称
      * @param array $data 对象数据修改内容值数组
+     * @param string $method 请求类型
      * @return boolean
      * @context 获取对象数据，并使用自定义数组（data）替换对象数组中指定元素值
      */
-    public function setData($mapping=null,$data=null)
+    public function setData($mapping=null,$data=null,$method="post")
     {
         # 创建返回值变量
         $_receipt = false;
-        # 获取数据，并进行标记
-        if(is_null($mapping)){
-            $_data = input($this->_Action_array[Model::ACTION_MODEL_OBJECT_MARK]);
-        }else{
-            $_data = input($mapping);
-        }
-        # 判断是否有需要修改数据
-        if(!is_null($data)){
-            # 遍历数据
-            foreach($data as $_key => $_value){
-                # 判断元素是否已存在，如果存在替换数据内容
-                if(key_exists($_key,$_data)){
-                    $_data[$_key] = $_data;
+        # 抽取模板对象
+        if(key_exists($_mark = Model::ACTION_MODEL_OBJECT_MARK,$this->_Action_array)){
+            # 是否自定义映射指向
+            $_model = Action($this->_Action_array[$_mark],$mapping);
+            # 检查模板对象状态
+            if(isset($_model) and is_array($_model)){
+                # 实例化工厂模型
+                $_factory = new Factory();
+                $_factory->setMethod($method);
+                # 判断行为模板执行类型
+                if(key_exists($_mark = Model::ACTION_QUERY_MARK,$_model)){
+                    $_model = model($this->_Action_array[$_mark],$mapping);
+                    $this->_Query_array["data"] = $_factory->index($_model);
+                    if(is_null($_factory->getErrorMsg())){
+                        foreach($data as $_key => $_value){
+                            if(key_exists($_key,$this->_Query_array['data'])){
+                                $this->_Query_array['data'][$_key] = $_value;
+                            }
+                        }
+                    }else{
+                        $this->_Error_code = $_factory->getErrorMsg();
+                    }
+                }elseif(key_exists($_mark = Model::MAPPING_TABLE_MARK,$_model)){
+                    $_type = "select";
+                    if(key_exists($_mark = Model::ACTION_TYPE_MARK,$this->_Action_array))
+                        $_type = $this->_Action_array[$_mark];
+                    $this->_Query_array["data"] = $_factory->index($_model,$_type);
+                    if(is_null($_factory->getErrorMsg())){
+                        foreach($data as $_key => $_value){
+                            if(key_exists($_key,$this->_Query_array['data'])){
+                                $this->_Query_array['data'][$_key] = $_value;
+                            }
+                        }
+                    }else{
+                        $this->_Error_code = $_factory->getErrorMsg();
+                    }
                 }else{
-                    # 如果没有相应数据，增加内容数据
-                    array_push($_data,array($_key,$_value));
+                    # 异常提示：行为操作模板无效
+                    try{
+                        throw new \Exception('Origin Action Controller Error: Not found object(query|table) mark');
+                    }catch(\Exception $e){
+                        echo($e->getMessage());
+                        exit();
+                    }
                 }
             }
+        }else{
+            # 异常提示：行为配置文件无效
+            try{
+                throw new \Exception('Origin Action Controller Error: Not found model object');
+            }catch(\Exception $e){
+                echo($e->getMessage());
+                exit();
+            }
         }
-        if(is_array($_data) and !empty($_data)){
-            # 值装载并进行标记
-            $this->_Query_array["data"] = $_data;
-            # 修改状态
-            $_receipt = true;
-        }
-        End:
         # 返回状态信息
         return $_receipt;
     }
@@ -173,64 +212,119 @@ abstract class Action extends Controller
     }
     /**
      * @access public
-     * @param array|string $where 条件结构参数对象数组
+     * @param string|array $model 条件语句执行模板字段参数(带参数变量，的条件语句结构字符串) or 条件结构数组
      * @param string $mapping 执行映射名称，默认状态下自动获取当前执行对象名称
+     * @param array|string $where 条件结构参数对象数组
      * @return boolean
      * @context 设置条件内容
      */
-    public function setWhere($where=null,$mapping=null)
+    public function setWhere($model,$mapping=null,$where=null)
     {
         # 创建返回值变量
         $_receipt = false;
-        # 获取数据，并进行标记
-        if(is_null($mapping)){
-            $_data = input($this->_Action_array[Model::ACTION_MODEL_OBJECT_MARK]);
-        }else{
-            $_data = input($mapping);
-        }
-        # 判断是否预设条件内容
-        if(!is_null($where)){
-            if(is_array($where)){
-                if(!empty($where)){
-                    foreach($where as $_key => $_value){
-                        if(!is_null($this->_Error_code))
-                            break;
-                        if(preg_match_all("/\[:[^:\[\]]+\]/",$_value,$_variable,PREG_SET_ORDER)){
-                            # 拆分变量结构
-                            $_key = str_replace("]",null,str_replace("[:",null,$_variable[0][0]));
-                            # 比对变量信息
-                            if(key_exists($_key,$_data)){
-                                # 执行信息替换
-                                $where[$_key] = $_data[$_key];
+        # 抽取模板对象
+        if(key_exists($_mark = Model::ACTION_MODEL_OBJECT_MARK,$this->_Action_array)){
+            # 是否自定义映射指向
+            $_model = Model($this->_Action_array[$_mark],$mapping);
+            # 抽取时间结构变量
+            $_time_format = '/\[\[\^:time\]:[^\[\]]+\]/';
+            # 抽取变量内容规则(请求器对象元素项)
+            $_var_format = '/\[:[^\[\]]+\]/';
+            # 执行模板结构验证
+            if(is_array($model) and !empty($model)){
+                foreach($model as $_key => $_value){
+                    if($_count = preg_match_all($_time_format,$_value,$_time,PREG_SET_ORDER)){
+                        for($_i = 0;$_i < $_count;$_i++){
+                            # 转化变量内容
+                            $_time_format = str_replace("]",null,str_replace("[[^:time]:",null,$_time[$_i][0]));
+                            # 转义信息
+                            $model[$_key] = str_replace($_time[$_i],"'".date($_time_format)."'",$model[$_key]);
+                        }
+                    }
+                    if($_count = preg_match_all($_var_format,$_value,$_variable,PREG_SET_ORDER)){
+                        for($_i = 0;$_i < $_count;$_i++){
+                            # 转存对象内容
+                            $_var = $_variable[$_i][0];
+                            # 区分变量结构
+                            # 执行默认请求器模板内容加载
+                            $_var = str_replace('[:',null,str_replace(']',null,$_var));
+                            if(is_array($where) and !empty($where) and key_exists($_var,$where)){
+                                $model[$_key] = $where[$_var];
                             }else{
-                                # 条件变量未解析
-                                $this->_Error_code = "";
+                                if(is_array($_model) and !empty($_model)){
+                                    $_pass = new Pass();
+                                    $model[$_key] = $_pass->index($_model,$_var);
+                                    if(!is_null($_pass->getErrorMsg())){
+                                        $this->_Error_code = $_pass->getErrorMsg();
+                                    }
+                                }
                             }
                         }
                     }
                 }
-            }else{
-                if($_count = preg_match_all("/\[:[^:\[\]]+\]/",$where,$_where,PREG_SET_ORDER)){
-                    # 比例条件内容中预设变量
+                $this->_Query_array['where'] = $model;
+            }elseif(!is_null($model) and !empty($model)){
+                # 抽取时间结构变量内容
+                if($_count = preg_match_all($_time_format,$model,$_time,PREG_SET_ORDER)){
+                    # 遍历数据内容
                     for($_i = 0;$_i < $_count;$_i++){
-                        # 拆分变量结构
-                        $_key = str_replace("]",null,str_replace("[:",null,$_where[$_i][0]));
-                        # 比对变量信息
-                        if(key_exists($_key,$_data)){
-                            # 执行信息替换
-                            $where = str_replace($_where[$_i][0],$_data[$_key],$where);
+                        # 转化变量内容
+                        $_time_format = str_replace("]",null,str_replace("[[^:time]:",null,$_time[$_i][0]));
+                        # 转义信息
+                        $model = str_replace($_time[$_i],"'".date($_time_format)."'",$model);
+                    }
+                }
+                # 抽取关系变量内容
+                if($_count = preg_match_all($_var_format,$model,$_variable,PREG_SET_ORDER)){
+                    # 循环遍历比对变量内容
+                    for($_i = 0;$_i < $_count;$_i++){
+                        # 转存对象内容
+                        $_var = $_variable[$_i][0];
+                        # 区分变量结构
+                        # 执行默认请求器模板内容加载
+                        $_var = str_replace('[:',null,str_replace(']',null,$_var));
+                        if(is_array($where) and !empty($where) and key_exists($_var,$where)){
+                            $_var = $where[$_var];
+                        }else{
+                            if(is_array($_model) and !empty($_model)){
+                                $_pass = new Pass();
+                                $_var = $_pass->index($_model,$_var);
+                                if(!is_null($_pass->getErrorMsg())){
+                                    $this->_Error_code = $_pass->getErrorMsg();
+                                }
+                            }
+                        }
+                        if(is_integer($_var) or is_float($_var) or is_double($_var)){
+                            $model = str_replace($_variable[$_i][0],$_var,$model);
+                        }else{
+                            $model = str_replace($_variable[$_i][0],"'".$_var."'",$model);
+                        }
+                        $model = str_replace($_variable[$_i][0],$_var,$model);
+                        # 条件运算结构转义
+                        foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+                            $model = preg_replace($key, $value, $model);
                         }
                     }
                 }
+                $this->_Query_array['where'] = $model;
+            }else{
+                # 异常提示：无效模板
+                try{
+                    throw new \Exception('Origin Action Controller Error:  model is invalid');
+                }catch(\Exception $e){
+                    echo($e->getMessage());
+                    exit();
+                }
+            }
+        }else{
+            # 异常提示：行为配置文件无效
+            try{
+                throw new \Exception('Origin Action Controller Error: Not found model object');
+            }catch(\Exception $e){
+                echo($e->getMessage());
+                exit();
             }
         }
-        if(is_null($this->_Error_code)){
-            # 值装载并进行标记
-            $this->_Query_array["where"] = $where;
-            # 修改状态
-            $_receipt = true;
-        }
-        End:
         # 返回状态信息
         return $_receipt;
     }
@@ -270,21 +364,17 @@ abstract class Action extends Controller
     }
     /**
      * @access public
-     * @param int $limit_begin 数据查询其实位置
      * @param int $limit_count 数据显示数量
+     * @param int $limit_begin 数据查询其实位置
      * @return boolean
      * @context 设置排序内容
      */
-    public function setLimit($limit_count=0,$limit_begin=null)
+    public function setLimit($limit_begin=0,$limit_count=null)
     {
         # 创建返回值变量
         $_receipt = false;
         if($limit_count > 0){
-            if(is_null($limit_begin)){
-                $this->_Query_array["limit"] = intval($limit_count);
-            }else{
-                $this->_Query_array['limit'] = array("limit_begin"=>intval($limit_begin),"limit_count"=>intval($limit_count));
-            }
+            $this->_Query_array['limit'] = array("begin"=>intval($limit_begin),"length"=>intval($limit_count));
             $_receipt = true;
         }
         # 返回状态信息
@@ -378,6 +468,14 @@ abstract class Action extends Controller
                         echo($e->getMessage());
                         exit();
                     }
+                }
+            }else{
+                # 异常提示：行为配置文件无效
+                try{
+                    throw new \Exception('Origin Action Controller Error: Not found model object');
+                }catch(\Exception $e){
+                    echo($e->getMessage());
+                    exit();
                 }
             }
         }else{

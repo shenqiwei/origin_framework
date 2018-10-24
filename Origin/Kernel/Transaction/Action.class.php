@@ -9,14 +9,14 @@
 namespace Origin\Kernel\Transaction;
 
 # 调用注册操作封装类
-use Origin\Kernel\Transaction\Example\Model;
-use Origin\Kernel\Transaction\Example\Query;
-use Origin\Kernel\Transaction\Example\Pass;
 use Origin\Kernel\Transaction\Example\Factory;
+use Origin\Kernel\Transaction\Example\Query;
+use Origin\Kernel\Transaction\Data\Mysql;
+use Origin\Kernel\Transaction\Data\Redis;
+use Origin\Kernel\Transaction\Data\Mongodb;
+use Origin\Kernel\Transaction\Example\Pass;
 # 模板元素表述封装
 use Origin\Model as Mapping;
-# 调用验证模型封装
-use Origin\Kernel\Parameter\Validate;
 
 class Action
 {
@@ -45,12 +45,6 @@ class Action
      * @var string $_Action_type 执行类型
      */
     protected $_Action_type = "select";
-    /**
-     * @access protected
-     * @var array $_Action_data 执行对象
-     */
-    protected $_Action_data = null;
-
     /**
      * @access public
      * @param string $source 数据源指向
@@ -89,18 +83,6 @@ class Action
         if(in_array(strtolower($type),array("select","insert","update","delete","count")))
             # 设置执行对象
             $this->_Action_type = strtolower($type);
-    }
-    /**
-     * @access public
-     * @param array $data 数据对象
-     * @context 获取对象数据内容
-     */
-    public function setData($data)
-    {
-        # 判断传入数据对象是否有效
-        if(is_array($data) and !empty($data))
-            # 存储数据对象内容
-            $this->_Action_data = $data;
     }
     /**
      * @access public
@@ -214,9 +196,9 @@ class Action
                         }
                     }
                     # 抽取时间结构变量
-                    $_var_format = '/\[\[\^:time\]:[^\[\]]+\]/';
+                    $_time_format = '/\[\[\^:time\]:[^\[\]]+\]/';
                     # 抽取时间结构变量内容
-                    if($_count = preg_match_all($_var_format,$_query,$_time,PREG_SET_ORDER)){
+                    if($_count = preg_match_all($_time_format,$_query,$_time,PREG_SET_ORDER)){
                         # 遍历数据内容
                         for($_i = 0;$_i < $_count;$_i++){
                             # 转化变量内容
@@ -309,106 +291,101 @@ class Action
     /**
      * @access public
      * @param array $model 数据映射对象模板内容
-     * @param array $data 数据内容数组
+     * @param array $query_data 数据内容数组
      * @return mixed
      * @context 数据操作，支持mysql，redis，mongodb
     */
-    function model($model,$data=null)
+    function model($model,$query_data=null)
     {
         # 创建返回值变量
         $_receipt = null;
+        # 创建数据源指向变量
+        $_dataSource = $this->source();
         # 抽取表信息
         $_table = $model[Mapping::MAPPING_TABLE_MARK];
         # 抽取主键内容,创建主键对象元素名
-        $_major = $_major_column =null;
+        $_major = null;
         if(key_exists($_mark = Mapping::MAPPING_MAJOR_MARK,$model)){
-            $_major_config = $model[$_mark];
-            if(key_exists($_mark = Mapping::MAPPING_FIELD_OPTION,$_major_config)){
-                $_major = $_major_column = $_major_config[$_mark];
+            $_factory = new Factory();
+            $_major = $_factory->index(array(Mapping::MAPPING_COLUMN_MARK=>$model[$_mark]));
+            if(!is_null($_factory->getErrorMsg())){
+                $this->_Error_code = $_factory->getErrorMsg();
+                $_major = null;
             }
-            if(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$_major_config)){
-                $_major_column = $_major_config[$_mark];
-            }
+        }else{
+            $this->_Error_code = "Not found major key";
         }
-        # 抽取成员内容信息
-        if(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$model)){
-            $_column = $model[$_mark];
-            if(is_array($_column) and !empty($_column)){
-                switch($this->_Action_type){
-                    case "insert":
-                        if(!is_null($data)){
-                        }else{
-                            $_factory = new Factory();
-                            # 创建请求器模板内容变量
-                            $_cfg = Model($this->_Default);
-                            # 调用工厂主函数
-                            $_data = $_factory->index($_column,$_cfg,'insert');
-                            if(!is_null($_factory->getErrorMsg())){
-                                $this->_Error_code = $_factory->getErrorMsg();
-                            }else{
-                                $_M = new Model($this->_Data_source);
-                                $_receipt = $_M->insert($_table,$_data);
-                            }
+        if(is_null($this->_Error_code)){
+            # 抽取成员内容信息
+            if(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$model)){
+                # 分调数据封装
+                switch($_dataSource){
+                    case "redis":
+                        $_redis = new Redis($this->_Data_source);
+                        $_redis->setTable($_table);
+                        $_redis->setColumn($model[$_mark]);
+                        $_redis->setData($query_data);
+                        $_redis->setType($this->_Action_type);
+                        if(is_null($_redis->getError())){
+                            $_receipt = $_redis->execute();
                         }
                         break;
-                    case "update":
-                        if(!is_null($data)){
-                        }else{
-                            $_factory = new Factory();
-                            # 创建请求器模板内容变量
-                            $_cfg = Model($this->_Default);
-                            # 调用工厂主函数
-                            $_data = $_factory->index($_column,$_cfg,'update');
-                            if(!is_null($_factory->getErrorMsg())){
-                                $this->_Error_code = $_factory->getErrorMsg();
-                            }else{
-                                $_M = new Model($this->_Data_source);
-                                if(key_exists("where",$this->_Action_data)){
-                                    $_where = null;
-                                }else{
-                                    if(is_null($_major)){
-                                        $this->_Error_code = "Not found major key";
-                                    }else{
-                                        if(isset($_major_column)){
-                                            # 创建请求器模板内容变量
-                                            $_cfg = Model($this->_Default);
-                                            $_pass = new Pass();
-                                            $_var = $_pass->index($_cfg,$_major_column);
-                                            if(!is_null($_pass->getErrorMsg())){
-                                                $this->_Error_code = $_pass->getErrorMsg();
-                                            }
-                                        }
-                                        if(isset($_major_config)){
-                                        }
-                                    }
-                                    $_where = null;
-                                }
-                                if(!is_null($_where)){
-                                    $_receipt = $_M->update($_table,$_data,$_where);
-                                }
-                            }
+                    case "mongodb":
+                        $_mongo = new MongoDB($this->_Data_source);
+                        $_mongo->setTable($_table);
+                        $_mongo->setColumn($model[$_mark]);
+                        $_mongo->setData($query_data);
+                        $_mongo->setType($this->_Action_type);
+                        if(is_null($_mongo->getError())){
+                            $_receipt = $_mongo->execute();
                         }
                         break;
-                    case "delete":
-                        if(!is_null($data)){
-                        }else{
-                        }
-                        break;
-                    case "count":
-                        if(!is_null($data)){
-                        }else{
-                        }
-                        break;
-                    default:
-                        if(!is_null($data)){
-                        }else{
+                    default : # select
+                        $_mysql = new Mysql($this->_Data_source);
+                        $_mysql->setTable($_table);
+                        $_mysql->setMajor($_major);
+                        $_mysql->setColumn($model[$_mark]);
+                        $_mysql->setData($query_data);
+                        $_mysql->setType($this->_Action_type);
+                        if(is_null($_mysql->getError())){
+                            $_receipt = $_mysql->execute();
                         }
                         break;
                 }
+            }else{
+                # 异常提示：未设置元素内容
+                $this->_Error_code = "Not found column array";
             }
+        }
+        return $_receipt;
+    }
+    /**
+     * @access private
+     * @return string
+     * @context 数据源指向对象函数
+    */
+    private function source()
+    {
+        # 创建返回值变量
+        $_receipt = null;
+        # 判断源状态
+        if(is_null($this->_Data_source)){
+            $_receipt = Config("DATA_TYPE");
         }else{
-            # 异常提示：未设置元素内容
-            $this->_Error_code = "Not found column array";
+            # 抽取分布式数据源指向配置数组
+            $_config = Config("DATA_MATRIX_CONFIG");
+            # 遍历
+            for($_i = 0;$_i < count($_config);$_i++){
+                # 判断数据类型指向
+                if(key_exists("DATA_TYPE",$_config[$_i])){
+                    # 抽取同名配置信息
+                    if($_config[$_i]["DATA_NAME"] == $this->_Data_source){
+                        $_receipt = $_config[$_i]["DATA_TYPE"];
+                    }
+                }else{
+                    $_receipt = "mysql";
+                }
+            }
         }
         return $_receipt;
     }

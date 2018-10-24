@@ -74,7 +74,9 @@ class Pass
                             if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_TO_VALID,$_array) and is_bool($_array[$_key]) and $_array[$_key]){
                                 if(key_exists($_key = Mapping::MODEL_VALID_MARK,$mapping)){
                                     $_validates = $mapping[$_key];
-                                    foreach($_validates as $_arr){
+                                    foreach($_validates as $_mark => $_arr){
+                                        if($_mark != $key)
+                                            continue;
                                         # 验证长度
                                         if(key_exists($_min = Mapping::MODEL_VALID_COLUMN_MIN,$_arr) or key_exists($_max = Mapping::MODEL_VALID_COLUMN_MAX,$_arr)){
                                             # 创建错误状态变量
@@ -94,18 +96,18 @@ class Pass
                                                     }
                                                 }
                                             }
-                                            if(is_null($this->_Error_code)){
-                                                if(key_exists($_key = Mapping::MODEL_VALID_NOT_NULL,$_arr) and is_bool($_arr[$_key]) and $_arr[$_key]){
-                                                    if(is_null($_value) and (empty($_value) and !is_numeric($_value) and boolval($_value))){
-                                                        $this->_Error_code = "value is null";
-                                                    }
+                                        }
+                                        if(is_null($this->_Error_code)){
+                                            if(key_exists($_key = Mapping::MODEL_VALID_NOT_NULL,$_arr) and is_bool($_arr[$_key]) and $_arr[$_key]){
+                                                if(is_null($_value) or (empty($_value) and !is_numeric($_value) and !boolval($_value))){
+                                                    $this->_Error_code = "value is null";
                                                 }
                                             }
-                                            if(is_null($this->_Error_code)){
-                                                if(key_exists($_key = Mapping::MODEL_VALID_COLUMN_FORMAT_STRING,$_arr)){
-                                                    if(($_error = is_true($_arr[$_key],$_value)) !== true){
-                                                        $this->_Error_code = $_error;
-                                                    }
+                                        }
+                                        if(is_null($this->_Error_code)){
+                                            if(key_exists($_key = Mapping::MODEL_VALID_COLUMN_FORMAT_STRING,$_arr)){
+                                                if(($_error = is_true($_arr[$_key],$_value)) !== true){
+                                                    $this->_Error_code = $_error;
                                                 }
                                             }
                                         }

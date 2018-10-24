@@ -97,7 +97,6 @@ include('Common/Socket.func.php');
 Import('Transaction:Data:Mysql');
 Import('Transaction:Data:Redis');
 Import('Transaction:Data:Mongodb');
-Import('Transaction:Example:Model');
 Import('Transaction:Example:Query');
 Import('Transaction:Example:Pass');
 Import('Transaction:Example:Factory');
