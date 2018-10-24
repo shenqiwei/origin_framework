@@ -47,6 +47,7 @@ class Pass
                 # 设置锚点
                 $_i = 0;
                 foreach($_column as $_array){
+                    $_array = array_change_key_case($_array,CASE_LOWER);
                     if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_NAME,$_array)){
                         if($_array[$_key] == $key){
                             $_value = input($_method.".".$key);

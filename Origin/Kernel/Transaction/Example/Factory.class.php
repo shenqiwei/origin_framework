@@ -57,6 +57,7 @@ class Factory
         $_data = array();
         if(key_exists($_mark = Mapping::MODEL_MAPPING_MARK,$model)){
             foreach($model[$_mark] as $_array){
+                $_array = array_change_key_case($_array,CASE_LOWER);
                 # 创建元素对象
                 $_column = null;
                 if(key_exists($_key = Mapping::MODEL_MAPPING_COLUMN_NAME,$_array)){
@@ -137,6 +138,7 @@ class Factory
         }elseif(key_exists($_mark = Mapping::MAPPING_COLUMN_MARK,$model)){
             # 遍历字段列表
             foreach($model[$_mark] as $_array){
+                $_array = array_change_key_case($_array,CASE_LOWER);
                 # 创建元素对象
                 $_column = null;
                 if(key_exists($_key = Mapping::MAPPING_COLUMN_OPTION,$_array)){

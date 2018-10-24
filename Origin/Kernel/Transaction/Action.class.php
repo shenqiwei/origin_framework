@@ -212,7 +212,7 @@ class Action
                     # 抽取关系变量内容
                     if($_count = preg_match_all($_var_format,$_query,$_variable,PREG_SET_ORDER)){
                         # 创建请求器模板内容变量
-                        $_cfg = Model($this->_Default,$this->_Pass);
+                        $_cfg = array_change_key_case(Model($this->_Default,$this->_Pass),CASE_LOWER);
                         # 循环遍历比对变量内容
                         for($_i = 0;$_i < $_count;$_i++){
                             # 转存对象内容
@@ -225,7 +225,7 @@ class Action
                                     if(is_array($query_data[$_vars[0]]) and !empty($query_data[$_vars[0]]) and key_exists($_vars[1],$query_data[$_vars[0]])){
                                         $_var = $query_data[$_vars[0]][$_vars[1]];
                                     }else{
-                                        if(is_array($_cfg = Model($_vars[0],$this->_Pass)) and !empty($_cfg)){
+                                        if(is_array($_cfg = array_change_key_case(Model($_vars[0],$this->_Pass),CASE_LOWER)) and !empty($_cfg)){
                                             $_pass = new Pass();
                                             $_var = $_pass->index($_cfg,$_vars[1]);
                                             if(!is_null($_pass->getErrorMsg())){
@@ -234,7 +234,7 @@ class Action
                                         }
                                     }
                                 }else{
-                                    if(is_array($_cfg = Model($_vars[0])) and !empty($_cfg)){
+                                    if(is_array($_cfg = array_change_key_case(Model($_vars[0]))) and !empty($_cfg)){
                                         $_pass = new Pass();
                                         $_var = $_pass->index($_cfg,$_vars[1]);
                                         if(!is_null($_pass->getErrorMsg())){
@@ -340,7 +340,7 @@ class Action
                             $_receipt = $_mongo->execute();
                         }
                         break;
-                    default : # select
+                    default : # mysql
                         $_mysql = new Mysql($this->_Data_source);
                         $_mysql->setTable($_table);
                         $_mysql->setMajor($_major);
@@ -386,6 +386,106 @@ class Action
                     $_receipt = "mysql";
                 }
             }
+        }
+        return $_receipt;
+    }
+    /**
+     * @access public
+     * @param string|array $query 执行语句
+     * @param array $query_data 数据数组
+     * @return mixed
+     * @context 计算数据总数
+    */
+    function count($query,$query_data)
+    {
+        # 创建返回值变量
+        $_receipt = null;
+        # 判断结构对象状态
+        if(is_array($query)){
+            $_mysql = new Mysql($this->_Data_source);
+            $_mysql->setTable($query['table']);
+            $_mysql->setData($query_data);
+            $_mysql->setType("count");
+            if(is_null($_mysql->getError())){
+                $_receipt = $_mysql->execute();
+            }
+        }else{
+            $_query = $query;
+            # 抽取时间结构变量
+            $_time_format = '/\[\[\^:time\]:[^\[\]]+\]/';
+            # 抽取时间结构变量内容
+            if($_count = preg_match_all($_time_format,$_query,$_time,PREG_SET_ORDER)){
+                # 遍历数据内容
+                for($_i = 0;$_i < $_count;$_i++){
+                    # 转化变量内容
+                    $_time_format = str_replace("]",null,str_replace("[[^:time]:",null,$_time[$_i][0]));
+                    # 转义信息
+                    $_query = str_replace($_time[$_i],"'".date($_time_format)."'",$_query);
+                }
+            }
+            # 抽取变量内容规则(请求器对象元素项)
+            $_var_format = '/\[:[^\[\]]+(:[^\[\]:]+)?\]/';
+            # 抽取关系变量内容
+            if($_count = preg_match_all($_var_format,$_query,$_variable,PREG_SET_ORDER)){
+                # 创建请求器模板内容变量
+                $_cfg = array_change_key_case(Model($this->_Default,$this->_Pass),CASE_LOWER);
+                # 循环遍历比对变量内容
+                for($_i = 0;$_i < $_count;$_i++){
+                    # 转存对象内容
+                    $_var = $_variable[$_i][0];
+                    # 区分变量结构
+                    if(preg_match('/^\[:[^\[\]]+:[^\[\]:]+\]$/',$_var)){
+                        $_var = str_replace('[:',null,str_replace(']',null,$_var));
+                        $_vars = explode(':',strtolower($_var));
+                        if(is_array($query_data) and !empty($query_data) and key_exists($_vars[0],$query_data)){
+                            if(is_array($query_data[$_vars[0]]) and !empty($query_data[$_vars[0]]) and key_exists($_vars[1],$query_data[$_vars[0]])){
+                                $_var = $query_data[$_vars[0]][$_vars[1]];
+                            }else{
+                                if(is_array($_cfg = array_change_key_case(Model($_vars[0],$this->_Pass),CASE_LOWER)) and !empty($_cfg)){
+                                    $_pass = new Pass();
+                                    $_var = $_pass->index($_cfg,$_vars[1]);
+                                    if(!is_null($_pass->getErrorMsg())){
+                                        $this->_Error_code = $_pass->getErrorMsg();
+                                    }
+                                }
+                            }
+                        }else{
+                            if(is_array($_cfg = array_change_key_case(Model($_vars[0]))) and !empty($_cfg)){
+                                $_pass = new Pass();
+                                $_var = $_pass->index($_cfg,$_vars[1]);
+                                if(!is_null($_pass->getErrorMsg())){
+                                    $this->_Error_code = $_pass->getErrorMsg();
+                                }
+                            }
+                        }
+                    }else{
+                        # 执行默认请求器模板内容加载
+                        $_var = str_replace('[:',null,str_replace(']',null,$_var));
+                        if(is_array($query_data) and !empty($query_data) and key_exists($_var,$query_data)){
+                            $_var = $query_data[$_var];
+                        }else{
+                            if(is_array($_cfg) and !empty($_cfg)){
+                                $_pass = new Pass();
+                                $_var = $_pass->index($_cfg,$_var);
+                                if(!is_null($_pass->getErrorMsg())){
+                                    $this->_Error_code = $_pass->getErrorMsg();
+                                }
+                            }
+                        }
+                    }
+                    if(is_integer($_var) or is_float($_var) or is_double($_var)){
+                        $_query = str_replace($_variable[$_i][0],$_var,$_query);
+                    }else{
+                        $_query = str_replace($_variable[$_i][0],"'".$_var."'",$_query);
+                    }
+                    $_query = str_replace($_variable[$_i][0],$_var,$_query);
+                    # 条件运算结构转义
+                    foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+                        $_query= preg_replace($key, $value, $_query);
+                    }
+                }
+            }
+            $_receipt = Mysql($this->_Data_source)->query($_query);
         }
         return $_receipt;
     }

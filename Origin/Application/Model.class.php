@@ -51,6 +51,12 @@ class Model
     const MAPPING_IS_NULL_OPTION = "not_null"; # 空属性
     const MAPPING_DEFAULT_OPTION = "default"; # 默认值
     const MAPPING_QUERY_TYPE_OPTION = "query"; # 强制执行类型,select,insert,update,delete,all
+    const MAPPING_PAGE_MARK = "page"; # 翻页标记
+    const MAPPING_PAGE_SIZE = "page_size"; # 单页长度
+    const MAPPING_PAGE_URI = 'page_uri'; # 跳转地址
+    const MAPPING_PAGE_STYLE = 'page_style'; # 翻页样式
+    const MAPPING_PAGE_NUMBER = 'page_number'; # 页码长度
+    const MAPPING_PAGE_CURRENT = "page_current"; # 当前页识别标记
     # action执行模板结构
     const ACTION_QUERY_MARK = "query"; # 语句
     const ACTION_COLUMN_MARK = "column"; # 元素列表
@@ -62,4 +68,11 @@ class Model
     const ACTION_LIMIT_MARK = "limit"; # 范围列表
     const ACTION_LIMIT_BEGIN_MARK = "begin";
     const ACTION_LIMIT_LENGTH_MARK = "length";
+    const ACTION_PAGE_MARK = "page"; # 翻页标记
+    const ACTION_PAGE_QUERY = "count_query"; # count语句
+    const ACTION_PAGE_SIZE = "page_size"; # 单页长度
+    const ACTION_PAGE_URI = "page_uri"; # 跳转地址
+    const ACTION_PAGE_STYLE = "page_style"; # 翻页样式
+    const ACTION_PAGE_NUMBER = "page_number"; # 页码长度
+    const ACTION_PAGE_CURRENT = "page_current"; # 当前页识别标记
 }
