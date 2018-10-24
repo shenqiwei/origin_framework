@@ -135,14 +135,32 @@ class Mysql
                     }else{
                         # 调用主键条件内容
                         if(!is_null($this->_Major)){
-                            $_where = $this->_Major;
+                            if(is_array($this->_Major)){
+                                $_major = array_values($this->_Major);
+                                if(is_null($_major[0]) or empty($_major[0])){
+                                    null;
+                                }else{
+                                    $_where = $this->_Major;
+                                }
+                            }else{
+                                $_where = $this->_Major;
+                            }
                         }else{
                             $this->_Error_code = "Not found [where] information";
                         }
                     }
                 }else{
                     if(!is_null($this->_Major)){
-                        $_where = $this->_Major;
+                        if(is_array($this->_Major)){
+                            $_major = array_values($this->_Major);
+                            if(is_null($_major[0]) or empty($_major[0])){
+                                null;
+                            }else{
+                                $_where = $this->_Major;
+                            }
+                        }else{
+                            $_where = $this->_Major;
+                        }
                     }else{
                         $this->_Error_code = "Not found [where] information";
                     }
@@ -167,14 +185,32 @@ class Mysql
                     }else{
                         # 调用主键条件内容
                         if(!is_null($this->_Major)){
-                            $_where = $this->_Major;
+                            if(is_array($this->_Major)){
+                                $_major = array_values($this->_Major);
+                                if(is_null($_major[0]) or empty($_major[0])){
+                                    null;
+                                }else{
+                                    $_where = $this->_Major;
+                                }
+                            }else{
+                                $_where = $this->_Major;
+                            }
                         }else{
                             $this->_Error_code = "Not found [where] information";
                         }
                     }
                 }else{
                     if(!is_null($this->_Major)){
-                        $_where = $this->_Major;
+                        if(is_array($this->_Major)){
+                            $_major = array_values($this->_Major);
+                            if(is_null($_major[0]) or empty($_major[0])){
+                                null;
+                            }else{
+                                $_where = $this->_Major;
+                            }
+                        }else{
+                            $_where = $this->_Major;
+                        }
                     }else{
                         $this->_Error_code = "Not found [where] information";
                     }
@@ -189,16 +225,43 @@ class Mysql
                 if(key_exists("where",$this->_Data)){
                     # 判断条件内容状态
                     if(!is_null($this->_Data['where']) and !empty($this->_Data['where'])){
-                        $_where = $this->_Data['where'];
+                        if(is_array($this->_Major)){
+                            $_major = array_values($this->_Major);
+                            if(is_null($_major[0]) or empty($_major[0])){
+                                null;
+                            }else{
+                                $_where = $this->_Major;
+                            }
+                        }else{
+                            $_where = $this->_Major;
+                        }
                     }else{
                         # 调用主键条件内容
                         if(!is_null($this->_Major)){
-                            $_where = $this->_Major;
+                            if(is_array($this->_Major)){
+                                $_major = array_values($this->_Major);
+                                if(is_null($_major[0]) or empty($_major[0])){
+                                    null;
+                                }else{
+                                    $_where = $this->_Major;
+                                }
+                            }else{
+                                $_where = $this->_Major;
+                            }
                         }
                     }
                 }else{
                     if(!is_null($this->_Major)){
-                        $_where = $this->_Major;
+                        if(is_array($this->_Major)){
+                            $_major = array_values($this->_Major);
+                            if(is_null($_major[0]) or empty($_major[0])){
+                                null;
+                            }else{
+                                $_where = $this->_Major;
+                            }
+                        }else{
+                            $_where = $this->_Major;
+                        }
                     }
                 }
                 $_receipt = $this->count($this->_Table,$_where);
@@ -214,12 +277,30 @@ class Mysql
                     }else{
                         # 调用主键条件内容
                         if(!is_null($this->_Major)){
-                            $_where = $this->_Major;
+                            if(is_array($this->_Major)){
+                                $_major = array_values($this->_Major);
+                                if(is_null($_major[0]) or empty($_major[0])){
+                                    null;
+                                }else{
+                                    $_where = $this->_Major;
+                                }
+                            }else{
+                                $_where = $this->_Major;
+                            }
                         }
                     }
                 }else{
                     if(!is_null($this->_Major)){
-                        $_where = $this->_Major;
+                        if(is_array($this->_Major)){
+                            $_major = array_values($this->_Major);
+                            if(is_null($_major[0]) or empty($_major[0])){
+                                null;
+                            }else{
+                                $_where = $this->_Major;
+                            }
+                        }else{
+                            $_where = $this->_Major;
+                        }
                     }
                 }
                 $_receipt = $this->select($this->_Table,$this->_Data['field'],$_where,$this->_Data['group'],$this->_Data['order'],$this->_Data['limit']);
