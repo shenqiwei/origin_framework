@@ -227,7 +227,9 @@ class Action
                     # 抽取关系变量内容
                     if($_count = preg_match_all($_var_format,$_query,$_variable,PREG_SET_ORDER)){
                         # 创建请求器模板内容变量
-                        $_cfg = array_change_key_case(Model($this->_Default,$this->_Pass),CASE_LOWER);
+                        if(is_array($_cfg = Model($this->_Default,$this->_Pass)) and !empty($_cfg)){
+                            $_cfg = array_change_key_case($_cfg,CASE_LOWER);
+                        }
                         # 循环遍历比对变量内容
                         for($_i = 0;$_i < $_count;$_i++){
                             # 转存对象内容
@@ -540,7 +542,9 @@ class Action
             # 抽取关系变量内容
             if($_count = preg_match_all($_var_format,$_query,$_variable,PREG_SET_ORDER)){
                 # 创建请求器模板内容变量
-                $_cfg = array_change_key_case(Model($this->_Default,$this->_Pass),CASE_LOWER);
+                if(is_array($_cfg = Model($this->_Default,$this->_Pass)) and !empty($_cfg)){
+                    $_cfg = array_change_key_case($_cfg,CASE_LOWER);
+                }
                 # 循环遍历比对变量内容
                 for($_i = 0;$_i < $_count;$_i++){
                     # 转存对象内容
