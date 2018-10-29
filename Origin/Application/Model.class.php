@@ -17,7 +17,7 @@ namespace Origin;
 # 封装结构
 class Model
 {
-# 类封装常量结构（Model）
+    # 类封装常量结构（Model）
     const MODEL_METHOD_MARK = "method"; # 请求类型
     const MODEL_MAPPING_MARK = "model"; # 请求模板对象
     const MODEL_MAPPING_COLUMN_NAME = "name"; # 请求元素名称

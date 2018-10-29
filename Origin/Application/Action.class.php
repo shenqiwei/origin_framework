@@ -134,7 +134,6 @@ abstract class Action extends Controller
         }
         return null;
     }
-
     /**
      * @access public
      * @param string $mapping 执行映射名称，默认状态下自动获取当前执行对象名称
@@ -205,7 +204,6 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
-
     /**
      * @access public
      * @param array $field 查询结构对象数组
@@ -222,7 +220,6 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
-
     /**
      * @access public
      * @param string|array $model 条件语句执行模板字段参数(带参数变量，的条件语句结构字符串) or 条件结构数组
@@ -341,7 +338,46 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
+    /**
+     * @access public
+     * @param string $where_model 条件模板
+     * @param string $model 准入模板
+     * @return boolean
+     */
+    public function setPageWhere($where_model,$model=null)
+    {
+        # 创建返回值变量
+        $_receipt = false;
+        if(!is_null($where_model) and !empty($where_model)){
+            # 抽取变量内容规则(请求器对象元素项)
+            $_var_format = '/\[:[^\[\]]+\]/';
+            if ($_count = preg_match_all($_var_format, $where_model, $_variable, PREG_SET_ORDER)) {
+                $_search = null;
+                for ($_i = 0; $_i < $_count; $_i++) {
+                    # 转存对象内容
+                    $_var = $_variable[$_i][0];
+                    # 区分变量结构
+                    # 执行默认请求器模板内容加载
+                    $_var = str_replace('[:', null, str_replace(']', null, $_var));
+                    $_pass = new Pass();
+                    $_model = Model($this->_Action_array[Model::ACTION_MODEL_OBJECT_MARK],$model);
+                    $_value = $_pass->index($_model,$_var);
+                    if(!is_null($this->_Error_code))
+                        break;
+                    else{
+                        $model = preg_replace($_variable[$_i][0], $_value, $where_model);
+                        $_search .= "&{$_var}={$_value}";
+                    }
 
+                }
+                if(is_null($this->_Error_code) or !preg_match_all($_var_format, $where_model, $_variable, PREG_SET_ORDER)){
+                    $this->_Action_array["where"] = $where_model;
+                    $this->_Action_array["search"] = $_search;
+                }
+            }
+        }
+        return $_receipt;
+    }
     /**
      * @access public
      * @param array $order 排序结构参数对象数组
@@ -359,7 +395,6 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
-
     /**
      * @access public
      * @param array $group 分组结构参数对象数组
@@ -377,7 +412,6 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
-
     /**
      * @access public
      * @param int $limit_count 数据显示数量
@@ -396,7 +430,6 @@ abstract class Action extends Controller
         # 返回状态信息
         return $_receipt;
     }
-
     /**
      * @access protected
      * @param string $key 数组元素键
@@ -518,7 +551,6 @@ abstract class Action extends Controller
         # 返回内容
         return $_receipt;
     }
-
     /**
      * @access protected
      * @param string $obj 执行模板映射对象名称
@@ -560,8 +592,8 @@ abstract class Action extends Controller
                             $_page_array = $_model_array[$_key];
                             # 条件信息
                             $_page_where = null;
-                            if (!is_null($this->_Query_array) and key_exists($_key = Model::ACTION_WHERE_MARK, $this->_Query_array)) {
-                                $_page_where = $this->_Query_array[$_key];
+                            if (!is_null($this->_Query_array) and key_exists("search", $this->_Query_array)) {
+                                $_page_where = $this->_Query_array["search"];
                             }
                             # 翻页识别标记
                             $_page_mark = "page";
