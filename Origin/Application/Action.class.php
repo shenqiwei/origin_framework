@@ -365,7 +365,7 @@ abstract class Action extends Controller
                     if(!is_null($this->_Error_code))
                         break;
                     else{
-                        $model = preg_replace($_variable[$_i][0], $_value, $where_model);
+                        $model = str_replace($_variable[$_i][0], $_value, $where_model);
                         $_search .= "&{$_var}={$_value}";
                     }
 

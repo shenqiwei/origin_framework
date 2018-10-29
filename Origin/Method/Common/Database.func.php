@@ -89,9 +89,9 @@ function Number($page,$style,$search,$cols){
             $page['num_end']=$page['current']+$k;
             for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                 if($i==$page['current']){
-                    array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                    array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search));
                 }else{
-                    array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                    array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search));
                 }
             }
         }else{
@@ -100,9 +100,9 @@ function Number($page,$style,$search,$cols){
                 $page['num_end']=$cols;
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search));
                     }
                 }
             }elseif(($page['current']+$k)>=$page['count']){
@@ -110,9 +110,9 @@ function Number($page,$style,$search,$cols){
                 $page['num_end']=$page['count'];
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search));
                     }
                 }
             }else{
@@ -120,9 +120,9 @@ function Number($page,$style,$search,$cols){
                 $page['num_end']=$cols;
                 for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
                     if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search));
                     }else{
-                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                        array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search));
                     }
                 }
             }
@@ -130,9 +130,9 @@ function Number($page,$style,$search,$cols){
     }else{
         for($i=1;$i<=$page['count'];$i++){
             if($i==$page['current']){
-                array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                array_push($n,array('page'=>$i,'class'=>$style['mouse_on'],'url'=>$page['url'].'?page='.$i.$search));
             }else{
-                array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search['search_page']));
+                array_push($n,array('page'=>$i,'class'=>$style['mouse_off'],'url'=>$page['url'].'?page='.$i.$search));
             }
         }
     }
@@ -185,10 +185,10 @@ function Page($url,$count,$current,$style,$row,$search){
     }else{
         $page['next']=$page['current']+1;
     }
-    $page['first_url']=$page['url'].'?page=1'.$search['search_page'];//第一页
-    $page['last_url']=$page['url'].'?page='.$page['last'].$search['search_page'];//上一页
-    $page['next_url']=$page['url'].'?page='.$page['next'].$search['search_page'];//下一页
-    $page['end_url']=$page['url'].'?page='.$page['count'].$search['search_page'];//最后一页
+    $page['first_url']=$page['url'].'?page=1'.$search;//第一页
+    $page['last_url']=$page['url'].'?page='.$page['last'].$search;//上一页
+    $page['next_url']=$page['url'].'?page='.$page['next'].$search;//下一页
+    $page['end_url']=$page['url'].'?page='.$page['count'].$search;//最后一页
     return $page;
 }
 /**
