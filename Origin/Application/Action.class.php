@@ -368,11 +368,16 @@ abstract class Action extends Controller
                         $model = str_replace($_variable[$_i][0], $_value, $where_model);
                         $_search .= "&{$_var}={$_value}";
                     }
-
                 }
                 if(is_null($this->_Error_code) or !preg_match_all($_var_format, $where_model, $_variable, PREG_SET_ORDER)){
-                    $this->_Action_array["where"] = $where_model;
-                    $this->_Action_array["search"] = $_search;
+                    if(key_exists("search",$this->_Query_array)){
+                        $this->_Query_array["where"] .= " ".$where_model;
+                        $this->_Query_array["search"] .= $_search;
+                    }else{
+                        $this->_Query_array["where"] = $where_model;
+                        $this->_Query_array["search"] = $_search;
+                    }
+
                 }
             }
         }
