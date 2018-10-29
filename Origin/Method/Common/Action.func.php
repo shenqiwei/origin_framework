@@ -1,7 +1,7 @@
 <?php
 /**
  * @access public
- * @param string $model 模板映射对象名称
+ * @param string $model 模板映射文件名称
  * @param string $obj 模板映射对象名称
  * @return mixed
  * @context 数据映射结构

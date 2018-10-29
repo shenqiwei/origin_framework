@@ -49,7 +49,7 @@ class Factory
         # 查看用户设置
         if(key_exists($_mark = Mapping::MODEL_METHOD_MARK,$model)){
             # 执行方法装载
-            $_method = in_array(strtolower($model[$_method]),array('get','post'))?strtolower($model[$_method]):"post";
+            $_method = in_array(strtolower($model[$_method]),array('get','post','request'))?strtolower($model[$_method]):"post";
             # 获取模板信息
         }else{
             $_method = $this->_Method;

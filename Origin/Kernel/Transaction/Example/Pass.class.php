@@ -38,7 +38,7 @@ class Pass
         # 查看用户设置
         if(key_exists($_mark = Mapping::MODEL_METHOD_MARK,$mapping)){
             # 执行方法装载
-            $_method = in_array(strtolower($mapping[$_mark]),array('get','post'))?strtolower($mapping[$_mark]):"post";
+            $_method = in_array(strtolower($mapping[$_mark]),array('get','post','request'))?strtolower($mapping[$_mark]):"post";
         }
         # 判断主要元素
         if(key_exists($_mark = Mapping::MODEL_MAPPING_MARK,$mapping)){
