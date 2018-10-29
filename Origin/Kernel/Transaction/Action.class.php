@@ -589,11 +589,6 @@ class Action
                             }
                         }
                     }
-                    if(is_integer($_var) or is_float($_var) or is_double($_var)){
-                        $_query = str_replace($_variable[$_i][0],$_var,$_query);
-                    }else{
-                        $_query = str_replace($_variable[$_i][0],"'".$_var."'",$_query);
-                    }
                     $_query = str_replace($_variable[$_i][0],$_var,$_query);
                     # 条件运算结构转义
                     foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
