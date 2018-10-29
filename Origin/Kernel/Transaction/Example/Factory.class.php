@@ -12,7 +12,6 @@ namespace Origin\Kernel\Transaction\Example;
 use Origin\Model as Mapping;
 # 调用内核验证模块
 use Origin\Kernel\Parameter\Validate;
-use function PHPSTORM_META\type;
 
 class Factory
 {
