@@ -23,21 +23,23 @@ function Model($model,$obj=null)
             exit();
         }
     }
-    # 装载配置信息
-    $_register = array_change_key_case($_register,CASE_LOWER);
-    # 装载注册信息
-    if(key_exists($_obj = trim(strtolower($obj)),$_register)){
+    if(is_array($_register)){
         # 装载配置信息
-        $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
-    }else{
-        # 判断调取映射执行内容是否已经注册
-        if(key_exists($_obj = trim(strtolower($model)),$_register)){
+        $_register = array_change_key_case($_register,CASE_LOWER);
+        # 装载注册信息
+        if(key_exists($_obj = trim(strtolower($obj)),$_register)){
             # 装载配置信息
             $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
         }else{
-            if(count($_register)){
+            # 判断调取映射执行内容是否已经注册
+            if(key_exists($_obj = trim(strtolower($model)),$_register)){
                 # 装载配置信息
-                $_receipt = array_change_key_case($_register[array_keys($_register)[0]],CASE_LOWER);
+                $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
+            }else{
+                if(count($_register)){
+                    # 装载配置信息
+                    $_receipt = array_change_key_case($_register[array_keys($_register)[0]],CASE_LOWER);
+                }
             }
         }
     }
@@ -67,21 +69,23 @@ function Action($model,$obj=null){
             exit();
         }
     }
-    # 键值转化
-    $_register = array_change_key_case($_register,CASE_LOWER);
-    # 装载注册信息
-    if(key_exists($_obj = trim(strtolower($obj)),$_register)){
-        # 装载配置信息
-        $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
-    }else{
-        # 判断调取映射执行内容是否已经注册
-        if(key_exists($_obj = trim(strtolower($model)),$_register)){
+    if(is_array($_register)){
+        # 键值转化
+        $_register = array_change_key_case($_register,CASE_LOWER);
+        # 装载注册信息
+        if(key_exists($_obj = trim(strtolower($obj)),$_register)){
             # 装载配置信息
             $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
         }else{
-            if(count($_register)){
+            # 判断调取映射执行内容是否已经注册
+            if(key_exists($_obj = trim(strtolower($model)),$_register)){
                 # 装载配置信息
-                $_receipt = array_change_key_case($_register[array_keys($_register)[0]],CASE_LOWER);
+                $_receipt = array_change_key_case($_register[$_obj],CASE_LOWER);
+            }else{
+                if(count($_register)){
+                    # 装载配置信息
+                    $_receipt = array_change_key_case($_register[array_keys($_register)[0]],CASE_LOWER);
+                }
             }
         }
     }
