@@ -575,7 +575,7 @@ class Analysis implements Impl
             $_judge = substr($obj,strpos($obj,$_if[0][0]),strrpos($obj,$_end[0][0])-(strpos($obj,$_if[0][0])-strlen($_end[0][0])));
             # 过滤foreach标签及空白字符
             /**二维语法设置点,使用二维语法*/
-            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_judge,strlen($_if[0][0]), (strlen($_judge)-strlen($_if[0][0])-strlen($_end[0][0])))), '\t\n\r ');
+            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_judge,strlen($_if[0][0]), (strlen($_judge)-strlen($_if[0][0])-strlen($_end[0][0])))), "\t\n\r ");
             # 逻辑运算状态值
             $_status = false;
             # 分析代码段中是否包含elseif语法
@@ -632,7 +632,7 @@ class Analysis implements Impl
                                 $_elseif = substr($_waiting, strrpos($_waiting, $_ef[$i][0]), strpos($_waiting, $_el[0][0])-strrpos($_waiting, $_ef[$i][0])-1);
                                 # 去除elseif语法结构
                                 /**二维语法设置点,使用二维语法*/
-                                $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif, strlen($_ef[$i][0]))), '\t\n\r ');
+                                $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif, strlen($_ef[$i][0]))), "\t\n\r ");
                                 # 抽取条件信息
                                 $_elseif_operate = preg_replace('/[\'\"]*/', '', $_ef[$i][1]);
                                 if(preg_match_all($this->_Judge_Si, $_elseif_operate, $_re, PREG_SET_ORDER)){
@@ -666,7 +666,7 @@ class Analysis implements Impl
                                 $_elseif = substr($_waiting, strrpos($_waiting, $_ef[$i][0]));
                                 # 获取当前elseif代码结构
                                 /**二维语法设置点,使用二维语法*/
-                                $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif,strlen($_el[$i][0]), strlen($_elseif)-strlen($_el[$i][0])-strlen($_end[0][0]))), '\t\n\r ');
+                                $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif,strlen($_el[$i][0]), strlen($_elseif)-strlen($_el[$i][0])-strlen($_end[0][0]))), "\t\n\r ");
                                 # 抽取条件信息
                                 $_elseif_operate = preg_replace('/[\'\"]*/', '', $_ef[$i][1]);
                                 if(preg_match_all($this->_Judge_Si, $_elseif_operate, $_re, PREG_SET_ORDER)){
@@ -707,7 +707,7 @@ class Analysis implements Impl
                             $_elseif = substr($_waiting, strpos($_waiting, $_ef[$i][0]), strpos($_waiting, $_ef[$i+1][0])-strpos($_waiting, $_ef[$i][0])-1);
                             # 去除elseif语法结构
                             /**二维语法设置点,使用二维语法*/
-                            $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif, strlen($_ef[$i][0]))), '\t\n\r ');
+                            $_elseif_code = trim(preg_replace('/[^\S][\s]+[^\S]/',' ', substr($_elseif, strlen($_ef[$i][0]))), "\t\n\r ");
                             # 抽取条件信息
                             $_elseif_operate = preg_replace('/[\'\"]*/', '', $_ef[$i][1]);
                             # 如果存在逻辑运算符号,存入$_re
@@ -871,7 +871,7 @@ class Analysis implements Impl
             $_for = substr($obj, strpos($obj, $_begin[0][0]), strrpos($obj, $_end[0][0]) - (strpos($obj, $_begin[0][0]) - strlen($_end[0][0])));
             # 等待解析结构
             /**二维语法设置点,使用二维语法*/
-            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/', ' ', substr($_for, strlen($_begin[0][0]), strlen($_for) - strlen($_begin[0][0]) - strlen($_end[0][0]))), '\t\n\r ');
+            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/', ' ', substr($_for, strlen($_begin[0][0]), strlen($_for) - strlen($_begin[0][0]) - strlen($_end[0][0]))), "\t\n\r ");
             # 映射对象数组
             $_mapping = array();
             # 初始循环限制变量
@@ -995,7 +995,7 @@ class Analysis implements Impl
             $_foreach = substr($obj, strpos($obj, $_begin[0][0]), strrpos($obj, $_end[0][0]) - (strpos($obj, $_begin[0][0]) - strlen($_end[0][0])));
             # 等待解析结构
             /**二维语法设置点,使用二维语法*/
-            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/', ' ', substr($_foreach, strlen($_begin[0][0]), strlen($_foreach) - strlen($_begin[0][0]) - strlen($_end[0][0]))), '\t\n\r ');
+            $_waiting = trim(preg_replace('/[^\S][\s]+[^\S]/', ' ', substr($_foreach, strlen($_begin[0][0]), strlen($_foreach) - strlen($_begin[0][0]) - strlen($_end[0][0]))), "\t\n\r ");
             # 映射对象数组
             $_mapping = array();
             # 判断变量标签是否存在，并判断语法合法性
