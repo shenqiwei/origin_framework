@@ -107,11 +107,11 @@ class Entrance
                 # 设置引导地址
                 set_include_path(ROOT);
                 # 判断文件是否存在
-                if (is_file(str_replace('/', SLASH, Config('ROOT_APPLICATION') . $_path . CLASS_SUFFIX))) {
+                if (is_file(str_replace('\'',SLASH,str_replace('/', SLASH, Config('ROOT_APPLICATION') . $_path . CLASS_SUFFIX)))) {
                     # 使用预注册加载函数，实现自动化加载
                     # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
                     spl_autoload_register(function ($_path) {
-                        require_once(str_replace('/', SLASH, $_path . CLASS_SUFFIX));
+                        require_once(str_replace('\'',SLASH,str_replace('/', SLASH, $_path . CLASS_SUFFIX)));
                     });
                 } else {
                     try {

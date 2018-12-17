@@ -74,7 +74,7 @@ function Mongodb($connect_name=null)
  * @access public
  * @param array $page 分页数组
  * @param array $style 分页样式
- * @param array $search 搜索条件
+ * @param string $search 搜索条件
  * @param string $cols 页码数量
  * @return array
  * @contact 比较逻辑运算符双向转化方法
@@ -145,7 +145,7 @@ function Number($page,$style,$search,$cols){
  * @param string $current 当前页数
  * @param array $style 分页样式
  * @param string $row 分页大小
- * @param array $search 搜索条件
+ * @param string $search 搜索条件
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
