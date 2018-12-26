@@ -21,7 +21,7 @@ function Session($key, $value=null)
     # 创建返回信息变量
     $_receipt = null;
     # 创建session键名过滤正则
-    $_validate_key = '/^[^\_\W]+([\.\:\_\-]?[^\_\W]+)?$/';
+    $_validate_key = '/^[^\_\W]+([\.\:\_\-]?[^\_\W]+)*$/';
     # 创建操作验证变量正则
     $_validate_operate = '/^(id|session|encode|reset|regenerate|destroy|unset|delete|encode|decode){1}$/';
     # 获取session配置列表
