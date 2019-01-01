@@ -1,60 +1,63 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Kernel.File.File *
- * version: 1.0 *
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * create Time: 2017/06/19 22:07
- * update Time: 2017/06/19 22:07
- * chinese Context: IoC 上传模块封装
+ * Created by PhpStorm.
+ * User: DELL
+ * Date: 2019/1/1
+ * Time: 11:45
  */
+
 namespace Origin\Kernel\File;
+
 
 class Upload
 {
     /**
-     * @access private
+     * @access protected
      * @var string $_Uri
      * @contact 原始路径变量
      */
     protected $_Dir = ROOT;
     /**
-     * @access private
+     * @access protected
      * @var object $_Object
      * @contact 实例化对象
      */
     protected $_Object = null;
     /**
-     * @access private
+     * @access protected
      * @var string $_Input_Name
      * @contact 表单名称
      */
     protected $_Input_Name = null;
     /**
-     * @access private
+     * @access protected
+     * @var array $_Input_type
+     * @contact 上传文件类型约束
+    */
+    protected $_Input_Type = null;
+    /**
+     * @access protected
+     * @param int $_Input_Size
+     * @contact 文件大小约束
+    */
+    protected $_Input_Size = 0;
+    /**
+     * @access protected
      * @var string $_Save_Add
      * @contact 存储地址
      */
     protected $_Save_Add = null;
     /**
-     * @access private
+     * @access protected
      * @var string $_Error_Msg
      * @contact 错误信息
-    */
-    protected $_Error_Msg = "ERROR_0000";
+     */
+    protected $_Error_Msg = null;
     /**
-     * @access private
+     * @access protected
      * @var array $_Type_Array
      * @contact 文件扩展名比对数组
-    */
+     */
     protected $_Type_Array = array(
         'text/plain' => 'txt',
         'application/vnd.ms-excel' =>  'xls',
@@ -67,12 +70,13 @@ class Upload
         'image/png' => 'png',
         'image/jpeg' => 'jpg',
         'image/gif' => 'gif',
+        'image/bmp' => 'png',
     );
     /**
      * @access private
      * @var string $_Suffix
      * @contact 文件扩展名
-    */
+     */
     protected $_Suffix = null;
     /**
      * 回传类对象信息
@@ -117,34 +121,16 @@ class Upload
     }
     /**
      * @access public
-     * @param string|array $type 上传文件类型
+     * @param array $type 上传文件类型
      * @return boolean|object|null
      */
-    function type($type=null)
+    function type($type)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
+        if(is_array($type)){
+            $this->_Input_Type = $type;
         }else{
-            if(!is_null($type)){
-                if(is_array($type)){
-                    # 装载扩展名信息
-                    $this->_Suffix = $_FILES[$this->_Input_Name]['type'];
-                    # 判断文件类型信息是否存在特例内容
-                    if(key_exists($this->_Suffix,$this->_Type_Array)){
-                        $this->_Suffix = $this->_Type_Array[$_FILES[$this->_Input_Name]['type']];
-                    }
-                    # 判断扩展名是否符合设置要求
-                    if(!in_array($this->_Suffix,$type)){
-                        $this->_Error_Msg = "Files type is invalid!";
-                    }
-                }else{
-                    if($_FILES[$this->_Input_Name]['type'] != strval($type)){
-                        $this->_Error_Msg = "Files type is invalid!";
-                    }
-                }
-            }else{
-                $this->_Error_Msg = "Undefined file type!";
-            }
+            if(!is_null($type) and !empty($type))
+                array_push($this->_Input_Type,$type);
         }
         return $this->_Object;
     }
@@ -153,23 +139,9 @@ class Upload
      * @param int $size 上传文件大小
      * @return boolean|object|null
      */
-    function size($size=null)
+    function size($size=0)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(!is_null($size)){
-                if(!empty(intval($size))){
-                    if($_FILES[$this->_Input_Name]['size'] > intval($size)){
-                        $this->_Error_Msg = "Files size greater than defined value!";
-                    }
-                }else{
-                    $this->_Error_Msg = "Files size value is invalid!";
-                }
-            }else{
-                $this->_Error_Msg = "Undefined file size!";
-            }
-        }
+        $this->_Input_Size = abs(intval($size));
         return $this->_Object;
     }
     /**
@@ -178,45 +150,41 @@ class Upload
      * @param boolean $mark 是否使用时间标记存储目录默认使用
      * @return boolean|object|null
      */
-    function save($guide=null,$mark=true)
+    function path($guide=null,$mark=true)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(!is_null($guide)){
-                if(strpos($guide,SLASH)){
-                    $_guide = explode(SLASH,$guide);
-                }else{
-                    if(strpos($guide,'/')){
-                        $_guide = explode('/',$guide);
-                    }
+        if (!is_null($guide)) {
+            if (strpos($guide, SLASH)) {
+                $_guide = explode(SLASH, $guide);
+            } else {
+                if (strpos($guide, '/')) {
+                    $_guide = explode('/', $guide);
                 }
-                if(isset($_guide)){
-                    for($_i = 0;count($_guide);$_i++){
-                        if((empty($_guide[$_i]) and !is_numeric($_guide[$_i]) and is_null($_guide[$_i]))){
-                            continue;
-                        }else{
-                            if(is_null($this->_Save_Add)){
-                                $this->_Save_Add = $_guide[$_i];
-                            }else{
-                                $this->_Save_Add .= SLASH.$_guide[$_i];
-                            }
+            }
+            if (isset($_guide)) {
+                for ($_i = 0; count($_guide); $_i++) {
+                    if ((empty($_guide[$_i]) and !is_numeric($_guide[$_i]) and is_null($_guide[$_i]))) {
+                        continue;
+                    } else {
+                        if (is_null($this->_Save_Add)) {
+                            $this->_Save_Add = $_guide[$_i];
+                        } else {
+                            $this->_Save_Add .= SLASH . $_guide[$_i];
                         }
                     }
                 }
             }
-            if(is_bool($mark) and $mark === true){
-                if(!is_null($this->_Save_Add)){
-                    $this->_Save_Add .= SLASH.date('Ymd',time());
-                }else{
-                    $this->_Save_Add .= date('Ymd',time());
-                }
+        }
+        if (is_bool($mark) and $mark === true) {
+            if (!is_null($this->_Save_Add)) {
+                $this->_Save_Add .= SLASH . date('Ymd', time());
+            } else {
+                $this->_Save_Add .= date('Ymd', time());
+            }
 
-            }
-            $_files = new File();
-            if(!is_null($_files->resource(__UPLOAD__.'/'.$this->_Save_Add))){
-                $_files->manage(__UPLOAD__.'/'.$this->_Save_Add,'full',null);
-            }
+        }
+        $_files = new File();
+        if (!is_null($_files->resource(__UPLOAD__ . '/' . $this->_Save_Add))) {
+            $_files->manage(__UPLOAD__ . '/' . $this->_Save_Add, 'full', null);
         }
         return $this->_Object;
     }
@@ -226,45 +194,65 @@ class Upload
      * @return mixed
      * @context 单文件上传使用方法
      */
-    function update($custom=true)
+    function save($custom=true)
     {
         if(is_null($this->_Input_Name)){
             $this->_Error_Msg = "Upload file input is invalid!";
         }else{
-            if(is_bool($custom) and $custom === true){
-                $_file_name = $_FILES[$this->_Input_Name]['name'];
+            $_upload_file = $_FILES[$this->_Input_Name];
+            if(is_array($_upload_file["name"])){
+                for($_i = 0;$_i < count($_upload_file["name"]);$_i++){
+                    if(!is_null($this->_Input_Type)){
+                        if(in_array($_upload_file["type"][$_i],$this->_Type_Array)){
+                            if(!in_array($_upload_file["type"][$_i],$this->_Input_Type)){
+                                $this->_Error_Msg = "Upload file type is invalid";
+                            }
+                        }
+                    }
+                    if(is_null($this->_Error_Msg) and !empty($this->_Input_Size)){
+                        if($this->_Input_Size <= $_upload_file["size"][$_i]){
+                            $this->_Error_Msg = "Upload file size greater than set size ";
+                        }
+                    }
+                    if(is_null($this->_Error_Msg)){
+                        if(is_bool($custom) and $custom === true){
+                            $_file_name = $_upload_file['name'][$_i];
+                        }else{
+                            $_file_name = date('YmdHis',time()).'.'.$this->_Suffix;
+                        }
+                        if(!move_uploaded_file($_upload_file['tmp_name'][$_i],
+                            $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
+                            $this->_Error_Msg = "Files upload failed!";
+                            errorLogs("File Upload Error :".$this->_Error_Msg."System Error Code：".$_FILES[$this->_Input_Name]["error"][$_i]." Pic Size:".$_FILES[$this->_Input_Name]['size'][$_i]." Pic name:".$_FILES[$this->_Input_Name]['name'][$_i]);
+                        }
+                    }
+                }
             }else{
-                $_file_name = date('YmdHis',time()).'.'.$this->_Suffix;
-            }
-            if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
-                $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
-                $this->_Error_Msg = "Files upload failed!";
-            }
-        }
-        if(isset($_file_name))
-            return $this->_Save_Add.'/'.$_file_name;
-        else
-            return null;
-    }
-    /**
-     * @access public
-     * @param boolean $custom 上传文件原始名
-     * @return mixed
-     * @context 多文件上传时使用方法
-    */
-    function multiUpload($custom=true)
-    {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(is_bool($custom) and $custom === true){
-                $_file_name = $_FILES[$this->_Input_Name]['name'];
-            }else{
-                $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
-            }
-            if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
-                $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
-                $this->_Error_Msg = "Files upload failed!";
+                if(!is_null($this->_Input_Type)){
+                    if (in_array($_upload_file["type"], $this->_Type_Array)) {
+                        if (!in_array($_upload_file["type"], $this->_Input_Type)) {
+                            $this->_Error_Msg = "Upload file type is invalid";
+                        }
+                    }
+                }
+                if(is_null($this->_Error_Msg) and !empty($this->_Input_Size)){
+                    if($this->_Input_Size <= $_upload_file["size"]){
+                        $this->_Error_Msg = "Upload file size greater than set size ";
+                    }
+                }
+                var_dump($_FILES);
+                if(is_null($this->_Error_Msg)){
+                    if(is_bool($custom) and $custom === true){
+                        $_file_name = $_upload_file['name'];
+                    }else{
+                        $_file_name = date('YmdHis',time()).'.'.$this->_Suffix;
+                    }
+                    if(!move_uploaded_file($_upload_file['tmp_name'],
+                        $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
+                        $this->_Error_Msg = "Files upload failed!";
+                        errorLogs("File Upload Error :".$this->_Error_Msg."System Error Code：".$_FILES[$this->_Input_Name]["error"]." Pic Size:".$_FILES[$this->_Input_Name]['size']." Pic name:".$_FILES[$this->_Input_Name]['name']);
+                    }
+                }
             }
         }
         if(isset($_file_name))

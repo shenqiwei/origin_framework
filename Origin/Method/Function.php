@@ -51,21 +51,18 @@ if (!defined('__HOST__')) define('__HOST__', __PROTOCOL__ . $_SERVER['HTTP_HOST'
 if (!defined('__PLUGIN__')) define('__PLUGIN__', Configurate('ROOT_PLUGIN'));
 # 资源应用常量
 if (!defined('__RESOURCE__')) define('__RESOURCE__', Configurate('ROOT_RESOURCE'));
-# 资源目录常量
-define('__JSCRIPT__', __RESOURCE__ . Configurate('ROOT_RESOURCE_JS'));
-define('__MEDIA__', __RESOURCE__ . Configurate('ROOT_RESOURCE_MEDIA'));
-define('__STYLE__', __RESOURCE__ . Configurate('ROOT_RESOURCE_STYLE'));
-define('__TEMP__', __RESOURCE__ . Configurate('ROOT_RESOURCE_TEMP'));
-define('__PUBLIC__', __RESOURCE__ . Configurate('ROOT_RESOURCE_PUBLIC'));
+# 公共目录常量
+define('__PUBLIC__', __RESOURCE__ .'/'. Configurate('ROOT_RESOURCE_PUBLIC'));
 # 插件地址常量
-define('__PLUG_IN__', __RESOURCE__ . Configurate('ROOT_RESOURCE_PLUGIN'));
+define('__PLUG_IN__', __RESOURCE__ .'/'. Configurate('ROOT_RESOURCE_PLUGIN'));
 # 上传文件常量
-define('__UPLOAD__', __RESOURCE__ . Configurate('ROOT_RESOURCE_UPLOAD'));
+define('__UPLOAD__', __RESOURCE__.'/' . Configurate('ROOT_RESOURCE_UPLOAD'));
 # 加载函数封装类
 Import('File:File'); # 文件控制类
 Import('Parameter:Request'); # 调用请求控制器
 Import('Parameter:Validate'); # 调用验证控制器
 Import('Parameter:Filter');
+Import('Parameter:Output');# 格式输出
 # 基础操作方法包应用
 include('Common/File.func.php');
 include('Common/Request.func.php');
@@ -81,7 +78,6 @@ Import("Data:Mongodb"); # 调用MongoDB 70+支持包
 # 应用公共函数文件
 include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Database.func.php'); # 文件操作函数包
-include('Common/Action.func.php'); # 调用action映射内容调用函数包
 # 图形支持函数
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import("Mark:Analysis"); # 调用模板主控制类
@@ -93,19 +89,7 @@ Import('Protocol:Curl'); # 调用远程请求控制函数包
 Import('Protocol:Socket'); # 调用Socket通信控制函数包
 # 调用应用函数文件
 include('Common/Socket.func.php');
-# 引用事务关系函数包
-Import('Transaction:Data:Mysql');
-Import('Transaction:Data:Redis');
-Import('Transaction:Data:Mongodb');
-Import('Transaction:Example:Query');
-Import('Transaction:Example:Pass');
-Import('Transaction:Example:Factory');
-Import('Transaction:Action');
 # 应用结构包调用
 Common('Common:Public'); # 引入公共函数包
-# 公共映射模板描述封装
-Import('Application:Model');
 # 公共控制器文件
 Import('Application:Controller');
-# 行为控制单元
-Import('Application:Action');

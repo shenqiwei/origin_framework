@@ -30,9 +30,9 @@ return array(
     'APPLICATION_MODEL' => 'Model/', # 数据操作语句文件目录
     'APPLICATION_VIEW' => 'View/', # 模板（Template）文件目录
     # 插件目录
-    'ROOT_PLUGIN' => 'PlugIn/', # 应用插件目录
+    'ROOT_PLUGIN' => 'PlugIn', # 应用插件目录
     # 资源目录
-    'ROOT_RESOURCE' => 'Resource/', # 资源主目录
+    'ROOT_RESOURCE' => 'Resource', # 资源主目录
     //web结构下应用
     'ROOT_RESOURCE_JS' => 'Jscript', # javascript资源目录
     'ROOT_RESOURCE_MEDIA' => 'Media', # 多媒体资源目录

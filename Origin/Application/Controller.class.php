@@ -194,4 +194,49 @@ abstract class Controller
         message($_file, $message, $url, $time);
         return null;
     }
+    /**
+     * @access protected
+     * @param array $array
+     * @return null
+     */
+    protected function json($array=null)
+    {
+        Kernel\Parameter\Output::json($array);
+        return null;
+    }
+    /**
+     * @access protected
+     * @param array $array
+     * @return null
+     */
+    protected function xml($array=null)
+    {
+        Kernel\Parameter\Output::xml($array);
+        return null;
+    }
+    /**
+     * @access protected
+     * @param string $head
+     * @param string $body
+     * @return null
+     */
+    protected function html($head=null,$body=null)
+    {
+        Kernel\Parameter\Output::html($head,$body);
+        return null;
+    }
+    /**
+     * @access protected
+     * @param string $uri 链接地址
+     * @return null
+     */
+    protected function jump($uri)
+    {
+        $_uri = __HOST__;
+        if(!is_null($uri) and !empty($uri)){
+            $_uri .= $uri;
+        }
+        header("Location:".$_uri);
+        return null;
+    }
 }

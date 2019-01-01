@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Success Message</title>
     <script type="text/javascript">
-        var time = {$time}; // 倒计时时间
-        var status = 'true';
+        let time = {$time}; // 倒计时时间
+        let status = 'true';
         function cd(){
             if(time <= 1){
                 if(status === 'true') redirect();
@@ -14,12 +14,15 @@
             document.getElementById('time').style.color = 'orangered';
         }
         function redirect(){
-            var url = '{$url}';
-            if(url === '#') window.history.back();
-            else location.href = url;
+            let url = '{$url}';
+            if(url === '#'){
+                window.history.back();
+            }else{
+                location.href = url;
+            }
         }
         function pause(){
-            var act = document.getElementById('pause').innerHTML;
+            let act = document.getElementById('pause').innerHTML;
             if (act === '[Pause]'){
                 document.getElementById('pause').innerHTML = '[Execute]';
                 status = 'false';
