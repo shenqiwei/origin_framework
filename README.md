@@ -1,15 +1,15 @@
 ## Origin-Framework
 Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应用问题： 
 # 基本说明：
-1) Origin使用PHP7.1-7.3版本语言进行开发
+1) Origin使用PHP7.1-7.3版本语言进行开发,但是勉强可以支持到5.4版本
 
 2) Origin使用单一入口方式进行应用访问
 
-3) Origin使用自命名规则进行文件类型分类 （class） Controller 文件、（func）function 文件、（cfg）configuration 配置文件
+3) Origin使用子命名规则进行文件类型分类 （class） Controller 控制器文件、（func）function 函数文件、（cfg）configuration 配置文件
 
 4) Origin使用面向过程来实现一般开发需求调用，深度开发则使用面向对象
 
-5) Origin使用单字母方法命名封装低效方法集合，标准调用函数则使用完整名词描述进行方法表述
+5) Origin使用单字母方法命名（后续版本将舍弃该结构方式）封装低效方法集合，标准调用函数则使用完整名词描述进行方法表述
 
 6) Origin中重新定义了set、get结构，使用方法整合在plan_b封装中，有mapping映射结构来是实现其主要功能特性
 
