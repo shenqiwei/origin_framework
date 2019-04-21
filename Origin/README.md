@@ -37,7 +37,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
 
 > __show()__：Origin信息打印函数单纯的echo输出语法，但内容输出后程序会强制停止，仅用于调试程序内容时使用  
->>`$this->show()` 方法只能显示字符串类型的信息，并且不对html结构进行转化，输出结果后，会终止系统运行，后期将会对show结构进行功能升级  
+>>`$this->show();` 方法只能显示字符串类型的信息，并且不对html结构进行转化，输出结果后，会终止系统运行，后期将会对show结构进行功能升级  
 >>>`protected function show($message)`  
 >>>`{`  
 >>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo($message);`  
@@ -45,6 +45,15 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>>`}`
 
 > __param()__：参数预设函数，用于前后端数据内容传递的中间函数变量，可以存储除object（对象）外的任意类型变量内容  
+>>`$this->param(variable_key,variable_value);` 方法调用时需要填写非空（null and ‘’）字符串作为参数的键值（variable_key）,相对于参数值（variable_value）得要求比较宽松，填入非对象变量值   
+>>>例：使用默认访问函数进行param方法调用   
+>>>`function index()`  
+>>>`{`  
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->param('welcome', '欢迎使用Origin框架'); # 参数设置函数`  
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view(); # 视图模板调用函数`  
+>>> `}`  
+>>> 在视图模板页（html页面）中设置对应变量 `{$welcome}`来获取函数中参数内容，在页面中显示内容为 `欢迎使用Origin框架`
+
 > __view()__：视图模板函数，用于调用控制器对应函数视图模板，也可以根据实际需要设定其他模板内容  
 > __get_class()__：获取应用控制器名称函数  
 > __get_function()__：获取应用函数名称函数  
