@@ -22,7 +22,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）
 
 
-#####Controller.class.php调用
+##### Controller.class.php调用
 >主控制器的调用方式与其他PHP文件的调用方式一致，省略include与require引用操作，直接使用命名空间调用，使用继承方式来实现应用控制器对Origin核心功能的调用： 
 >>use Origin\Controller; 
 
@@ -32,7 +32,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`  
 >>`}`
 
-#####Controller.class.php函数说明
+##### Controller.class.php函数说明
 > __welcome()__：Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
 >>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
 
