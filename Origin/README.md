@@ -33,10 +33,12 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>`}`
 
 ##### Controller.class.php函数说明
-> __welcome()__：Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
+__welcome()__：
+> Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
 >>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
 
-> __show()__：Origin信息打印函数单纯的echo输出语法，但内容输出后程序会强制停止，仅用于调试程序内容时使用  
+__show()__：
+> Origin信息打印函数单纯的echo输出语法，但内容输出后程序会强制停止，仅用于调试程序内容时使用  
 >>`$this->show();` 方法只能显示字符串类型的信息，并且不对html结构进行转化，输出结果后，会终止系统运行，后期将会对show结构进行功能升级  
 >>>`protected function show($message)`  
 >>>`{`  
@@ -44,7 +46,8 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exit();`  
 >>>`}`
 
-> __param()__：参数预设函数，用于前后端数据内容传递的中间函数变量，可以存储除object（对象）外的任意类型变量内容  
+__param()__：
+> 参数预设函数，用于前后端数据内容传递的中间函数变量，可以存储除object（对象）外的任意类型变量内容  
 >>`$this->param(variable_key,variable_value);` 方法调用时需要填写非空（null and ‘’）字符串作为参数的键值（variable_key）,相对于参数值（variable_value）得要求比较宽松，填入非对象变量值   
 >>>例：使用默认访问函数进行param方法调用   
 >>>`function index()`  
@@ -54,32 +57,41 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>> `}`  
 >>> 在视图模板页（html页面）中设置对应变量 `{$welcome}`来获取函数中参数内容，在页面中显示内容为 `欢迎使用Origin框架`
 
-> __view()__：视图模板函数，用于调用控制器对应函数视图模板，也可以根据实际需要设定其他模板内容  
+__view()__：
+> 视图模板函数，用于调用控制器对应函数视图模板，也可以根据实际需要设定其他模板内容  
 >>`$this->view("html_name");` 方法调用时参数可以为空，方法参数是用于指定需调用视图模板页（html页），当前版本紧支持同应用目录下的所有模板文件，跨目录调用暂不支持。默认访问模视图模板页是根据`get_class()`和`get_function()`函数方法获取访问对象信息  
 
-> __get_class()__：获取应用控制器名称函数  
+__get_class()__：
+> 获取应用控制器名称函数  
 >> `$this->get_class();` 该函数方法可以直接获取当前访问对象的控制器名称  
 
-> __get_function()__：获取应用函数名称函数  
+ __get_function()__：
+>获取应用函数名称函数  
 >> `$this->get_function();` 该函数方法可以直接获取当前访问对象的函数名臣  
 
-> __success()__：操作成功信息返回函数  
+__success()__：
+> 操作成功信息返回函数  
 >> `$this->success(message_info,skip_url,waiting_time);` 信息提醒函数，包含三个基本参数，message_info：信息内容，skip_url：跳转地址（默认值#，当填写空内容时，函数将不进行跳转操作，填写#则回退到前一个页面），waiting_time：等待周期时间（默认时间：5秒）   
 
-> __error()__：操作异常信息返回函数  
+__error()__：
+> 操作异常信息返回函数  
 >> `$this->error(message_info,skip_url,waiting_time);` 其函数方法应用方式一致，请参数success函数说明。
 
-> __failed()__：操作失败信息返回函数（由于大部分时间error与failed功能相同，故推荐使用error函数，后期将对failed函数进行重新定义）  
+__failed()__：
+> 操作失败信息返回函数（由于大部分时间error与failed功能相同，故推荐使用error函数，后期将对failed函数进行重新定义）  
 
-> __json()__：json格式转化并执行输出函数  
+__json()__：
+> json格式转化并执行输出函数  
 >>`$this->json($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出  
 >>> `header("Content-Type:application/json;charset=utf-8");`Json输出的文件格式
 
-> __xml()__：xml格式转化并执行输出函数  
+__xml()__：
+> xml格式转化并执行输出函数  
 >>`$this->xml($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出    
 >>> `header("Content-Type:text/xml;charset=utf-8");`XML输出的文件格式  
 
-> __html()__：html格式转化并执行输出函数
+__html()__：
+> html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
 
