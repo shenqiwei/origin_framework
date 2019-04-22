@@ -22,7 +22,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）
 
 
-##### Controller.class.php调用
+#### Controller.class.php调用
 >主控制器的调用方式与其他PHP文件的调用方式一致，省略include与require引用操作，直接使用命名空间调用，使用继承方式来实现应用控制器对Origin核心功能的调用： 
 >>use Origin\Controller; 
 
@@ -32,7 +32,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`  
 >>`}`
 
-##### Controller.class.php函数说明
+#### Controller.class.php函数说明
 __welcome()__：
 > Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
 >>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
@@ -94,5 +94,99 @@ __html()__：
 > html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
+## Config 框架主配置目录
+该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
+通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 
-
+#### Config配置项说明
+`ROOT_APPLICATION`
+`DEFAULT_APPLICATION`
+`APPLICATION_BUFFER`
+`APPLICATION_METHOD`
+`APPLICATION_FUNCTION`
+`APPLICATION_CONFIG`
+`APPLICATION_CONTROLLER`
+`APPLICATION_MODEL`
+`APPLICATION_VIEW`
+`ROOT_PLUGIN`
+`ROOT_RESOURCE`
+`ROOT_RESOURCE_JS`
+`ROOT_RESOURCE_MEDIA`
+`ROOT_RESOURCE_STYLE`
+`ROOT_RESOURCE_TEMP`
+`ROOT_RESOURCE_PLUGIN`
+`ROOT_RESOURCE_PUBLIC`
+`ROOT_RESOURCE_UPLOAD`
+`ROOT_NAMESPACE`
+`ROOT_LOG`
+`LOG_ACCESS`
+`LOG_CONNECT`
+`LOG_EXCEPTION`
+`LOG_INITIALIZE`
+`LOG_OPERATE`
+`DEFAULT_CONTROLLER`
+`DEFAULT_METHOD`
+`DEFAULT_VIEW`
+`CLASS_SUFFIX`
+`METHOD_SUFFIX`
+`CONFIG_SUFFIX`
+`MODEL_SUFFIX`
+`VIEW_SUFFIX`
+`IMPL_SUFFIX`
+`LOG_SUFFIX`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`SESSION:`
+`COOKIE:`
+`COOKIE:`
+`COOKIE:`
+`COOKIE:`
+`COOKIE:`
+`COOKIE:`
+`COOKIE:`
+`DEFAULT_ENGINE_TYPE`
+`DATA_USE_TRANSACTION`
+`DATA_CONNECT_MAX`
+`DATA_CONNECT_THREAD`
+`DATA_USE_FACTORY`
+`DATA_TYPE`
+`DATA_HOST`
+`DATA_USER`
+`DATA_PWD`
+`DATA_PORT`
+`DATA_DB`
+`DATA_USE_MEMCACHE`
+`MEMCACHE_SET_ADDRESSL:ADDRESS`
+`MEMCACHE_SET_ADDRESSL:CAPACITY`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:`
+`DATA_MATRIX_CONFIG:MEMCACHE_SET_ADDRESSL:ADDRESS`
+`DATA_MATRIX_CONFIG:MEMCACHE_SET_ADDRESSL:CAPACITY`
+`LABEL_TYPE`
+`BUFFER_TYPE`
+`BUFFER_TIME`
+`ROUTE_CATALOGUE`
+`ROUTE_FILES`
+`URL_TYPE`
+`URL_LISTEN`
+`URL_HOST`
+`URL_HOST_ONLY`
