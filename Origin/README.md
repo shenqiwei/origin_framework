@@ -1,4 +1,5 @@
-## Origin 框架内核目录<span id='top'></span>
+<span id='top'></span>
+## Origin 框架内核目录
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
 [`Application说明`](#application)|[`Config说明`](#config)
@@ -16,7 +17,8 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 
 入口文件常量使用则是在index.php应用入口文件中进行设置了，在框架默认状态下，常量保持初始状态
 
-## Application 应用主控制器目录<span id='application'></span>
+<span id='application'></span>
+## Application 应用主控制器目录 [[返回TOP](#top)]
 在该目录中，有两个控制文件:Controller.class.php和Initialization.class.php
 - Controller.class.php: 应用主控制器文件  
 主控制器文件主要负责框架12个基本功能和功能包的预加载封装  
@@ -96,7 +98,8 @@ __html()__：
 > html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
-## Config 框架主配置目录<span id='config'></span>
+<span id='config'></span>
+## Config 框架主配置目录 [[返回TOP](#top)]
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 
