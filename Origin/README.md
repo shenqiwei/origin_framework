@@ -3,6 +3,7 @@
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
 [`Application说明`](#application)|[`Config说明`](#config)
+
 ## 入口文件
 Origin入口文件功能设计十分简单，起主要功能是用来对框架的应用开发提供基础设置支持：
 1) 在入口文件中，Origin限定了PHP开发支持的最低语言版本（大等于5.5）
@@ -25,6 +26,8 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 - Initialization.class.php 框架初始化系统组件模块文件
 该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）
 
+#### 函数快速路口
+[`welcome()`](#func_1) | [`show()`](#func_2) | [`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`failed()`](#func_9) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
 
 #### Controller.class.php调用
 >主控制器的调用方式与其他PHP文件的调用方式一致，省略include与require引用操作，直接使用命名空间调用，使用继承方式来实现应用控制器对Origin核心功能的调用： 
@@ -37,10 +40,12 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>`}`
 
 #### Controller.class.php函数说明
+<span id='func_1'></span>
 __welcome()__：
 > Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
 >>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
 
+<span id='func_2'></span>
 __show()__：
 > Origin信息打印函数单纯的echo输出语法，但内容输出后程序会强制停止，仅用于调试程序内容时使用  
 >>`$this->show();` 方法只能显示字符串类型的信息，并且不对html结构进行转化，输出结果后，会终止系统运行，后期将会对show结构进行功能升级  
@@ -50,6 +55,7 @@ __show()__：
 >>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exit();`  
 >>>`}`
 
+<span id='func_3'></span>
 __param()__：
 > 参数预设函数，用于前后端数据内容传递的中间函数变量，可以存储除object（对象）外的任意类型变量内容  
 >>`$this->param(variable_key,variable_value);` 方法调用时需要填写非空（null and ‘’）字符串作为参数的键值（variable_key）,相对于参数值（variable_value）得要求比较宽松，填入非对象变量值   
@@ -61,39 +67,48 @@ __param()__：
 >>> `}`  
 >>> 在视图模板页（html页面）中设置对应变量 `{$welcome}`来获取函数中参数内容，在页面中显示内容为 `欢迎使用Origin框架`
 
+<span id='func_4'></span>
 __view()__：
 > 视图模板函数，用于调用控制器对应函数视图模板，也可以根据实际需要设定其他模板内容  
 >>`$this->view("html_name");` 方法调用时参数可以为空，方法参数是用于指定需调用视图模板页（html页），当前版本紧支持同应用目录下的所有模板文件，跨目录调用暂不支持。默认访问模视图模板页是根据`get_class()`和`get_function()`函数方法获取访问对象信息  
 
+<span id='func_5'></span>
 __get_class()__：
 > 获取应用控制器名称函数  
 >> `$this->get_class();` 该函数方法可以直接获取当前访问对象的控制器名称  
 
+<span id='func_6'></span>
  __get_function()__：
 >获取应用函数名称函数  
 >> `$this->get_function();` 该函数方法可以直接获取当前访问对象的函数名臣  
 
+<span id='func_7'></span>
 __success()__：
 > 操作成功信息返回函数  
 >> `$this->success(message_info,skip_url,waiting_time);` 信息提醒函数，包含三个基本参数，message_info：信息内容，skip_url：跳转地址（默认值#，当填写空内容时，函数将不进行跳转操作，填写#则回退到前一个页面），waiting_time：等待周期时间（默认时间：5秒）   
 
+<span id='func_8'></span>
 __error()__：
 > 操作异常信息返回函数  
 >> `$this->error(message_info,skip_url,waiting_time);` 其函数方法应用方式一致，请参数success函数说明。
 
+<span id='func_9'></span>
 __failed()__：
 > 操作失败信息返回函数（由于大部分时间error与failed功能相同，故推荐使用error函数，后期将对failed函数进行重新定义）  
 
+<span id='func_10'></span>
 __json()__：
 > json格式转化并执行输出函数  
 >>`$this->json($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出  
 >>> `header("Content-Type:application/json;charset=utf-8");`Json输出的文件格式
 
+<span id='func_11'></span>
 __xml()__：
 > xml格式转化并执行输出函数  
 >>`$this->xml($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出    
 >>> `header("Content-Type:text/xml;charset=utf-8");`XML输出的文件格式  
 
+<span id='func_12'></span>
 __html()__：
 > html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
@@ -108,7 +123,7 @@ __html()__：
 
 #### Config配置项说明
 <span id='config_dir'></span>
-__目录配置：__[[返回](#config)]  
+__目录配置：[[返回](#config)]__  
 >`ROOT_APPLICATION` 应用控制器目录  默认值：`Apply/`   
 `DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home/`
 `APPLICATION_BUFFER` 缓存文件目录（可以在配置文件中设置是否使用缓存）默认值：`Buffer/`  
@@ -136,7 +151,7 @@ __目录配置：__[[返回](#config)]
 `LOG_OPERATE` 系统操作日志 默认值：`Action/`  
 
 <span id='config_file'></span>
-__文件访问配置：__[[返回](#config)]
+__文件访问配置：[[返回](#config)]__
 >`DEFAULT_CONTROLLER` 默认访问控制器对象 默认值：`index`  
 `DEFAULT_METHOD` 默认访问函数方法 默认值：`index`  
 `DEFAULT_VIEW`  默认访问视图模板 默认值：`index`  
@@ -149,7 +164,7 @@ __文件访问配置：__[[返回](#config)]
 `LOG_SUFFIX` 日志类型扩展名 默认值：`.log`  
 
 <span id='config_session'></span>
-__会话配置：__[[返回](#config)]   
+__会话配置：[[返回](#config)]__   
 >`SESSION:SAVE_PATH` session存储位置，一般php.ini设置,如果需要修改存储位置,再填写  
 `SESSION:NAME` 指定会话名以用做 cookie 的名字.只能由字母数字组成，默认为 `PHPSESSID`  
 `SESSION:SAVE_HANDLER` 定义了来存储和获取与会话关联的数据的处理器的名字.默认为 `files`  
@@ -176,7 +191,7 @@ __会话配置：__[[返回](#config)]
 `COOKIE:USE_ONLY_COOKIES` 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为`1`  
 
 <span id='config_db'></span>
-__数据源配置：__[[返回](#config)]  
+__数据源配置：[[返回](#config)]__  
 >`DEFAULT_ENGINE_TYPE` 数据驱动类型（innodb,由关系数据库配置限定，该配置只负责辅助框架完成事务管理操作）  
 `DATA_USE_TRANSACTION` 数据驱动类型为innodb时，事务操作设置才会生效  
 `DATA_CONNECT_MAX` 数据服务最大访问数量,设置该参数后,连接将会被监听,当到达最大连接值时,系统将挂起连接服务,直到有空余连接位置，默认值0（不作限制）  
