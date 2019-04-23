@@ -1,8 +1,8 @@
-<span id='top'></span>
+<span id='origin_top'></span>
 ## Origin 框架内核目录
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
-[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#font)|[`Kernel说明`](#kernel)
+[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#origin_font)|[`Kernel说明`](#origin_kernel)|[`Method说明`](#origin_method)|[`Template说明`](#origin_template)
 
 ## 入口文件
 Origin入口文件功能设计十分简单，起主要功能是用来对框架的应用开发提供基础设置支持：
@@ -19,7 +19,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 入口文件常量使用则是在index.php应用入口文件中进行设置了，在框架默认状态下，常量保持初始状态
 
 <span id='application'></span>
-## Application 应用主控制器目录 [[返回TOP](#top)]
+## Application 应用主控制器目录 [[返回TOP](#origin_top)]
 在该目录中，有两个控制文件:Controller.class.php和Initialization.class.php
 - Controller.class.php: 应用主控制器文件  
 主控制器文件主要负责框架12个基本功能和功能包的预加载封装  
@@ -115,7 +115,7 @@ __html()__：
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
 <span id='config'></span>
-## Config 框架主配置目录 [[返回TOP](#top)]
+## Config 框架主配置目录 [[返回TOP](#origin_top)]
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 `在不进行任何设置的情况下，框架可以进行基础的开发操作，满足网站及一般应用需求的情况，只需要在应用配置目录下的Config.cfg.php文件中，编写自己数据库配置内容既可以进行开发和功能实现编写`
@@ -233,9 +233,15 @@ __web辅助配置：[[返回](#config)]__
 `URL_HOST` web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头  
 `URL_HOST_ONLY` 是否固定web域名信息(0:false,1:true) 默认 0：不固定域名信息  
 
-<span id='font'></span>
-## Font 字体目录 [[返回TOP](#top)]
+<span id='origin_font'></span>
+## Font 字体目录 [[返回TOP](#origin_top)]
 这里主要是放置框架中使用的字体，字体主要用于Origin内部功能封装的字体设置支持
 
-<span id='kernel'></span>
-## Kernel Origin内核目录 [[返回TOP](#top)]
+<span id='origin_kernel'></span>
+## Kernel 内核目录 [[返回TOP](#origin_top)]
+
+<span id='origin_method'></span>
+## Method 功能函数目录 [[返回TOP](#origin_top)]
+
+<span id='origin_template'></span>
+## Method 公共应用视图模板（html页） [[返回TOP](#origin_top)]
