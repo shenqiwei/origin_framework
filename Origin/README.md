@@ -103,8 +103,12 @@ __html()__：
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 
+#### Config 快速入口
+[`目录配置`](#config_dir) | [`文件访问配置`](#config_file) | [`会话配置`](#config_session) | [`数据源配置`](#config_db) | [`访问显示模式配置`](#config_view) | [`路由应用配置`](#config_route) | [`web辅助配置`](#config_web)
+
 #### Config配置项说明
-__目录配置：__  
+<span id='config_dir'></span>
+__目录配置：__[[返回](#config)]  
 >`ROOT_APPLICATION` 应用控制器目录  默认值：`Apply/`   
 `DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home/`
 `APPLICATION_BUFFER` 缓存文件目录（可以在配置文件中设置是否使用缓存）默认值：`Buffer/`  
@@ -131,7 +135,8 @@ __目录配置：__
 `LOG_INITIALIZE` 框架初始化日志 默认值：`Initialize/`  
 `LOG_OPERATE` 系统操作日志 默认值：`Action/`  
 
-__文件访问配置：__
+<span id='config_file'></span>
+__文件访问配置：__[[返回](#config)]
 >`DEFAULT_CONTROLLER` 默认访问控制器对象 默认值：`index`  
 `DEFAULT_METHOD` 默认访问函数方法 默认值：`index`  
 `DEFAULT_VIEW`  默认访问视图模板 默认值：`index`  
@@ -143,7 +148,8 @@ __文件访问配置：__
 `IMPL_SUFFIX` 接口类型扩展名 默认值：`.impl.php`  
 `LOG_SUFFIX` 日志类型扩展名 默认值：`.log`  
 
-__会话配置：__   
+<span id='config_session'></span>
+__会话配置：__[[返回](#config)]   
 >`SESSION:SAVE_PATH` session存储位置，一般php.ini设置,如果需要修改存储位置,再填写  
 `SESSION:NAME` 指定会话名以用做 cookie 的名字.只能由字母数字组成，默认为 `PHPSESSID`  
 `SESSION:SAVE_HANDLER` 定义了来存储和获取与会话关联的数据的处理器的名字.默认为 `files`  
@@ -169,7 +175,8 @@ __会话配置：__
 `COOKIE:USE_COOKIES` 指定是否在客户端用 cookie 来存放会话 ID,默认为 `1`  
 `COOKIE:USE_ONLY_COOKIES` 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为`1`  
 
-__数据源配置：__  
+<span id='config_db'></span>
+__数据源配置：__[[返回](#config)]  
 >`DEFAULT_ENGINE_TYPE` 数据驱动类型（innodb,由关系数据库配置限定，该配置只负责辅助框架完成事务管理操作）  
 `DATA_USE_TRANSACTION` 数据驱动类型为innodb时，事务操作设置才会生效  
 `DATA_CONNECT_MAX` 数据服务最大访问数量,设置该参数后,连接将会被监听,当到达最大连接值时,系统将挂起连接服务,直到有空余连接位置，默认值0（不作限制）  
@@ -191,16 +198,19 @@ __数据源配置：__
 `DATA_MATRIX_CONFIG:DATA_PORT` mysql默认访问端口  
 `DATA_MATRIX_CONFIG:DATA_DB` mysql访问数据库  
 
-__访问显示模式配置：(`功能完善中`)__  
+<span id='config_view'></span>
+__访问显示模式配置：(`功能完善中`)[[返回](#config)]__  
 >`LABEL_TYPE` 系统支持标签格式（0:默认格式(Origin格式),1:html格式,2:自然语句格式)  
 `BUFFER_TYPE` 使用缓存器类型（0:不适用缓存器,1:使用数据缓存,2:生成php缓存文件,3:生成静态文件）  
 `BUFFER_TIME` 缓存器生命周期（0:不设限制,内容发生变化,缓存器执行更新,大于0时以秒为时间单位进行周期更新）  
 
-__路由应用配置：(`功能测试修改中`)__  
+<span id='config_route'></span>
+__路由应用配置：(`功能测试修改中`)[[返回](#config)]__  
 >`ROUTE_CATALOGUE` 路由主目录  
 `ROUTE_FILES` 路由文件
 
-__web辅助配置：__  
+<span id='config_web'></span>
+__web辅助配置：[[返回](#config)]__  
 >`URL_TYPE`  设置web访问的超文本传输协议模式(0:http/https,1:http,2:https),可以使用数字设置也可以直接使用描述设置  
 `URL_LISTEN`  是否启用地址监听(0:false,1:true) 默认 0：不监听  
 `URL_HOST` web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头  
