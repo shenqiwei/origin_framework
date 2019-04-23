@@ -165,35 +165,38 @@ __会话配置：__
 `COOKIE:USE_ONLY_COOKIES` 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为`1`  
 
 __数据源配置：__  
-`DEFAULT_ENGINE_TYPE`
-`DATA_USE_TRANSACTION`
-`DATA_CONNECT_MAX`
-`DATA_CONNECT_THREAD`
-`DATA_USE_FACTORY`
-`DATA_TYPE`
-`DATA_HOST`
-`DATA_USER`
-`DATA_PWD`
-`DATA_PORT`
-`DATA_DB`
-`DATA_USE_MEMCACHE`
-`MEMCACHE_SET_ADDRESSL:ADDRESS`
-`MEMCACHE_SET_ADDRESSL:CAPACITY`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:`
-`DATA_MATRIX_CONFIG:MEMCACHE_SET_ADDRESSL:ADDRESS`
-`DATA_MATRIX_CONFIG:MEMCACHE_SET_ADDRESSL:CAPACITY`
-`LABEL_TYPE`
-`BUFFER_TYPE`
-`BUFFER_TIME`
-`ROUTE_CATALOGUE`
-`ROUTE_FILES`
-`URL_TYPE`
-`URL_LISTEN`
-`URL_HOST`
-`URL_HOST_ONLY`
+>`DEFAULT_ENGINE_TYPE` 数据驱动类型（innodb,由关系数据库配置限定，该配置只负责辅助框架完成事务管理操作）  
+`DATA_USE_TRANSACTION` 数据驱动类型为innodb时，事务操作设置才会生效  
+`DATA_CONNECT_MAX` 数据服务最大访问数量,设置该参数后,连接将会被监听,当到达最大连接值时,系统将挂起连接服务,直到有空余连接位置，默认值0（不作限制）  
+`DATA_CONNECT_THREAD` 连接是否使用线程,当前版本暂不支持线程  
+`DATA_USE_FACTORY` 是否是用数据工厂模式,当前版本暂不支持线程  
+`DATA_TYPE` 选择数据库类型,当前版本只支持mysql （现阶段版本更新中，对redis和mongodb进行了支持，功能测试中，完成测试后会将支持结构上传）  
+`DATA_HOST`  mysql服务访问地址  
+`DATA_USER`  mysql登录用户  
+`DATA_PWD` mysql登录密码  
+`DATA_PORT`  mysql默认访问端口  
+`DATA_DB` mysql访问数据库  
+`DATA_USE_MEMCACHE` mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境(暂时取消该功能支持)  
+`MEMCACHE_SET_ADDRESSL:ADDRESS`  
+`MEMCACHE_SET_ADDRESSL:CAPACITY`  
+`DATA_MATRIX_CONFIG:DATA_NAME` 当前数据源名称(多数据结构支持，亦支持分布式数据结构)  
+`DATA_MATRIX_CONFIG:DATA_HOST` mysql服务访问地址  
+`DATA_MATRIX_CONFIG:DATA_USER` mysql登录用户  
+`DATA_MATRIX_CONFIG:DATA_PWD` mysql登录密码  
+`DATA_MATRIX_CONFIG:DATA_PORT` mysql默认访问端口  
+`DATA_MATRIX_CONFIG:DATA_DB` mysql访问数据库  
+
+__访问显示模式配置：(`功能完善中`)__  
+>`LABEL_TYPE` 系统支持标签格式（0:默认格式(Origin格式),1:html格式,2:自然语句格式)  
+`BUFFER_TYPE` 使用缓存器类型（0:不适用缓存器,1:使用数据缓存,2:生成php缓存文件,3:生成静态文件）  
+`BUFFER_TIME` 缓存器生命周期（0:不设限制,内容发生变化,缓存器执行更新,大于0时以秒为时间单位进行周期更新）  
+
+__路由应用配置：(`功能测试修改中`)__  
+>`ROUTE_CATALOGUE` 路由主目录
+`ROUTE_FILES` 路由文件
+
+__web辅助配置：__  
+>`URL_TYPE`  设置web访问的超文本传输协议模式(0:http/https,1:http,2:https),可以使用数字设置也可以直接使用描述设置  
+`URL_LISTEN`  是否启用地址监听(0:false,1:true) 默认 0：不监听  
+`URL_HOST` web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头  
+`URL_HOST_ONLY` 是否固定web域名信息(0:false,1:true) 默认 0：不固定域名信息  
