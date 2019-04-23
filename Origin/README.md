@@ -36,10 +36,11 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 >>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`  
 >>`}`
 
+#### Controller.class.php函数说明
+
 #### 函数快速路口
 [`welcome()`](#func_1) | [`show()`](#func_2) | [`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`failed()`](#func_9) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
 
-#### Controller.class.php函数说明
 <span id='func_1'></span>
 __welcome()__：
 > Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
