@@ -2,7 +2,7 @@
 ## Origin 框架内核目录
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
-[`Application说明`](#application)|[`Config说明`](#config)
+[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#font)|[`Kernel说明`](#kernel)
 
 ## 入口文件
 Origin入口文件功能设计十分简单，起主要功能是用来对框架的应用开发提供基础设置支持：
@@ -231,3 +231,10 @@ __web辅助配置：[[返回](#config)]__
 `URL_LISTEN`  是否启用地址监听(0:false,1:true) 默认 0：不监听  
 `URL_HOST` web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头  
 `URL_HOST_ONLY` 是否固定web域名信息(0:false,1:true) 默认 0：不固定域名信息  
+
+<span id='font'></span>
+## Font 字体目录 [[返回TOP](#top)]
+这里主要是放置框架中使用的字体，字体主要用于Origin内部功能封装的字体设置支持
+
+<span id='kernel'></span>
+## Kernel Origin内核目录 [[返回TOP](#top)]
