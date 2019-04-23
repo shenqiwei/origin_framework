@@ -243,5 +243,46 @@ __web辅助配置：[[返回](#config)]__
 <span id='origin_method'></span>
 ## Method 功能函数目录 [[返回TOP](#origin_top)]
 
+该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.func.php文件中
+>函数列表
+
+>> `Common.func.php`  
+>>> 公共函数包，主要包含：字符转移，格式列表，文件分类用于对被访问文件内容进行限定和提供有效条件的内容函数  
+
+>> `Config.func.php`  
+>>> 配置函数包，提供分段函数，对不同结构层的配置信息进行调用管理，并针对配置内容进行简单的优先级排列执行
+
+>> `Cookie.func.php`  
+>>> 浏览器会话函数包，只用于对PHP Cookie会话的常规使用进行支持，和简单设置
+
+>> `Entrance.func.php`  
+>>> 框架入口函数包，Origin ver1.0的框架请求入口
+
+>> `File.func.php`  
+>>> 文件管理函数包，包含对文件及文件夹的添加、删除、修改等操作函数
+
+>> `Filter.func.php`  
+>>> 框架内容强制转化函数（该模块已经被validate.class.php的封装内容覆盖，更新Kernel时，会逐步取消该函数包的作用）
+
+>> `Hook.func.php`  
+>>> 文件引入函数包，由于功能重定义后，将钩子结构放入到入口函数中，所以Hook钩子模块的实际功能被取消，相应的插件引入规则，将重新定义
+
+>> `Log.func.php`  
+>>> 日志函数，包含4个基本日志类型，并提供函数自定义内容入口，方便开发者，定义同类型日志内容，并进行有效记录
+
+>> `Public.func.php`  
+>>> 公共应用函数，使用单字母命名方式的执行函数，该函数包中函数，可以帮助开发者，完成大多数开发需求
+
+>> `Request.func.php`  
+>>> 请求器函数包，用于对访问请求的GET及POST，UPLOAD行为进行监听捕获，并返回对象内容
+
+>> `Session.func.php`  
+>>> 会话操作函数包，只用于对PHP Session会话的常规使用进行支持，和简单设置
+
+>> `Validate.func.php`  
+>>> 内容验证函数包，包含12基础类型验证函数以及一个公共定义验证函数，分别用于对输入值得常用类型进行单一验证
+
 <span id='origin_template'></span>
-## Method 公共应用视图模板（html页） [[返回TOP](#origin_top)]
+## Template 公共应用视图模板（html页） [[返回TOP](#origin_top)]
+
+该目录中存放Origin内容提示所使用视图模板页，模板名称不可以修改，页面内容可以自定义
