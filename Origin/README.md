@@ -99,65 +99,72 @@ __html()__：
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 
 #### Config配置项说明
-`ROOT_APPLICATION`
-`DEFAULT_APPLICATION`
-`APPLICATION_BUFFER`
-`APPLICATION_METHOD`
-`APPLICATION_FUNCTION`
-`APPLICATION_CONFIG`
-`APPLICATION_CONTROLLER`
-`APPLICATION_MODEL`
-`APPLICATION_VIEW`
-`ROOT_PLUGIN`
-`ROOT_RESOURCE`
-`ROOT_RESOURCE_JS`
-`ROOT_RESOURCE_MEDIA`
-`ROOT_RESOURCE_STYLE`
-`ROOT_RESOURCE_TEMP`
-`ROOT_RESOURCE_PLUGIN`
-`ROOT_RESOURCE_PUBLIC`
-`ROOT_RESOURCE_UPLOAD`
-`ROOT_NAMESPACE`
-`ROOT_LOG`
-`LOG_ACCESS`
-`LOG_CONNECT`
-`LOG_EXCEPTION`
-`LOG_INITIALIZE`
-`LOG_OPERATE`
-`DEFAULT_CONTROLLER`
-`DEFAULT_METHOD`
-`DEFAULT_VIEW`
-`CLASS_SUFFIX`
-`METHOD_SUFFIX`
-`CONFIG_SUFFIX`
-`MODEL_SUFFIX`
-`VIEW_SUFFIX`
-`IMPL_SUFFIX`
-`LOG_SUFFIX`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`SESSION:`
-`COOKIE:`
-`COOKIE:`
-`COOKIE:`
-`COOKIE:`
-`COOKIE:`
-`COOKIE:`
-`COOKIE:`
+__目录配置：__  
+>`ROOT_APPLICATION` 应用控制器目录  默认值：`Apply/`   
+`DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home/`
+`APPLICATION_BUFFER` 缓存文件目录（可以在配置文件中设置是否使用缓存）默认值：`Buffer/`  
+`APPLICATION_METHOD` 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用 默认值：`Common/`  
+`APPLICATION_FUNCTION` 公共方法文件目录，系统公共方法公共调用文件存储位置 默认值：`Common/`  
+`APPLICATION_CONFIG` 开发者或用户自定义或改写系统配置文件存储位置 默认值：`Config/`  
+`APPLICATION_CONTROLLER` 执行程序文件目录 默认值：`Controller/`  
+`APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model/`  
+`APPLICATION_VIEW` 模板（Template）文件目录 默认值：`View/`  
+`ROOT_PLUGIN` 应用插件目录 默认值：`PlugIn/`  
+`ROOT_RESOURCE` 资源主目录 默认值：`Resource/`  
+`ROOT_RESOURCE_JS` javascript资源目录 默认值：`Jscript`  
+`ROOT_RESOURCE_MEDIA` 多媒体资源目录  默认值：`Media`  
+`ROOT_RESOURCE_STYLE` 样式表资源目录 默认值：`Style`  
+`ROOT_RESOURCE_TEMP` 模板资源目录 默认值：`Template`  
+`ROOT_RESOURCE_PLUGIN` 第三方插件 默认值：`Plug-In`  
+`ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`  
+`ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`  
+`ROOT_NAMESPACE` 根命名空间 默认值：`\\Apply`  
+`ROOT_LOG` 日志主目录 默认值：`Logs/`  
+`LOG_ACCESS` 服务请求链接日志 默认值：`Access/`  
+`LOG_CONNECT` 数据库连接日志 默认值：`Connect/`   
+`LOG_EXCEPTION` 系统异常信息日志 默认值：`Error/`  
+`LOG_INITIALIZE` 框架初始化日志 默认值：`Initialize/`  
+`LOG_OPERATE` 系统操作日志 默认值：`Action/`  
+
+__文件访问配置：__
+>`DEFAULT_CONTROLLER` 默认访问控制器对象 默认值：`index`  
+`DEFAULT_METHOD` 默认访问函数方法 默认值：`index`  
+`DEFAULT_VIEW`  默认访问视图模板 默认值：`index`  
+`CLASS_SUFFIX` 类默认扩展名 默认值：`.class.php`  
+`METHOD_SUFFIX` 方法默认扩展名，内建应用 默认值：`.func.php`  
+`CONFIG_SUFFIX` 配置默认扩展名 默认值：`.cfg.php`  
+`MODEL_SUFFIX` 数据模型扩展名 默认值：`.model.php`  
+`VIEW_SUFFIX` 显示模板扩展名 默认值：`.html`  
+`IMPL_SUFFIX` 接口类型扩展名 默认值：`.impl.php`  
+`LOG_SUFFIX` 日志类型扩展名 默认值：`.log`  
+
+__会话配置：__   
+`SESSION:SAVE_PATH` session存储位置，一般php.ini设置,如果需要修改存储位置,再填写  
+`SESSION:NAME` 指定会话名以用做 cookie 的名字.只能由字母数字组成，默认为 `PHPSESSID`  
+`SESSION:SAVE_HANDLER` 定义了来存储和获取与会话关联的数据的处理器的名字.默认为 `files`  
+`SESSION:AUTO_START` 指定会话模块是否在请求开始时自动启动一个会话.默认为 `0（不启动）`  
+`SESSION:GC_PROBABILITY` 与 gc_divisor 合起来用来管理 gc（garbage collection 垃圾回收）进程启动的概率.默认为 `1`  
+`SESSION:GC_DIVISOR` 与 gc_probability 合起来定义了在每个会话初始化时启动 gc（garbage collection 垃圾回收）进程的概率.默认为 `100`  
+`SESSION:'GC_MAXLIFTTIME` 指定过了多少秒之后数据就会被视为“垃圾”并被清除,垃圾搜集可能会在 session 启动的时候开始  
+`SESSION:SERIALIZE_HANDLER` 定义用来序列化／解序列化的处理器名字  
+`SESSION:USE_STRICT_MODE`  
+`SESSION:REFERER_CHECK` 用来检查每个 HTTP Referer 的子串,如果客户端发送了 Referer 信息但是在其中并未找到该子串,则嵌入的会话 ID 会被标记为无效,默认为`空字符串 ''`  
+`SESSION:ENTROPY_FILE` 给出一个到外部资源（文件）的路径,在会话 ID 创建进程中被用作附加的熵值资源  
+`SESSION:ENTROPY_LENGTH` 指定了从上面的文件中读取的字节数,默认为 `0`  
+`SESSION:CACHE_LIMITER` 指定会话页面所使用的缓冲控制方法.默认为 `nocache`  
+`SESSION:CACHE_EXPIRE` 以分钟数指定缓冲的会话页面的存活期,此设定对 nocache 缓冲控制方法无效,默认为 `180`  
+`SESSION:USE_TRANS_SID` 指定是否启用透明 SID 支持.默认为 `0（禁用）`
+`SESSION:HASH_FUNCTION` 允许用户指定生成会话 ID 的散列算法.'0' 表示 MD5（128 位）,'1' 表示 SHA-1（160 位）
+`SESSION:HASH_BITS_PER_CHARACTER` 允许用户定义将二进制散列数据转换为可读的格式时每个字符存放多少个比特,可能值为 '4'（0-9，a-f）默认,'5'（0-9，a-v）,以及 '6'（0-9，a-z，A-Z，"-"，","）
+`COOKIE:COOKIE_LIFETIME` 以秒数指定了发送到浏览器的 cookie 的生命周期,值为 0 表示“直到关闭浏览器”,默认为 `0`  
+`COOKIE:COOKIE_PATH` 指定了要设定会话 cookie 的路径,默认为`空字符串 ''`  
+`COOKIE:COOKIE_DOMAIN` 指定了要设定会话 cookie 的域名,默认为`空字符串 ''`  
+`COOKIE:COOKIE_SECURE` 指定是否仅通过安全连接发送 cookie,默认为 `off`  
+`COOKIE:COOKIE_HTTPONLY`标记cookie，只有通过HTTP协议访问，这意味着饼干不会访问的脚本语言,比如JavaScript，这个设置可以有效地帮助降低身份盗窃XSS攻击,仅部分浏览器支持  
+`COOKIE:USE_COOKIES` 指定是否在客户端用 cookie 来存放会话 ID,默认为 `1`  
+`COOKIE:USE_ONLY_COOKIES` 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为`1`  
+
+__数据源配置：__  
 `DEFAULT_ENGINE_TYPE`
 `DATA_USE_TRANSACTION`
 `DATA_CONNECT_MAX`

@@ -52,15 +52,15 @@ return array(
     'LOG_INITIALIZE' => 'Initialize/', // 框架初始化日志
     'LOG_OPERATE' => 'Action/', // 系统操作日志
     // 引导信息
-    'DEFAULT_CONTROLLER' => 'index', // 默认访问方法名
-    'DEFAULT_METHOD' => 'index', // 默认访问文件名
-    'DEFAULT_VIEW' => 'index', // 默认访问模板名
+    'DEFAULT_CONTROLLER' => 'index', // 默认访问控制器对象
+    'DEFAULT_METHOD' => 'index', // 默认访问函数方法
+    'DEFAULT_VIEW' => 'index', // 默认访问模板
     'CLASS_SUFFIX' => '.class.php', // 类默认扩展名
     'METHOD_SUFFIX' => '.func.php', // 方法默认扩展名，内建应用
     'CONFIG_SUFFIX' => '.cfg.php', // 配置默认扩展名
-    'MODEL_SUFFIX' => '.model.php', //数据模型扩展名
-    'VIEW_SUFFIX' => '.html', //显示模板扩展名
-    'IMPL_SUFFIX' => '.impl.php', //接口类型扩展名
+    'MODEL_SUFFIX' => '.model.php', // 数据模型扩展名
+    'VIEW_SUFFIX' => '.html', // 显示模板扩展名
+    'IMPL_SUFFIX' => '.impl.php', // 接口类型扩展名
     'LOG_SUFFIX' => '.log', //日志类型扩展名
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用
     'SESSION' => array(
@@ -74,7 +74,7 @@ return array(
         'SERIALIZE_HANDLER' => 'php', // 定义用来序列化／解序列化的处理器名字
         'USE_STRICT_MODE' => 0, //
         'REFERER_CHECK'=> '', // 用来检查每个 HTTP Referer 的子串,如果客户端发送了 Referer 信息但是在其中并未找到该子串,则嵌入的会话 ID 会被标记为无效,默认为空字符串
-        'ENTROPY_FILE' => '', // 会给出一个到外部资源（文件）的路径,在会话 ID 创建进程中被用作附加的熵值资源
+        'ENTROPY_FILE' => '', // 给出一个到外部资源（文件）的路径,在会话 ID 创建进程中被用作附加的值资源
         'ENTROPY_LENGTH' => 0, // 指定了从上面的文件中读取的字节数,默认为 0
         'CACHE_LIMITER' => 'nocache', // 指定会话页面所使用的缓冲控制方法.默认为 nocache
         'CACHE_EXPIRE' => 180, // 以分钟数指定缓冲的会话页面的存活期,此设定对 nocache 缓冲控制方法无效,默认为 180
