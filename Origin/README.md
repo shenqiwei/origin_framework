@@ -114,6 +114,10 @@ __html()__：
 > html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
+`Index.class.php 调用样例:`
+![Index样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/i_controller.png)
+
+
 <span id='config'></span>
 ## Config 框架主配置目录 [[返回TOP](#origin_top)]
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
