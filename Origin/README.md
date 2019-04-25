@@ -114,7 +114,9 @@ __html()__：
 > html格式转化并执行输出函数
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
-[Controller部分功能样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/i_controller.png)
+
+`Controller部分功能调用样例：`  
+![Controller部分功能样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/i_controller.png)
 
 
 <span id='config'></span>
