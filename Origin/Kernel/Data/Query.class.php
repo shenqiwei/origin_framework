@@ -7,11 +7,14 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Kernel.Data.Query *
  * version: 1.0 *
- * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @since 0.1
- * @copyright 2015-2017
- * @context: IoC Sql操作封装类
+ * structure: common framework *
+ * email: cheerup.shen@foxmail.com *
+ * designer: 沈启威 *
+ * developer: 沈启威 *
+ * partner: 沈启威 *
+ * create Time: 2017/01/09 11:04
+ * update Time: 2017/01/09 14:59
+ * chinese Context: IoC Sql操作封装类
  */
 namespace Origin\Kernel\Data;
 /**
@@ -42,6 +45,11 @@ abstract class Query
      */
     protected $_Object = null;
     /**
+     * @var string $_Err_Msg
+     * 数据库错误信息变量
+    */
+    protected $_Err_Msg = null;
+    /**
      * @var string $_Table 数据库表名，
      * 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
      */
@@ -52,7 +60,7 @@ abstract class Query
      * 当预设功能无法满足实际要求时，可以直接使用查询语句，
      * 该功能与映射结构及Model结构一致，但推荐是用映射及Model结构开发
      */
-    protected $_Query = null;
+//    protected $_Query = null;
     /**
      * @var string $_Top
      * 用于select查询中Top应用
@@ -187,7 +195,7 @@ abstract class Query
     /**
      * @var string $_fetch_type
      * 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
-     */
+    */
     protected $_Fetch_Type = 'all';
     /**
      * 构造器函数
@@ -304,11 +312,11 @@ abstract class Query
      * @param string $query
      * @return object
      */
-    function query($query)
-    {
-        $this->_Query = $query;
-        return $this->__getSQL();
-    }
+//    function query($query)
+//    {
+//        $this->_Query = $query;
+//        return $this->__getSQL();
+//    }
     /**
      * Top 语句结构
      * @access public
@@ -555,6 +563,7 @@ abstract class Query
                 echo('Origin (Query) Class Error: '.$e->getMessage());
                 exit(0);
             }
+
         }
         return $this->__getSQL();
     }
@@ -608,8 +617,8 @@ abstract class Query
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
             if(!is_null($field) and !empty($field)){
-                foreach(array(' gt ' => '>', ' lt ' => '<',' neq ' => '!=', ' eq '=> '=', ' ge ' => '>=', ' le ' => '<=') as $key => $value){
-                    $field = str_replace($key, $value, $field);
+                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+                    $field = preg_replace($key, $value, $field);
                 }
                 $this->_Where = ' where '.$field;
             }
@@ -1065,13 +1074,13 @@ abstract class Query
     /**
      * 函数结构应用, 单项内容操作
      * @access public
-     * @param string $function
+     * @param string $func
      * @param string $field
      * @param string $symbol
      * @param int $value
      * @return object
     */
-    function having($function='sum', $field, $symbol, $value)
+    function having($func='sum', $field, $symbol, $value)
     {
         /**
          * 因为having运算主要用于范围所以当前版本仅支持对数字运算
@@ -1083,12 +1092,12 @@ abstract class Query
         # 创建运算符匹配正则
         $_regular_symbol_confine = '/^(gt|lt|eq|ge|le|neq)$/';
         # 判断参数是否符合预限定结果
-        if(is_true($_regular_function_confine, $function) === true){
+        if(is_true($_regular_function_confine, $func) === true){
             if(is_true($this->_Regular_Name_Confine, $field) === true){
                 if(is_true($_regular_symbol_confine, $symbol) === true){
                     if(is_numeric($value)){
                         # 创建having信息数组
-                        $this->_Having = ' having '.$function.'('.$field.') '.Symbol($symbol).' '.$value;
+                        $this->_Having = ' having '.$func.'('.$field.') '.Symbol($symbol).' '.$value;
                     }
                 }
             }
@@ -1161,7 +1170,7 @@ abstract class Query
      * @access public
      * @param mixed $fetch_type
      * @return object
-     */
+    */
     function fetchType($fetch_type)
     {
         if(in_array(strtolower(trim($fetch_type)),array('all','nv','kv'))){
@@ -1194,7 +1203,16 @@ abstract class Query
      */
     abstract function update();
     /**
-     * 执行表创建
+     * 执行自定义查询语句,并返回执行结果
+     * @param string $query
     */
-    abstract function create();
+    abstract function query($query);
+    /**
+     * 返回错误信息
+     * @return string
+    */
+    function getErrorMsg()
+    {
+        return $this->_Err_Msg;
+    }
 }
