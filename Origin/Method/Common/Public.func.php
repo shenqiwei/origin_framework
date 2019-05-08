@@ -140,18 +140,6 @@ function Data($table = null)
     $d->__setSQL($d);
     return $d;
 }
-
-/**
- * header文件头结构使用函数
- * @access public
- * @param string $guide
- * @return mixed
- */
-function Header($guide)
-{
-    return $guide;
-}
-
 /**
  * Input表单提交信息请求方法函数
  * @access public

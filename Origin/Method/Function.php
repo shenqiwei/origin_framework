@@ -51,11 +51,13 @@ if(!defined('__HOST__')) define('__HOST__',__PROTOCOL__.$_SERVER['HTTP_HOST'].'/
 if(!defined('__PLUGIN__')) define('__PLUGIN__', Configuration('ROOT_PLUGIN'));
 # 资源应用常量
 if(!defined('__RESOURCE__')) define('__RESOURCE__', Configuration('ROOT_RESOURCE'));
+
 # 加载函数封装类
 Import('File:File'); # 文件控制类
 Import('Parameter:Request'); # 调用请求控制器
 Import('Parameter:Validate'); # 调用验证控制器
 Import('Parameter:Filter');
+
 # 基础操作方法包应用
 include('Common/File.func.php');
 include('Common/Request.func.php');
@@ -68,7 +70,7 @@ include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Public.func.php'); # 文件操作函数包
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
-Import('Data:'.Config('DATA_TYPE')); # 调用数据库对象组件
+Import('Data:'.Configuration('DATA_TYPE')); # 调用数据库对象组件
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import('Mark:Label'); # 调用标签解析器控制类
 Import('Export:Verify'); # 调用验证码组件
@@ -77,6 +79,9 @@ Import('Parameter:Output'); # 调用数据结构输出控制类
 # 引入路由控制函数包
 Import('Protocol:Route'); # 调用路由控制函数包
 Import('Protocol:Curl'); # 调用远程请求函数包
+/**
+ * Common 有行能bug内容，关系结构Config需要进行结构简化和重定义
+*/
 # 应用结构包调用
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
