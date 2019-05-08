@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Failed Message</title>
+    <title>Error Message</title>
     <script type="text/javascript">
-        var time = {$time}; // 倒计时时间
+        var time = <?php echo($_time);?>; // 倒计时时间
         var status = 'true';
-        function cd(){
+        function cd() {
             if(time <= 1){
                 if(status === 'true') redirect();
             }else if(status === 'true')time -= 1;
@@ -32,24 +32,23 @@
         setInterval("cd()",1000);
     </script>
     <style>
-        body{background-color: grey; font-family:微软雅黑; font-size:14px; color:#000000; top:0; left:0;}
+        body{background-color:<?php echo($_setting["bgcolor"]);?>; font-family:微软雅黑; font-size:14px; color:<?php echo($_setting["color"]);?>; top:0; left:0;}
         .main{width:55%; min-width:480px; padding: 0 0 0 0; margin: 0 auto;}
         .status{font-size:60px; padding-bottom: 20px;}
         .content{min-height:120px; padding-bottom: 20px;}
-        .jump{text-align: right; padding-bottom: 20px;  }
-        .origin{text-align: right  }
-        a{color:white; cursor:pointer; text-decoration: none;  }
-        #time{color:white;  }
+        .jump{text-align: right; padding-bottom: 20px;}
+        .origin{text-align: right}
+        a{color:floralwhite; cursor:pointer; text-decoration: none;}
     </style>
 </head>
 <body>
 <div class="main">
-    <div class="status">&lt;Failed:&gt;</div>
-    <div class="content">{$message}</div>
+    <div class="status">&lt;Error:&gt;</div>
+    <div class="content"><?php echo($_message);?></div>
     <div class="jump">
         <a onclick="redirect()">[OK]</a> or
         <a id="pause" onclick="pause()">[Pause]</a> or
-        <span id="time">{$time}</span> seconds after jump
+        <span id="time"><?php echo($_time);?></span> seconds after jump
     </div>
     <div class="origin">Origin Framework. 2017.</div>
 </div>

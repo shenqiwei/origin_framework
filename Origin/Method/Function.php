@@ -23,13 +23,13 @@ include('Common/Config.func.php');
 # 框架柱目录文件路径
 if(!defined('RING')) define('RING', 'Origin'.SLASH);
 # 公共配置常量
-if(!defined('CLASS_SUFFIX')) define('CLASS_SUFFIX', Config('CLASS_SUFFIX'));
-if(!defined('METHOD_SUFFIX')) define('METHOD_SUFFIX', Config('METHOD_SUFFIX'));
-if(!defined('CONFIG_SUFFIX')) define('CONFIG_SUFFIX', Config('CONFIG_SUFFIX'));
+if(!defined('CLASS_SUFFIX')) define('CLASS_SUFFIX', Configuration('CLASS_SUFFIX'));
+if(!defined('METHOD_SUFFIX')) define('METHOD_SUFFIX', Configuration('METHOD_SUFFIX'));
+if(!defined('CONFIG_SUFFIX')) define('CONFIG_SUFFIX', Configuration('CONFIG_SUFFIX'));
 # 判断程序是否锁定域名
-if(Config('URL_HOST_ONLY') != 0){
+if(Configuration('URL_HOST_ONLY') != 0){
     # 判断访问地址与注册域名是否相同
-    if(Config('URL_HOST') != $_SERVER['HTTP_HOST']){
+    if(Configuration('URL_HOST') != $_SERVER['HTTP_HOST']){
         # 不同抛出错误
         # 异常处理：访问域名与注册域名不符
         try{
@@ -42,26 +42,15 @@ if(Config('URL_HOST_ONLY') != 0){
 }
 # 创建基础常量
 # 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
-if(!defined('__APPLICATION__')) define('__APPLICATION__', Config('DEFAULT_APPLICATION'));
+if(!defined('__APPLICATION__')) define('__APPLICATION__', Configuration('DEFAULT_APPLICATION'));
 # 协议类型
 if(!defined('__PROTOCOL__')) define('__PROTOCOL__', $_SERVER['HTTPS']? 'https://' : 'http://');
 # 地址信息
 if(!defined('__HOST__')) define('__HOST__',__PROTOCOL__.$_SERVER['HTTP_HOST'].'/');
 # 插件应用常量
-if(!defined('__PLUGIN__')) define('__PLUGIN__', Config('ROOT_PLUGIN'));
+if(!defined('__PLUGIN__')) define('__PLUGIN__', Configuration('ROOT_PLUGIN'));
 # 资源应用常量
-if(!defined('__RESOURCE__')) define('__RESOURCE__', Config('ROOT_RESOURCE'));
-# 资源目录常量
-define('__JSCRIPT__',__RESOURCE__.Config('ROOT_RESOURCE_JS'));
-define('__MEDIA__',__RESOURCE__.Config('ROOT_RESOURCE_MEDIA'));
-define('__STYLE__',__RESOURCE__.Config('ROOT_RESOURCE_STYLE'));
-define('__TEMP__',__RESOURCE__.Config('ROOT_RESOURCE_TEMP'));
-define('__PUBLIC__',__RESOURCE__.Config('ROOT_RESOURCE_PUBLIC'));
-# 插件地址常量
-define('__PLUG_IN__',__RESOURCE__.Config('ROOT_RESOURCE_PLUGIN'));
-# 上传文件常量
-define('__UPLOAD__',__RESOURCE__.Config('ROOT_RESOURCE_UPLOAD'));
-
+if(!defined('__RESOURCE__')) define('__RESOURCE__', Configuration('ROOT_RESOURCE'));
 # 加载函数封装类
 Import('File:File'); # 文件控制类
 Import('Parameter:Request'); # 调用请求控制器
@@ -79,7 +68,7 @@ include('Common/Log.func.php'); # 引用日志函数包
 include('Common/Public.func.php'); # 文件操作函数包
 # 公共应用函数类
 Import('File:Upload'); # 文件上传控制类
-Import('Data:'.C('DATA_TYPE')); # 调用数据库对象组件
+Import('Data:'.Config('DATA_TYPE')); # 调用数据库对象组件
 Import('Interface:Mark:Impl:Label'); # 调用内建标签解释结构接口控制类
 Import('Mark:Label'); # 调用标签解析器控制类
 Import('Export:Verify'); # 调用验证码组件
@@ -92,6 +81,26 @@ Import('Protocol:Curl'); # 调用远程请求函数包
 Common('Common:Public'); # 引入公共函数包
 # 公共控制器文件
 Import('Application:Controller');
+# 设置异常捕捉回调函数
+register_shutdown_function("danger");
+/**
+ * @access public
+ * @return array
+ * @context 危险异常捕捉函数
+ */
+function danger()
+{
+    $_error = error_get_last();
+    define('E_FATAL',  E_ERROR | E_USER_ERROR |  E_CORE_ERROR |
+        E_COMPILE_ERROR | E_RECOVERABLE_ERROR| E_PARSE );
+    if($_error && ($_error["type"]===($_error["type"] & E_FATAL))) {
+        if(DEBUG){
+            $_debug = new  \Origin\Kernel\Parameter\Output();
+            $_debug->base($_error);
+        }
+    }
+    return null;
+}
 # 动态加载文件
 include('Common/Entrance.func.php'); # 引入入口文件包
 // 调用方法体

@@ -117,13 +117,13 @@ class Controller
         $_page = null;
         $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-        if(is_true($_regular, C('DEFAULT_VIEW')) === true){
-            $_page = C('DEFAULT_VIEW');
+        if(is_true($_regular, Config('DEFAULT_VIEW')) === true){
+            $_page = Config('DEFAULT_VIEW');
         }
         $_dir = str_replace('Controller', '',
-            str_replace(C('APPLICATION_CONTROLLER'), '',
-                str_replace(C('DEFAULT_APPLICATION'), '',
-                    str_replace(C('ROOT_APPLICATION'), '',
+            str_replace(Config('APPLICATION_CONTROLLER'), '',
+                str_replace(Config('DEFAULT_APPLICATION'), '',
+                    str_replace(Config('ROOT_APPLICATION'), '',
                         str_replace('\\', '/', $this->_Name_Class)))));
         if(!is_null($this->get_function())){
             $_page = $this->get_function();
@@ -151,7 +151,7 @@ class Controller
      */
     protected function get_function()
     {
-        $this->_Name_Function = C('DEFAULT_VIEW');
+        $this->_Name_Function = Config('DEFAULT_VIEW');
         if(is_array(debug_backtrace())){
             $_get_history = debug_backtrace();
             for($i=0; $i<count($_get_history); $i++){
@@ -175,8 +175,8 @@ class Controller
     */
     protected function success($message='success',$url='#',$time=5)
     {
-        $_file = str_replace('/',SLASH,ROOT.RING.'Template/Success.html');
-        \Origin\Kernel\Parameter\Output::output($_file, $time, $message, $url);
+        $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000");
+        \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
         return null;
     }
     /**
@@ -189,22 +189,8 @@ class Controller
     */
     protected function error($message='error',$url='#',$time=5)
     {
-        $_file = str_replace('/',SLASH,ROOT.RING.'Template/Error.html');
-        \Origin\Kernel\Parameter\Output::output($_file,$time, $message, $url);
-        return null;
-    }
-    /**
-     * 执行失败提示
-     * @access protected
-     * @param $message
-     * @param $url
-     * @param $time
-     * @return null
-    */
-    protected function failed($message='failed',$url='#',$time=5)
-    {
-        $_file = str_replace('/',SLASH,ROOT.RING.'Template/Failed.html');
-        \Origin\Kernel\Parameter\Output::output($_file, $time, $message, $url);
+        $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite");
+        \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
         return null;
     }
     /**

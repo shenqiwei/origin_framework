@@ -118,7 +118,7 @@ class Origin implements Impl
         $_initialize = null;
         $_obj = file_get_contents($this->_Obj);
         # 转义引入结构
-        $_obj = $this->include($_obj);
+        $_obj = $this->module($_obj);
         # 判断初始标签结构,分析初始标签信息, 并定义分析器类型,包含一个合法条件
         while (true) {
             if ($_if_count = preg_match_all($this->_Judge_If, $_obj, $_if, PREG_SET_ORDER) > 0) $_initialize = 'judge';
@@ -209,13 +209,7 @@ class Origin implements Impl
         $_obj = preg_replace($this->_Judge_El, '', $_obj);
         $_obj = preg_replace($this->_Judge_Ie, '', $_obj);
         # 遍历资源目录，替换资源信息
-        # 进行资源变量替换
-        $_obj = str_replace('__JSCRIPT__', __HOST__ . __JSCRIPT__, $_obj);
-        $_obj = str_replace('__MEDIA__', __HOST__ . __MEDIA__, $_obj);
-        $_obj = str_replace('__STYLE__', __HOST__ . __STYLE__, $_obj);
-        $_obj = str_replace('__TEMP__', __HOST__ . __TEMP__, $_obj);
-        $_obj = str_replace('__PUBLIC__',__HOST__.__PUBLIC__, $_obj);
-        $_obj = str_replace('__UPLOAD__',__HOST__.__UPLOAD__, $_obj);
+        $_obj = str_replace('__RESOURCE__',__HOST__.__RESOURCE__, $_obj);
         if(MARK_RELOAD){
             $_obj = preg_replace('/\s+/', ' ', $_obj);
         }
@@ -227,7 +221,7 @@ class Origin implements Impl
      * @param string $obj
      * @return string
     */
-    function include($obj)
+    function module($obj)
     {
         # 获取include标签信息
         $_count = preg_match_all($this->_Include_Regular, $obj, $_include, PREG_SET_ORDER);

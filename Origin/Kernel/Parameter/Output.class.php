@@ -67,21 +67,32 @@ class Output
     }
     /**
      * @access public
-     * @param string $model html模板内容
      * @param int $time 倒计时时间
      * @param string $message 提示信息
      * @param string $url 跳转地址
+     * @param array $setting 模板显示内容设置
      * @context 输出预设模板内容
     */
-    static function output($model=null,$time=5,$message=null,$url="#")
+    static function output($time=5,$message=null,$url="#",$setting=null)
     {
-        $_temp = file_get_contents($model);
-        $_temp = str_replace('{$time}', htmlspecialchars(trim($time)), $_temp);
-        if (is_array($message)) $message = 'this is a default message';
-        $_temp = str_replace('{$message}', htmlspecialchars(trim($message)), $_temp);
-        $_temp = str_replace('{$url}', htmlspecialchars(trim($url)), $_temp);
-        header("Content-Type:text/html;charset=utf-8");
-        echo($_temp);
+        $_time = htmlspecialchars(trim($time));
+        $_message =  htmlspecialchars(trim($message));
+        $_url = htmlspecialchars(trim($url));
+        $_setting = $setting;
+        include(str_replace('/',SLASH,ROOT.RING.'Template/Message.html'));
         exit();
+    }
+    /**
+     * @access public
+     * @param array $error_arr 异常信息数组
+     * @return null
+     * @context 底层异常显示模块
+     */
+    public function base($error_arr)
+    {
+        $_error_msg = $error_arr["message"];
+        $_error_msg = explode("#",$_error_msg);
+        include(str_replace('/',SLASH,ROOT.RING.'Template/Debug.html'));
+        return null;
     }
 }
