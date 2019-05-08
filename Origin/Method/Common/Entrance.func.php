@@ -7,15 +7,10 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Function.Common.Entrance *
  * version: 0.1 *
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * create Time: 2017/01/09 15:34
- * update Time: 2017/01/09 15:34
- * IoC 自动加载方法函数
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
  */
 /**
  * 默认模式，自动加载入口

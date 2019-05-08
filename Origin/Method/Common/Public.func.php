@@ -7,13 +7,10 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Function.Method.Public *
  * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC 单字母函数包
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
  */
 /**
  * Config公共配置信息调用方法,优先调用用户配置文件，在用户配置文件不存在或者无配置项时，调用系统配置文件

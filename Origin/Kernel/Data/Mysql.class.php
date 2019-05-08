@@ -7,14 +7,11 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Kernel.Data.Mysql *
  * version: 1.0 *
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * create Time: 2017/01/09 11:04
- * update Time: 2017/01/09 14:59
- * chinese Context: IoC Mysql封装类
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
+ * @context: IoC Mysql封装类
  */
 namespace Origin\Kernel\Data;
 /**

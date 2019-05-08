@@ -7,13 +7,11 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Function.Method.validate *
  * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC 变量验证函数包，用户对数据结构进行，预设验证，也会针对特定字符结构进行验证
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
+ * @context:
  * 基础验证模块一共14
  * telephone：固定电话
  * mobile：移动电话 仅支持国内所有运营商号段

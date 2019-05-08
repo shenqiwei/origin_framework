@@ -1,20 +1,16 @@
 <?php
 /**
--*- coding: utf-8 -*-
--*- system OS: windows2008 -*-
--*- work Tools:Phpstorm -*-
--*- language Ver: php7.1 -*-
--*- agreement: PSR-1 to PSR-11 -*-
--*- filename: IoC.Origin.Function.function-*-
--*- version: 0.1-*-
--*- structure: common framework -*-
--*- designer: 沈启威 -*-
--*- developer: 沈启威 -*-
--*- partner: 沈启威 , 任彦明 -*-
--*- chinese Context:
--*- create Time: 2017/01/09 15:34
--*- update Time: 2017/01/09 15:34
--*- IoC 日志操作包
+ *  coding: utf-8  * 
+ *  system OS: windows2008  * 
+ *  work Tools:Phpstorm  * 
+ *  language Ver: php7.1  * 
+ *  agreement: PSR-1 to PSR-11  * 
+ *  filename: IoC.Origin.Function.function * 
+ *  version: 0.1 * 
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
  */
 /**
  * @access public

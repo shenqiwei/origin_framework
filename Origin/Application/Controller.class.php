@@ -7,30 +7,11 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Application.Controller *
  * version: 1.0 *
- * structure: common framework *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context: IoC 公共控制器
- * ━━━━━━━━━━━━━━━━神兽出没━━━━━━━━━━━━━━━━━━━
- * 　　　┏┓　　　┏┓　　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┏┛┻━━━┛┻┓　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃      ━      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃  ┳┛  ┗┳  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃      ┻      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┃              ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　┗━┓      ┏━┛Code is far away from bug with the animal protecting *
- * 　　　　┃      ┃　　神兽保佑,代码无bug　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃      ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃      ┗━━━┓　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃              ┣┓　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┃              ┏┛　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　┗┓┓┏━┳┓┏┛　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　　┃┫┫　┃┫┫　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * 　　　　　┗┻┛　┗┻┛　　　　　　　　　　　　　　　　　　　　　　　　　　 *
- * ━━━━━━━━━━━━━━━━感觉萌萌哒━━━━━━━━━━━━━━━━━━
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
+ * @context: IoC 公共控制器
  */
 namespace Origin;
 /**

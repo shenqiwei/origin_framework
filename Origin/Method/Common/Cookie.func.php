@@ -7,13 +7,10 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Function.Method.Cookie *
  * version: 0.1*
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * chinese Context:
- * IoC Cookie操作函数
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
  */
 /**
  * Cookie操作函数

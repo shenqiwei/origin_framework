@@ -7,14 +7,11 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Kernel.Parameter.Validate *
  * version: 1.0 *
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威 *
- * create Time: 2017/01/06 14:30
- * update Time: 2017/01/09 11:01
- * chinese Context:
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
+ * @context:
  * IoC 变量验证封装类，可以对预设结构或自定义结构进行验证
  * 界限值只支持大于和小于，最大和最小界限值相等且都大于0时，表示验证值进行等于验证
  * 当最小值和最大值都等于0或者为空时表示验证值不受长度限制

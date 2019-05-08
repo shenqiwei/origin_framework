@@ -7,14 +7,11 @@
  * agreement: PSR-1 to PSR-11 *
  * filename: IoC.Origin.Kernel.Mark.Label *
  * version: 1.0 *
- * structure: common framework *
- * email: cheerup.shen@foxmail.com *
- * designer: 沈启威 *
- * developer: 沈启威 *
- * partner: 沈启威*
- * create Time: 2017/02/03 16:04
- * update Time: 2018/02/18 16:04
- * chinese Context: IoC 标签二维解析器 (Origin)
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @since 0.1
+ * @copyright 2015-2017
+ * @context: IoC 标签二维解析器 (Origin)
  * 根据二维解释器程序结构特性，解释器会将一维结构中所有的应用逻辑进行数组降维展开，
  * 所以当数据维度超过一维结构时结构解释将返回null字节，同结构标签将无法完成维度解析
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
