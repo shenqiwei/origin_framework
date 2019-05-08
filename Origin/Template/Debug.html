@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Origin Debug Message</title>
+    <style>
+        body{background-color:green; font-family:微软雅黑; font-size:14px; color:floralwhite; top:0; left:0;}
+        .main{width:55%; min-width:480px; padding: 0 0 0 0; margin: 0 auto;}
+        .status{font-size:60px; padding-bottom: 20px;}
+        .content{min-height:120px; padding-bottom: 20px;}
+        .jump{text-align: right; padding-bottom: 20px;}
+        .origin{text-align: right}
+        a{color:floralwhite; cursor:pointer; text-decoration: none;}
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="status">&lt;Debug:&gt;</div>
+    <div class="content">
+        <?php for($_i = 0;$_i < count($_error_msg);$_i++){ ?>
+        <?php echo($_error_msg[$_i]);?><br />
+        <?php }?>
+    </div>
+    <div class="origin">Origin Framework. 2017.</div>
+</div>
+</body>
+</html>
