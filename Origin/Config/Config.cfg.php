@@ -89,37 +89,40 @@ return array(
         'USE_COOKIES' => 1, // 指定是否在客户端用 cookie 来存放会话 ID,默认为 1
         'USE_ONLY_COOKIES' => 1, // 指定是否在客户端仅仅使用 cookie 来存放会话 ID,启用此设定可以防止有关通过 URL 传递会话 ID 的攻击,默认值改为1
     ),
-    // 数据库执行设置
-    'DEFAULT_ENGINE_TYPE' => 'innodb', // 数据驱动类型，由关系数据库配置限定，该配置只负责辅助框架完成事务管理操作
-    'DATA_USE_TRANSACTION' => true, // 数据驱动类型为innodb时，事务操作设置才会生效
-    'DATA_CONNECT_MAX' => 0, // 数据服务最大访问数量,设置该参数后,连接将会被监听,当到达最大连接值时,系统将挂起连接服务,直到有空余连接位置，默认值0（不作限制）
-    // 如果服务器启用缓冲器，则该限制只针对系统数据操作用户
-    'DATA_CONNECT_THREAD' => 0, // 连接是否使用线程,当前版本暂不支持线程
-    'DATA_USE_FACTORY' => 0, // 是否是用数据工厂模式,当前版本暂不支持线程
-    //SQL设置信息
-    'DATA_TYPE' => 'mysql', //选择数据库类型,当前版本只支持mysql
-    'DATA_HOST' => 'localhost', // mysql服务访问地址
-    'DATA_USER' => 'root', // mysql登录用户
-    'DATA_PWD' => '', // mysql登录密码
-    'DATA_PORT' => '3306', // mysql默认访问端口
-    'DATA_DB' => 'test', // mysql访问数据库
-    'DATA_USE_MEMCACHE' => 0, // mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
-    // 如果需要多地缓冲还需搭建多个缓冲服务器，否则该功能无法生效
-    'MEMCACHE_SET_ADDRESS' => array(
-        'ADDRESS'=> '',
-        'CAPACITY'=> 0,
-    ),
-    // 数据库服务器配置(多地址结构)
+    # 数据库服务器配置(多数据库类型支持结构)
     'DATA_MATRIX_CONFIG' => array(
         array(
-            "DATA_NAME" =>"", // 当前数据源名称
-            'DATA_HOST' => 'localhost', // mysql服务访问地址
-            'DATA_USER' => 'root', // mysql登录用户
-            'DATA_PWD' => '', // mysql登录密码
-            'DATA_PORT' => '3306', // mysql默认访问端口
-            'DATA_DB' => 'test', // mysql访问数据库
-            'DATA_USE_MEMCACHE' => 0, // mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
-            // 如果需要多地缓冲还需搭建多个缓冲服务器，否则该功能无法生效
+            "DATA_NAME" =>"redis_test", # 当前数据源名称
+            "DATA_TYPE"=>"redis",
+            "DATA_CONN" => "normal",# 连接类型 redis下设置生效
+            'DATA_HOST' => 'localhost', # redis服务访问地址
+            'DATA_PWD' => '', # redis登录密码
+            'DATA_PORT' => '6379', # redis默认访问端口
+            "DATA_P_CONNECT" => false, # 是否使用持久链接
+        ),
+        array(
+            "DATA_NAME" =>"mongo_test", # 当前数据源名称
+            "DATA_TYPE"=>"mongoDB",
+            'DATA_HOST' => 'localhost', #  mongodb服务访问地址
+            'DATA_USER' => 'root', #登录用户
+            'DATA_PWD' => '', # mongodb登录密码
+            'DATA_PORT' => '27017', #  mongodb默认访问端口
+            'DATA_DB' => 'test', #访问数据库
+        ),
+        array(
+            "DATA_NAME" =>"mysql_test", # 当前数据源名称
+            "DATA_TYPE"=>"mysql",# 连接类型 redis下设置生效
+            'DATA_HOST' => 'localhost', # mysql服务访问地址
+            'DATA_USER' => 'root', # mysql登录用户
+            'DATA_PWD' => '', # mysql登录密码
+            'DATA_PORT' => '3306', # mysql默认访问端口
+            'DATA_DB' => 'test', # mysql访问数据库
+            "DATA_P_CONNECT" => false, # 是否使用持久链接
+            'DATA_AUTO' => true, # mysql自动提交单语句
+            'DATA_TIMEOUT' => 0, # mysql请求超时时间（单位 s）,设置为0 不启用
+            'DATA_USE_BUFFER' => false, # mysql是否使用缓冲查询 默认值false
+            'DATA_USE_MEMCACHE' => 0, # mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境，
+            # 如果需要多地缓冲还需搭建多个缓冲服务器，否则该功能无法生效
             'MEMCACHE_SET_ADDRESS' => array(
                 'ADDRESS'=> '',
                 'CAPACITY'=> 0
