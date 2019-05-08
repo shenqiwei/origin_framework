@@ -39,7 +39,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 #### Controller.class.php函数说明
 
 #### 函数快速路口
-[`welcome()`](#func_1) | [`show()`](#func_2) | [`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`failed()`](#func_9) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
+[`welcome()`](#func_1) | [`show()`](#func_2) | [`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
 
 <span id='func_1'></span>
 __welcome()__：
@@ -91,11 +91,7 @@ __success()__：
 <span id='func_8'></span>
 __error()__：
 > 操作异常信息返回函数  
->> `$this->error(message_info,skip_url,waiting_time);` 其函数方法应用方式一致，请参数success函数说明。
-
-<span id='func_9'></span>
-__failed()__：
-> 操作失败信息返回函数（由于大部分时间error与failed功能相同，故推荐使用error函数，后期将对failed函数进行重新定义）  
+>> `$this->error(message_info,skip_url,waiting_time);` 其函数方法应用方式一致，请参数success函数说明。 
 
 <span id='func_10'></span>
 __json()__：
