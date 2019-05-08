@@ -42,9 +42,9 @@ class Mysql extends Query
         parent::__construct();
         try{
             # 创建数据库链接地址，端口，应用数据库信息变量
-            $_DSN = 'mysql:host='.C('DATA_HOST').';port='.C('DATA_PORT').';dbname='.C('DATA_DB');
-            $_username = C('DATA_USER'); # 数据库登录用户
-            $_password = C('DATA_PWD'); # 登录密码
+            $_DSN = 'mysql:host='.Config('DATA_HOST').';port='.Config('DATA_PORT').';dbname='.Config('DATA_DB');
+            $_username =Config('DATA_USER'); # 数据库登录用户
+            $_password =Config('DATA_PWD'); # 登录密码
             $_option = array(
                 # 设置数据库编码规则
                 \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
@@ -71,7 +71,7 @@ class Mysql extends Query
     */
     function cutConnect($connect_name)
     {
-        $_connect_config = C('DATA_MATRIX_CONFIG');
+        $_connect_config =Config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
                 if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
