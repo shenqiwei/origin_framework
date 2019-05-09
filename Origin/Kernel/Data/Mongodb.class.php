@@ -76,55 +76,55 @@ class Mongodb
      */
     function __construct($connect_name=null)
     {
-        if(is_null($connect_name) or (empty($connect_name) and !is_numeric($connect_name))){
-            try{
-                # 创建数据库链接地址，端口，应用数据库信息变量
-                $_mongo_host = Config('DATA_HOST');
-                $_mongo_port = intval(Config('DATA_PORT'))?intval(Config("DATA_PORT")):27017;
-                if(!empty(Config('DATA_USER')) and !is_null(Config('DATA_USER')))
-                    $_mongo_user = trim(Config('DATA_USER'));
-                if(!empty(Config('DATA_PWD')) and !is_null(Config('DATA_PWD')))
-                    $_mongo_pwd = trim(Config('DATA_PWD'));
-                $_mongo_user_pwd = null;
-                if(isset($_mongo_user) and isset($_mongo_pwd))
-                    $_mongo_user_pwd = $_mongo_user.":".$_mongo_pwd."@";
-                $this->_Connect = new \MongoDB\Driver\Manager("mongodb://".$_mongo_user_pwd.$_mongo_host.":".$_mongo_port);
-                $this->_DB = Config('DATA_DB');
-            }catch(\Exception $e){
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                print('Error:'.$e->getMessage());
-                exit();
+        $_connect_config = Config('DATA_MATRIX_CONFIG');
+        if(is_array($_connect_config)) {
+            for ($_i = 0; $_i < count($_connect_config); $_i++) {
+                # 判断数据库对象
+                if (key_exists("DATA_TYPE", $_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "mongodb"
+                    and key_exists("DATA_NAME", $_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name) {
+                    $_connect_conf = $_connect_config[$_i];
+                    break;
+                }
             }
-        }else{
-            $_connect_config = Config('DATA_MATRIX_CONFIG');
-            if(is_array($_connect_config)){
-                for($_i = 0;$_i < count($_connect_config);$_i++){
-                    # 判断数据库类型，框架结构默认系统类型为mysql
-                    if(key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "mongodb"){
-                        # 搜索指向配置信息名称
-                        if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                            try{
-                                # 创建数据库链接地址，端口，应用数据库信息变量
-                                $_mongo_host = $_connect_config[$_i]['DATA_HOST'];
-                                $_mongo_port = intval($_connect_config[$_i]['DATA_PORT'])?intval($_connect_config[$_i]["DATA_PORT"]):27017;
-                                if(!empty($_connect_config[$_i]['DATA_USER']) and !is_null($_connect_config[$_i]['DATA_USER']))
-                                    $_mongo_user = trim($_connect_config[$_i]['DATA_USER']);
-                                if(!empty($_connect_config[$_i]['DATA_PWD']) and !is_null($_connect_config[$_i]['DATA_PWD']))
-                                    $_mongo_pwd = trim($_connect_config[$_i]['DATA_PWD']);
-                                $_mongo_user_pwd = null;
-                                if(isset($_mongo_user) and isset($_mongo_pwd))
-                                    $_mongo_user_pwd = $_mongo_user.":".$_mongo_pwd."@";
-                                $this->_Connect = new \MongoDB\Driver\Manager("mongodb://".$_mongo_user_pwd.$_mongo_host.":".$_mongo_port);
-                                $this->_DB = Config('DATA_DB');
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                print('Error:'.$e->getMessage());
-                                exit();
-                            }
-                        }
+            if(!isset($_connect_conf)) {
+                for ($_i = 0; $_i < count($_connect_config); $_i++) {
+                    # 判断数据库对象
+                    if (key_exists("DATA_TYPE", $_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "mongodb") {
+                        $_connect_conf = $_connect_config[$_i];
+                        break;
                     }
+                }
+            }
+            if (isset($_connect_conf)) {
+                try {
+                    # 创建数据库链接地址，端口，应用数据库信息变量
+                    $_mongo_host = $_connect_config[$_i]['DATA_HOST'];
+                    $_mongo_port = intval($_connect_conf['DATA_PORT']) ? intval($_connect_conf["DATA_PORT"]) : 27017;
+                    if (!empty($_connect_conf['DATA_USER']) and !is_null($_connect_conf['DATA_USER']))
+                        $_mongo_user = trim($_connect_conf['DATA_USER']);
+                    if (!empty($_connect_conf['DATA_PWD']) and !is_null($_connect_conf['DATA_PWD']))
+                        $_mongo_pwd = trim($_connect_conf['DATA_PWD']);
+                    $_mongo_user_pwd = null;
+                    if (isset($_mongo_user) and isset($_mongo_pwd))
+                        $_mongo_user_pwd = $_mongo_user . ":" . $_mongo_pwd . "@";
+                    $this->_Connect = new \MongoDB\Driver\Manager("mongodb://" . $_mongo_user_pwd . $_mongo_host . ":" . $_mongo_port);
+                    $this->_DB = Config('DATA_DB');
+                } catch (\Exception $e) {
+                    var_dump(debug_backtrace(0, 1));
+                    echo("<br />");
+                    print('Error:' . $e->getMessage());
+                    exit();
+                }
+            } else {
+                # 无有效数据表名称
+                try {
+                    throw new \PDOException('Config object is invalid');
+                } catch (\PDOException $e) {
+                    $this->_Connect = null;
+                    errorLogs($e->getMessage());
+                    var_dump(debug_backtrace(0, 1));
+                    echo("<br />");
+                    echo('Origin (mysql select) Class Error:' . $e->getMessage());
                 }
             }
         }

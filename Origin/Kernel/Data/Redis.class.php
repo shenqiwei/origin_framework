@@ -58,55 +58,55 @@ class Redis
     */
     function __construct($connect_name=null)
     {
-        if(is_null($connect_name) or (empty($connect_name) and !is_numeric($connect_name))){
-            try{
-                # 创建数据库链接地址，端口，应用数据库信息变量
-                $_redis_host = Config('DATA_HOST');
-                $_redis_port = intval(Config('DATA_PORT'))?intval(Config("DATA_PORT")):6379;
-                $this->_Connect = new \Redis();
-                if(Config('DATA_P_CONNECT')){
-                    $this->_Connect->pconnect($_redis_host,$_redis_port);
-                }else{
-                    $this->_Connect->connect($_redis_host,$_redis_port);
+        $_connect_config = Config('DATA_MATRIX_CONFIG');
+        if(is_array($_connect_config)){
+            for($_i = 0;$_i < count($_connect_config);$_i++){
+                # 判断数据库类型
+                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis"
+                    and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
+                    $_connect_conf = $_connect_config[$_i];
+                    break;
                 }
-                if(!is_null(Config('DATA_PWD')) and !empty(Config('DATA_PWD'))){
-                    $this->_Connect->auth(Config('DATA_PWD'));
-                }
-            }catch(\Exception $e){
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                print('Error:'.$e->getMessage());
-                exit();
             }
-        }else{
-            $_connect_config = Config('DATA_MATRIX_CONFIG');
-            if(is_array($_connect_config)){
-                for($_i = 0;$_i < count($_connect_config);$_i++){
-                    # 判断数据库类型，框架结构默认系统类型为mysql
-                    if(key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis"){
-                        # 搜索指向配置信息名称
-                        if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                            try{
-                                # 创建数据库链接地址，端口，应用数据库信息变量
-                                $_redis_host = strtolower(trim($_connect_config[$_i]['DATA_HOST']));
-                                $_redis_port = intval(strtolower(trim($_connect_config[$_i]['DATA_PORT'])))?intval(strtolower(trim($_connect_config[$_i]['DATA_PORT']))):6379;
-                                $this->_Connect = new \Redis();
-                                if($_connect_config[$_i]['DATA_P_CONNECT']){
-                                    $this->_Connect->pconnect($_redis_host,$_redis_port);
-                                }else{
-                                    $this->_Connect->connect($_redis_host,$_redis_port);
-                                }
-                                if(!is_null($_connect_config[$_i]['DATA_PWD']) and !empty($_connect_config[$_i]['DATA_PWD'])){
-                                    $this->_Connect->auth($_connect_config[$_i]['DATA_PWD']);
-                                }
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                print('Error:'.$e->getMessage());
-                                exit();
-                            }
-                        }
+            if(!isset($_connect_conf)) {
+                for ($_i = 0; $_i < count($_connect_config); $_i++) {
+                    # 判断数据库对象
+                    if (key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis") {
+                        $_connect_conf = $_connect_config[$_i];
+                        break;
                     }
+                }
+            }
+            if (isset($_connect_conf)) {
+                try{
+                    # 创建数据库链接地址，端口，应用数据库信息变量
+                    $_redis_host = strtolower(trim($_connect_conf['DATA_HOST']));
+                    $_redis_port = intval(strtolower(trim($_connect_conf['DATA_PORT'])))?intval(strtolower(trim($_connect_conf['DATA_PORT']))):6379;
+                    $this->_Connect = new \Redis();
+                    if($_connect_conf['DATA_P_CONNECT']){
+                        $this->_Connect->pconnect($_redis_host,$_redis_port);
+                    }else{
+                        $this->_Connect->connect($_redis_host,$_redis_port);
+                    }
+                    if(!is_null($_connect_conf['DATA_PWD']) and !empty($_connect_conf['DATA_PWD'])){
+                        $this->_Connect->auth($_connect_conf['DATA_PWD']);
+                    }
+                }catch(\Exception $e){
+                    var_dump(debug_backtrace(0,1));
+                    echo("<br />");
+                    print('Error:'.$e->getMessage());
+                    exit();
+                }
+            } else {
+                # 无有效数据表名称
+                try {
+                    throw new \PDOException('Config object is invalid');
+                } catch (\PDOException $e) {
+                    $this->_Connect = null;
+                    errorLogs($e->getMessage());
+                    var_dump(debug_backtrace(0, 1));
+                    echo("<br />");
+                    echo('Origin (mysql select) Class Error:' . $e->getMessage());
                 }
             }
         }
