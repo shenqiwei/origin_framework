@@ -139,6 +139,8 @@ function Entrance()
             }
             # 判断方法信息是否可以被调用
             if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
+                # 获取方法名
+                \Origin\Controller::$_Name_Function = $_method;
                 # 执行方法调用
                 $_object->$_method();
             }else{

@@ -20,15 +20,15 @@ namespace Origin;
 class Controller
 {
     /**
-     * 获取当前操作类信息
-     * @var string $_Name_Class
+     * 获取当前操作类名
+     * @static string $_Name_Class
     */
-    private $_Name_Class = null;
+    static $_Name_Class = null;
     /**
-     * 获取当前执行方法信息
-     * @var string $_Name_Function
+     * 获取当前执行方法名
+     * @static string $_Name_Function
     */
-    private $_Name_Function = null;
+    static $_Name_Function = null;
     /**
      * 装载参数信息数组
      * @var array $_Param_Array
@@ -40,7 +40,7 @@ class Controller
     */
     function __construct()
     {
-        $this->_Name_Class = get_class($this);
+        self::$_Name_Class = get_class($this);
     }
     /**
      * 向模板加载数据信息
@@ -54,7 +54,7 @@ class Controller
         $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key) === true){
-            $this->_Param_Array[$this->_Name_Class][$key] = $value;
+            $this->_Param_Array[self::$_Name_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
@@ -84,7 +84,7 @@ class Controller
             str_replace(Config('APPLICATION_CONTROLLER'), '',
                 str_replace(Config('DEFAULT_APPLICATION'), '',
                     str_replace(Config('ROOT_APPLICATION'), '',
-                        str_replace('\\', '/', $this->_Name_Class)))));
+                        str_replace('\\', '/', self::$_Name_Class)))));
         if(!is_null($this->get_function())){
             $_page = $this->get_function();
         }
@@ -92,7 +92,7 @@ class Controller
             $_page = $view;
         }
         $_obj = new \Origin\Kernel\Graph\View($_dir, $_page);
-        $_obj->view($this->_Param_Array[$this->_Name_Class]);
+        $_obj->view($this->_Param_Array[self::$_Name_Class]);
         return null;
     }
     /**
@@ -102,7 +102,7 @@ class Controller
      */
     protected function get_class()
     {
-        return $this->_Name_Class;
+        return self::$_Name_Class;
     }
     /**
      * 返回执行对象方法名
@@ -111,19 +111,7 @@ class Controller
      */
     protected function get_function()
     {
-        $this->_Name_Function = Config('DEFAULT_VIEW');
-        if(is_array(debug_backtrace())){
-            $_get_history = debug_backtrace();
-            for($i=0; $i<count($_get_history); $i++){
-                if($_get_history[$i]['class'] == $this->_Name_Class){
-                    $this->_Name_Function = $_get_history[$i]['function'];
-                    break;
-                }else{
-                    continue;
-                }
-            }
-        }
-        return $this->_Name_Function;
+        return self::$_Name_Function;
     }
     /**
      * 执行成功提示信息
