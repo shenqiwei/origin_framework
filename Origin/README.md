@@ -39,22 +39,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 #### Controller.class.php函数说明
 
 #### 函数快速路口
-[`welcome()`](#func_1) | [`show()`](#func_2) | [`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
-
-<span id='func_1'></span>
-__welcome()__：
-> Origin欢迎函数（鸡肋函数，其内容为Origin欢迎页，欢迎语大部分使用机翻 :p）  
->>`$this->welcome();` 方法调用后会显示Origin欢迎页，为了简单的演示出Origin视图模板以及数据交互内容，所以在实际的index中并未使用该方法  
-
-<span id='func_2'></span>
-__show()__：
-> Origin信息打印函数单纯的echo输出语法，但内容输出后程序会强制停止，仅用于调试程序内容时使用  
->>`$this->show();` 方法只能显示字符串类型的信息，并且不对html结构进行转化，输出结果后，会终止系统运行，后期将会对show结构进行功能升级  
->>>`protected function show($message)`  
->>>`{`  
->>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo($message);`  
->>>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`exit();`  
->>>`}`
+[`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
 
 <span id='func_3'></span>
 __param()__：
