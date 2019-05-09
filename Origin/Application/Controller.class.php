@@ -43,27 +43,6 @@ class Controller
         $this->_Name_Class = get_class($this);
     }
     /**
-     * 创建欢迎页
-     * @access protected
-     * @return null
-    */
-    protected function welcome()
-    {
-        echo('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Origin架构开发版</title></head><body style="top:0px; left:0px;"><div style="margin: 0px auto; width:380px;"><h1 style="font-size:60px; color:black; margin: 0px;">Origin</h1><div style="font-size:10px; text-align: right;">Ver.0.1</div><br /><div style="padding-bottom:8px;">你好！欢迎使用Origin框架</div><div style="padding-bottom:8px;text-align: right;">Hello! Welcome to use Origin framework</div><div style="padding-bottom:8px;">こんにちは！使用を歓迎しOriginフレーム</div><div style="padding-bottom:8px;text-align: right;">안녕하세요.오신 것을 환영합니다 Origin 틀</div><div style="padding-bottom:8px;">Hallo!Willkommen in origin.</div><div style="padding-bottom:8px;text-align: right;">hej!velkommen til oprindelse ramme</div><div style="padding-bottom:8px;"> مرحبا!  مرحبا بكم في  الأصل  في إطار </div><div style="padding-bottom:8px;text-align: right;">Olá!BEM - vindo Ao Quadro de Origem</div><div style="padding-bottom:8px;">Xin chào!Chào mừng Origin sử dụng khung</div><div style="padding-bottom:8px;text-align: right;">szia!üdvözlöm Origin keret alkalmazása</div><br /><div style="text-align: center; ">\author\: <spac style="font-family: \'Arial Black\'; font-size:13px; text-decoration: underline;">ShenQiwei</spac> \time\:<spac style="font-family: \'Arial Black\'; font-size:13px; text-decoration: underline;">2017/02/03</spac></div></div></body></html>');
-        exit();
-    }
-    /**
-     * 单条信息显示方法
-     * @access protected
-     * @param $message
-     * @return null;
-    */
-    protected function show($message)
-    {
-        echo($message);
-        exit();
-    }
-    /**
      * 向模板加载数据信息
      * @access protected
      * @param $key
