@@ -92,6 +92,14 @@ class Output
     {
         $_error_msg = $error_arr["message"];
         $_error_msg = explode("#",$_error_msg);
+        $_error_zero = explode(" in ",$_error_msg[0]);
+        $_error_zero[1] = explode(":",str_replace(ROOT,null,$_error_zero[1]));
+        $_error_zero_line = intval($_error_zero[1][1]);
+        array_push($_error_zero,"Line : ". $_error_zero_line);
+        array_push($_error_zero, trim(str_replace($_error_zero_line,null,$_error_zero[1][1]))." :");
+        $_error_zero[1] = $_error_zero[1][0];
+        $_error_zero[1] = "In : ".$_error_zero[1];
+        array_splice($_error_msg,0,1,$_error_zero);
         include(str_replace('/',SLASH,ROOT.RING.'Template/Debug.html'));
         return null;
     }
