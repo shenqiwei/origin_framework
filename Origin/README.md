@@ -107,7 +107,7 @@ __html()__：
 `在不进行任何设置的情况下，框架可以进行基础的开发操作，满足网站及一般应用需求的情况，只需要在应用配置目录下的Config.cfg.php文件中，编写自己数据库配置内容既可以进行开发和功能实现编写`
 
 #### Config 快速入口
-[`目录配置`](#config_dir) | [`文件访问配置`](#config_file) | [`会话配置`](#config_session) | [`数据源配置`](#config_db) | [`访问显示模式配置`](#config_view) | [`路由应用配置`](#config_route) | [`web辅助配置`](#config_web)
+[`目录配置`](#config_dir) | [`文件访问配置`](#config_file) | [`会话配置`](#config_session) | [`数据源配置`](#config_db) | [`访问显示模式配置`](#config_view) | [`路由应用配置`](#config_route) 
 
 #### Config配置项说明
 <span id='config_dir'></span>
@@ -211,13 +211,6 @@ __访问显示模式配置：(`功能完善中`)[[返回](#config)]__
 __路由应用配置：(`功能测试修改中`)[[返回](#config)]__  
 >`ROUTE_CATALOGUE` 路由主目录  
 `ROUTE_FILES` 路由文件
-
-<span id='config_web'></span>
-__web辅助配置：[[返回](#config)]__  
->`URL_TYPE`  设置web访问的超文本传输协议模式(0:http/https,1:http,2:https),可以使用数字设置也可以直接使用描述设置  
-`URL_LISTEN`  是否启用地址监听(0:false,1:true) 默认 0：不监听  
-`URL_HOST` web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头  
-`URL_HOST_ONLY` 是否固定web域名信息(0:false,1:true) 默认 0：不固定域名信息  
 
 <span id='origin_font'></span>
 ## Font 字体目录 [[返回TOP](#origin_top)]

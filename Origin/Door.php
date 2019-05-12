@@ -21,14 +21,16 @@ if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 
 if(!defined('SLASH')) define('SLASH',DIRECTORY_SEPARATOR);
 # 主程序文件目录常量
 if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
-# 功能设置常量
-if(!defined('DEBUG')) define('DEBUG',FALSE);
-if(!defined('ERROR')) define('ERROR',FALSE);
 # 是否启用编码混成
 if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
-# 调试状态
-# 原结构中使用debug结构嵌入工具类中，并将错误信息返回日志中，并将错误信息格式化放回到页面中
-
+# 协议类型
+if(!defined("__PROTOCOL__")) define("__PROTOCOL__", $_SERVER["HTTPS"]? "https://" : "http://");
+# 地址信息
+if(!defined("__HOST__")) define("__HOST__",__PROTOCOL__.$_SERVER["HTTP_HOST"]."/");
+# 调试状态常量
+if(!defined('DEBUG')) define('DEBUG',FALSE);
+# 错误信息常量
+if(!defined('ERROR')) define('ERROR',FALSE);
 # 错误信息显示
 # E_ALL = 11 所有的错误信息
 # E_ERROR = 1 报致命错误
@@ -47,5 +49,7 @@ elseif(ERROR == 2)
 elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
+# 设置异常捕捉回调函数
+register_shutdown_function("danger");
 # 引入主方法文件
 include('Method'.SLASH.'Function.php');

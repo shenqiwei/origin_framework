@@ -137,10 +137,4 @@ return array(
     // default：使用伪静态路径结构进行访问
     'ROUTE_CATALOGUE' => 'Route/', // 路由主目录
     'ROUTE_FILES' => 'Route.php', // 路由文件
-    // web地址控制及地址监听模式设置
-    'URL_TYPE' => 'http/https', // 设置web访问的超文本传输协议模式(0:http/https,1:http,2:https),可以使用数字设置也可以直接使用描述设置
-    'URL_LISTEN' => 0, // 是否启用地址监听(0:false,1:true) 默认 0：不监听
-    'URL_HOST' => 'localhost', // web默认地址(默认可以使用localhost或127.0.0.1)不添加传输协议头
-    'URL_HOST_ONLY' => 0, //是否固定web域名信息(0:false,1:true) 默认 0：不固定域名信息
-
 );
