@@ -45,10 +45,11 @@ Font：框架字体文件目录
 Kernel框架功能内核目录  
 Method框架方法封装目录
 
->>Resource：资源目录  
+>>Resource：资源目录  （HTML资源常量：\_\_RESOURCE__）
 >>>Jscript：Javascript文件目录（预设）  
 Media：多媒体文件目录（预设）  
 Style：样式文件目录（预设）  
+`注：原始结构常量中取消该文件夹模板常量标记解析功能`
 
 >>.htaccess：分布式配置文件  
 >>index.php：入口文件  
