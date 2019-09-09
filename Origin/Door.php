@@ -21,6 +21,8 @@ if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 
 if(!defined('SLASH')) define('SLASH',DIRECTORY_SEPARATOR);
 # 主程序文件目录常量
 if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
+# 引述文件根地址
+if(!defined("ROOT_ADDRESS")) define("ROOT_ADDRESS",dirname(__FILE__));
 # 是否启用编码混成
 if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
 # 协议类型
