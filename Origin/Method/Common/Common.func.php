@@ -234,6 +234,8 @@ function Symbol($symbol){
         $_receipt = $_symbol[trim(strtolower($symbol))];
     return $_receipt;
 }
+# 设置异常捕捉回调函数
+register_shutdown_function("danger");
 /**
  * @access public
  * @return array

@@ -24,15 +24,15 @@ if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
 # 引述文件根地址
 if(!defined("ROOT_ADDRESS")) define("ROOT_ADDRESS",dirname(__FILE__));
 # 是否启用编码混成
-if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
+if(!defined('MARK_RELOAD')) define('MARK_RELOAD',true);
 # 协议类型
 if(!defined("__PROTOCOL__")) define("__PROTOCOL__", isset($_SERVER["HTTPS"])? "https://" : "http://");
 # 地址信息
 if(!defined("__HOST__")) define("__HOST__",__PROTOCOL__.$_SERVER["HTTP_HOST"]."/");
 # 调试状态常量
-if(!defined('DEBUG')) define('DEBUG',FALSE);
+if(!defined('DEBUG')) define('DEBUG',false);
 # 错误信息常量
-if(!defined('ERROR')) define('ERROR',FALSE);
+if(!defined('ERROR')) define('ERROR',false);
 # 错误信息显示
 # E_ALL = 11 所有的错误信息
 # E_ERROR = 1 报致命错误
@@ -40,7 +40,7 @@ if(!defined('ERROR')) define('ERROR',FALSE);
 # E_NOTICE = 8 报通知警告
 # E_ALL& ~E_NOTICE = 3 不报NOTICE错误, 常量参数 TRUE
 # 0 不报错误，默认常量参数 FALSE
-if(ERROR == TRUE or ERROR == 3)
+if(ERROR == true or ERROR == 3)
     error_reporting(E_ALL & ~E_NOTICE);
 elseif(ERROR == 11)
     error_reporting(E_ALL);
@@ -51,7 +51,5 @@ elseif(ERROR == 2)
 elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
-# 设置异常捕捉回调函数
-register_shutdown_function("danger");
 # 引入主方法文件
 include('Method'.SLASH.'Function.php');

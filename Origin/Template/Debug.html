@@ -8,7 +8,8 @@
         .main{width:90%; min-width:480px; padding: 0 0 0 0; margin: 0 auto;}
         .status{font-size:60px; padding-top:20px; padding-bottom: 20px;}
         .content{min-height:120px; padding-bottom: 20px;}
-        .jump{text-align: right; padding-bottom: 20px;}
+        .table{ width: 100%}
+        .table .table_context{padding:0.5em 1.5em;}
         .origin{text-align: right;padding-right:20%;}
         a{color:floralwhite; cursor:pointer; text-decoration: none;}
     </style>
@@ -17,9 +18,11 @@
 <div class="main">
     <div class="status">&lt;Debug:&gt;</div>
     <div class="content">
-        <?php for($_i = 0;$_i < count($_error_msg);$_i++){ ?>
-        <?php echo(str_replace(ROOT,null,$_error_msg[$_i]));?><br />
-        <?php }?>
+        <table class="table">
+            <tr><td class="table_context">Error Context : <?php echo($_error_msg[0]);?></td></tr>
+            <tr><td class="table_context">In <?php echo($error_arr["file"]);?></td></tr>
+            <tr><td class="table_context">In <?php echo($error_arr["line"]);?> Line</td></tr>
+        </table>
     </div>
     <div class="origin">Origin Framework. 2017.</div>
 </div>
