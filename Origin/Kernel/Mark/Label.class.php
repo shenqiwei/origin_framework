@@ -1047,7 +1047,7 @@ class Label implements Impl
         $_obj = null;
         if(is_true($this->_Basic_Variable, $function) === true){
             # 调用函数方法, 被调用函数必须包含返回值,值类型不能是对象（或者数组，数组涉及超二维运算）
-            $_obj = $function($param);
+            $_obj = call_user_func($function,$param);
             # 当返回值为对象或者数组时，返回值为空
             if(is_object($_obj) or is_array($_obj)){
                 $_obj = null;

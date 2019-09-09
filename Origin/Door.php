@@ -24,7 +24,7 @@ if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
 # 是否启用编码混成
 if(!defined('MARK_RELOAD')) define('MARK_RELOAD',TRUE);
 # 协议类型
-if(!defined("__PROTOCOL__")) define("__PROTOCOL__", $_SERVER["HTTPS"]? "https://" : "http://");
+if(!defined("__PROTOCOL__")) define("__PROTOCOL__", isset($_SERVER["HTTPS"])? "https://" : "http://");
 # 地址信息
 if(!defined("__HOST__")) define("__HOST__",__PROTOCOL__.$_SERVER["HTTP_HOST"]."/");
 # 调试状态常量

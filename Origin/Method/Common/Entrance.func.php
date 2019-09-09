@@ -98,7 +98,7 @@ function Entrance()
             # 使用钩子模型引入方法文件
             Hook($_func_guide,Config('METHOD_SUFFIX'),'disable');
             # 根据配置信息拼接控制器路径
-            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').$_files;
+            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').ucfirst($_files);
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
@@ -106,7 +106,7 @@ function Entrance()
                 # 使用预注册加载函数，实现自动化加载
                 # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
                 spl_autoload_register(function($_path){
-                    require_once(str_replace('/', SLASH, $_path.CLASS_SUFFIX));
+                    require_once(str_replace('\\',SLASH,str_replace('/', SLASH, $_path.CLASS_SUFFIX)));
                 });
             }else{
                 try {

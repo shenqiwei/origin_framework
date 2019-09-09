@@ -194,13 +194,13 @@ class Validate
                 if(empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) == 0){
                     # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                     if(is_int($this->_Variable) and $this->_Variable == 0)
-                        $_return = 'complete';
+                        $_return = true;
                     elseif((is_float($this->_Variable) or is_double($this->_Variable))and $this->_Variable == 0.0)
-                        $_return = 'complete';
+                        $_return = true;
                     elseif(is_bool($this->_Variable) and $this->_Variable == false)
-                        $_return = 'complete';
+                        $_return = true;
                     elseif(is_string($this->_Variable) and $this->_Variable == '0')
-                        $_return = 'complete';
+                        $_return = true;
                     else
                         # error: Verify the value is null
                         $_return = 'value null';
