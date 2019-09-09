@@ -17,10 +17,10 @@
 # 设置默认访问
 define('ROOT_INDEX','index');
 # 设置调试状态
-define('DEBUG',TRUE);
+define('DEBUG',true);
 # 设置错误提示
-define('ERROR',False);
+define('ERROR',false);
 # 代码重加载
-define('MARK_RELOAD',FALSE);
+define('MARK_RELOAD',false);
 # 调用通道入口文件
 include('Origin/Door.php');
