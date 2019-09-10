@@ -24,7 +24,7 @@ function Common($guide)
         $_url = str_replace(DS,':',str_replace('/', DS, Configuration('ROOT_APPLICATION'))).$guide;
         $_obj = explode(':', $guide);
         $_suffix = '.php';
-        $_receipt = Hook($_url,$_suffix);
+        $_receipt = Loading($_url,$_suffix);
     }
     return $_receipt;
 }

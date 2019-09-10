@@ -14,11 +14,10 @@
  */
 # 初试公共函数包
 include("Common/Common.php");
-include("Common/Import.php");
+include("Common/Loading.php");
 include("Common/Config.php");
 # 框架柱目录文件路径
 if(!defined("RING")) define("RING", "Origin".DS);
-# 公共配置常量
 # 创建基础常量
 # 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
 if(!defined("__APPLICATION__")) define("__APPLICATION__", Configuration("DEFAULT_APPLICATION"));
@@ -26,7 +25,6 @@ if(!defined("__APPLICATION__")) define("__APPLICATION__", Configuration("DEFAULT
 if(!defined("__PLUGIN__")) define("__PLUGIN__", Configuration("ROOT_PLUGIN"));
 # 资源应用常量
 if(!defined("__RESOURCE__")) define("__RESOURCE__", Configuration("ROOT_RESOURCE"));
-
 # 加载函数封装类
 Import("File:File"); # 文件控制类
 Import("Parameter:Request"); # 调用请求控制器

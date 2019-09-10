@@ -97,7 +97,7 @@ function Entrance()
             # 公共方法包引导地址
             $_func_guide = str_replace(DS, ':', str_replace('/', DS, Config('ROOT_APPLICATION').$_catalogue.'Common/Public'));
             # 使用钩子模型引入方法文件
-            Hook($_func_guide,'.php','disable');
+            Loading($_func_guide,'.php','disable');
             # 根据配置信息拼接控制器路径
             $_path = $_catalogue.Config('APPLICATION_CONTROLLER').ucfirst($_files);
             # 设置引导地址

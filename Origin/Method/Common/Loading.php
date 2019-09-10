@@ -4,11 +4,11 @@
  * @access public
  * @param string $guide 文件路径，使用 :（冒号）作为连接符
  * !- 原结构参数param string $type 文件类型，用于区分不同作用文件，基础类型class（类），func（函数），cfg（配置）取消该结构
- * @param string $suffix 文件扩展名，文件扩展与文件类型名组成，完整的文件扩展名。例如：.class.php / .cfg.php
+ * @param string $suffix 文件扩展名，文件扩展与文件类型名组成，完整的文件扩展名。例如：.php
  * @param string $throws 是否抛出异常信息
  * @return null
  */
-function Hook($guide, $suffix=null, $throws='enable')
+function Loading($guide, $suffix=null, $throws='enable')
 {
     /**
      * @var mixed $_hook 指引结构数组
@@ -129,20 +129,20 @@ function Import($guide)
     if(strpos($guide,':')){
         $_array = explode(':', $guide);
         if(strtolower($_array[0]) == 'application'){
-            $_url = str_replace(DS,':',RING).$guide;
+            $_url = 'Origin:'.$guide;
         }
         elseif(strtolower($_array[0]) == 'config'){
-            $_url = str_replace(DS,':',RING).$guide;
+            $_url = 'Origin:'.$guide;
         }
         elseif(strtolower($_array[0]) == 'interface'){
             array_shift($_array);
             $guide = implode(':', $_array);
-            $_url = str_replace(DS,':',RING).'Kernel:'.$guide;
+            $_url = 'Origin:Kernel:'.$guide;
         }
         else{
-            $_url = str_replace(DS,':',RING).'Kernel:'.$guide;
+            $_url = 'Origin:Kernel:'.$guide;
         }
-        $_receipt = Hook($_url, '.php');
+        $_receipt = Loading($_url, '.php');
     }
     return $_receipt;
 }
