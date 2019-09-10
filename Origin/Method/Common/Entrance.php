@@ -76,20 +76,22 @@ function Entrance()
                 # 转化路径为数组结构
                 $_path_array = explode('/',$_path);
                 # 判断首元素结构是否与默认应用目录相同
-                if($_path_array[$_i] != Config('DEFAULT_APPLICATION') and is_dir(str_replace('/', DS, ROOT.Config('ROOT_APPLICATION').$_path_array[0]))){
+                if(ucfirst($_path_array[$_i]).'/' == Config('DEFAULT_APPLICATION')  or
+                    (ucfirst($_path_array[$_i]).'/' != Config('DEFAULT_APPLICATION') and
+                        is_dir(str_replace('/', DS, ROOT.Config('ROOT_APPLICATION').$_path_array[0])))){
                     # 变更应用文件夹位置
-                    $_catalogue = $_path_array[$_i].DS;
+                    $_catalogue = ucfirst($_path_array[$_i]).DS;
                     # 指针下移
                     $_i += 1;
                     if($_i < count($_path_array)){
                         # 变更控制文件信息
-                        $_files = $_path_array[$_i];
+                        $_files = ucfirst($_path_array[$_i]);
                         # 指针下移
                         $_i += 1;
                     }
                 }else{
                     # 变更控制文件信息
-                    $_files = $_path_array[$_i];
+                    $_files = ucfirst($_path_array[$_i]);
                     # 指针下移
                     $_i += 1;
                 }
@@ -99,7 +101,7 @@ function Entrance()
             # 使用钩子模型引入方法文件
             Loading($_func_guide,'.php','disable');
             # 根据配置信息拼接控制器路径
-            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').ucfirst($_files);
+            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').$_files;
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
