@@ -55,7 +55,7 @@ function Config($guide)
                     }
                 }
             }
-            if ($_receipt == null) {
+            if (is_null($_receipt)) {
                 # 使用钩子函数调用公共配置文件
                 $_config = J('Config:Config', 'disabled');
                 # 判断返回信息
@@ -71,7 +71,7 @@ function Config($guide)
                     }
                 }
             }
-            if ($_receipt == null) {
+            if (is_null($_receipt)) {
                 # 调取公共配置信息
                 $_config = Common('Config:Config');
                 # 判断返回信息
@@ -87,7 +87,7 @@ function Config($guide)
                     }
                 }
             }
-            if ($_receipt == null) {
+            if (is_null($_receipt)) {
                 # 引导信息数组，并对数据内容进行匹配
                 for ($i = 0; $i < count($_guide); $i++) {
                     if (is_array($_config[$_guide[$i]])) {

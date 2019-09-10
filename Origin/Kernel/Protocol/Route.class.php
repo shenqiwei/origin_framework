@@ -107,21 +107,21 @@ class Route
                                 case 'integer':
                                     echo($_param[$j]);
                                     # 创建get参数对象信息
-                                    $_GET[$_obj[$i]['param'][$j]['name']] = ((!empty($_param[$j]) and intval($_param[$j]) != 0 )or $_param[$j] != null) ? intval($_param[$j]) : ($_default === null) ? null : intval($_default);
+                                    $_GET[$_obj[$i]['param'][$j]['name']] = ((!empty($_param[$j]) and intval($_param[$j]) != 0 )or $_param[$j] != null) ? intval($_param[$j]) : (is_null($_default)) ? null : intval($_default);
                                     break;
                                 case 'float':
                                 case 'double':
                                     # 创建get参数对象信息
-                                    $_GET[$_obj[$i]['param'][$j]['name']] = (!empty($_param[$j]) or $_param[$j] != null) ? intval($_param[$j]) : ($_default === null) ? null : doubleval($_default);
+                                    $_GET[$_obj[$i]['param'][$j]['name']] = (!empty($_param[$j]) or $_param[$j] != null) ? intval($_param[$j]) : (is_null($_default)) ? null : doubleval($_default);
                                     break;
                                 case 'boolean':
                                     # 创建get参数对象信息
-                                    $_GET[$_obj][$i]['param'][$j]['name'] = ((!empty($_param[$j]) and intval($_param[$j]) != 0 and boolval($_param[$j]) != false )or $_param[$j] != null) ? boolval($_param[$j]) : ($_default === null) ? null : boolval($_default);
+                                    $_GET[$_obj][$i]['param'][$j]['name'] = ((!empty($_param[$j]) and intval($_param[$j]) != 0 and boolval($_param[$j]) != false )or $_param[$j] != null) ? boolval($_param[$j]) : (is_null($_default)) ? null : boolval($_default);
                                     break;
                                 case 'string':
                                 default:
                                     # 创建get参数对象信息
-                                    $_GET[$_obj[$i]['param'][$j]['name']] = (!empty($_param[$j]) or $_param[$j] != null) ? strval($_param[$j]) : ($_default === null) ? null : strval($_default);
+                                    $_GET[$_obj[$i]['param'][$j]['name']] = (!empty($_param[$j]) or $_param[$j] != null) ? strval($_param[$j]) : (is_null($_default)) ? null : strval($_default);
                                     break;
                             }
                         }

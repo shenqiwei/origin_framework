@@ -183,7 +183,7 @@ class Upload
             $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(!is_null($guide)){
-                if(strpos($guDS)){
+                if(strpos($guide,DS)){
                     $_guide = explode(DS,$guide);
                 }else{
                     if(strpos($guide,'/')){
@@ -213,8 +213,8 @@ class Upload
 
             }
             $_files = new UploadEx();
-            if(!is_null($_files->resource(__DSD__.'/'.$this->_Save_Add))){
-                $_files->manage(__UPLOAD__.'/'.$this->_Save_Add,'full',null);
+            if(!is_null($_files->resource(__RESOURCE__.'/Public/'.$this->_Save_Add))){
+                $_files->manage(__RESOURCE__.'/Public/'.$this->_Save_Add,'full',null);
             }
         }
         return $this->_Object;
@@ -235,7 +235,7 @@ class Upload
                 $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
             }
             if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
-                $this->_Dir.DS.__UPLOAD__.DS.$this->_Save_Add.DS.$_file_name)){
+                $this->_Dir.DS.__RESOURCE__.DS.'Public'.DS.$this->_Save_Add.DS.$_file_name)){
                 $this->_Error_Msg = "Files upload failed!";
             }
         }
