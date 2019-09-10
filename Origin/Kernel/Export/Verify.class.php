@@ -83,7 +83,7 @@ class Verify
             $_Y = rand(15 * $this->_Height_Fold, 40 * $this->_Height_Fold);
             $_bool = rand(0,1);
             if($_bool > 0) $_obj = strtoupper($_obj);
-            $_font_family = str_replace('/',SLASH,ROOT.'Origin/Font/origin001.ttf');
+            $_font_family = str_replace('/',DS,ROOT.'Origin/Font/origin001.ttf');
             $_font_angle = rand(-60,60);
             imagettftext($_image, $_font_size,$_font_angle, $_X, $_Y, $_font_color, $_font_family, $_obj);
         }
@@ -195,7 +195,7 @@ class Verify
             # 设置坐标信息X轴，Y轴
             $_X = ($_i*100/4)*$this->_Width_Fold+rand(8 * $this->_Width_Fold, 20 * $this->_Width_Fold);
             $_Y = rand(20 * $this->_Height_Fold, 35 * $this->_Height_Fold);
-            $_font_family = str_replace('/',SLASH,ROOT.'Origin/Font/origin001.ttf');
+            $_font_family = str_replace('/',DS,ROOT.'Origin/Font/origin001.ttf');
             $_font_angle = rand(-60,60);
             imagettftext($_image, $_font_size,$_font_angle, $_X, $_Y, $_font_color, $_font_family, $_obj);
         }
@@ -266,7 +266,7 @@ class Verify
         # 进行显示结构组装
         # 设置字体参数
         $_font_size = $this->_Width_Fold * 15;
-        $_font_family = str_replace('/',SLASH,ROOT.'Origin/Font/origin001.ttf');
+        $_font_family = str_replace('/',DS,ROOT.'Origin/Font/origin001.ttf');
         # 设置字体颜色
         $_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
         if($_first_symbol < 10){

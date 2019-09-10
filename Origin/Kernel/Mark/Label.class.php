@@ -235,7 +235,7 @@ class Label implements Impl
             # 判断文件完整度
             if(indexFiles($_files)){
                 # 读取引入对象内容
-                $_mark = file_get_contents(ROOT.str_replace('/',SLASH,$_files));
+                $_mark = file_get_contents(ROOT.str_replace('/',DS,$_files));
                 # 执行结构内容替换
                 $obj = str_replace($_include[$_i][0],$_mark,$obj);
             }

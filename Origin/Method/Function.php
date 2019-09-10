@@ -17,7 +17,7 @@ include("Common/Common.func.php");
 include("Common/Import.func.php");
 include("Common/Config.func.php");
 # 框架柱目录文件路径
-if(!defined("RING")) define("RING", "Origin".SLASH);
+if(!defined("RING")) define("RING", "Origin".DS);
 # 公共配置常量
 if(!defined("CLASS_SUFFIX")) define("CLASS_SUFFIX", Configuration("CLASS_SUFFIX"));
 if(!defined("METHOD_SUFFIX")) define("METHOD_SUFFIX", Configuration("METHOD_SUFFIX"));

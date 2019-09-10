@@ -87,7 +87,7 @@ class Output
         $_message =  htmlspecialchars(trim($message));
         $_url = htmlspecialchars(trim($url));
         $_setting = $setting;
-        include(str_replace('/',SLASH,ROOT.RING.'Template/Message.html'));
+        include(str_replace('/',DS,ROOT.RING.'Template/Message.html'));
         exit();
     }
     /**
@@ -108,7 +108,7 @@ class Output
         $_error_zero[1] = $_error_zero[1][0];
         $_error_zero[1] = "In : ".$_error_zero[1];
         array_splice($_error_msg,0,1,$_error_zero);
-        include(str_replace('/',SLASH,ROOT.RING.'Template/Debug.html'));
+        include(str_replace('/',DS,ROOT.RING.'Template/Debug.html'));
         return null;
     }
 }

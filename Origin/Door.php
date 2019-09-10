@@ -18,9 +18,9 @@
 if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 5.5');
 # DIRECTORY_SEPARATOR：PHP内建常量，用来返回当前系统文件夹连接符号LINUX（/）,WINNER（\）
 # 路径分割符
-if(!defined('SLASH')) define('SLASH',DIRECTORY_SEPARATOR);
+if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
 # 主程序文件目录常量
-if(!defined('ROOT')) define('ROOT',dirname(__DIR__).SLASH);
+if(!defined('ROOT')) define('ROOT',dirname(__DIR__).DS);
 # 引述文件根地址
 if(!defined("ROOT_ADDRESS")) define("ROOT_ADDRESS",dirname(__FILE__));
 # 是否启用编码混成
@@ -52,4 +52,4 @@ elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
 # 引入主方法文件
-include('Method'.SLASH.'Function.php');
+include('Method'.DS.'Function.php');

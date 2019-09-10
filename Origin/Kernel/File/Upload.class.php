@@ -183,8 +183,8 @@ class Upload
             $this->_Error_Msg = "Upload file input is invalid!";
         }else{
             if(!is_null($guide)){
-                if(strpos($guide,SLASH)){
-                    $_guide = explode(SLASH,$guide);
+                if(strpos($guDS)){
+                    $_guide = explode(DS,$guide);
                 }else{
                     if(strpos($guide,'/')){
                         $_guide = explode('/',$guide);
@@ -198,7 +198,7 @@ class Upload
                             if(is_null($this->_Save_Add)){
                                 $this->_Save_Add = $_guide[$_i];
                             }else{
-                                $this->_Save_Add .= SLASH.$_guide[$_i];
+                                $this->_Save_Add .= DS.$_guide[$_i];
                             }
                         }
                     }
@@ -206,14 +206,14 @@ class Upload
             }
             if(is_bool($mark) and $mark === true){
                 if(!is_null($this->_Save_Add)){
-                    $this->_Save_Add .= SLASH.date('Ymd',time());
+                    $this->_Save_Add .= DS.date('Ymd',time());
                 }else{
                     $this->_Save_Add .= date('Ymd',time());
                 }
 
             }
             $_files = new UploadEx();
-            if(!is_null($_files->resource(__UPLOAD__.'/'.$this->_Save_Add))){
+            if(!is_null($_files->resource(__DSD__.'/'.$this->_Save_Add))){
                 $_files->manage(__UPLOAD__.'/'.$this->_Save_Add,'full',null);
             }
         }
@@ -235,7 +235,7 @@ class Upload
                 $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
             }
             if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
-                $this->_Dir.SLASH.__UPLOAD__.SLASH.$this->_Save_Add.SLASH.$_file_name)){
+                $this->_Dir.DS.__UPLOAD__.DS.$this->_Save_Add.DS.$_file_name)){
                 $this->_Error_Msg = "Files upload failed!";
             }
         }

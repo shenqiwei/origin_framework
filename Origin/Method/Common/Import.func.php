@@ -38,14 +38,14 @@ function Hook($guide, $suffix=null, $throws='enable')
             for($i=0;$i<count($_hook);$i++){
                 # 判断是否是最后一个组数元素，当遍历到最后一个元素时，跳过验证结构
                 if($i == count($_hook)-1){
-                    $_file = SLASH.$_hook[$i];
+                    $_file = DS.$_hook[$i];
                     continue;
                 }else{
                     # 组装路径信息，随遍历深度进行路径拼接
                     if($i==0){
                         $_folder = $_folder.$_hook[$i];
                     }else{
-                        $_folder = $_folder.SLASH.$_hook[$i];
+                        $_folder = $_folder.DS.$_hook[$i];
                     }
                     # 判断每次遍历组装后的文件夹路径是否存在，当该路径存在是跳过，反之抛出异常信息
                     if(is_dir($_folder)){
@@ -129,21 +129,21 @@ function Import($guide)
     if(strpos($guide,':')){
         $_array = explode(':', $guide);
         if(strtolower($_array[0]) == 'application'){
-            $_url = str_replace(SLASH,':',RING).$guide;
+            $_url = str_replace(DS,':',RING).$guide;
             Hook($_url, '.class.php');
         }
         elseif(strtolower($_array[0]) == 'config'){
-            $_url = str_replace(SLASH,':',RING).$guide;
+            $_url = str_replace(DS,':',RING).$guide;
             $_receipt = Hook($_url, '.cfg.php');
         }
         elseif(strtolower($_array[0]) == 'interface'){
             array_shift($_array);
             $guide = implode(':', $_array);
-            $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
+            $_url = str_replace(DS,':',RING).'Kernel:'.$guide;
             Hook($_url,'.impl.php');
         }
         else{
-            $_url = str_replace(SLASH,':',RING).'Kernel:'.$guide;
+            $_url = str_replace(DS,':',RING).'Kernel:'.$guide;
             Hook($_url,'.class.php');
         }
     }

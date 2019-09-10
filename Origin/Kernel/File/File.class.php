@@ -93,7 +93,7 @@ class File
             if($_u === 0){
                 $this->_Dir .= $_uri;
             }else{
-                $this->_Dir .= SLASH.$_uri;
+                $this->_Dir .= DS.$_uri;
             }
 
             if(strpos($_uri,'.')){
@@ -165,7 +165,7 @@ class File
                     if($_i === 0){
                         $this->_Dir .= $_guide[$_i];
                     }else{
-                        $this->_Dir .= SLASH . $_guide[$_i];
+                        $this->_Dir .= DS . $_guide[$_i];
                     }
                     # 确定文件路径断点位置，并修改操作状态值
                     if (($operate === 'full' and ($_guide[$_i] == $_resource or !is_null($_create_status))) or
@@ -232,7 +232,7 @@ class File
                             }
                         }
                         # 装载整体结构
-                        $_change = str_replace($_object, $name, $this->_Dir . SLASH . $this->_Guide);
+                        $_change = str_replace($_object, $name, $this->_Dir . DS . $this->_Guide);
                         if (!rename($this->_Dir, $_change)) {
                             # 错误代码：00102，错误信息：文件重命名失败
                             try{
@@ -248,7 +248,7 @@ class File
                         # 执行删除
                         try {
                             if (strpos($this->_Guide, '.')) {
-                                if (!unlink($this->_Dir . SLASH . $this->_Guide)) {
+                                if (!unlink($this->_Dir . DS . $this->_Guide)) {
                                     try{
                                         throw new \Exception( 'Remove file[' . $this->_Guide . '] failed');
                                     }catch(\Exception $e){
@@ -258,7 +258,7 @@ class File
                                     }
                                 }
                             } else {
-                                if (!rmdir($this->_Dir . SLASH . $this->_Guide)) {
+                                if (!rmdir($this->_Dir . DS . $this->_Guide)) {
                                     try{
                                         throw new \Exception( 'Remove folder[' . $this->_Guide . '] failed');
                                     }catch(\Exception $e){

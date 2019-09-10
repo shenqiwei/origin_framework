@@ -21,7 +21,7 @@ function Common($guide)
 {
     $_receipt = null;
     if(strpos($guide,':')){
-        $_url = str_replace(SLASH,':',str_replace('/', SLASH, Configuration('ROOT_APPLICATION'))).$guide;
+        $_url = str_replace(DS,':',str_replace('/', DS, Configuration('ROOT_APPLICATION'))).$guide;
         $_obj = explode(':', $guide);
         if(strtolower($_obj[0]) === 'config'){
             $_suffix = Configuration('CONFIG_SUFFIX');

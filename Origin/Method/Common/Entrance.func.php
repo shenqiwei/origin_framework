@@ -75,9 +75,9 @@ function Entrance()
                 # 转化路径为数组结构
                 $_path_array = explode('/',$_path);
                 # 判断首元素结构是否与默认应用目录相同
-                if($_path_array[$_i] != Config('DEFAULT_APPLICATION') and is_dir(str_replace('/', SLASH, ROOT.Config('ROOT_APPLICATION').$_path_array[0]))){
+                if($_path_array[$_i] != Config('DEFAULT_APPLICATION') and is_dir(str_replace('/', DS, ROOT.Config('ROOT_APPLICATION').$_path_array[0]))){
                     # 变更应用文件夹位置
-                    $_catalogue = $_path_array[$_i].SLASH;
+                    $_catalogue = $_path_array[$_i].DS;
                     # 指针下移
                     $_i += 1;
                     if($_i < count($_path_array)){
@@ -94,7 +94,7 @@ function Entrance()
                 }
             }
             # 公共方法包引导地址
-            $_func_guide = str_replace(SLASH, ':', str_replace('/', SLASH, Config('ROOT_APPLICATION').$_catalogue.'Common/Public'));
+            $_func_guide = str_replace(DS, ':', str_replace('/', DS, Config('ROOT_APPLICATION').$_catalogue.'Common/Public'));
             # 使用钩子模型引入方法文件
             Hook($_func_guide,Config('METHOD_SUFFIX'),'disable');
             # 根据配置信息拼接控制器路径
@@ -102,11 +102,11 @@ function Entrance()
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
-            if(is_file(str_replace('/', SLASH, Config('ROOT_APPLICATION').$_path.CLASS_SUFFIX))){
+            if(is_file(str_replace('/', DS, Config('ROOT_APPLICATION').$_path.CLASS_SUFFIX))){
                 # 使用预注册加载函数，实现自动化加载
                 # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
                 spl_autoload_register(function($_path){
-                    require_once(str_replace('\\',SLASH,str_replace('/', SLASH, $_path.CLASS_SUFFIX)));
+                    require_once(str_replace('\\',DS,str_replace('/', DS, $_path.CLASS_SUFFIX)));
                 });
             }else{
                 try {
@@ -117,7 +117,7 @@ function Entrance()
                 }
             }
             # 创建class完整信息变量
-            $_class = str_replace('/', '\\',Config('ROOT_NAMESPACE').SLASH.$_path);
+            $_class = str_replace('/', '\\',Config('ROOT_NAMESPACE').DS.$_path);
             # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
             if(class_exists($_class)){
                 # 声明类对象
