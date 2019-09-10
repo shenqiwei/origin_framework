@@ -13,15 +13,12 @@
  * @copyright 2015-2017
  */
 # 初试公共函数包
-include("Common/Common.func.php");
-include("Common/Import.func.php");
-include("Common/Config.func.php");
+include("Common/Common.php");
+include("Common/Import.php");
+include("Common/Config.php");
 # 框架柱目录文件路径
 if(!defined("RING")) define("RING", "Origin".DS);
 # 公共配置常量
-if(!defined("CLASS_SUFFIX")) define("CLASS_SUFFIX", Configuration("CLASS_SUFFIX"));
-if(!defined("METHOD_SUFFIX")) define("METHOD_SUFFIX", Configuration("METHOD_SUFFIX"));
-if(!defined("CONFIG_SUFFIX")) define("CONFIG_SUFFIX", Configuration("CONFIG_SUFFIX"));
 # 创建基础常量
 # 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
 if(!defined("__APPLICATION__")) define("__APPLICATION__", Configuration("DEFAULT_APPLICATION"));
@@ -37,15 +34,15 @@ Import("Parameter:Validate"); # 调用验证控制器
 Import("Parameter:Filter");
 
 # 基础操作方法包应用
-include("Common/File.func.php");
-include("Common/Request.func.php");
-include("Common/Validate.func.php");
-include("Common/Filter.func.php");
-include("Common/Session.func.php");
-include("Common/Cookie.func.php");
+include("Common/File.php");
+include("Common/Request.php");
+include("Common/Validate.php");
+include("Common/Filter.php");
+include("Common/Session.php");
+include("Common/Cookie.php");
 # 应用公共函数文件
-include("Common/Log.func.php"); # 引用日志函数包
-include("Common/Public.func.php"); # 文件操作函数包
+include("Common/Log.php"); # 引用日志函数包
+include("Common/Public.php"); # 文件操作函数包
 # 公共应用函数类
 Import("File:Upload"); # 文件上传控制类
 Import("Data:Mysql"); # 调用Mysql数据库对象组件
@@ -67,6 +64,6 @@ Common("Common:Public"); # 引入公共函数包
 # 公共控制器文件
 Import("Application:Controller");
 # 动态加载文件
-include("Common/Entrance.func.php"); # 引入入口文件包
+include("Common/Entrance.php"); # 引入入口文件包
 // 调用方法体
 Entrance();

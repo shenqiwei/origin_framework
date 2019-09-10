@@ -31,11 +31,6 @@ return array(
     // 资源目录
     'ROOT_RESOURCE' => 'Resource/', // 资源主目录
     //web结构下应用
-    'ROOT_RESOURCE_JS' => 'Jscript', // javascript资源目录
-    'ROOT_RESOURCE_MEDIA' => 'Media', // 多媒体资源目录
-    'ROOT_RESOURCE_STYLE' => 'Style', // 样式表资源目录
-    'ROOT_RESOURCE_TEMP' => 'Template', // 模板资源目录
-    'ROOT_RESOURCE_PLUGIN' => 'Plug-In', //第三方插件
     'ROOT_RESOURCE_PUBLIC' => 'Public', //公共文件目录
     'ROOT_RESOURCE_UPLOAD' => 'Upload', //上传目录
     // 命名空间跟名
@@ -52,13 +47,6 @@ return array(
     'DEFAULT_CONTROLLER' => 'index', // 默认访问控制器对象
     'DEFAULT_METHOD' => 'index', // 默认访问函数方法
     'DEFAULT_VIEW' => 'index', // 默认访问模板
-    'CLASS_SUFFIX' => '.class.php', // 类默认扩展名
-    'METHOD_SUFFIX' => '.func.php', // 方法默认扩展名，内建应用
-    'CONFIG_SUFFIX' => '.cfg.php', // 配置默认扩展名
-    'MODEL_SUFFIX' => '.model.php', // 数据模型扩展名
-    'VIEW_SUFFIX' => '.html', // 显示模板扩展名
-    'IMPL_SUFFIX' => '.impl.php', // 接口类型扩展名
-    'LOG_SUFFIX' => '.log', //日志类型扩展名
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用
     'SESSION' => array(
         'SAVE_PATH'=> '', // session存储位置，一般php.ini设置,如果需要修改存储位置,再填写

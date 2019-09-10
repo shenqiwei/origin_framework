@@ -122,12 +122,7 @@ __目录配置：[[返回](#config)]__
 `APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model/`  
 `APPLICATION_VIEW` 模板（Template）文件目录 默认值：`View/`  
 `ROOT_PLUGIN` 应用插件目录 默认值：`PlugIn/`  
-`ROOT_RESOURCE` 资源主目录 默认值：`Resource/`  
-`ROOT_RESOURCE_JS` javascript资源目录 默认值：`Jscript`  
-`ROOT_RESOURCE_MEDIA` 多媒体资源目录  默认值：`Media`  
-`ROOT_RESOURCE_STYLE` 样式表资源目录 默认值：`Style`  
-`ROOT_RESOURCE_TEMP` 模板资源目录 默认值：`Template`  
-`ROOT_RESOURCE_PLUGIN` 第三方插件 默认值：`Plug-In`  
+`ROOT_RESOURCE` 资源主目录 默认值：`Resource`   
 `ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`  
 `ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`  
 `ROOT_NAMESPACE` 根命名空间 默认值：`\\Apply`  
@@ -142,14 +137,7 @@ __目录配置：[[返回](#config)]__
 __文件访问配置：[[返回](#config)]__
 >`DEFAULT_CONTROLLER` 默认访问控制器对象 默认值：`index`  
 `DEFAULT_METHOD` 默认访问函数方法 默认值：`index`  
-`DEFAULT_VIEW`  默认访问视图模板 默认值：`index`  
-`CLASS_SUFFIX` 类默认扩展名 默认值：`.class.php`  
-`METHOD_SUFFIX` 方法默认扩展名，内建应用 默认值：`.func.php`  
-`CONFIG_SUFFIX` 配置默认扩展名 默认值：`.cfg.php`  
-`MODEL_SUFFIX` 数据模型扩展名 默认值：`.model.php`  
-`VIEW_SUFFIX` 显示模板扩展名 默认值：`.html`  
-`IMPL_SUFFIX` 接口类型扩展名 默认值：`.impl.php`  
-`LOG_SUFFIX` 日志类型扩展名 默认值：`.log`  
+`DEFAULT_VIEW`  默认访问视图模板 默认值：`index` 
 
 <span id='config_session'></span>
 __会话配置：[[返回](#config)]__   
@@ -222,43 +210,43 @@ __路由应用配置：(`功能测试修改中`)[[返回](#config)]__
 <span id='origin_method'></span>
 ## Method 功能函数目录 [[返回TOP](#origin_top)]
 
-该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.func.php文件中
+该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中
 >函数列表
 
->> `Common.func.php`  
+>> `Common.php`  
 >>> 公共函数包，主要包含：字符转移，格式列表，文件分类用于对被访问文件内容进行限定和提供有效条件的内容函数  
 
->> `Config.func.php`  
+>> `Config.php`  
 >>> 配置函数包，提供分段函数，对不同结构层的配置信息进行调用管理，并针对配置内容进行简单的优先级排列执行
 
->> `Cookie.func.php`  
+>> `Cookie.php`  
 >>> 浏览器会话函数包，只用于对PHP Cookie会话的常规使用进行支持，和简单设置
 
->> `Entrance.func.php`  
+>> `Entrance.php`  
 >>> 框架入口函数包，Origin ver1.0的框架请求入口
 
->> `File.func.php`  
+>> `File.php`  
 >>> 文件管理函数包，包含对文件及文件夹的添加、删除、修改等操作函数
 
->> `Filter.func.php`  
+>> `Filter.php`  
 >>> 框架内容强制转化函数（该模块已经被validate.class.php的封装内容覆盖，更新Kernel时，会逐步取消该函数包的作用）
 
->> `Hook.func.php`  
+>> `Hook.php`  
 >>> 文件引入函数包，由于功能重定义后，将钩子结构放入到入口函数中，所以Hook钩子模块的实际功能被取消，相应的插件引入规则，将重新定义
 
->> `Log.func.php`  
+>> `Log.php`  
 >>> 日志函数，包含4个基本日志类型，并提供函数自定义内容入口，方便开发者，定义同类型日志内容，并进行有效记录
 
->> `Public.func.php`  
+>> `Public.php`  
 >>> 公共应用函数，使用单字母命名方式的执行函数，该函数包中函数，可以帮助开发者，完成大多数开发需求
 
->> `Request.func.php`  
+>> `Request.php`  
 >>> 请求器函数包，用于对访问请求的GET及POST，UPLOAD行为进行监听捕获，并返回对象内容
 
->> `Session.func.php`  
+>> `Session.php`  
 >>> 会话操作函数包，只用于对PHP Session会话的常规使用进行支持，和简单设置
 
->> `Validate.func.php`  
+>> `Validate.php`  
 >>> 内容验证函数包，包含12基础类型验证函数以及一个公共定义验证函数，分别用于对输入值得常用类型进行单一验证
 
 <span id='origin_template'></span>
