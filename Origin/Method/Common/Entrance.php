@@ -101,7 +101,7 @@ function Entrance()
             # 使用钩子模型引入方法文件
             Loading($_func_guide,'.php','disable');
             # 根据配置信息拼接控制器路径
-            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').$_files;
+            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').ucfirst($_files);
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
