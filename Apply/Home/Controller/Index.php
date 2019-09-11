@@ -8,7 +8,7 @@
 
 namespace Apply\Home\Controller;
 
-use Origin\Controller;
+use Origin\Application\Controller;
 
 class Index extends Controller
 {

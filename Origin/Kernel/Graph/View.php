@@ -62,7 +62,7 @@ class View
             }
         }
         # 获取应用目录
-        $_url = str_replace('/', DS, Config('ROOT_APPLICATION').$_dir);
+        $_url = str_replace('/', DS, "Apply/{$_dir}");
         # 判断应用目录是否有效
         if(is_dir($_url)){
             # 获得前台模板目录

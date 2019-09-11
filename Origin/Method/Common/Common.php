@@ -21,7 +21,7 @@ function Common($guide)
 {
     $_receipt = null;
     if(strpos($guide,':')){
-        $_url = str_replace(DS,':',str_replace('/', DS, Configuration('ROOT_APPLICATION'))).$guide;
+        $_url = str_replace(DS,':',str_replace('/', DS, "Apply/")).$guide;
         $_obj = explode(':', $guide);
         $_receipt = Loading($_url,'.php');
     }
@@ -40,7 +40,7 @@ function Rule($param)
      */
     $_regular = '/^[^\_\W\s]+((\:|\\\|\_|\/)?[^\_\W\s]+)*$/u';
     $_receipt = false;
-    if(preg_match_all($_regular, $param)){
+    if(preg_match($_regular, $param)){
         $_receipt = true;
     }
     return $_receipt;
@@ -71,7 +71,7 @@ function fileUri($uri)
      */
     $_regular = '/^[^\_\W\s]+((\_|\/)?[^\_\W\s]+)*$/u';
     $_receipt = false;
-    if(preg_match_all($_regular, $uri)){
+    if(preg_match($_regular, $uri)){
         $_receipt = true;
     }
     return $_receipt;
@@ -89,7 +89,7 @@ function formatGuide($uri)
      */
     $_regular = '/^[^\_\W\s]+((\_|\:)?[^\_\W\s]+)*$/u';
     $_receipt = false;
-    if(preg_match_all($_regular, $uri)){
+    if(preg_match($_regular, $uri)){
         $_receipt = true;
     }
     return $_receipt;
@@ -108,7 +108,7 @@ function formatFile($uri)
      */
     $_file_format = '/^([^\_\W\s]+[\:](\\\|\/))?[^\_\W\s]+((\_|\\\|\/)?[^\_\W\s]+)*(\.[^\_\W\s]+)+$/u';
     $_receipt = false;
-    if(preg_match_all($_file_format, $uri)){
+    if(preg_match($_file_format, $uri)){
         $_receipt = true;
     }
     return $_receipt;
@@ -127,7 +127,7 @@ function nameFile($name)
      */
     $_name_format = '/^[^\_\W\s]+(\_[^\_\W\s]+)*$/u';
     $_receipt = false;
-    if(preg_match_all($_name_format, $name)){
+    if(preg_match($_name_format, $name)){
         $_receipt = true;
     }
     return $_receipt;
@@ -146,7 +146,7 @@ function formatType($type)
      */
     $_type_format = '/^(class|func|function|impl|implements|interface|controller|method|common|cfg|config|action|data|file|graph|math|message|info|param|bean|beans|map|mapping|filter|model|view)$/u';
     $_receipt = false;
-    if(preg_match_all($_type_format, $type)){
+    if(preg_match($_type_format, $type)){
         $_receipt = true;
     }
     return $_receipt;
@@ -165,7 +165,7 @@ function formatSuffix($suffix)
      */
     $_auto_suffix = '/^(php|phpx|php5|php7|xhtml|html|htm|log|ini|txt)$/u';
     $_receipt = false;
-    if(preg_match_all($_auto_suffix, $suffix)){
+    if(preg_match($_auto_suffix, $suffix)){
         $_receipt = true;
     }
     return $_receipt;
@@ -199,7 +199,7 @@ function urlGuide($url)
 {
     $_url_format = '/^((http|https)://)?[^\_\W\s]+((\_|\/)[^\_\W\s]+)*(\.[^\_\W\s\d]+)?(\?[^\_\W\s]+(\_[^\_\W\s]+)*\=[^\&\s]+((\&)[^\_\W\s]+(\_[^\_\W\s]+)*\=[^\&\s]+)*)?$/u';
     $_receipt = false;
-    if(preg_match_all($_url_format, $url)){
+    if(preg_match($_url_format, $url)){
         $_receipt = true;
     }
     return $_receipt;

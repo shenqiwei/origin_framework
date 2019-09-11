@@ -15,10 +15,6 @@
  */
 namespace Origin\Kernel\Data;
 /**
- * 引入公共类函数包
- */
-Import('Data:Query');
-/**
  * Mysql操作类
 */
 class Mysql extends Query

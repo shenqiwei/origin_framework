@@ -109,12 +109,12 @@ function J($guide, $throws = 'enable')
                 # 判断获取值与默认应用文件名是否相同
                 if ($_map != __APPLICATION__)
                     # 判断该值是否问应用目录
-                    if (is_dir(ROOT . DS . Configuration('ROOT_APPLICATION') . $_map))
+                    if (is_dir(ROOT . DS . "Apply" . $_map))
                         $_master = $_map . '/';
             # 根据执行结构获取文件路径指向信息
             $_dir = isset($_master) ? $_master : __APPLICATION__;
             # 使用钩子公共方法引入文件
-            $_receipt = Loading(str_replace('/', ':', Configuration('ROOT_APPLICATION') . $_dir . $guide), $_suffix, $throws);
+            $_receipt = Loading(str_replace('/', ':', "Apply/" . $_dir . $guide), $_suffix, $throws);
         }
     }
     return $_receipt;

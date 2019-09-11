@@ -13,7 +13,7 @@
  * @copyright 2015-2017
  * @context: IoC 公共控制器
  */
-namespace Origin;
+namespace Origin\Application;
 /**
  * 功能控制器，负责内核功能方法的预加载调用
 */
@@ -83,7 +83,7 @@ class Controller
         $_dir = str_replace('Controller', '',
             str_replace(Config('APPLICATION_CONTROLLER'), '',
                 str_replace(Config('DEFAULT_APPLICATION'), '',
-                    str_replace(Config('ROOT_APPLICATION'), '',
+                    str_replace('Apply/', '',
                         str_replace('\\', '/', self::$_Name_Class)))));
         if(!is_null($this->get_function())){
             $_page = $this->get_function();

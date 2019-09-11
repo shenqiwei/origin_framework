@@ -38,7 +38,7 @@ function Entrance()
         # 转换信息
         $_path_array = array();
         # 获取的路径信息
-        $_path = \Origin\Kernel\Protocol\Route::execute($_SERVER['PATH_INFO']);
+        $_path = Route($_SERVER['PATH_INFO']);
         # 获取协议信息
         $_protocol = $_SERVER["SERVER_PROTOCOL"];
         # 获取服务软件信息
@@ -51,12 +51,10 @@ function Entrance()
         $_type = $_SERVER["REQUEST_METHOD"];
         # 获取用户ip
         $_use = $_SERVER["REMOTE_ADDR"];
-        # 设置文件扩展名
         # 对请求对象地址请求内容进行截取
         if(strpos($_request,'?'))
             $_request = substr($_request,0,strpos($_request,'?'));
         # 调用日志结构函数
-        accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
         # 判断执行对象是否为程序单元
         $_bool = false;
         $_suffix = array(".html",".htm",".php");
@@ -76,14 +74,15 @@ function Entrance()
                 # 转化路径为数组结构
                 $_path_array = explode('/',$_path);
                 # 判断首元素结构是否与默认应用目录相同
-                if(ucfirst($_path_array[$_i]).'/' == Config('DEFAULT_APPLICATION')  or
+                if(empty($_path_array) and $_path_array[0] != '0' or
+                    ucfirst($_path_array[$_i]).'/' == Config('DEFAULT_APPLICATION')  or
                     (ucfirst($_path_array[$_i]).'/' != Config('DEFAULT_APPLICATION') and
-                        is_dir(str_replace('/', DS, ROOT.Config('ROOT_APPLICATION').$_path_array[0])))){
+                        is_dir(str_replace('/', DS, ROOT."Apply/".ucfirst($_path_array[0]))))) {
                     # 变更应用文件夹位置
-                    $_catalogue = ucfirst($_path_array[$_i]).DS;
+                    $_catalogue = ucfirst($_path_array[$_i]) . DS;
                     # 指针下移
                     $_i += 1;
-                    if($_i < count($_path_array)){
+                    if ($_i < count($_path_array)) {
                         # 变更控制文件信息
                         $_files = ucfirst($_path_array[$_i]);
                         # 指针下移
@@ -97,7 +96,7 @@ function Entrance()
                 }
             }
             # 公共方法包引导地址
-            $_func_guide = str_replace(DS, ':', str_replace('/', DS, Config('ROOT_APPLICATION').$_catalogue.'Common/Public'));
+            $_func_guide = str_replace(DS, ':', str_replace('/', DS, "Apply/{$_catalogue}Common/Public"));
             # 使用钩子模型引入方法文件
             Loading($_func_guide,'.php','disable');
             # 根据配置信息拼接控制器路径
@@ -105,7 +104,7 @@ function Entrance()
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
-            if(is_file(str_replace('/', DS, Config('ROOT_APPLICATION').$_path.'.php'))){
+            if(is_file(str_replace('/', DS, "Apply/{$_path}.php"))){
                 # 使用预注册加载函数，实现自动化加载
                 # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
                 spl_autoload_register(function($_path){
@@ -119,8 +118,9 @@ function Entrance()
                     exit(0);
                 }
             }
+            accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
             # 创建class完整信息变量
-            $_class = str_replace('/', '\\',Config('ROOT_NAMESPACE').DS.$_path);
+            $_class = str_replace('/', '\\',"\\Apply".DS.$_path);
             # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
             if(class_exists($_class)){
                 # 声明类对象
@@ -143,7 +143,7 @@ function Entrance()
             # 判断方法信息是否可以被调用
             if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
                 # 获取方法名
-                \Origin\Controller::$_Name_Function = $_method;
+                \Origin\Application\Controller::$_Name_Function = $_method;
                 # 执行方法调用
                 $_object->$_method();
             }else{

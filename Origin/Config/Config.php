@@ -14,8 +14,6 @@
  * @context IoC 主配置文件
  */
 return array(
-    // 应用主目录
-    'ROOT_APPLICATION' => 'Apply/', // 应用控制器目录
     // 默认访问文件根目录
     'DEFAULT_APPLICATION' => 'Home/',
     // 应用目录
@@ -26,15 +24,11 @@ return array(
     'APPLICATION_CONTROLLER' => 'Controller/', // 执行程序文件目录
     'APPLICATION_MODEL' => 'Model/', // 数据操作语句文件目录
     'APPLICATION_VIEW' => 'View/', // 模板（Template）文件目录
-    // 插件目录
-    'ROOT_PLUGIN' => 'PlugIn/', // 应用插件目录
     // 资源目录
     'ROOT_RESOURCE' => 'Resource/', // 资源主目录
     //web结构下应用
     'ROOT_RESOURCE_PUBLIC' => 'Public', //公共文件目录
     'ROOT_RESOURCE_UPLOAD' => 'Upload', //上传目录
-    // 命名空间跟名
-    'ROOT_NAMESPACE' => '\\Apply', //根命名空间
     // 日志主目录
     'ROOT_LOG' => 'Logs/',
     // 日志目录

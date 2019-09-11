@@ -135,7 +135,7 @@ function Configuration($guide)
     # 创建配置结构变量
     $_config = null;
     # 创建配置寄存变量
-    $_array = Import('Config:Config');
+    $_array = Loading('Origin:Config:Config','.php');
     # 判断引导参数是否有效
     if(Rule($guide)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中
