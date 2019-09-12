@@ -16,7 +16,7 @@ class Index extends Controller
     {
         parent::__construct();
         $this->param('title','Origin架构开发版');
-        $Origin = array('title' => 'Origin', 'version' => 'Ver.0.2');
+        $Origin = array('title' => 'Origin', 'version' => 'Ver.0.5');
         $this->param('o', $Origin);
     }
 
