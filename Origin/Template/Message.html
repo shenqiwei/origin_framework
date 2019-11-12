@@ -38,12 +38,12 @@
         .content{min-height:120px; padding-bottom: 20px;}
         .jump{text-align: right; padding-bottom: 20px;}
         .origin{text-align: right}
-        a{color:floralwhite; cursor:pointer; text-decoration: none;}
+        a{color:#adadad; cursor:pointer; text-decoration: none;}
     </style>
 </head>
 <body>
 <div class="main">
-    <div class="status">&lt;Error:&gt;</div>
+    <div class="status">&lt;<?php echo($_setting["title"]);?>:&gt;</div>
     <div class="content"><?php echo($_message);?></div>
     <div class="jump">
         <a onclick="redirect()">[OK]</a> or

@@ -42,58 +42,38 @@ class Mysql extends Query
                     break;
                 }
             }
-            if(!isset($_connect_conf)){
+            if(!isset($_connect_config)){
                 for($_i = 0; $_i < count($_connect_config); $_i++){
                     if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql")
                         or !key_exists("DATA_TYPE",$_connect_config[$_i])){
-                        $_connect_conf = $_connect_config[$_i];
+                        $_connect_config = $_connect_config[$_i];
                         break;
                     }
                 }
             }
-            if(isset($_connect_conf)){
-                try{
-                    # 创建数据库链接地址，端口，应用数据库信息变量
-                    $_DSN = 'mysql:host='.$_connect_conf['DATA_HOST'].';port='.$_connect_conf['DATA_PORT'].';dbname='.$_connect_conf['DATA_DB'];
-                    $_username = $_connect_conf['DATA_USER']; # 数据库登录用户
-                    $_password = $_connect_conf['DATA_PWD']; # 登录密码
-                    $_option = array(
-                        # 设置数据库编码规则
-                        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                        \PDO::ATTR_PERSISTENT => true,
-                    );
-                    # 创建数据库连接对象
-                    $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
-                    # 设置数据库参数信息
-                    $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                    # 是否使用持久链接
-                    $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval($_connect_conf['DATA_P_CONNECT']));
-                    # mysql自动提交单语句
+            # 创建数据库链接地址，端口，应用数据库信息变量
+            $_DSN = 'mysql:host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];
+            $_username = $_connect_config['DATA_USER']; # 数据库登录用户
+            $_password = $_connect_config['DATA_PWD']; # 登录密码
+            $_option = array(
+                # 设置数据库编码规则
+                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                \PDO::ATTR_PERSISTENT => true,
+            );
+            # 创建数据库连接对象
+            $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
+            # 设置数据库参数信息
+            $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            # 是否使用持久链接
+            $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
+            # mysql自动提交单语句
 //                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
-                    # mysql请求超时时间
-                    if(intval(Config('DATA_TIMEOUT')))
-                        $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval($_connect_conf['DATA_TIMEOUT']));
-                    # mysql是否使用缓冲查询
-                    if(boolval(Config('DATA_USE_BUFFER')))
-                        $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_conf['DATA_USE_BUFFER']));
-                }catch(\PDOException $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    print('Error:'.$e->getMessage());
-                    exit();
-                }
-            }else{
-                # 无有效数据表名称
-                try{
-                    throw new \PDOException('Config object is invalid');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql select) Class Error:'.$e->getMessage());
-                }
-            }
+            # mysql请求超时时间
+            if(intval(Config('DATA_TIMEOUT')))
+                $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
+            # mysql是否使用缓冲查询
+            if(boolval(Config('DATA_USE_BUFFER')))
+                $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
         }
     }
     /**
@@ -111,56 +91,20 @@ class Mysql extends Query
         if(!is_null($this->_Field)) $_sql .= ' count('.$this->_Field.')';
         else $_sql .= ' count(*)';
         # 表名
-        if(!is_null($this->_Table)){
-            $_sql .= ' from '.$this->_Table;
-        }else{
-            # 无有效数据表名称
-            try{
-                throw new \PDOException('No valid data table name');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
-        }
+        if(!is_null($this->_Table))  $_sql .= ' from '.$this->_Table;
         # 连接结构信息
         if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
         # 复制结构
         if(!is_null($this->_Union)) $_sql .= $this->_Union;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        try{
-            daoLogs($_sql);
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                } finally {
-                    $this->_Connect = null;
-                }
-            }else{
-                # 返回查询结构
-                $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
-        }
+        daoLogs($_sql);
+        # 执行查询搜索
+        $_statement = $this->_Connect->query($_sql);
+        # 返回查询结构
+        $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
+        # 释放连接
+        $_statement->closeCursor();
         # 返回数据
         return $_receipt;
     }
@@ -255,20 +199,7 @@ class Mysql extends Query
         # 单字段不重复值
         if(!is_null($this->_Distinct)) $_sql .= $this->_Distinct;
         # 表名
-        if(!is_null($this->_Table)){
-            $_sql .= ' from '.$this->_Table;
-        }else{
-            # 无有效数据表名称
-            try{
-                throw new \PDOException('No valid data table name');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
-        }
+        if(!is_null($this->_Table)) $_sql .= ' from '.$this->_Table;
         # 连接结构信息
         if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
         # 复制结构
@@ -294,42 +225,20 @@ class Mysql extends Query
         }
         # 添加查询头
         $_sql = 'select '.$_sql;
-        try{
-            daoLogs($_sql);
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                }
-            }else{
-                # 回写select查询条数
-                $this->_Row_Count = $_statement->rowCount();
-                # 返回查询结构
-                if($this->_Fetch_Type === 'nv')
-                    $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
-                elseif($this->_Fetch_Type === 'kv')
-                    $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
-                else
-                    $_receipt = $_statement->fetchAll();
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
-        }
+        daoLogs($_sql);
+        # 执行查询搜索
+        $_statement = $this->_Connect->query($_sql);
+        # 回写select查询条数
+        $this->_Row_Count = $_statement->rowCount();
+        # 返回查询结构
+        if($this->_Fetch_Type === 'nv')
+            $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+        elseif($this->_Fetch_Type === 'kv')
+            $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+        else
+            $_receipt = $_statement->fetchAll();
+        # 释放连接
+        $_statement->closeCursor();
         # 返回数据
         return $_receipt;
     }
@@ -345,85 +254,37 @@ class Mysql extends Query
         # 执行主函数
         $_sql = 'insert into';
         # 表名
-        if(!is_null($this->_Table)){
-            $_sql .= ' '.$this->_Table;
-        }else{
-            # 无有效数据表名称
-            try{
-                throw new \PDOException('No valid data table name');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
-        }
-        if(!is_null($this->_Data)){
-            $_columns = null;
-            $_values = null;
-            for($_i = 0; $_i < count($this->_Data); $_i++){
-                foreach($this->_Data[$_i] as $_key => $_value){
-                    if($_i == 0){
-                        $_columns = $_key;
-                        if(is_integer($_value) or is_float($_value) or is_double($_value))
-                            $_values = $_value;
-                        else
-                            $_values = '\''.$_value.'\'';
-                    }else{
-                        $_columns .= ','.$_key;
-                        if(is_integer($_value) or is_float($_value) or is_double($_value))
-                            $_values .= ','.$_value;
-                        else
-                            $_values .= ',\''.$_value.'\'';
-                    }
+        if(!is_null($this->_Table)) $_sql .= ' '.$this->_Table;
+        $_columns = null;
+        $_values = null;
+        for($_i = 0; $_i < count($this->_Data); $_i++){
+            foreach($this->_Data[$_i] as $_key => $_value){
+                if($_i == 0){
+                    $_columns = $_key;
+                    if(is_integer($_value) or is_float($_value) or is_double($_value))
+                        $_values = $_value;
+                    else
+                        $_values = '\''.$_value.'\'';
+                }else{
+                    $_columns .= ','.$_key;
+                    if(is_integer($_value) or is_float($_value) or is_double($_value))
+                        $_values .= ','.$_value;
+                    else
+                        $_values .= ',\''.$_value.'\'';
                 }
             }
-            $_sql .= '('.$_columns.')values('.$_values.')';
-        }else{
-            # 操作信息无效
-            try{
-                throw new \PDOException('Operation information is invalid');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
         }
-        try{
-            daoLogs($_sql);
-            # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                }
-            }else{
-                # 返回查询结构
-                $_receipt = $this->_Connect->lastInsertId();
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
-        }
+        $_sql .= '('.$_columns.')values('.$_values.')';
+        daoLogs($_sql);
+        # 事务状态
+        if(boolval(Config("DATA_USE_TRANSACTION")))
+            $this->_Connect->beginTransaction();
+        # 执行查询搜索
+        $_statement = $this->_Connect->query($_sql);
+        # 返回查询结构
+        $_receipt = $this->_Connect->lastInsertId();
+        # 释放连接
+        $_statement->closeCursor();
         # 返回数据
         return $_receipt;
     }
@@ -439,84 +300,37 @@ class Mysql extends Query
         # 执行主函数
         $_sql = 'update';
         # 表名
-        if(!is_null($this->_Table)){
-            $_sql .= ' '.$this->_Table;
-        }else{
-            # 无有效数据表名称
-            try{
-                throw new \PDOException('No valid data table name');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
-        }
+        if(!is_null($this->_Table)) $_sql .= ' '.$this->_Table;
         $_sql .= ' set ';
-        if(!is_null($this->_Data)){
-            $_columns = null;
-            for($_i = 0; $_i < count($this->_Data); $_i++){
-                foreach($this->_Data[$_i] as $_key => $_value){
-                    if($_i == 0){
-                        if(is_integer($_value) or is_float($_value) or is_double($_value))
-                            $_columns = $_key.'='.$_value;
-                        else
-                            $_columns = $_key.'=\''.$_value.'\'';
-                    }else{
-                        if(is_integer($_value) or is_float($_value) or is_double($_value))
-                            $_columns .= ','.$_key.'='.$_value;
-                        else
-                            $_columns .= ','.$_key.'=\''.$_value.'\'';
-                    }
+        $_columns = null;
+        for($_i = 0; $_i < count($this->_Data); $_i++){
+            foreach($this->_Data[$_i] as $_key => $_value){
+                if($_i == 0){
+                    if(is_integer($_value) or is_float($_value) or is_double($_value))
+                        $_columns = $_key.'='.$_value;
+                    else
+                        $_columns = $_key.'=\''.$_value.'\'';
+                }else{
+                    if(is_integer($_value) or is_float($_value) or is_double($_value))
+                        $_columns .= ','.$_key.'='.$_value;
+                    else
+                        $_columns .= ','.$_key.'=\''.$_value.'\'';
                 }
             }
-            $_sql .= $_columns;
-        }else{
-            # 操作信息无效
-            try{
-                throw new \PDOException('Operation information is invalid');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
         }
+        $_sql .= $_columns;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        try{
-            daoLogs($_sql);
-            # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                }
-            }else{
-                # 返回查询结构
-                $_receipt = $_statement->rowCount();
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
-        }
+        daoLogs($_sql);
+        # 事务状态
+        if(boolval(Config("DATA_USE_TRANSACTION")))
+            $this->_Connect->beginTransaction();
+        # 执行查询搜索
+        $_statement = $this->_Connect->query($_sql);
+        # 返回查询结构
+        $_receipt = $_statement->rowCount();
+        # 释放连接
+        $_statement->closeCursor();
         # 返回数据
         return $_receipt;
     }
@@ -532,56 +346,19 @@ class Mysql extends Query
         # 执行主函数
         $_sql = 'delete ';
         # 表名
-        if(!is_null($this->_Table)){
-            $_sql .= 'from '.$this->_Table;
-        }else{
-            # 无有效数据表名称
-            try{
-                throw new \PDOException('No valid data table name');
-            }catch(\PDOException $e){
-                $this->_Connect = null;
-                errorLogs($e->getMessage());
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (mysql select) Class Error:'.$e->getMessage());
-            }
-        }
+        if(!is_null($this->_Table)) $_sql .= 'from '.$this->_Table;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        try{
-            daoLogs($_sql);
-            # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                }
-            }else{
-                # 返回查询结构
-                $_receipt = $_statement->rowCount();
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
-        }
-        # 返回数据
-        return $_receipt;
+        daoLogs($_sql);
+        # 事务状态
+        if(boolval(Config("DATA_USE_TRANSACTION")))
+            $this->_Connect->beginTransaction();
+        # 执行查询搜索
+        $_statement = $this->_Connect->query($_sql);
+        # 返回查询结构
+        $_receipt = $_statement->rowCount();
+        # 释放连接
+        $_statement->closeCursor();
     }
     /**
      * 自定义语句执行函数
@@ -594,73 +371,51 @@ class Mysql extends Query
         // TODO: Implement count() method.
         # 创建返回信息变量
         $_receipt = null;
-        try{
-            if(is_true($this->_Regular_Select_Count, strtolower($query)) === true){
-                $_select_count = null;
-            }elseif(is_true($this->_Regular_Select, strtolower($query)) === true){
-                // 表示为完整的查询语句
-            }elseif(is_true($this->_Regular_from, strtolower($query)) === true){
-                $query = 'select * '.strtolower($query);
-            }
-            if(strpos(strtolower($query),"select ") === 0){
-                $_query_type = "select";
-            }elseif(strpos(strtolower($query),"insert into ") === 0){
-                $_query_type = "insert";
-            }else{
-                $_query_type = "change";
-            }
-            # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
-                $this->_Connect->beginTransaction();
-            # 条件运算结构转义
-            foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
-                $query = preg_replace($key, $value, $query);
-            }
-            # 接入执行日志
-            daoLogs(trim($query));
-            # 执行查询搜索
-            $_statement = $this->_Connect->query(trim($query));
-            if($_statement === false){
-                try{
-                    throw new \PDOException('SQL query error!Please check the statement before execution.');
-                }catch(\PDOException $e){
-                    $this->_Connect = null;
-                    errorLogs($e->getMessage());
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (mysql) Class Error:'.$e->getMessage());
-                    exit(0);
-                }
-            }else{
-                # 返回查询结构
-                if($_query_type === "select"){
-                    # 回写select查询条数
-                    $this->_Row_Count = $_statement->rowCount();
-                    if($this->_Fetch_Type === 'nv')
-                        $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
-                    elseif($this->_Fetch_Type === 'kv')
-                        $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
-                    else
-                        if(isset($_select_count)){
-                            $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
-                        }else{
-                            $_receipt = $_statement->fetchAll();
-                        }
-                }elseif($_query_type === "insert")
-                    $_receipt = $this->_Connect->lastInsertId();
-                else
-                    $_receipt = $_statement->rowCount();
-                # 释放连接
-                $_statement->closeCursor();
-            }
-        }catch(\PDOException $e){
-            $this->_Connect = null;
-            errorLogs($e->getMessage());
-            var_dump(debug_backtrace(0,1));
-            echo("<br />");
-            echo('Origin (mysql) Class Error:'.$e->getMessage());
-            exit(0);
+        if(is_true($this->_Regular_Select_Count, strtolower($query)) === true){
+            $_select_count = null;
+        }elseif(is_true($this->_Regular_Select, strtolower($query)) === true){
+            // 表示为完整的查询语句
+        }elseif(is_true($this->_Regular_from, strtolower($query)) === true){
+            $query = 'select * '.strtolower($query);
         }
+        if(strpos(strtolower($query),"select ") === 0){
+            $_query_type = "select";
+        }elseif(strpos(strtolower($query),"insert into ") === 0){
+            $_query_type = "insert";
+        }else{
+            $_query_type = "change";
+        }
+        # 事务状态
+        if(boolval(Config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
+            $this->_Connect->beginTransaction();
+        # 条件运算结构转义
+        foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+            $query = preg_replace($key, $value, $query);
+        }
+        # 接入执行日志
+        daoLogs(trim($query));
+        # 执行查询搜索
+        $_statement = $this->_Connect->query(trim($query));
+        # 返回查询结构
+        if($_query_type === "select"){
+            # 回写select查询条数
+            $this->_Row_Count = $_statement->rowCount();
+            if($this->_Fetch_Type === 'nv')
+                $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+            elseif($this->_Fetch_Type === 'kv')
+                $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+            else
+                if(isset($_select_count)){
+                    $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
+                }else{
+                    $_receipt = $_statement->fetchAll();
+                }
+        }elseif($_query_type === "insert")
+            $_receipt = $this->_Connect->lastInsertId();
+        else
+            $_receipt = $_statement->rowCount();
+        # 释放连接
+        $_statement->closeCursor();
         return $_receipt;
     }
     /**

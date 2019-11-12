@@ -61,7 +61,7 @@ class Key
     {
         try{
             if($this->_Connect->exists($key)){
-                $this->_Value = $this->_Connect->get($key);
+                $this->_Value = $this->_Connect->del($key);
                 if($this->_Value === "nil")
                     $this->_Value = null;
                 $this->_Connect->delete($key);

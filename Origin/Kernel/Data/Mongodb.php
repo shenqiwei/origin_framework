@@ -98,7 +98,7 @@ class Mongodb
             if (isset($_connect_conf)) {
                 try {
                     # 创建数据库链接地址，端口，应用数据库信息变量
-                    $_mongo_host = $_connect_config[$_i]['DATA_HOST'];
+                    $_mongo_host = $_connect_config['DATA_HOST'];
                     $_mongo_port = intval($_connect_conf['DATA_PORT']) ? intval($_connect_conf["DATA_PORT"]) : 27017;
                     if (!empty($_connect_conf['DATA_USER']) and !is_null($_connect_conf['DATA_USER']))
                         $_mongo_user = trim($_connect_conf['DATA_USER']);
