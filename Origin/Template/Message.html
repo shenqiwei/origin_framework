@@ -14,7 +14,7 @@
             document.getElementById('time').style.color = 'white';
         }
         function redirect(){
-            var url = '{$url}';
+            var url = '<?php echo($_url);?>';
             if(url === '#') window.history.back();
             else location.href = url;
         }
