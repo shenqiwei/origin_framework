@@ -111,4 +111,24 @@ class Output
         include(str_replace('/',DS,ROOT.RING.'Template/Debug.html'));
         return null;
     }
+    /**
+     * @access public
+     * @param string $error_title 异常标题
+     * @param array $error_arr 异常信息数组
+     * @param array $error_file 异常文件描述数组
+     * @return null;
+     * @context 应用服务异常显示模块
+     */
+    function error($error_title,$error_arr,$error_file)
+    {
+        $_error_msg = array(
+            "msg" => "{$error_title} [Error Code:{$error_arr[0]}] {$error_arr[2]}",
+            "file" => "{$error_file[0]["file"]}",
+            "line" => "{$error_file[0]["line"]}",
+            "function" => "{$error_file[0]["function"]}",
+            "class" => "{$error_file[0]["class"]}"
+        );
+        include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
+        return null;
+    }
 }

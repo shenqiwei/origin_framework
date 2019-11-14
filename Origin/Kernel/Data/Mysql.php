@@ -14,6 +14,8 @@
  * @context: IoC Mysql封装类
  */
 namespace Origin\Kernel\Data;
+use Origin\Kernel\Parameter\Output;
+
 /**
  * Mysql操作类
 */
@@ -99,12 +101,19 @@ class Mysql extends Query
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
         daoLogs($_sql);
-        # 执行查询搜索
-        $_statement = $this->_Connect->query($_sql);
-        # 返回查询结构
-        $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
-        # 释放连接
-        $_statement->closeCursor();
+        try{
+            # 执行查询搜索
+            $_statement = $this->_Connect->query($_sql);
+            # 返回查询结构
+            $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
         # 返回数据
         return $_receipt;
     }
@@ -226,19 +235,26 @@ class Mysql extends Query
         # 添加查询头
         $_sql = 'select '.$_sql;
         daoLogs($_sql);
-        # 执行查询搜索
-        $_statement = $this->_Connect->query($_sql);
-        # 回写select查询条数
-        $this->_Row_Count = $_statement->rowCount();
-        # 返回查询结构
-        if($this->_Fetch_Type === 'nv')
-            $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
-        elseif($this->_Fetch_Type === 'kv')
-            $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
-        else
-            $_receipt = $_statement->fetchAll();
-        # 释放连接
-        $_statement->closeCursor();
+        try{
+            # 执行查询搜索
+            $_statement = $this->_Connect->query($_sql);
+            # 回写select查询条数
+            $this->_Row_Count = $_statement->rowCount();
+            # 返回查询结构
+            if($this->_Fetch_Type === 'nv')
+                $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+            elseif($this->_Fetch_Type === 'kv')
+                $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+            else
+                $_receipt = $_statement->fetchAll();
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
         # 返回数据
         return $_receipt;
     }
@@ -276,15 +292,22 @@ class Mysql extends Query
         }
         $_sql .= '('.$_columns.')values('.$_values.')';
         daoLogs($_sql);
-        # 事务状态
-        if(boolval(Config("DATA_USE_TRANSACTION")))
-            $this->_Connect->beginTransaction();
-        # 执行查询搜索
-        $_statement = $this->_Connect->query($_sql);
-        # 返回查询结构
-        $_receipt = $this->_Connect->lastInsertId();
-        # 释放连接
-        $_statement->closeCursor();
+        try{
+            # 事务状态
+            if(boolval(Config("DATA_USE_TRANSACTION")))
+                $this->_Connect->beginTransaction();
+            # 执行查询搜索
+            $_statement = $this->_Connect->query($_sql);
+            # 返回查询结构
+            $_receipt = $this->_Connect->lastInsertId();
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
         # 返回数据
         return $_receipt;
     }
@@ -322,15 +345,22 @@ class Mysql extends Query
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
         daoLogs($_sql);
-        # 事务状态
-        if(boolval(Config("DATA_USE_TRANSACTION")))
-            $this->_Connect->beginTransaction();
-        # 执行查询搜索
-        $_statement = $this->_Connect->query($_sql);
-        # 返回查询结构
-        $_receipt = $_statement->rowCount();
-        # 释放连接
-        $_statement->closeCursor();
+        try{
+            # 事务状态
+            if(boolval(Config("DATA_USE_TRANSACTION")))
+                $this->_Connect->beginTransaction();
+            # 执行查询搜索
+            $_statement = $this->_Connect->query($_sql);
+            # 返回查询结构
+            $_receipt = $_statement->rowCount();
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
         # 返回数据
         return $_receipt;
     }
@@ -350,15 +380,24 @@ class Mysql extends Query
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
         daoLogs($_sql);
-        # 事务状态
-        if(boolval(Config("DATA_USE_TRANSACTION")))
-            $this->_Connect->beginTransaction();
-        # 执行查询搜索
-        $_statement = $this->_Connect->query($_sql);
-        # 返回查询结构
-        $_receipt = $_statement->rowCount();
-        # 释放连接
-        $_statement->closeCursor();
+        try{
+            # 事务状态
+            if(boolval(Config("DATA_USE_TRANSACTION")))
+                $this->_Connect->beginTransaction();
+            # 执行查询搜索
+            $_statement = $this->_Connect->query($_sql);
+            # 返回查询结构
+            $_receipt = $_statement->rowCount();
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
+        # 返回数据
+        return $_receipt;
     }
     /**
      * 自定义语句执行函数
@@ -394,28 +433,35 @@ class Mysql extends Query
         }
         # 接入执行日志
         daoLogs(trim($query));
-        # 执行查询搜索
-        $_statement = $this->_Connect->query(trim($query));
-        # 返回查询结构
-        if($_query_type === "select"){
-            # 回写select查询条数
-            $this->_Row_Count = $_statement->rowCount();
-            if($this->_Fetch_Type === 'nv')
-                $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
-            elseif($this->_Fetch_Type === 'kv')
-                $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+        try{
+            # 执行查询搜索
+            $_statement = $this->_Connect->query(trim($query));
+            # 返回查询结构
+            if($_query_type === "select"){
+                # 回写select查询条数
+                $this->_Row_Count = $_statement->rowCount();
+                if($this->_Fetch_Type === 'nv')
+                    $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+                elseif($this->_Fetch_Type === 'kv')
+                    $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+                else
+                    if(isset($_select_count)){
+                        $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
+                    }else{
+                        $_receipt = $_statement->fetchAll();
+                    }
+            }elseif($_query_type === "insert")
+                $_receipt = $this->_Connect->lastInsertId();
             else
-                if(isset($_select_count)){
-                    $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
-                }else{
-                    $_receipt = $_statement->fetchAll();
-                }
-        }elseif($_query_type === "insert")
-            $_receipt = $this->_Connect->lastInsertId();
-        else
-            $_receipt = $_statement->rowCount();
-        # 释放连接
-        $_statement->closeCursor();
+                $_receipt = $_statement->rowCount();
+            # 释放连接
+            $_statement->closeCursor();
+        }catch(\PDOException $e){
+            errorLogs($e->getMessage());
+            $_output = new Output();
+            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exit();
+        }
         return $_receipt;
     }
     /**
