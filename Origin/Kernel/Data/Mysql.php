@@ -38,7 +38,7 @@ class Mysql extends Query
             for($_i = 0;$_i < count($_connect_config);$_i++){
                 if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql"
                     and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                    $_connect_conf = $_connect_config[$_i];
+                    $_connect_config = $_connect_config[$_i];
                     break;
                 }
             }
