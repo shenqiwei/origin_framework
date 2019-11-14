@@ -1,11 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 2017/1/16
- * Time: 18:00
+ * @context （Default Visit） Application controller file
  */
-
 namespace Apply\Home\Controller;
 
 use Origin\Application\Controller;
