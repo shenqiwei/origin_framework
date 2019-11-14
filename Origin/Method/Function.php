@@ -25,6 +25,7 @@ include("Common/Session.php");
 include("Common/Cookie.php");
 # 应用公共函数文件
 include("Common/Log.php"); # 引用日志函数包
+include("Common/Debug.php");
 include("Common/Public.php"); # 文件操作函数包
 # 动态加载文件
 include("Common/Entrance.php"); # 引入入口文件包

@@ -114,7 +114,7 @@ function Entrance()
                 try {
                     throw new Exception('Origin Method Error: Not Fount Control Document');
                 }catch(Exception $e){
-                    echo($e->getMessage());
+                    notLoad(str_replace('/', DS, "Apply/{$_path}.php"),$e->getMessage(),"File");
                     exit(0);
                 }
             }
@@ -129,7 +129,7 @@ function Entrance()
                 try {
                     throw new Exception('Origin Method Error: Not Fount Control Class');
                 }catch(Exception $e){
-                    echo($e->getMessage());
+                    notLoad("{$_class}",$e->getMessage(),"Class");
                     exit(0);
                 }
             }
@@ -150,7 +150,7 @@ function Entrance()
                 try {
                     throw new Exception('Origin Method Error: Not Fount Function Object');
                 }catch(Exception $e){
-                    echo($e->getMessage());
+                    notLoad("{$_method}{}",$e->getMessage(),"Function");
                     exit(0);
                 }
             }
