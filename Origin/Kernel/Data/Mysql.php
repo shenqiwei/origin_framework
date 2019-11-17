@@ -1,16 +1,8 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Kernel.Data.Mysql *
- * version: 1.0 *
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @since 0.1
- * @copyright 2015-2017
+ * @version 1.0.1
+ * @copyright 2015-2019
  * @context: IoC Mysql封装类
  */
 namespace Origin\Kernel\Data;
@@ -40,11 +32,11 @@ class Mysql extends Query
             for($_i = 0;$_i < count($_connect_config);$_i++){
                 if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql"
                     and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                    $_connect_config = $_connect_config[$_i];
+                    $_connect_conf = $_connect_config[$_i];
                     break;
                 }
             }
-            if(!isset($_connect_config)){
+            if(!isset($_connect_conf)){
                 for($_i = 0; $_i < count($_connect_config); $_i++){
                     if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql")
                         or !key_exists("DATA_TYPE",$_connect_config[$_i])){
@@ -52,6 +44,8 @@ class Mysql extends Query
                         break;
                     }
                 }
+            }else{
+                $_connect_config = $_connect_conf;
             }
             # 创建数据库链接地址，端口，应用数据库信息变量
             $_DSN = 'mysql:host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];

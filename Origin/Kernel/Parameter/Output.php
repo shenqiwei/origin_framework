@@ -1,16 +1,8 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Kernel.Parameter.Output *
- * version: 1.0 *
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @since 0.1
- * @copyright 2015-2018
+ * @version 1.0
+ * @copyright 2015-2019
  * @context: IoC 模板管理
  */
 namespace Origin\Kernel\Parameter;

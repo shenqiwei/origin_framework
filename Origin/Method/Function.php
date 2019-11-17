@@ -1,16 +1,8 @@
 <?php
 /**
- *  coding: utf-8  * 
- *  system OS: windows2008  * 
- *  work Tools:Phpstorm  * 
- *  language Ver: php7.1  * 
- *  agreement: PSR-1 to PSR-11  * 
- *  filename: IoC.Origin.Function.function * 
- *  version: 0.1 * 
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @since 0.1
- * @copyright 2015-2017
+ * @version 0.5
+ * @copyright 2015-2019
  */
 # 初试公共函数包
 include("Common/Common.php");

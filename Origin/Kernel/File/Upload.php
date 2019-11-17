@@ -1,15 +1,7 @@
 <?php
 /**
- * coding: utf-8 *
- * system OS: windows2008 *
- * work Tools:Phpstorm *
- * language Ver: php7.1 *
- * agreement: PSR-1 to PSR-11 *
- * filename: IoC.Origin.Kernel.File.File *
- * version: 1.0 *
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 0.1
- * @since 0.1
  * @copyright 2015-2017
  * @context: IoC 上传模块封装
  */
