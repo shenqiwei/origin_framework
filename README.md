@@ -3,25 +3,19 @@ Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应�
 
 ![欢迎页](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/welcome.png)
 ## 基本说明：
-1) Origin使用PHP7.1-7.3版本语言进行开发,但是勉强可以支持到5.4版本
+1) Origin使用PHP7.1-7.4版本语言进行开发,可勉强可以支持到5.4版本（1.0后部分语法进行7+，5+的双结构开发，增加框架对语言结构的支持力度）
 
-2) Origin使用单一入口方式进行应用访问
+2) Origin使用单一入口方式进行应用访问（1.0版本后，自动加载结构，不再使用预设注册包的方式来进行包加载，而是使用命名空间限定来加载包内容）
 
-3) Origin使用子命名规则进行文件类型分类 （class） Controller 控制器文件、（func）function 函数文件、（cfg）configuration 配置文件
+3) Origin使用子命名规则进行文件类型分类 （class） Controller 控制器文件、（func）function 函数文件、（cfg）configuration 配置文件（1.0版本后修改自动加载，文件区分不再注明，错误调用由底层支持显示异常信息项，关闭debug后则不显示）
 
-4) Origin使用面向过程来实现一般开发需求调用，深度开发则使用面向对象
+4) Origin使用面向过程来实现一般开发需求调用，深度开发则使用面向对象（1.0版本后功能的调用趋向面向对象）
 
-5) Origin使用基础单词命名方式封装低效方法集合，标准调用函数则使用完整名词描述进行方法表述
+5) Origin使用基础单词命名方式封装低效方法集合，标准调用函数则使用完整名词描述进行方法表述（1.0版本后，部分函数内容删除，结构语法进行了优化）
 
-6) Origin中重新定义了set、get结构，使用方法整合在plan_b封装中，有mapping映射结构来是实现其主要功能特性
+6) Origin中重新定义了set、get结构，使用方法整合在plan_b(已暂停更新)封装中，有mapping映射结构来是实现其主要功能特性（该功能已废止），1.0版本后Origin增加了request请求结构的准入模板模块进行预验证
 
-7) Origin主要版本只支持mysql数据库，plan_b则增加了mongodb、redis数据库的支持
-
-8) Origin第一个文件从2016年4月开始编写，历时6个月7天才编写出来
-
-9) Origin第一个开发版于2017年9月在（金融）公司内部发布（由于保密协议要求不便标注公司名称）
-
-10) Origin plan_b版本发布于2018年5月，其版本主要为实现2人进行复杂系统开发目的进行的工具化衍生开发（实际项目仍在应用，整体消耗170万元RMB），plan_b部分功能已从Origin中删除归属公司内部版权所有
+7) Origin主要版本支持mysql数据库，1.0版本后部分支持mongodb，redis，mssql（开发中）功能
 
 ## 目录说明：
 > Root
@@ -46,9 +40,9 @@ Kernel框架功能内核目录
 Method框架方法封装目录
 
 >>Resource：资源目录  （HTML资源常量：\_\_RESOURCE__）
->>>Jscript：Javascript文件目录（预设）  
-Media：多媒体文件目录（预设）  
-Style：样式文件目录（预设）  
+>>>Jscript：Javascript文件目录（已取消该结构预设）  
+Media：多媒体文件目录（已取消该结构预设）  
+Style：样式文件目录（已取消该结构预设）  
 `注：原始结构常量中取消该文件夹模板常量标记解析功能`
 
 >>.htaccess：分布式配置文件  
