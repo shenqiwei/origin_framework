@@ -13,7 +13,7 @@ function Common($guide)
 {
     $_receipt = null;
     if(strpos($guide,':')){
-        $_url = str_replace(DS,':',str_replace('/', DS, "Apply/")).$guide;
+        $_url = str_replace(DS,':',str_replace('/', DS, "Application/")).$guide;
         $_obj = explode(':', $guide);
         $_receipt = Loading($_url,'.php');
     }

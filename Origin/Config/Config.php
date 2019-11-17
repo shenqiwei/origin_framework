@@ -7,20 +7,20 @@
  */
 return array(
     // 默认访问文件根目录
-    'DEFAULT_APPLICATION' => 'Home/',
-    // 应用目录
-    'APPLICATION_BUFFER' => 'Buffer/', // 缓存文件目录（可以在配置文件中设置是否使用缓存）
-    'APPLICATION_METHOD' => 'Common/', // 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用
-    'APPLICATION_FUNCTION' => 'Common/', // 公共方法文件目录，系统公共方法公共调用文件存储位置
-    'APPLICATION_CONFIG' => 'Config/', // 开发者或用户自定义或改写系统配置文件存储位置
-    'APPLICATION_CONTROLLER' => 'Controller/', // 执行程序文件目录
-    'APPLICATION_MODEL' => 'Model/', // 数据操作语句文件目录
-    'APPLICATION_VIEW' => 'View/', // 模板（Template）文件目录
+    'DEFAULT_APPLICATION' => 'Home',
+    // 应用目录 (1.0版本后逐步消除配置文件夹对框架内容的影响)
+    'APPLICATION_METHOD' => 'Common', // 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用
+    'APPLICATION_FUNCTION' => 'Common', // 公共方法文件目录，系统公共方法公共调用文件存储位置
+    'APPLICATION_CONFIG' => 'Config', // 开发者或用户自定义或改写系统配置文件存储位置
+    'APPLICATION_CONTROLLER' => 'Controller', // 执行程序文件目录
+    'APPLICATION_MODEL' => 'Model', // 数据操作语句文件目录
+    'APPLICATION_VIEW' => 'View', // 模板（Template）文件目录
     // 资源目录
-    'ROOT_RESOURCE' => 'Resource/', // 资源主目录
-    //web结构下应用
-    'ROOT_RESOURCE_PUBLIC' => 'Public', //公共文件目录
-    'ROOT_RESOURCE_UPLOAD' => 'Upload', //上传目录
+    'ROOT_RESOURCE' => 'Resource', // 资源主目录
+    //资源结构下目录(1.0版本后，配置内容不再影响框架使用)
+    'ROOT_RESOURCE_PUBLIC' => 'Public', // 公共文件目录
+    'ROOT_RESOURCE_UPLOAD' => 'Upload', // 上传目录
+    'ROOT_RESOURCE_BUFFER' => 'Buffer', // 缓存文件目录
     // 日志主目录
     'ROOT_LOG' => 'Logs/',
     // 日志目录

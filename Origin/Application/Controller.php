@@ -50,7 +50,7 @@ class Controller
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
-                throw new \Exception('Origin Apply Error: Variable name contains non legal symbols');
+                throw new \Exception('Origin Application Error: Variable name contains non legal symbols');
             }catch(\Exception $e){
                 echo($e->getMessage());
                 exit();
@@ -73,9 +73,9 @@ class Controller
             $_page = Config('DEFAULT_VIEW');
         }
         $_dir = str_replace('Controller', '',
-            str_replace(Config('APPLICATION_CONTROLLER'), '',
-                str_replace(Config('DEFAULT_APPLICATION'), '',
-                    str_replace('Apply/', '',
+            str_replace(Config('APPLICATION_CONTROLLER')."/", '',
+                str_replace(Config('DEFAULT_APPLICATION')."/", '',
+                    str_replace('Application/', '',
                         str_replace('\\', '/', self::$_Name_Class)))));
         if(!is_null($this->get_function())){
             $_page = $this->get_function();

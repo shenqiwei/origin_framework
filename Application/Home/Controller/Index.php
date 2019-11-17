@@ -2,7 +2,7 @@
 /**
  * @context （Default Visit） Application controller file
  */
-namespace Apply\Home\Controller;
+namespace Application\Home\Controller;
 
 use Origin\Application\Controller;
 

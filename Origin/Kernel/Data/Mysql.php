@@ -6,6 +6,7 @@
  * @context: IoC Mysql封装类
  */
 namespace Origin\Kernel\Data;
+
 use Origin\Kernel\Parameter\Output;
 
 /**

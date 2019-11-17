@@ -137,7 +137,7 @@ function Route($route){
     # 创建返回变量
     $_receipt = implode('/', $_path);
     # 创建路由文件目录变量
-    $_files = str_replace('/', DS, ROOT."Apply/".Configuration('ROUTE_CATALOGUE'));
+    $_files = str_replace('/', DS, ROOT."Application/".Configuration('ROUTE_CATALOGUE'));
     # 判断文件是否存在
     if(is_dir($_files)){
         # 判断路由文件是否存在

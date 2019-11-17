@@ -4,10 +4,11 @@
  * @version 0.5
  * @copyright 2015-2019
  */
-# 初试公共函数包
+# 初始公共函数包
 include("Common/Common.php");
 include("Common/Loading.php");
 include("Common/Config.php");
+include("Common/initialize.php");
 # 基础操作方法包应用
 include("Common/File.php");
 include("Common/Request.php");
@@ -22,7 +23,7 @@ include("Common/Public.php"); # 文件操作函数包
 # 动态加载文件
 include("Common/Entrance.php"); # 引入入口文件包
 # 应用结构包调用
-include(ROOT."Apply/Common/Public.php");
+include(ROOT."Application/Common/Public.php");
 # 框架柱目录文件路径
 if(!defined("RING")) define("RING", "Origin".DS);
 # 创建基础常量

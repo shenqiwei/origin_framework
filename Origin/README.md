@@ -112,17 +112,17 @@ __html()__：
 #### Config配置项说明
 <span id='config_dir'></span>
 __目录配置：[[返回](#config)]__  
->`DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home/`
-`APPLICATION_BUFFER` 缓存文件目录（可以在配置文件中设置是否使用缓存）默认值：`Buffer/`  
-`APPLICATION_METHOD` 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用 默认值：`Common/`  
-`APPLICATION_FUNCTION` 公共方法文件目录，系统公共方法公共调用文件存储位置 默认值：`Common/`  
-`APPLICATION_CONFIG` 开发者或用户自定义或改写系统配置文件存储位置 默认值：`Config/`  
-`APPLICATION_CONTROLLER` 执行程序文件目录 默认值：`Controller/`  
-`APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model/`  
-`APPLICATION_VIEW` 模板（Template）文件目录 默认值：`View/`  
+>`DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home`   
+`APPLICATION_METHOD` 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用 默认值：`Common`(1.0后配置不再影响框架内容)    
+`APPLICATION_FUNCTION` 公共方法文件目录，系统公共方法公共调用文件存储位置 默认值：`Common`(1.0后配置不再影响框架内容)    
+`APPLICATION_CONFIG` 开发者或用户自定义或改写系统配置文件存储位置 默认值：`Config`(1.0后配置不再影响框架内容)    
+`APPLICATION_CONTROLLER` 执行程序文件目录 默认值：`Controller`  
+`APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model`  
+`APPLICATION_VIEW` 模板（Template）文件目录 默认值：`View`  
 `ROOT_RESOURCE` 资源主目录 默认值：`Resource`   
-`ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`  
-`ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`  
+`ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`(1.0后配置不再影响框架内容)  
+`ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`(1.0后配置不再影响框架内容)  
+>`ROOT_RESOURCE_BUFFER` 缓存目录 默认值：`Buffer`(1.0后配置不再影响框架内容)   
 `ROOT_LOG` 日志主目录 默认值：`Logs/`  
 `LOG_ACCESS` 服务请求链接日志 默认值：`Access/`  
 `LOG_CONNECT` 数据库连接日志 默认值：`Connect/`   

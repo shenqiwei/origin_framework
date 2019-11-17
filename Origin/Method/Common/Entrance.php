@@ -20,7 +20,7 @@ function Entrance()
     # 判断自动加载方法
     if(function_exists('spl_autoload_register')){
         # 设置基础控制器参数变量
-        $_catalogue = Config('DEFAULT_APPLICATION');
+        $_catalogue = Config('DEFAULT_APPLICATION')."/";
         # 默认控制器文件名
         $_files = Config('DEFAULT_CONTROLLER');
         # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
@@ -67,9 +67,9 @@ function Entrance()
                 $_path_array = explode('/',$_path);
                 # 判断首元素结构是否与默认应用目录相同
                 if(empty($_path_array) and $_path_array[0] != '0' or
-                    ucfirst($_path_array[$_i]).'/' == Config('DEFAULT_APPLICATION')  or
-                    (ucfirst($_path_array[$_i]).'/' != Config('DEFAULT_APPLICATION') and
-                        is_dir(str_replace('/', DS, ROOT."Apply/".ucfirst($_path_array[0]))))) {
+                    ucfirst($_path_array[$_i]) == Config('DEFAULT_APPLICATION')  or
+                    (ucfirst($_path_array[$_i]) != Config('DEFAULT_APPLICATION') and
+                        is_dir(str_replace('/', DS, ROOT."Application/".ucfirst($_path_array[0]))))) {
                     # 变更应用文件夹位置
                     $_catalogue = ucfirst($_path_array[$_i]) . DS;
                     # 指针下移
@@ -88,15 +88,15 @@ function Entrance()
                 }
             }
             # 公共方法包引导地址
-            $_func_guide = str_replace(DS, ':', str_replace('/', DS, "Apply/{$_catalogue}Common/Public"));
+            $_func_guide = str_replace(DS, ':', str_replace('/', DS, "Application/{$_catalogue}Common/Public"));
             # 使用钩子模型引入方法文件
             Loading($_func_guide,'.php','disable');
             # 根据配置信息拼接控制器路径
-            $_path = $_catalogue.Config('APPLICATION_CONTROLLER').ucfirst($_files);
+            $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
             # 设置引导地址
             set_include_path(ROOT);
             # 判断文件是否存在
-            if(is_file(str_replace('/', DS, "Apply/{$_path}.php"))){
+            if(is_file(str_replace('/', DS, "Application/{$_path}.php"))){
                 # 使用预注册加载函数，实现自动化加载
                 # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
                 spl_autoload_register(function($_path){
@@ -106,13 +106,13 @@ function Entrance()
                 try {
                     throw new Exception('Origin Method Error: Not Fount Control Document');
                 }catch(Exception $e){
-                    notLoad(str_replace('/', DS, "Apply/{$_path}.php"),$e->getMessage(),"File");
+                    notLoad(str_replace('/', DS, "Application/{$_path}.php"),$e->getMessage(),"File");
                     exit(0);
                 }
             }
             accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
             # 创建class完整信息变量
-            $_class = str_replace('/', '\\',"\\Apply".DS.$_path);
+            $_class = str_replace('/', '\\',"\\Application".DS.$_path);
             # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
             if(class_exists($_class)){
                 # 声明类对象
