@@ -6,6 +6,9 @@
  * @context: IoC 公共控制器
  */
 namespace Origin\Application;
+
+use Origin\Kernel\Parameter\Output;
+
 /**
  * 功能控制器，负责内核功能方法的预加载调用
 */
@@ -50,9 +53,11 @@ class Controller
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
-                throw new \Exception('Origin Application Error: Variable name contains non legal symbols');
+                throw new \Exception('Variable name contains non legal symbols');
             }catch(\Exception $e){
-                echo($e->getMessage());
+                errorLogs($e->getMessage());
+                $_output = new Output();
+                $_output->exception("Param Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }

@@ -74,7 +74,7 @@ class View
                     }else{
                         # 异常提示：该对象模板不存在
                         try{
-                            throw new \Exception('Origin Class Error: The object template '.$_page.' does not exist');
+                            throw new \Exception('The object template '.$_page.' does not exist');
                         }catch(\Exception $e){
                             errorLogs($e->getMessage());
                             $_output = new Output();
@@ -85,7 +85,7 @@ class View
                 }else{
                     # 异常提示：该对象模板不存在
                     try{
-                        throw new \Exception('Origin Class Error: The object template dir '.$_url_view.$this->_Dir.' does not exist');
+                        throw new \Exception('The object template dir '.$_url_view.$this->_Dir.' does not exist');
                     }catch(\Exception $e){
                         errorLogs($e->getMessage());
                         $_output = new Output();
@@ -96,7 +96,7 @@ class View
             }else{
                 # 异常提示：请在当前路径下创建view文件夹
                 try{
-                    throw new \Exception('Origin Class Error: Please create the (view) folder under the current path:'.$_url);
+                    throw new \Exception('Please create the (view) folder under the current path:'.$_url);
                 }catch(\Exception $e){
                     errorLogs($e->getMessage());
                     $_output = new Output();
@@ -107,7 +107,7 @@ class View
         }else{
             # 异常提示：主文件夹地址不存在
             try{
-                throw new \Exception('Origin Class Error: The folder address '.$_url.' does not exist');
+                throw new \Exception('The folder address '.$_url.' does not exist');
             }catch(\Exception $e){
                 errorLogs($e->getMessage());
                 $_output = new Output();
