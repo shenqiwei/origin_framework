@@ -69,7 +69,7 @@ class View
                     # 调用模板
                     $_page = $_url_view.$this->_Dir.DS.$this->_Page.'.html';
                     if(is_file($_page)){
-                        $_label = new \Origin\Kernel\Mark\Label($_page, $param);
+                        $_label = new Label($_page, $param);
                         echo($_label->execute());
                     }else{
                         # 异常提示：该对象模板不存在
