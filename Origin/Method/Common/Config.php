@@ -34,48 +34,17 @@ function Config($guide)
         if (strpos($guide, ':')) {
             # 拆分数组
             $_guide = explode(':', $guide);
-            # 引入自定义配置文件
-            $_config = J('Config:' . $_guide[0], 'disabled');
-            # 判断有无返回信息数组
-            if (!$_config) {
-                for ($i = 1; $i < count($_guide); $i++) {
-                    if (is_array($_guide[$i])) {
-                        $_guide = $_guide[$i];
+            # 调取公共配置信息
+            $_config = Common('Config:Config');
+            # 判断返回信息
+            if ($_config) {
+                # 引导信息数组，并对数据内容进行匹配
+                for ($i = 0; $i < count($_guide); $i++) {
+                    if (is_array($_config[$_guide[$i]])) {
+                        $_guide = $_config[$_guide[$i]];
                     } else {
-                        $_receipt = $_guide[$i];
+                        $_receipt = $_config[$_guide[$i]];
                         break;
-                    }
-                }
-            }
-            if (is_null($_receipt)) {
-                # 使用钩子函数调用公共配置文件
-                $_config = J('Config:Config', 'disabled');
-                # 判断返回信息
-                if ($_config) {
-                    # 引导信息数组，并对数据内容进行匹配
-                    for ($i = 0; $i < count($_guide); $i++) {
-                        if (is_array($_config[$_guide[$i]])) {
-                            $_guide = $_config[$_guide[$i]];
-                        } else {
-                            $_receipt = $_config[$_guide[$i]];
-                            break;
-                        }
-                    }
-                }
-            }
-            if (is_null($_receipt)) {
-                # 调取公共配置信息
-                $_config = Common('Config:Config');
-                # 判断返回信息
-                if ($_config) {
-                    # 引导信息数组，并对数据内容进行匹配
-                    for ($i = 0; $i < count($_guide); $i++) {
-                        if (is_array($_config[$_guide[$i]])) {
-                            $_guide = $_config[$_guide[$i]];
-                        } else {
-                            $_receipt = $_config[$_guide[$i]];
-                            break;
-                        }
                     }
                 }
             }
@@ -91,19 +60,13 @@ function Config($guide)
                 }
             }
         } else {
-            # 调用默认配置文件信息
-            $_config = J('Config:Config', 'disabled');
+            # 调取公共配置信息
+            $_config = Common('Config:Config');
             if ($_config[$guide]) {
                 $_receipt = $_config[$guide];
             } else {
-                # 调取公共配置信息
-                $_config = Common('Config:Config');
-                if ($_config[$guide]) {
-                    $_receipt = $_config[$guide];
-                } else {
-                    # 调取主配置信息
-                    $_receipt = Configuration($guide);
-                }
+                # 调取主配置信息
+                $_receipt = Configuration($guide);
             }
         }
     }
