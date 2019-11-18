@@ -11,6 +11,8 @@
 namespace Origin\Kernel\Mark;
 # 调用标记接口
 use Origin\Kernel\Mark\Impl\Label as Impl;
+use Origin\Kernel\Parameter\Output;
+
 # 调用files控制类
 
 /**
@@ -121,7 +123,9 @@ class Origin implements Impl
                     # 模板if else标签结构不完整
                     throw new \Exception('View File:' . $this->_Obj . ',Structure of label <if else> is not complete');
                 } catch (\Exception $e) {
-                    echo($e->getMessage());
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -130,7 +134,9 @@ class Origin implements Impl
                     # 模板for标签结构不完整
                     throw new \Exception('View File:' . $this->_Obj . ',Structure of label <for> is not complete');
                 } catch (\Exception $e) {
-                    echo($e->getMessage());
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -139,7 +145,9 @@ class Origin implements Impl
                     # 模板foreach标签结构不完整
                     throw new \Exception('View File:' . $this->_Obj . ',Structure of label <foreach> is not complete');
                 } catch (\Exception $e) {
-                    echo($e->getMessage());
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }

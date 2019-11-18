@@ -86,13 +86,13 @@ __json()__：
 
 <span id='func_11'></span>
 __xml()__：
-> xml格式转化并执行输出函数  
+> xml格式转化并执行输出函数 (该方法已取消)  
 >>`$this->xml($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出    
 >>> `header("Content-Type:text/xml;charset=utf-8");`XML输出的文件格式  
 
 <span id='func_12'></span>
 __html()__：
-> html格式转化并执行输出函数
+> html格式转化并执行输出函数 (该方法已取消)
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
 

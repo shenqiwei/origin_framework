@@ -22,51 +22,6 @@ class Output
     }
     /**
      * @access public
-     * @param array $array 数据
-     * @context xml内容输出
-     */
-    static function xml($array=null)
-    {
-        if(is_array($array)){
-            $_xml = "<xml>";
-            foreach ($array as $_key => $_val) {
-                if (is_numeric($_val)) {
-                    $_xml .= "<" . $_key . ">" . $_val . "</" . $_key . ">";
-                } else
-                    $_xml .= "<" . $_key . "><![CDATA[" . $_val . "]]></" . $_key . ">";
-            }
-            $_xml .= "</xml>";
-            $array = $_xml;
-        }
-        header("Content-Type:text/xml;charset=utf-8");
-        echo($array);
-    }
-    /**
-     * @access public
-     * @param string $head
-     * @param string $body 数据
-     * @context html内容输出
-     */
-    static function html($head=null,$body=null)
-    {
-        if(!is_null($body)){
-            $_html = "<!DOCTYPE html><html lang=\"en\">";
-            if(!is_null($head)){
-                $_html .= "<head><meta charset=\"UTF-8\">".$head."</head>";
-            }else{
-                $_html .= "<head><meta charset=\"UTF-8\"><title>Origin Page</title></head>";
-            }
-            $_html .= "<body>";
-            $_html .= $_html;
-            $_html .= "</body></html>";
-        }else{
-            $_html = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Origin Page</title></head><body>空白模板</body></html>";
-        }
-        header("Content-Type:text/html;charset=utf-8");
-        echo($_html);
-    }
-    /**
-     * @access public
      * @param int $time 倒计时时间
      * @param string $message 提示信息
      * @param string $url 跳转地址
@@ -115,6 +70,26 @@ class Output
     {
         $_error_msg = array(
             "msg" => "{$error_title} [Error Code:{$error_arr[0]}] {$error_arr[2]}",
+            "file" => "{$error_file[0]["file"]}",
+            "line" => "{$error_file[0]["line"]}",
+            "function" => "{$error_file[0]["function"]}",
+            "class" => "{$error_file[0]["class"]}"
+        );
+        include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
+        return null;
+    }
+    /**
+     * @access public
+     * @param string $error_title 异常标题
+     * @param string $error_msg 异常信息数组
+     * @param array $error_file 异常文件描述数组
+     * @return null;
+     * @context 应用异常显示模块
+     */
+    function exception($error_title,$error_msg,$error_file)
+    {
+        $_error_msg = array(
+            "msg" => "{$error_title} [Error Code:0000-0] {$error_msg}",
             "file" => "{$error_file[0]["file"]}",
             "line" => "{$error_file[0]["line"]}",
             "function" => "{$error_file[0]["function"]}",

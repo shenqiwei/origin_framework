@@ -6,6 +6,9 @@
  * @context: IoC 变量过滤封装类
  */
 namespace Origin\Kernel\Graph;
+
+use Origin\Kernel\Parameter\Output;
+
 /**
  * 模板调度类
  */
@@ -73,19 +76,31 @@ class View
                         try{
                             throw new \Exception('Origin Class Error: The object template '.$_page.' does not exist');
                         }catch(\Exception $e){
-                            echo($e->getMessage());
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }
                 }else{
-                    //这里不做异常处理，下一个版本将引入控制器及空函数导向
+                    # 异常提示：该对象模板不存在
+                    try{
+                        throw new \Exception('Origin Class Error: The object template dir '.$_url_view.$this->_Dir.' does not exist');
+                    }catch(\Exception $e){
+                        errorLogs($e->getMessage());
+                        $_output = new Output();
+                        $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
+                    }
                 }
             }else{
                 # 异常提示：请在当前路径下创建view文件夹
                 try{
                     throw new \Exception('Origin Class Error: Please create the (view) folder under the current path:'.$_url);
                 }catch(\Exception $e){
-                    echo($e->getMessage());
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -94,7 +109,9 @@ class View
             try{
                 throw new \Exception('Origin Class Error: The folder address '.$_url.' does not exist');
             }catch(\Exception $e){
-                echo($e->getMessage());
+                errorLogs($e->getMessage());
+                $_output = new Output();
+                $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }

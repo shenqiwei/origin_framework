@@ -143,25 +143,4 @@ class Controller
         \Origin\Kernel\Parameter\Output::json($array);
         return null;
     }
-    /**
-     * @access public
-     * @param array $array
-     * @return null
-     */
-    protected function xml($array=null)
-    {
-        \Origin\Kernel\Parameter\Output::xml($array);
-        return null;
-    }
-    /**
-     * @access public
-     * @param string $head
-     * @param string $body
-     * @return null
-    */
-    protected function html($head=null,$body=null)
-    {
-        \Origin\Kernel\Parameter\Output::html($head,$body);
-        return null;
-    }
 }

@@ -7,6 +7,8 @@
  */
 namespace Origin\Kernel\File;
 
+use Origin\Kernel\Parameter\Output;
+
 class File
 {
     /**
@@ -72,9 +74,10 @@ class File
                 try{
                     throw new \Exception('Files guide is invalid!');
                 }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
@@ -135,9 +138,10 @@ class File
                 try{
                     throw new \Exception('Files guide is invalid!');
                 }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
@@ -175,9 +179,10 @@ class File
                                     try{
                                         throw new \Exception('Create folder[' . $_guide[$_i] . '] failed');
                                     }catch(\Exception $e){
-                                        echo("<br />");
-                                        echo('Directory Error:'.$e->getMessage());
-                                        exit(0);
+                                        errorLogs($e->getMessage());
+                                        $_output = new Output();
+                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                        exit();
                                     }
                                 }
                             } else {
@@ -187,18 +192,20 @@ class File
                                     try{
                                         throw new \Exception('Create folder[' . $_guide[$_i] . '] failed');
                                     }catch(\Exception $e){
-                                        echo("<br />");
-                                        echo('Directory Error:'.$e->getMessage());
-                                        exit(0);
+                                        errorLogs($e->getMessage());
+                                        $_output = new Output();
+                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                        exit();
                                     }
                                 }
                             }
 
                         } catch (\Exception $e) {
                             # 错误代码：00500，错误信息：程序显示错误信息
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                     } else {
                         continue;
@@ -230,9 +237,10 @@ class File
                             try{
                                 throw new \Exception('Files[' . $this->_Guide . '] rename failed');
                             }catch(\Exception $e){
-                                echo("<br />");
-                                echo('Directory Error:'.$e->getMessage());
-                                exit(0);
+                                errorLogs($e->getMessage());
+                                $_output = new Output();
+                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                exit();
                             }
                         }
                         break;
@@ -244,9 +252,10 @@ class File
                                     try{
                                         throw new \Exception( 'Remove file[' . $this->_Guide . '] failed');
                                     }catch(\Exception $e){
-                                        echo("<br />");
-                                        echo('Directory Error:'.$e->getMessage());
-                                        exit(0);
+                                        errorLogs($e->getMessage());
+                                        $_output = new Output();
+                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                        exit();
                                     }
                                 }
                             } else {
@@ -254,16 +263,18 @@ class File
                                     try{
                                         throw new \Exception( 'Remove folder[' . $this->_Guide . '] failed');
                                     }catch(\Exception $e){
-                                        echo("<br />");
-                                        echo('Directory Error:'.$e->getMessage());
-                                        exit(0);
+                                        errorLogs($e->getMessage());
+                                        $_output = new Output();
+                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                        exit();
                                     }
                                 }
                             }
                         } catch (\Exception $e) {
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                         break;
                     default:
@@ -271,9 +282,10 @@ class File
                         try{
                             throw new \Exception('Folder has been created');
                         }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                         break;
                 }
@@ -314,9 +326,10 @@ class File
                 try{
                     throw new \Exception('Files guide is invalid!');
                 }catch(\Exception $e){
-                    echo("<br />");
-                    echo('Directory Error:'.$e->getMessage());
-                    exit(0);
+                    errorLogs($e->getMessage());
+                    $_output = new Output();
+                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
@@ -332,9 +345,10 @@ class File
                     try{
                         throw new \Exception('Not Found Object File ' . $_resource);
                     }catch(\Exception $e){
-                        echo("<br />");
-                        echo('Directory Error:'.$e->getMessage());
-                        exit(0);
+                        errorLogs($e->getMessage());
+                        $_output = new Output();
+                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
                     }
                 }
             }
@@ -356,12 +370,6 @@ class File
                     }
                     break;
                 case 'lw': # 写入
-                    $_write = fopen($this->_Dir, 'w+');
-                    if ($_write) {
-                        fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
                 case 'cw': # 写入
                     $_write = fopen($this->_Dir, 'w+');
                     if ($_write) {
@@ -389,9 +397,10 @@ class File
                         try{
                             throw new \Exception('File read failed!');
                         }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                     }
                     break;
@@ -401,9 +410,10 @@ class File
                         try{
                             throw new \Exception('File write failed!');
                         }catch(\Exception $e){
-                            echo("<br />");
-                            echo('Directory Error:'.$e->getMessage());
-                            exit(0);
+                            errorLogs($e->getMessage());
+                            $_output = new Output();
+                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                     }
                     break;

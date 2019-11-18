@@ -38,19 +38,6 @@ function Rule($param)
     return $_receipt;
 }
 /**
- * 公共信息处理函数
- * @access public
- * @param $model
- * @param $message
- * @param $url
- * @param $time
- * @return null
- */
-function message($model, $message='this is a message',$url='#',$time=5)
-{
-
-}
-/**
  * 文件及导向结构规则函数
  * @param string $uri
  * @return boolean
