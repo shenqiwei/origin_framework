@@ -113,7 +113,7 @@ class Controller
      * @param $time
      * @return null
     */
-    protected function success($message='success',$url='#',$time=5)
+    protected function success($message='success',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
         \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
@@ -127,7 +127,7 @@ class Controller
      * @param $time
      * @return null
     */
-    protected function error($message='error',$url='#',$time=5)
+    protected function error($message='error',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
         \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
