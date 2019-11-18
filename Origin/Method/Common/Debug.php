@@ -9,6 +9,6 @@
  */
 function notLoad($obj,$error,$type)
 {
-    include(str_replace('/',DS,ROOT.RING.'Template/Entrance.html'));
+    include(str_replace('/',DS,ROOT.RING.'Template/Load.html'));
     return null;
 }

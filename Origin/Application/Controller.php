@@ -115,7 +115,7 @@ class Controller
     */
     protected function success($message='success',$url='#',$time=5)
     {
-        $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000");
+        $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
         \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
         return null;
     }
@@ -129,7 +129,7 @@ class Controller
     */
     protected function error($message='error',$url='#',$time=5)
     {
-        $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite");
+        $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
         \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
         return null;
     }
