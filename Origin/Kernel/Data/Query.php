@@ -101,6 +101,8 @@ abstract class Query
      */
     function join($join_table,$join_field,$major_field,$join_table_as=null)
     {
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
             # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
@@ -161,6 +163,8 @@ abstract class Query
      */
     function iJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
             # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
@@ -221,6 +225,8 @@ abstract class Query
      */
     function lJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
             # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
@@ -281,6 +287,8 @@ abstract class Query
      */
     function rJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
             # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
@@ -365,7 +373,8 @@ abstract class Query
      */
     function total($field)
     {
-        $this->_Total = null;
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_Total = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
@@ -396,7 +405,8 @@ abstract class Query
      */
     function field($field)
     {
-        $this->_Field = null;
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_Field = null;
         /**
          * 进行传入值结构判断，如果传入值为数组并且数组元素总数大于0
          * @var int $i; 计数变量
@@ -581,7 +591,8 @@ abstract class Query
      */
     function where($field=null)
     {
-        $this->_Where = null;
+        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
+            $this->_Where = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
