@@ -21,9 +21,11 @@ function Filter($value, $type='string', $default=null){
     }else{
         # 异常提示：参数值无效
         try{
-            throw new Exception('Origin Method Error: The parameter value is invalid');
+            throw new Exception('The parameter value is invalid');
         }catch(Exception $e){
-            echo($e->getMessage());
+            errorLogs($e->getMessage());
+            $_output = new Origin\Kernel\Parameter\Output();
+            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
     }

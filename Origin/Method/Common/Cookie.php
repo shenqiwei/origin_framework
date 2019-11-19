@@ -30,9 +30,11 @@ function Cookie($key, $value=null)
                 # 异常提示：超出程序最大执行范围
                 # 设定与session模块一致
                 try{
-                    throw new Exception('Origin Method Error: Is beyond the scope biggest execution');
+                    throw new Exception('Is beyond the scope biggest execution');
                 }catch(Exception $e){
-                    echo($e->getMessage());
+                    errorLogs($e->getMessage());
+                    $_output = new Origin\Kernel\Parameter\Output();
+                    $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -48,9 +50,11 @@ function Cookie($key, $value=null)
                     if(!array_key_exists($_operate[1], $_cookie) and !array_key_exists($_operate[2], $_cookie)){
                         # 异常提示：框架暂不支持该session设置项
                         try{
-                            throw new Exception('Origin Method Error: The framework of short duration does not support the session Settings');
+                            throw new Exception('The framework of short duration does not support the session Settings');
                         }catch(Exception $e){
-                            echo($e->getMessage());
+                            errorLogs($e->getMessage());
+                            $_output = new Origin\Kernel\Parameter\Output();
+                            $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }else{
@@ -90,9 +94,11 @@ function Cookie($key, $value=null)
     }else{
         # 异常提示：会话名不符合命名规范
         try{
-            throw new Exception('Origin Method Error: The cookie name does not conform to the naming conventions');
+            throw new Exception('The cookie name does not conform to the naming conventions');
         }catch(Exception $e){
-            echo($e->getMessage());
+            errorLogs($e->getMessage());
+            $_output = new Origin\Kernel\Parameter\Output();
+            $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
     }

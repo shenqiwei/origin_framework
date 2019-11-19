@@ -44,9 +44,11 @@ function Session($key, $value=null)
                     # 由于session设置及内建函数基本描述最大，使用3段语块格式可完全表达，
                     # 所以超出3段或者多块基本混淆测试，都将视为攻击或恶意操作
                     try{
-                        throw new Exception('Origin Method Error: Is beyond the scope biggest execution');
+                        throw new Exception('Is beyond the scope biggest execution');
                     }catch(Exception $e){
-                        echo($e->getMessage());
+                        errorLogs($e->getMessage());
+                        $_output = new Origin\Kernel\Parameter\Output();
+                        $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -67,7 +69,9 @@ function Session($key, $value=null)
                             try{
                                 throw new Exception('Origin Method Error: The framework of short duration does not support the session Settings');
                             }catch(Exception $e){
-                                echo($e->getMessage());
+                                errorLogs($e->getMessage());
+                                $_output = new Origin\Kernel\Parameter\Output();
+                                $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                                 exit();
                             }
                         }else{
@@ -144,7 +148,9 @@ function Session($key, $value=null)
                     try{
                         throw new Exception('Origin Method Error: Session can support more than three dimensional array structure');
                     }catch(Exception $e){
-                        echo($e->getMessage());
+                        errorLogs($e->getMessage());
+                        $_output = new Origin\Kernel\Parameter\Output();
+                        $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }else{
@@ -210,7 +216,9 @@ function Session($key, $value=null)
         try{
             throw new Exception('error: The session name does not conform to the naming conventions');
         }catch(Exception $e){
-            echo($e->getMessage());
+            errorLogs($e->getMessage());
+            $_output = new Origin\Kernel\Parameter\Output();
+            $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
     }
