@@ -87,10 +87,8 @@ function Entrance()
                     $_i += 1;
                 }
             }
-            # 公共方法包引导地址
-            $_func_guide = "Application/{$_catalogue}Common/Public";
-            # 使用钩子模型引入方法文件
-            Loading($_func_guide);
+            # 使用加载函数引入应用公共方法文件
+            Loading("Application/{$_catalogue}Common/Public");
             # 根据配置信息拼接控制器路径
             $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
             # 设置引导地址
