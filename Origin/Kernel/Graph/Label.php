@@ -228,7 +228,7 @@ class Label
             # 拼接引入文件地址信息
             $_files = __RESOURCE__.'/Public/'.str_replace('"','',$_include[$_i][1]);
             # 判断文件完整度
-            if(indexFiles($_files)){
+            if(is_file($_files)){
                 # 读取引入对象内容
                 $_mark = file_get_contents(ROOT.str_replace('/',DS,$_files));
                 # 执行结构内容替换
