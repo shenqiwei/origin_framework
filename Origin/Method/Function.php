@@ -5,7 +5,6 @@
  * @copyright 2015-2019
  */
 # 初始公共函数包
-include("Common/Common.php");
 include("Common/Loading.php");
 include("Common/Config.php");
 include("Common/initialize.php");
