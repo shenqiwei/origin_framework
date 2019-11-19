@@ -5,9 +5,10 @@
  * @copyright 2015-2019
  */
 # 初始公共函数包
-include("Common/Loading.php");
+include("Common/Import.php");
+include("Common/Route.php");
 include("Common/Config.php");
-include("Common/initialize.php");
+include("Common/Initialize.php");
 # 基础操作方法包应用
 include("Common/Request.php");
 include("Common/Validate.php");
@@ -18,7 +19,7 @@ include("Common/Cookie.php");
 include("Common/Log.php"); # 引用日志函数包
 include("Common/Public.php"); # 文件操作函数包
 # 动态加载文件
-include("Common/Entrance.php"); # 引入入口文件包
+include("Common/Load.php"); # 引入入口文件包
 # 应用结构包调用
 include(ROOT."Application/Common/Public.php");
 # 框架柱目录文件路径
@@ -31,4 +32,4 @@ if(!defined("__PLUGIN__")) define("__PLUGIN__", Configuration("ROOT_PLUGIN"));
 # 资源应用常量
 if(!defined("__RESOURCE__")) define("__RESOURCE__", Configuration("ROOT_RESOURCE"));
 // 调用方法体
-Entrance();
+Load();

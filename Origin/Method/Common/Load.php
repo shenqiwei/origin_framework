@@ -9,7 +9,7 @@
  * @access public
  * @return null
 */
-function Entrance()
+function Load()
 {
     /**
      * 使用请求器和验证结构进行入口保护
@@ -88,7 +88,7 @@ function Entrance()
                 }
             }
             # 使用加载函数引入应用公共方法文件
-            Loading("Application/{$_catalogue}Common/Public");
+            Import("Application/{$_catalogue}Common/Public");
             # 根据配置信息拼接控制器路径
             $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
             # 设置引导地址
