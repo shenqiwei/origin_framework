@@ -10,7 +10,6 @@ include("Common/Loading.php");
 include("Common/Config.php");
 include("Common/initialize.php");
 # 基础操作方法包应用
-include("Common/File.php");
 include("Common/Request.php");
 include("Common/Validate.php");
 include("Common/Filter.php");
@@ -18,7 +17,6 @@ include("Common/Session.php");
 include("Common/Cookie.php");
 # 应用公共函数文件
 include("Common/Log.php"); # 引用日志函数包
-include("Common/Debug.php");
 include("Common/Public.php"); # 文件操作函数包
 # 动态加载文件
 include("Common/Entrance.php"); # 引入入口文件包

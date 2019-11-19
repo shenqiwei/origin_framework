@@ -5,21 +5,6 @@
  * @copyright 2015-2017
  */
 /**
- * 应用环境公共文件引入函数
- * @param $guide
- * @return null;
- */
-function Common($guide)
-{
-    $_receipt = null;
-    if(strpos($guide,':')){
-        $_url = str_replace(DS,':',str_replace('/', DS, "Application/")).$guide;
-        $_obj = explode(':', $guide);
-        $_receipt = Loading($_url,'.php');
-    }
-    return $_receipt;
-}
-/**
  * 文件及配置名规则函数
  * @param string $param
  * @return boolean

@@ -35,7 +35,7 @@ function Config($guide)
             # 拆分数组
             $_guide = explode(':', $guide);
             # 调取公共配置信息
-            $_config = Common('Config:Config');
+            $_config = Loading("Application/Config/Config");
             # 判断返回信息
             if ($_config) {
                 # 引导信息数组，并对数据内容进行匹配
@@ -61,7 +61,7 @@ function Config($guide)
             }
         } else {
             # 调取公共配置信息
-            $_config = Common('Config:Config');
+            $_config = Loading("Application/Config/Config");
             if ($_config[$guide]) {
                 $_receipt = $_config[$guide];
             } else {
@@ -90,7 +90,7 @@ function Configuration($guide)
     # 创建配置结构变量
     $_config = null;
     # 创建配置寄存变量
-    $_array = Loading('Origin:Config:Config','.php');
+    $_array = Loading('Origin/Config/Config');
     # 判断引导参数是否有效
     if(Rule($guide)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中

@@ -88,9 +88,9 @@ function Entrance()
                 }
             }
             # 公共方法包引导地址
-            $_func_guide = str_replace(DS, ':', str_replace('/', DS, "Application/{$_catalogue}Common/Public"));
+            $_func_guide = "Application/{$_catalogue}Common/Public";
             # 使用钩子模型引入方法文件
-            Loading($_func_guide,'.php','disable');
+            Loading($_func_guide);
             # 根据配置信息拼接控制器路径
             $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
             # 设置引导地址
@@ -149,4 +149,16 @@ function Entrance()
         }
     }
     return null;
+}
+
+/**
+ * @access public
+ * @param string $obj 未加载对象（class|function）
+ * @param string $error 错误信息
+ * @param string $type 加载类型
+ * @context 加载错误信息
+ */
+function notLoad($obj,$error,$type)
+{
+    include(str_replace('/',DS,ROOT.RING.'Template/Load.html'));
 }
