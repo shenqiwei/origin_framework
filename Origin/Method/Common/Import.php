@@ -50,7 +50,6 @@ function Import($guide)
                     try {
                         throw new Exception('The folder address ' . $_folder . ' does not exist');
                     } catch (Exception $e) {
-                        errorLogs($e->getMessage());
                         $_output = new Origin\Kernel\Parameter\Output();
                         $_output->exception("Import Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
@@ -66,7 +65,6 @@ function Import($guide)
             try {
                 throw new Exception('Origin Method Error[1002]: File ' . $_folder . $_file . $_suffix . ' loading failure');
             } catch (Exception $e) {
-                errorLogs($e->getMessage());
                 $_output = new Origin\Kernel\Parameter\Output();
                 $_output->exception("Import Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
@@ -77,7 +75,6 @@ function Import($guide)
         try{
             throw new Exception('Origin Method Error[1005]: Unable to introduce empty address file');
         }catch(Exception $e){
-            errorLogs($e->getMessage());
             $_output = new Origin\Kernel\Parameter\Output();
             $_output->exception("Import Error",$e->getMessage(),debug_backtrace(0,1));
             exit();

@@ -36,7 +36,7 @@ function is_name($name, $type='cn')
     */
     $_type = 'cn_name';
     if($type == 'en') $_type = $type.'_name';
-    $_validate = new \Origin\Kernel\Parameter\Validate($name, $_type, 1);
+    $_validate = new Origin\Kernel\Parameter\Validate($name, $_type, 1);
     return $_validate->main();
 }
 /**
@@ -76,7 +76,7 @@ function is_mobile($number)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($number, 'mobile');
+    $_validate = new Origin\Kernel\Parameter\Validate($number, 'mobile');
     return $_validate->main();
 }
 /**
@@ -91,7 +91,7 @@ function is_email($email)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($email, 'email');
+    $_validate = new Origin\Kernel\Parameter\Validate($email, 'email');
     return $_validate->main();
 }
 /**
@@ -110,7 +110,7 @@ function is_ip($ip, $type = 'ipv4')
      */
     $_type = 'ipv4';
     if($type == 'ipv6') $_type = 'ipv6';
-    $_validate = new \Origin\Kernel\Parameter\Validate($ip, $_type);
+    $_validate = new Origin\Kernel\Parameter\Validate($ip, $_type);
     return $_validate->main();
 }
 /**
@@ -121,7 +121,7 @@ function is_ip($ip, $type = 'ipv4')
  */
 function is_host($host)
 {
-    $_validate = new \Origin\Kernel\Parameter\Validate($host, 'host');
+    $_validate = new Origin\Kernel\Parameter\Validate($host, 'host');
     return $_validate->main();
 }
 /**
@@ -136,7 +136,7 @@ function is_cn($cn)
       * 调用验证结构包，并声明验证对象
       * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($cn, 'chinese');
+    $_validate = new Origin\Kernel\Parameter\Validate($cn, 'chinese');
     return $_validate->main();
 }
 /**
@@ -151,7 +151,7 @@ function is_en($en)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($en, 'english');
+    $_validate = new Origin\Kernel\Parameter\Validate($en, 'english');
     return $_validate->main();
 }
 /**
@@ -168,7 +168,7 @@ function is_username($username, $min=0, $max=0)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($username, 'username', $min, $max);
+    $_validate = new Origin\Kernel\Parameter\Validate($username, 'username', $min, $max);
     return $_validate->main();
 }
 /**
@@ -185,7 +185,7 @@ function weak_password($password, $min=0, $max=0)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($password, 'weak', $min, $max);
+    $_validate = new Origin\Kernel\Parameter\Validate($password, 'weak', $min, $max);
     return $_validate->main();
 }
 /**
@@ -202,7 +202,7 @@ function strong_password($password, $min=0, $max=0)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($password, 'strong', $min, $max);
+    $_validate = new Origin\Kernel\Parameter\Validate($password, 'strong', $min, $max);
     return $_validate->main();
 }
 /**
@@ -219,7 +219,7 @@ function safe_password($password, $min=0, $max=0)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($password, 'safety', $min, $max);
+    $_validate = new Origin\Kernel\Parameter\Validate($password, 'safety', $min, $max);
     return $_validate->main();
 }
 /**
@@ -237,7 +237,7 @@ function is_true($regular, $param, $min=0, $max=0)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new \Origin\Kernel\Parameter\Validate($param, 'redefine', $min, $max);
+    $_validate = new Origin\Kernel\Parameter\Validate($param, 'redefine', $min, $max);
     $_validate->regular($regular);
     return $_validate->main();
 }

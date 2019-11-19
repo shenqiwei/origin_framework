@@ -47,10 +47,11 @@ function Route($route){
                 if(!is_array($_obj[$i])){
                     # 异常信息：路由结构配置错误
                     try {
-                        throw new \Exception('Origin Class Error: Routing structure configuration errors');
-                    }catch(\Exception $e){
-                        echo($e->getMessage());
-                        exit(0);
+                        throw new Exception('Routing structure configuration errors');
+                    }catch(Exception $e){
+                        $_output = new Origin\Kernel\Parameter\Output();
+                        $_output->exception("Route Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
                     }
                 }
                 # 匹配路由信息
@@ -69,10 +70,11 @@ function Route($route){
                         if(!array_key_exists('name', $_obj[$i]['param'][$j])){
                             # 异常信息：未设置参数名称
                             try {
-                                throw new \Exception('Origin Class Error: Not set the parameter name');
-                            }catch(\Exception $e){
-                                echo($e->getMessage());
-                                exit(0);
+                                throw new Exception('Not set the parameter name');
+                            }catch(Exception $e){
+                                $_output = new Origin\Kernel\Parameter\Output();
+                                $_output->exception("Route Error",$e->getMessage(),debug_backtrace(0,1));
+                                exit();
                             }
                         }
                         # 获取默认值

@@ -11,7 +11,7 @@
 namespace Origin\Kernel\Graph;
 
 use Origin\Kernel\Parameter\Output;
-
+use Exception;
 /**
  * 标签解析主函数类
  */
@@ -102,11 +102,11 @@ class Label
     */
     function execute()
     {
-        # 创建初始标签标记变量
+        # 创建初始标签标记变量\
         $_initialize = null;
         $_obj = file_get_contents($this->_Obj);
         # 去标签差异化
-        $_obj = preg_replace('/\s*\:\s*(end)\s*\>/', ':end>',$_obj);
+        $_obj = preg_replace('/\s*\\\:\s*(end)\s*\\\>/', ':end>',$_obj);
         # 转义引入结构
         $_obj = $this->module($_obj);
         # 判断初始标签结构
@@ -121,34 +121,28 @@ class Label
             }
             if($_if_count > preg_match_all($this->_Judge_Ie, $_obj)){
                 try{
-                    # 模板if else标签结构不完整
-                    throw new \Exception('View File:'.$this->_Obj.',Structure of label <if else> is not complete');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception($this->_Obj.',Structure of label <if else> is not complete');
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
             if($_for_count > preg_match_all($this->_For_End, $_obj)){
                 try{
-                    # 模板for标签结构不完整
-                    throw new \Exception('View File:'.$this->_Obj.',Structure of label <for> is not complete');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception($this->_Obj.',Structure of label <for> is not complete');
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
             if($_loop_count > preg_match_all($this->_Foreach_End, $_obj)){
                 try{
-                    # 模板foreach标签结构不完整
-                    throw new \Exception('View File:'.$this->_Obj.',Structure of label <foreach> is not complete');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception($this->_Obj.',Structure of label <foreach> is not complete');
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Label Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -199,7 +193,7 @@ class Label
         # 转义变量标签
         $_obj = $this->variable($_obj);
         # 去除空白注释
-        $_obj = preg_replace('/\<\!\-\-\s*\-\-\>/',"\r\n",str_replace('<!---->','',$_obj));
+        $_obj = preg_replace('/\\\<\\\!\\\-\\\-\s*\\\-\\\-\\\>/',"\r\n",str_replace('<!---->','',$_obj));
         # 去多余标签结构
         $_obj = preg_replace($this->_For_End, '', $_obj);
         $_obj = preg_replace($this->_Foreach_End, '', $_obj);

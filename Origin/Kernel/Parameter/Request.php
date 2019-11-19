@@ -106,7 +106,7 @@ class Request
                 # 数组遍历，通过逐一比对获取查询变量信息值
                 foreach($_array as $k => $v){
                     if($k == $this->_Validate_Name){
-                        if(!get_magic_quotes_gpc() and !is_array($v)){
+                        if(!is_array($v)){
                             $_receipt = addslashes($v);
                         }else{
                             $_receipt = $v;

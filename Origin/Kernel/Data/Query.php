@@ -6,6 +6,10 @@
  * @context: IoC Sql操作封装类
  */
 namespace Origin\Kernel\Data;
+
+use Origin\Kernel\Parameter\Output;
+use Exception;
+
 /**
  * 封装类，数据库操作，主结构访问类
  */
@@ -15,19 +19,9 @@ abstract class Query
      * SQL基础验证正则表达式变量
      * @var string $_Regular_Name_Confine
      * @var string $_Regular_Comma_Confine_Confine
-     * @var string $_Regular_Period_Confine
-     * @var string $_Regular_Exp_Confine_Confine
-     * @var string $_Regular_Name
-     * @var string $_Regular_Period
      */
-    protected $_Regular_Name_Confine = '/^([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)$/';
-    protected $_Regular_Comma_Confine = '/^([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
-    protected $_Regular_Period_Confine = '/^(([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)\.)([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)$/';
-    protected $_Regular_Exp_Confine = '/^(([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)\.)?([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)
-                                     \s(eq)\s
-                                     (([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)\.)?([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)$/';
-    protected $_Regular_Name = '/([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)/';
-    protected $_Regular_Period = '/(([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)\.)?([^\_\W]+(\_[^\_\W]+)*|\`.+[^\s]+\`)/';
+    protected $_Regular_Name_Confine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
+    protected $_Regular_Comma_Confine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
     /**
      * @var object $_Object
      * 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
@@ -39,247 +33,10 @@ abstract class Query
     */
     protected $_Err_Msg = null;
     /**
-     * @var string $_Table 数据库表名，
-     * 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
-     */
-    protected $_Table = null;
-    protected $_As_Table = null;
-    /**
-     * @var string $_Query 查询语句
-     * 当预设功能无法满足实际要求时，可以直接使用查询语句，
-     * 该功能与映射结构及Model结构一致，但推荐是用映射及Model结构开发
-     */
-//    protected $_Query = null;
-    /**
-     * @var string $_Top
-     * 用于select查询中Top应用
-     */
-    protected $_Top = null;
-    /**
-     * @var string $_Total
-     * 用于select查询中求总数，语句结构利用count函数
-     */
-    protected $_Total = null;
-    /**
-     * @var string $_Field 查询元素
-     * 用于在select查询中精确查寻数据, 支持数组格式，同时支持as关键字
-     */
-    protected $_Field = '*';
-    /**
-     * @var string $_Distinct 查询单字段不重复值
-     */
-    protected $_Distinct = null;
-    /**
-     * @var string $_JoinOn 多表联合匹配条件
-     */
-    protected $_JoinOn = null;
-    /**
-     * @var array 连接表名
-     */
-    protected $_JoinTable = null;
-    /**
-     * @var array $_Union 低效相同列，相同数，支持单个或多个
-     */
-    protected $_Union = null;
-    /**
-     * @var array $_Data
-     * 用户存储需要修改或者添加的数据信息，该模块与验证模块连接使用
-     */
-    protected $_Data = null;
-    /**
-     * @var mixed $_Where
-     * sql语句条件变量，分别为两种数据类型，当为字符串时，直接引用，当为数组时，转化执行
-     */
-    protected $_Where = null;
-    /**
-     * @var mixed $_Group
-     * 分组变量，与where功能支持相似
-     */
-    protected $_Group = null;
-    /**
-     * @var string $_Avg
-     * 求平均数函数的字段名
-     */
-    protected $_Avg = null;
-    /**
-     * @var string $_First
-     * 指定字段下第一个记录值的字段名
-     */
-    protected $_First = null;
-    /**
-     * @var string $_Last
-     * 指定字段下最后一个记录值的字段名
-     */
-    protected $_Last = null;
-    /**
-     * @var string $_Max
-     * 指定字段下最大记录值的字段名
-     */
-    protected $_Max = null;
-    /**
-     * @var string $_min
-     * 指定字段下最小记录值的字段名
-     */
-    protected $_Min = null;
-    /**
-     * @var string $_Sum
-     * 计算字段下所有列数值总和的字段名
-     */
-    protected $_Sum = null;
-    /**
-     * @var mixed $_Uppercase
-     * 需返回信息中所有字母大写的字段名，返回值为数组
-     */
-    protected $_UpperCase = null;
-    /**
-     * @var mixed $_Lowercase
-     * 需返回信息中所有字母小写的字段名，返回值为数组
-     */
-    protected $_LowerCase = null;
-    /**
-     * @var array $_Mid
-     * 返回指定字段截取字符特定长度的信息，数组类型
-    */
-    protected $_Mid = null;
-    /**
-     * @var mixed $_Len
-     * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
-    */
-    protected $_Len = null;
-    /**
-     * @var mixed $_Length
-     * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
-     */
-    protected $_Length = null;
-    /**
-     * @var array $_Round
-     * 需进行指定小数点长度的四舍五入计算的字段名及截取长度数组
-    */
-    protected $_Round = null;
-    /**
-     * @var string $_Now
-     * 获取数据库当前时间
-    */
-    protected $_Now = null;
-    /**
-     * @var array $_Format
-     * 需进行格式化的记录的字段名及格式信息数组
-    */
-    protected $_Format = null;
-    /**
-     * @var string $_Having
-     * 函数应用表达式
-     */
-    protected $_Having = null;
-    /**
-     * @var string $_Order
-     * 排序,与where功能支持相似
-     */
-    protected $_Order = null;
-    /**
-     * @var mixed $_Limit
-     * 查询界限值，int或者带两组数字的字符串
-     */
-    protected $_Limit = null;
-    /**
-     * @var string $_fetch_type
-     * 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
-    */
-    protected $_Fetch_Type = 'all';
-    /**
-     * 构造器函数
-    */
-    function __construct()
-    {}
-    /**
-     * 表名获取方法
-     * @access public
-     * @param mixed $table
-     * @return object
-     */
-    function table($table)
-    {
-        $this->_Table = null;
-        /**
-         * 根据SQL命名规范，及同行开发要求对表名信息进行，基本过滤验证
-         * 支持as语句，使用数组及字符串双重结构管理，当需要进行别名设置时，使用数组结构
-         * @var string $_key
-         * @var string $_value
-         */
-        # 判断传入执行类型
-        if(is_array($table)){
-            # 判断数组元素总数
-            if(count($table)){
-                # 创建计数变量
-                $i = 0;
-                # 使用foreach函数进行数组遍历
-                foreach($table as $_key => $_value){
-                    # 判断字段名和简名是否和规
-                    if(is_true($this->_Regular_Comma_Confine, $_key)  === true and is_true($this->_Regular_Comma_Confine, $_value)  === true){
-                        if($i == 0){
-                            $this->_Table = ' '.$_key.' as '.$_value;
-                            if(count($table) > 1){
-                                $this->_As_Table = array();
-                                array_push($this->_As_Table,$_value);
-                            }else{
-                                $this->_As_Table = $_value;
-                            }
-                        }else{
-                            $this->_Table = ', '.$_key.' as '.$_value;
-                            array_push($this->_As_Table,$_value);
-                        }
-                    }else{
-                        # 当只有字段名命名合规时，只装载字段名，不装载简名
-                        if(is_true($this->_Regular_Comma_Confine, $_key) === true){
-                            if($i == 0){
-                                $this->_Table = ' '.$_key;
-                                if(count($table) > 1){
-                                    $this->_As_Table = array();
-                                    array_push($this->_As_Table,$_key);
-                                }else{
-                                    $this->_As_Table = $_key;
-                                }
-                            }else{
-                                $this->_Table = ', '.$_key;
-                                array_push($this->_As_Table,$_key);
-                            }
-                        }else{
-                            # 异常处理：表格名称不符合命名规范
-                            try{
-                                throw new \Exception('Table name is not in conformity with the naming conventions');
-                            }catch(\Exception $e){
-                                var_dump(debug_backtrace(0,1));
-                                echo("<br />");
-                                echo('Origin (Query) Class Error: '.$e->getMessage());
-                                exit(0);
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
-            # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
-            if(is_true($this->_Regular_Comma_Confine, $table) === true){
-                $this->_Table = strtolower($table);
-            }else{
-                # 异常处理：表格名称不符合命名规范
-                try{
-                    throw new \Exception('Table name is not in conformity with the naming conventions');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
-                }
-            }
-        }
-        return $this->__getSQL();
-    }
-    /**
      * 回传类对象信息
      * @access public
      * @param object $object
-    */
+     */
     function __setSQL($object)
     {
         $this->_Object = $object;
@@ -288,24 +45,294 @@ abstract class Query
      * 获取类对象信息,仅类及其子类能够使用
      * @access public
      * @return object
-    */
+     */
     protected function __getSQL()
     {
         return $this->_Object;
     }
     /**
-     * 查询语句获取方法，实际开发中由于query模块不对外
-     * 语句在执行时进行过滤保护，数据语句结构上不进行强过滤保护
-     * 下一个版本中加添加语句结构限制等功能
+     * @var string $_Table 数据库表名，
+     * 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
+     */
+    protected $_Table = null;
+    protected $_As_Table = null;
+    protected $_Run_Table = null;
+    /**
+     * 表名获取方法
      * @access public
-     * @param string $query
+     * @param string $table
+     * @param string $table_as
      * @return object
      */
-//    function query($query)
-//    {
-//        $this->_Query = $query;
-//        return $this->__getSQL();
-//    }
+    function table($table,$table_as=null)
+    {
+        $this->_Table = null;
+        # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
+        if(is_true($this->_Regular_Comma_Confine, $table) === true){
+            $this->_Table = strtolower($table);
+            if(!is_null($table_as) and is_true($this->_Regular_Comma_Confine, $table_as) === true){
+                $this->_As_Table = $table_as;
+            }
+        }else{
+            try{
+                throw new Exception('Table name is not in conformity with the naming conventions');
+            }catch(Exception $e){
+                $_output = new Output();
+                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                exit();
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * @var string $_JoinOn 多表联合匹配条件
+     */
+    protected $_JoinOn = null;
+    /**
+     * 多表关系匹配 join 语句，支持多表联查，根据join特性join后接表名为单表
+     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
+     * 当有多个条件时，可以使用数组进行结构导入
+     * @access public
+     * @param string $join_table
+     * @param string $join_field
+     * @param string $major_field
+     * @param string $join_table_as
+     * @return object
+     */
+    function join($join_table,$join_field,$major_field,$join_table_as=null)
+    {
+        # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
+        if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
+            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
+            if (is_true($this->_Regular_Comma_Confine, $join_field) === true) {
+                if (is_true($this->_Regular_Comma_Confine, $major_field) === true) {
+                    if(is_null($join_table_as)){
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }else{
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }
+                } else {
+                    # 异常处理：字段名称不符合命名规范
+                    try {
+                        throw new Exception('Field name is not in conformity with the naming conventions');
+                    } catch (Exception $e) {
+                        $_output = new Output();
+                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
+                }
+            } else {
+                # 异常处理：字段名称不符合命名规范
+                try {
+                    throw new Exception('Field name is not in conformity with the naming conventions');
+                } catch (Exception $e) {
+                    $_output = new Output();
+                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    exit();
+                }
+            }
+        } else {
+            try {
+                throw new Exception('Join Table name is not in conformity with the naming conventions');
+            } catch (Exception $e) {
+                $_output = new Output();
+                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                exit();
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 多表关系匹配 inner join 语句，支持多表联查，根据join特性join后接表名为单表
+     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
+     * 当有多个条件时，可以使用数组进行结构导入
+     * @access public
+     * @param string $join_table
+     * @param string $join_field
+     * @param string $major_field
+     * @param string $join_table_as
+     * @return object
+     */
+    function iJoin($join_table,$join_field,$major_field,$join_table_as=null)
+    {
+        # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
+        if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
+            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
+            if (is_true($this->_Regular_Comma_Confine, $join_field) === true) {
+                if (is_true($this->_Regular_Comma_Confine, $major_field) === true) {
+                    if(is_null($join_table_as)){
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }else{
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }
+                } else {
+                    # 异常处理：字段名称不符合命名规范
+                    try {
+                        throw new Exception('Field name is not in conformity with the naming conventions');
+                    } catch (Exception $e) {
+                        $_output = new Output();
+                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
+                }
+            } else {
+                # 异常处理：字段名称不符合命名规范
+                try {
+                    throw new Exception('Field name is not in conformity with the naming conventions');
+                } catch (Exception $e) {
+                    $_output = new Output();
+                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    exit();
+                }
+            }
+        } else {
+            try {
+                throw new Exception('Join Table name is not in conformity with the naming conventions');
+            } catch (Exception $e) {
+                $_output = new Output();
+                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                exit();
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 多表关系匹配 left join 语句，支持多表联查，根据join特性join后接表名为单表
+     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
+     * 当有多个条件时，可以使用数组进行结构导入
+     * @access public
+     * @param string $join_table
+     * @param string $join_field
+     * @param string $major_field
+     * @param string $join_table_as
+     * @return object
+     */
+    function lJoin($join_table,$join_field,$major_field,$join_table_as=null)
+    {
+        # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
+        if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
+            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
+            if (is_true($this->_Regular_Comma_Confine, $join_field) === true) {
+                if (is_true($this->_Regular_Comma_Confine, $major_field) === true) {
+                    if(is_null($join_table_as)){
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }else{
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }
+                } else {
+                    # 异常处理：字段名称不符合命名规范
+                    try {
+                        throw new Exception('Field name is not in conformity with the naming conventions');
+                    } catch (Exception $e) {
+                        $_output = new Output();
+                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
+                }
+            } else {
+                # 异常处理：字段名称不符合命名规范
+                try {
+                    throw new Exception('Field name is not in conformity with the naming conventions');
+                } catch (Exception $e) {
+                    $_output = new Output();
+                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    exit();
+                }
+            }
+        } else {
+            try {
+                throw new Exception('Join Table name is not in conformity with the naming conventions');
+            } catch (Exception $e) {
+                $_output = new Output();
+                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                exit();
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 多表关系匹配 right join 语句，支持多表联查，根据join特性join后接表名为单表
+     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
+     * 当有多个条件时，可以使用数组进行结构导入
+     * @access public
+     * @param string|array $join_table
+     * @param string $join_field
+     * @param string $major_field
+     * @param string $join_table_as
+     * @return object
+     */
+    function rJoin($join_table,$join_field,$major_field,$join_table_as=null)
+    {
+        # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
+        if (is_true($this->_Regular_Comma_Confine, $join_table) === true) {
+            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
+            if (is_true($this->_Regular_Comma_Confine, $join_field) === true) {
+                if (is_true($this->_Regular_Comma_Confine, $major_field) === true) {
+                    if(is_null($join_table_as)){
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }else{
+                        if(is_null($this->_As_Table))
+                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
+                        else
+                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                    }
+                } else {
+                    # 异常处理：字段名称不符合命名规范
+                    try {
+                        throw new Exception('Field name is not in conformity with the naming conventions');
+                    } catch (Exception $e) {
+                        $_output = new Output();
+                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
+                }
+            } else {
+                # 异常处理：字段名称不符合命名规范
+                try {
+                    throw new Exception('Field name is not in conformity with the naming conventions');
+                } catch (Exception $e) {
+                    $_output = new Output();
+                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    exit();
+                }
+            }
+        } else {
+            try {
+                throw new Exception('Join Table name is not in conformity with the naming conventions');
+            } catch (Exception $e) {
+                $_output = new Output();
+                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                exit();
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * @var string $_Top
+     * 用于select查询中Top应用
+     */
+    protected $_Top = null;
     /**
      * Top 语句结构
      * @access public
@@ -325,6 +352,11 @@ abstract class Query
             $this->_Top .= ' percent';
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Total
+     * 用于select查询中求总数，语句结构利用count函数
+     */
+    protected $_Total = null;
     /**
      * 返回指定字段下所有列值的总和，只支持数字型字段列
      * @access public
@@ -350,6 +382,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Field 查询元素
+     * 用于在select查询中精确查寻数据, 支持数组格式，同时支持as关键字
+     */
+    protected $_Field = '*';
     /**
      * 查询字段名，默认信息是符号（*）
      * 当传入值是数组时，$key为原字段名，$value为简写名
@@ -390,14 +427,12 @@ abstract class Query
                         }
                         $i += 1;
                     }else{
-                        # 异常处理：字段名不符合命名规范
                         try{
-                            throw new \Exception('Field name is not in conformity with the naming conventions');
-                        }catch(\Exception $e){
-                            var_dump(debug_backtrace(0,1));
-                            echo("<br />");
-                            echo('Origin (Query) Class Error: '.$e->getMessage());
-                            exit(0);
+                            throw new Exception('Field name is not in conformity with the naming conventions');
+                        }catch(Exception $e){
+                            $_output = new Output();
+                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                            exit();
                         }
                     }
                 }
@@ -409,17 +444,20 @@ abstract class Query
             else{
                 # 异常处理：字段名称不符合命名规范
                 try{
-                    throw new \Exception('Field name is not in conformity with the naming conventions');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                    throw new Exception('Field name is not in conformity with the naming conventions');
+                }catch(Exception $e){
+                    $_output = new Output();
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Distinct 查询单字段不重复值
+     */
+    protected $_Distinct = null;
     /**
      * 列出单列字段名不同值 distinct 语句，该语句仅支持单列字段显示，如果需要显示多列信息，需要时group
      * 在一些应用场景中，可以把distinct看作是group的简化功能结构
@@ -437,36 +475,9 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * 多表关系匹配 join 语句，支持多表联查，根据join特性join后接表名为单表
-     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
-     * 当有多个条件时，可以使用数组进行结构导入
-     * @access public
-     * @param string|array $table
-     * @param string|array $field
-     * @param string $type Join关系方式分别为 inner，left，right，full
-     * @return object
+     * @var array $_Union 低效相同列，相同数，支持单个或多个
      */
-//    function join($table,$field, $type='inner')
-//    {
-//        /**
-//         * 进行传入值结构判断
-//         */
-//        # 限定join类型，目的是防止误操作
-//        $_regular_type = '/^(inner|left|right|full|cross|straight)$/';
-//        if(is_array($table)){
-//            if(is_numeric(array_keys($table)[0])){
-//                for($_i = 0;$_i < count($table);$_i++){
-//                }
-//            }else{
-//                foreach($table as $_key => $_value){
-//                }
-//            }
-//        }else{
-//            if(is_true($this->_Regular_Name,$table)){
-//            }
-//        }
-//        return $this->__getSQL();
-//    }
+    protected $_Union = null;
     /**
      * 对多个查询语句的相同字段中的相同数据进行合并,当前版本仅支持两个表单字段查询，并对输入结构进行验证和隔离
      * @access public
@@ -485,29 +496,31 @@ abstract class Query
             $this->_Union = ' union select '.$field.' from '.$table;
         else{
             if(is_true($this->_Regular_Name_Confine, $table) === true){
-                # 异常处理：字段名不符合SQL命名规则
                 try{
-                    throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                    throw new Exception('The field name is not in conformity with the SQL naming rules');
+                }catch(Exception $e){
+                    $_output = new Output();
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }else{
                 # 异常处理：表名名不符合SQL命名规则
                 try{
-                    throw new \Exception('The table name is not in conformity with the SQL naming rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                    throw new Exception('The table name is not in conformity with the SQL naming rules');
+                }catch(Exception $e){
+                    $_output = new Output();
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
         return $this->__getSQL();
     }
+    /**
+     * @var array $_Data
+     * 用户存储需要修改或者添加的数据信息，该模块与验证模块连接使用
+     */
+    protected $_Data = null;
     /**
      * 添加修改值获取方法,传入值结构为数组，数组key为字段名，数组value为传入值
      * @access public
@@ -533,29 +546,31 @@ abstract class Query
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
                     try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                        throw new Exception('The field name is not in conformity with the SQL naming rules');
+                    }catch(Exception $e){
+                        $_output = new Output();
+                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
                     }
                 }
             }
         }else{
             # 异常处理：参数结构需使用数组
             try{
-                throw new \Exception('Need to use an array parameter structure');
-            }catch(\Exception $e){
-                var_dump(debug_backtrace(0,1));
-                echo("<br />");
-                echo('Origin (Query) Class Error: '.$e->getMessage());
-                exit(0);
+                throw new Exception('Need to use an array parameter structure');
+            }catch(Exception $e){
+                $_output = new Output();
+                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                exit();
             }
-
         }
         return $this->__getSQL();
     }
+    /**
+     * @var mixed $_Where
+     * sql语句条件变量，分别为两种数据类型，当为字符串时，直接引用，当为数组时，转化执行
+     */
+    protected $_Where = null;
     /**
      * 条件信息加载方法，传入值类型支持字符串、数组
      * 当为数组key为字段名，数组value为条件值，数组类型下，仅支持等于条件
@@ -592,12 +607,11 @@ abstract class Query
                 else{
                     # 异常处理：字段名不符合SQL命名规则
                     try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                        throw new Exception('The field name is not in conformity with the SQL naming rules');
+                    }catch(Exception $e){
+                        $_output = new Output();
+                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
                     }
                 }
                 $_i++;
@@ -614,6 +628,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var mixed $_Group
+     * 分组变量，与where功能支持相似
+     */
+    protected $_Group = null;
     /**
      * 去重（指定字段名）显示列表信息
      * @access public
@@ -646,12 +665,11 @@ abstract class Query
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
                     try{
-                        throw new \Exception('The field name is not in conformity with the SQL naming rules');
-                    }catch(\Exception $e){
-                        var_dump(debug_backtrace(0,1));
-                        echo("<br />");
-                        echo('Origin (Query) Class Error: '.$e->getMessage());
-                        exit(0);
+                        throw new Exception('The field name is not in conformity with the SQL naming rules');
+                    }catch(Exception $e){
+                        $_output = new Output();
+                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
                     }
                 }
             }
@@ -662,18 +680,22 @@ abstract class Query
             else{
                 # 异常处理：GROUP语法字段名结构不符合SQL使用规则
                 try{
-                    throw new \Exception('Group of grammatical structure of the field name is not in
+                    throw new Exception('Group of grammatical structure of the field name is not in
                                                conformity with the SQL using rules');
-                }catch(\Exception $e){
-                    var_dump(debug_backtrace(0,1));
-                    echo("<br />");
-                    echo('Origin (Query) Class Error: '.$e->getMessage());
-                    exit(0);
+                }catch(Exception $e){
+                    $_output = new Output();
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Avg
+     * 求平均数函数的字段名
+     */
+    protected $_Avg = null;
     /**
      * 查询语句指定字段值平均数，支持单字段名
      * @access public
@@ -700,6 +722,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_First
+     * 指定字段下第一个记录值的字段名
+     */
+    protected $_First = null;
+    /**
      * 查询语句指定字段值第一个记录值，支持单字段名
      * @access public
      * @param string $field
@@ -716,6 +743,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_Last
+     * 指定字段下最后一个记录值的字段名
+     */
+    protected $_Last = null;
+    /**
      * 查询语句指定字段值最后一个记录值，支持单字段名
      * @access public
      * @param string $field
@@ -731,6 +763,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Max
+     * 指定字段下最大记录值的字段名
+     */
+    protected $_Max = null;
     /**
      * 查询语句指定字段中最大值，支持单字段名
      * @access public
@@ -757,6 +794,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_min
+     * 指定字段下最小记录值的字段名
+     */
+    protected $_Min = null;
+    /**
      * 查询语句指定字段中最小值，支持单字段名
      * @access public
      * @param string $field
@@ -782,6 +824,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_Sum
+     * 计算字段下所有列数值总和的字段名
+     */
+    protected $_Sum = null;
+    /**
      * 返回指定字段下所有列值的总和，只支持数字型字段列
      * @access public
      * @param string $field
@@ -806,6 +853,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var mixed $_Uppercase
+     * 需返回信息中所有字母大写的字段名，返回值为数组
+     */
+    protected $_UpperCase = null;
     /**
      * 返回指定字段信息中的字母全部大写，支持数组及字符串
      * 当含有多个字段名，使用数组，单个字段使用字符串
@@ -836,6 +888,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var mixed $_Lowercase
+     * 需返回信息中所有字母小写的字段名，返回值为数组
+     */
+    protected $_LowerCase = null;
+    /**
      * 返回指定字段信息中的字母全部小写，支持数组及字符串
      * 当含有多个字段名，使用数组，单个字段使用字符串
      * @access public
@@ -865,6 +922,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var array $_Mid
+     * 返回指定字段截取字符特定长度的信息，数组类型
+     */
+    protected $_Mid = null;
     /**
      * 查询语句对指定字段进行截取
      * @access public
@@ -911,6 +973,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var mixed $_Len
+     * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
+     */
+    protected $_Len = null;
+    /**
      * 计算指定字段列记录值长度，一般只应用于文本格式信息
      * 方法支持两种数据类型，如果只对一个字段进行操作，使用字符串类型
      * 对多个字段进行操作，则使用自然数标记数组
@@ -942,6 +1009,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var mixed $_Length
+     * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
+     */
+    protected $_Length = null;
+    /**
      * 计算指定字段列记录值长度，一般只应用于文本格式信息
      * 方法支持两种数据类型，如果只对一个字段进行操作，使用字符串类型
      * 对多个字段进行操作，则使用自然数标记数组
@@ -972,6 +1044,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var array $_Round
+     * 需进行指定小数点长度的四舍五入计算的字段名及截取长度数组
+     */
+    protected $_Round = null;
     /**
      * 对指定字段进行限定小数长度的四舍五入运算
      * 参数同时支持
@@ -1014,6 +1091,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_Now
+     * 获取数据库当前时间
+     */
+    protected $_Now = null;
+    /**
      * 返回当前数据库时间
      */
     function now()
@@ -1021,6 +1103,11 @@ abstract class Query
         $this->_Now = ', nowTime';
         return $this->__getSQL();
     }
+    /**
+     * @var array $_Format
+     * 需进行格式化的记录的字段名及格式信息数组
+     */
+    protected $_Format = null;
     /**
      * 对指定字段记录进行格式化处理
      * @access public
@@ -1061,6 +1148,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_Having
+     * 函数应用表达式
+     */
+    protected $_Having = null;
+    /**
      * 函数结构应用, 单项内容操作
      * @access public
      * @param string $func
@@ -1069,7 +1161,7 @@ abstract class Query
      * @param int $value
      * @return object
     */
-    function having($func='sum', $field, $symbol, $value)
+    function having($func, $field, $symbol, $value)
     {
         /**
          * 因为having运算主要用于范围所以当前版本仅支持对数字运算
@@ -1093,6 +1185,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_Order
+     * 排序,与where功能支持相似
+     */
+    protected $_Order = null;
     /**
      * 查询语句排序条件
      * @access public
@@ -1137,6 +1234,11 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var mixed $_Limit
+     * 查询界限值，int或者带两组数字的字符串
+     */
+    protected $_Limit = null;
+    /**
      * 查询语句查询限制，有两个参数构成，起始位置，显示长度
      * @access public
      * @param int $start
@@ -1154,6 +1256,11 @@ abstract class Query
         }
         return $this->__getSQL();
     }
+    /**
+     * @var string $_fetch_type
+     * 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
+     */
+    protected $_Fetch_Type = 'all';
     /**
      * 加载列表显示结构限制
      * @access public

@@ -23,7 +23,6 @@ function Filter($value, $type='string', $default=null){
         try{
             throw new Exception('The parameter value is invalid');
         }catch(Exception $e){
-            errorLogs($e->getMessage());
             $_output = new Origin\Kernel\Parameter\Output();
             $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
             exit();

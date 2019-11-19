@@ -8,6 +8,7 @@
 namespace Origin\Kernel\Graph;
 
 use Origin\Kernel\Parameter\Output;
+use Exception;
 
 /**
  * 模板调度类
@@ -74,44 +75,43 @@ class View
                     }else{
                         # 异常提示：该对象模板不存在
                         try{
-                            throw new \Exception('The object template '.$_page.' does not exist');
-                        }catch(\Exception $e){
-                            errorLogs($e->getMessage());
+                            throw new Exception('The object template '.$_page.' does not exist');
+                        }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }
                 }else{
                     # 异常提示：该对象模板不存在
                     try{
-                        throw new \Exception('The object template dir '.$_url_view.$this->_Dir.' does not exist');
-                    }catch(\Exception $e){
-                        errorLogs($e->getMessage());
+                        throw new Exception('The object template dir '.$_url_view.$this->_Dir.' does not exist');
+                    }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
             }else{
                 # 异常提示：请在当前路径下创建view文件夹
                 try{
-                    throw new \Exception('Please create the (view) folder under the current path:'.$_url);
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception('Please create the (view) folder under the current path:'.$_url);
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
         }else{
             # 异常提示：主文件夹地址不存在
+            $_output = new Output();
+            $_output->exception("View Error",'The folder address '.$_url.' does not exist',debug_backtrace(0,1));
+            exit();
             try{
-                throw new \Exception('The folder address '.$_url.' does not exist');
-            }catch(\Exception $e){
-                errorLogs($e->getMessage());
+                throw new Exception('Table name is not in conformity with the naming conventions');
+            }catch(Exception $e){
                 $_output = new Output();
-                $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }

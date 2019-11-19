@@ -8,6 +8,8 @@
 namespace Origin\Kernel\Data;
 
 use Origin\Kernel\Parameter\Output;
+use PDOException;
+use PDO;
 
 /**
  * Mysql操作类
@@ -54,23 +56,23 @@ class Mysql extends Query
             $_password = $_connect_config['DATA_PWD']; # 登录密码
             $_option = array(
                 # 设置数据库编码规则
-                \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                \PDO::ATTR_PERSISTENT => true,
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                PDO::ATTR_PERSISTENT => true,
             );
             # 创建数据库连接对象
-            $this->_Connect = new \PDO($_DSN, $_username, $_password, $_option);
+            $this->_Connect = new PDO($_DSN, $_username, $_password, $_option);
             # 设置数据库参数信息
-            $this->_Connect->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->_Connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             # 是否使用持久链接
-            $this->_Connect->setAttribute(\PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
+            $this->_Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
             # mysql自动提交单语句
 //                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
             # mysql请求超时时间
             if(intval(Config('DATA_TIMEOUT')))
-                $this->_Connect->setAttribute(\PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
+                $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
             # mysql是否使用缓冲查询
             if(boolval(Config('DATA_USE_BUFFER')))
-                $this->_Connect->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
+                $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
         }
     }
     /**
@@ -100,10 +102,10 @@ class Mysql extends Query
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
             # 返回查询结构
-            $_receipt = $_statement->fetch(\PDO::FETCH_NUM)[0];
+            $_receipt = $_statement->fetch(PDO::FETCH_NUM)[0];
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
@@ -204,6 +206,7 @@ class Mysql extends Query
         if(!is_null($this->_Distinct)) $_sql .= $this->_Distinct;
         # 表名
         if(!is_null($this->_Table)) $_sql .= ' from '.$this->_Table;
+        if(!is_null($this->_As_Table)) $_sql .=  ' as '.$this->_As_Table;
         # 连接结构信息
         if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
         # 复制结构
@@ -237,14 +240,16 @@ class Mysql extends Query
             $this->_Row_Count = $_statement->rowCount();
             # 返回查询结构
             if($this->_Fetch_Type === 'nv')
-                $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+                $_receipt = $_statement->fetchAll(PDO::FETCH_NUM);
             elseif($this->_Fetch_Type === 'kv')
-                $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+                $_receipt = $_statement->fetchAll(PDO::FETCH_ASSOC);
             else
                 $_receipt = $_statement->fetchAll();
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+            # 记录最后操作表格
+            $this->_Run_Table = $this->_Table;
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
@@ -297,7 +302,9 @@ class Mysql extends Query
             $_receipt = $this->_Connect->lastInsertId();
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+            # 记录最后操作表格
+            $this->_Run_Table = $this->_Table;
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
@@ -350,7 +357,9 @@ class Mysql extends Query
             $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+            # 记录最后操作表格
+            $this->_Run_Table = $this->_Table;
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
@@ -385,7 +394,9 @@ class Mysql extends Query
             $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+            # 记录最后操作表格
+            $this->_Run_Table = $this->_Table;
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
@@ -436,12 +447,12 @@ class Mysql extends Query
                 # 回写select查询条数
                 $this->_Row_Count = $_statement->rowCount();
                 if($this->_Fetch_Type === 'nv')
-                    $_receipt = $_statement->fetchAll(\PDO::FETCH_NUM);
+                    $_receipt = $_statement->fetchAll(PDO::FETCH_NUM);
                 elseif($this->_Fetch_Type === 'kv')
-                    $_receipt = $_statement->fetchAll(\PDO::FETCH_ASSOC);
+                    $_receipt = $_statement->fetchAll(PDO::FETCH_ASSOC);
                 else
                     if(isset($_select_count)){
-                        $_receipt = $_statement->fetchAll(\PDO::FETCH_COLUMN)[0];
+                        $_receipt = $_statement->fetchAll(PDO::FETCH_COLUMN)[0];
                     }else{
                         $_receipt = $_statement->fetchAll();
                     }
@@ -451,7 +462,7 @@ class Mysql extends Query
                 $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
-        }catch(\PDOException $e){
+        }catch(PDOException $e){
             errorLogs($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));

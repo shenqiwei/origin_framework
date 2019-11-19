@@ -8,6 +8,7 @@
 namespace Origin\Kernel\File;
 
 use Origin\Kernel\Parameter\Output;
+use Exception;
 
 class File
 {
@@ -71,14 +72,9 @@ class File
             $_uri = $guide;
         }else{
             if(is_null($_uri)){
-                try{
-                    throw new \Exception('Files guide is invalid!');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
-                    $_output = new Output();
-                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                    exit();
-                }
+                $_output = new Output();
+                $_output->exception("File Error",'Files guide is invalid!',debug_backtrace(0,1));
+                exit();
             }
         }
         # 判断错误编号是否为初始状态
@@ -136,11 +132,10 @@ class File
         }else{
             if(is_null($_uri)){
                 try{
-                    throw new \Exception('Files guide is invalid!');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception('Files guide is invalid!');
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -170,42 +165,31 @@ class File
                         if ($operate === 'full') {
                             $_create_status = 'execute';
                         }
-                        try {
-                            if (strpos($this->_Dir, '.')) {
-                                if ($_file = fopen($this->_Dir, 'w')) {
-                                    fclose($_file);
-                                } else {
-                                    # 错误代码：00101，错误信息：文件创建失败
-                                    try{
-                                        throw new \Exception('Create folder[' . $_guide[$_i] . '] failed');
-                                    }catch(\Exception $e){
-                                        errorLogs($e->getMessage());
-                                        $_output = new Output();
-                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                                        exit();
-                                    }
-                                }
+                        if (strpos($this->_Dir, '.')) {
+                            if ($_file = fopen($this->_Dir, 'w')) {
+                                fclose($_file);
                             } else {
-                                # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
-                                if (!mkdir($this->_Dir, 0777)) {
-                                    # 错误代码：00101，错误信息：文件创建失败
-                                    try{
-                                        throw new \Exception('Create folder[' . $_guide[$_i] . '] failed');
-                                    }catch(\Exception $e){
-                                        errorLogs($e->getMessage());
-                                        $_output = new Output();
-                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                                        exit();
-                                    }
+                                # 错误代码：00101，错误信息：文件创建失败
+                                try{
+                                    throw new Exception('Create folder[' . $_guide[$_i] . '] failed');
+                                }catch(Exception $e){
+                                    $_output = new Output();
+                                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                                    exit();
                                 }
                             }
-
-                        } catch (\Exception $e) {
-                            # 错误代码：00500，错误信息：程序显示错误信息
-                            errorLogs($e->getMessage());
-                            $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                            exit();
+                        } else {
+                            # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
+                            if (!mkdir($this->_Dir, 0777)) {
+                                # 错误代码：00101，错误信息：文件创建失败
+                                try{
+                                    throw new Exception('Create folder[' . $_guide[$_i] . '] failed');
+                                }catch(Exception $e){
+                                    $_output = new Output();
+                                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                                    exit();
+                                }
+                            }
                         }
                     } else {
                         continue;
@@ -235,56 +219,47 @@ class File
                         if (!rename($this->_Dir, $_change)) {
                             # 错误代码：00102，错误信息：文件重命名失败
                             try{
-                                throw new \Exception('Files[' . $this->_Guide . '] rename failed');
-                            }catch(\Exception $e){
-                                errorLogs($e->getMessage());
+                                throw new Exception('Files[' . $this->_Guide . '] rename failed');
+                            }catch(Exception $e){
                                 $_output = new Output();
-                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                                 exit();
                             }
                         }
                         break;
                     case 'remove':
                         # 执行删除
-                        try {
-                            if (strpos($this->_Guide, '.')) {
-                                if (!unlink($this->_Dir . DS . $this->_Guide)) {
-                                    try{
-                                        throw new \Exception( 'Remove file[' . $this->_Guide . '] failed');
-                                    }catch(\Exception $e){
-                                        errorLogs($e->getMessage());
-                                        $_output = new Output();
-                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                                        exit();
-                                    }
+                        if (strpos($this->_Guide, '.')) {
+                            if (!unlink($this->_Dir . DS . $this->_Guide)) {
+                                try{
+                                    throw new Exception('Remove file[' . $this->_Guide . '] failed');
+                                }catch(Exception $e){
+                                    $_output = new Output();
+                                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                                    exit();
                                 }
-                            } else {
-                                if (!rmdir($this->_Dir . DS . $this->_Guide)) {
-                                    try{
-                                        throw new \Exception( 'Remove folder[' . $this->_Guide . '] failed');
-                                    }catch(\Exception $e){
-                                        errorLogs($e->getMessage());
-                                        $_output = new Output();
-                                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                                        exit();
-                                    }
+                            }else
+                                $_receipt= true;
+                        } else {
+                            if (!rmdir($this->_Dir . DS . $this->_Guide)) {
+                                try{
+                                    throw new Exception('Remove folder[' . $this->_Guide . '] failed');
+                                }catch(Exception $e){
+                                    $_output = new Output();
+                                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                                    exit();
                                 }
-                            }
-                        } catch (\Exception $e) {
-                            errorLogs($e->getMessage());
-                            $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                            exit();
+                            }else
+                                $_receipt = true;
                         }
                         break;
                     default:
                         # 错误代码：00100，错误信息：文件已创建
                         try{
-                            throw new \Exception('Folder has been created');
-                        }catch(\Exception $e){
-                            errorLogs($e->getMessage());
+                            throw new Exception('Folder has been created');
+                        }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                         break;
@@ -324,11 +299,10 @@ class File
         }else{
             if(is_null($_uri)){
                 try{
-                    throw new \Exception('Files guide is invalid!');
-                }catch(\Exception $e){
-                    errorLogs($e->getMessage());
+                    throw new Exception('Files guide is invalid!');
+                }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -343,11 +317,10 @@ class File
                     $_resource = $this->manage($_uri, 'full');
                 } else {
                     try{
-                        throw new \Exception('Not Found Object File ' . $_resource);
-                    }catch(\Exception $e){
-                        errorLogs($e->getMessage());
+                        throw new Exception('Not Found Object File ' . $_resource);
+                    }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -392,30 +365,28 @@ class File
                     }
                     break;
                 case 'rr': # 写入
-                    $_write = file_get_contents($this->_Dir, false);
-                    if (!$_write) {
+                    if (!file_get_contents($this->_Dir, false)) {
                         try{
-                            throw new \Exception('File read failed!');
-                        }catch(\Exception $e){
-                            errorLogs($e->getMessage());
+                            throw new Exception('File read failed!');
+                        }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
-                    }
+                    }else
+                        $_receipt = true;
                     break;
                 case 're': # 写入
-                    $_write = file_put_contents($this->_Dir, strval($msg));
-                    if (!$_write) {
+                    if (!file_put_contents($this->_Dir, strval($msg))) {
                         try{
-                            throw new \Exception('File write failed!');
-                        }catch(\Exception $e){
-                            errorLogs($e->getMessage());
+                            throw new Exception("File Error",'File write failed!');
+                        }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
-                    }
+                    }else
+                        $_receipt = true;
                     break;
                 case 'r': # 读取
                 default: # 默认状态与读取状态一致
