@@ -29,7 +29,6 @@ class Mysql extends Query
     # 构造函数
     function __construct($connect_name=null)
     {
-        parent::__construct();
         $_connect_config = Config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
