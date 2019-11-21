@@ -25,14 +25,14 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 主控制器文件主要负责框架12个基本功能和功能包的预加载封装  
 - Initialization.php 框架初始化系统组件模块文件
 该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）   
-<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Application">查看详细内容</a>   
+<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Application"><--查看详细内容--></a>   
 
 <span id='config'></span>
 ## Config 框架主配置目录 [[返回TOP](#origin_top)]
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.php）
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现   
-`在不进行任何设置的情况下，框架可以进行基础的开发操作，满足网站及一般应用需求的情况，只需要在应用配置目录下的Config.cfg.php文件中，编写自己数据库配置内容既可以进行开发和功能实现编写`
-<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Config">查看详细内容</a>   
+`在不进行任何设置的情况下，框架可以进行基础的开发操作，满足网站及一般应用需求的情况，只需要在应用配置目录下的Config.cfg.php文件中，编写自己数据库配置内容既可以进行开发和功能实现编写`   
+<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Config"><--查看详细内容--></a>   
 
 <span id='origin_font'></span>
 ## Font 字体目录 [[返回TOP](#origin_top)]
@@ -41,12 +41,12 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 <span id='origin_kernel'></span>
 ## Kernel 内核目录 [[返回TOP](#origin_top)]
 这里主要是放置origin框架主体功能函数封装，其中包含了数据库访问，模板解码，变量请求监听，http的远程访问   
-<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Kernel">查看详细内容</a>   
+<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Kernel"><--查看详细内容--></a>   
 
 <span id='origin_method'></span>
 ## Method 功能函数目录 [[返回TOP](#origin_top)]
 该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中   
-<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Method">查看详细内容</a>   
+<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Method"><--查看详细内容--></a>   
 
 <span id='origin_template'></span>
 ## Template 公共应用视图模板（html页） [[返回TOP](#origin_top)]
