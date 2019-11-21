@@ -96,7 +96,7 @@ class Mysql extends Query
         if(!is_null($this->_Union)) $_sql .= $this->_Union;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        daoLogs($_sql);
+        sLog($_sql);
         try{
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
@@ -105,7 +105,7 @@ class Mysql extends Query
             # 释放连接
             $_statement->closeCursor();
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
@@ -231,7 +231,7 @@ class Mysql extends Query
         }
         # 添加查询头
         $_sql = 'select '.$_sql;
-        daoLogs($_sql);
+        sLog($_sql);
         try{
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
@@ -249,7 +249,7 @@ class Mysql extends Query
             # 记录最后操作表格
             $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
@@ -290,7 +290,7 @@ class Mysql extends Query
             }
         }
         $_sql .= '('.$_columns.')values('.$_values.')';
-        daoLogs($_sql);
+        sLog($_sql);
         try{
             # 事务状态
             if(boolval(Config("DATA_USE_TRANSACTION")))
@@ -304,7 +304,7 @@ class Mysql extends Query
             # 记录最后操作表格
             $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
@@ -345,7 +345,7 @@ class Mysql extends Query
         $_sql .= $_columns;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        daoLogs($_sql);
+        sLog($_sql);
         try{
             # 事务状态
             if(boolval(Config("DATA_USE_TRANSACTION")))
@@ -359,7 +359,7 @@ class Mysql extends Query
             # 记录最后操作表格
             $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
@@ -382,7 +382,7 @@ class Mysql extends Query
         if(!is_null($this->_Table)) $_sql .= 'from '.$this->_Table;
         # 条件
         if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        daoLogs($_sql);
+        sLog($_sql);
         try{
             # 事务状态
             if(boolval(Config("DATA_USE_TRANSACTION")))
@@ -396,7 +396,7 @@ class Mysql extends Query
             # 记录最后操作表格
             $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
@@ -437,7 +437,7 @@ class Mysql extends Query
             $query = preg_replace($key, $value, $query);
         }
         # 接入执行日志
-        daoLogs(trim($query));
+        sLog(trim($query));
         try{
             # 执行查询搜索
             $_statement = $this->_Connect->query(trim($query));
@@ -462,7 +462,7 @@ class Mysql extends Query
             # 释放连接
             $_statement->closeCursor();
         }catch(PDOException $e){
-            errorLogs($e->getMessage());
+            eLog($e->getMessage());
             $_output = new Output();
             $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();

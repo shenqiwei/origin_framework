@@ -113,7 +113,7 @@ class Mongodb
                     throw new \PDOException('Config object is invalid');
                 } catch (\PDOException $e) {
                     $this->_Connect = null;
-                    errorLogs($e->getMessage());
+                    eLog($e->getMessage());
                     var_dump(debug_backtrace(0, 1));
                     echo("<br />");
                     echo('Origin (mysql select) Class Error:' . $e->getMessage());

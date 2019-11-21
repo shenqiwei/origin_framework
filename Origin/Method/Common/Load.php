@@ -108,7 +108,11 @@ function Load()
                     exit(0);
                 }
             }
-            accessLogs("[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use);
+            # 链接记录日志
+            $_uri = Config('ROOT_LOG').Config('LOG_ACCESS').date('Ymd').'.log';
+            $_msg = "[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use;
+            $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$_msg.PHP_EOL;
+            write($_uri,$_model_msg);
             # 创建class完整信息变量
             $_class = str_replace('/', '\\',"\\Application".DS.$_path);
             # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常

@@ -55,7 +55,7 @@ class Controller
             try{
                 throw new \Exception('Variable name contains non legal symbols');
             }catch(\Exception $e){
-                errorLogs($e->getMessage());
+                eLog($e->getMessage());
                 $_output = new Output();
                 $_output->exception("Param Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();

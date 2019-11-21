@@ -96,9 +96,9 @@ class Output
             "class" => "{$error_file[0]["class"]}"
         );
         include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
-        errorLogs($_error_msg["msg"]);
-        errorLogs("in:{$_error_msg["file"]}");
-        errorLogs("line:{$_error_msg["line"]}");
+        eLog($_error_msg["msg"]);
+        eLog("in:{$_error_msg["file"]}");
+        eLog("line:{$_error_msg["line"]}");
         return null;
     }
 }
