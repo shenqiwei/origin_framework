@@ -20,7 +20,7 @@ Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应�
 ## 目录说明：
 > Root
 
->>Application： 应用目录  
+>>Application： 应用目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Application">查看文档</a>  
 >>>Common：公共函数目录  
 Config：自定义配置目录  
 Home：应用访问目录，默认访问目录（开发者编辑文件目录）  
@@ -30,7 +30,7 @@ Model：数据映射模板文件目录（暂不使用）
 View：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`Index(首字母大写)，以及与`函数同名`index.html（全小写））  
 Route：路由配置目录  
 
->>Origin：框架核心目录  
+>>Origin：框架核心目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">查看文档</a>  
 >>>Application：应用主控制封装目录  
 Config：框架配置目录  
 Font：框架字体文件目录  
