@@ -314,32 +314,30 @@ class File
         # 调用路径文件验证
         $_resource = $this->resource($_uri);
         # 判断返回值基本类型
-        if (!is_object($_resource)) {
-            if(!is_null($_resource)){
-                if ($operate === 'cw' or $operate == 'fw') {
-                    $_resource = $this->manage($_uri, 'full');
-                } else {
-                    try{
-                        throw new Exception('Not Found Object File ' . $_resource);
-                    }catch(Exception $e){
-                        $_output = new Output();
-                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                        exit();
-                    }
+        if (!$_resource) {
+            if ($operate === 'cw' or $operate == 'fw') {
+                $_resource = $this->manage($_uri, 'full');
+            } else {
+                try{
+                    throw new Exception('Not Found Object File ' . $_resource);
+                }catch(Exception $e){
+                    $_output = new Output();
+                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                    exit();
                 }
             }
         }
         # 未发生错误执行
-        if (is_object($_resource) or is_null($_resource)) {
+        if ($_resource) {
             switch ($operate) {
                 case 'sr': # 序列化读取
-                    $_receipt = file(str_replace("/",DS,ROOT.DS.$guide));
+                    $_receipt = file(str_replace("/",DS,ROOT.$guide));
                     break;
                 case 'rw': # 读写
-                    $_receipt = fopen(str_replace("/",DS,ROOT.DS.$guide), 'r+');
+                    $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r+');
                     break;
                 case 'w': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'w');
+                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
@@ -347,35 +345,36 @@ class File
                     break;
                 case 'lw': # 写入
                 case 'cw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'w+');
+                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w+');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'bw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'a');
+                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'fw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'a+');
+                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a+');
                     if ($_write) {
+                        var_dump($msg);
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'rr': # 写入
-                    $_receipt = file_get_contents(str_replace("/",DS,ROOT.DS.$guide), false);
+                    $_receipt = file_get_contents(str_replace("/",DS,ROOT.$guide), false);
                     break;
                 case 're': # 写入
-                    $_receipt = file_put_contents(str_replace("/",DS,ROOT.DS.$guide), strval($msg));
+                    $_receipt = file_put_contents(str_replace("/",DS,ROOT.$guide), strval($msg));
                     break;
                 case 'r': # 读取
                 default: # 默认状态与读取状态一致
-                    $_receipt = fopen(str_replace("/",DS,ROOT.DS.$guide), 'r');
+                    $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r');
                     break;
             }
         }

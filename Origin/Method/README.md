@@ -4,11 +4,11 @@
 该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中
 >函数列表
 
->> `Config(__config:item__)`  
->>> 配置信息：
+>> `Config(__item__)`  
+>>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config)文件配置内容,暂不支持自定义配置栏目
 
 >> `Configuration(__item__)`
->>> 原始配置信息：
+>>> 原始配置信息：调用原始配置文件(Kernel/Config)中的配置信息
 
 >> `Cookie(__key__,__value__)`
 >>> Cookie设置函数：
@@ -17,7 +17,7 @@
 >>> 文件引用函数：
 
 >> `Write(__uri__,__msg__)`
->>> 日志写入函数：
+>>> 文件写入函数：
 
 >> `sLog(__msg__)`
 >>> 数据操作日志：
