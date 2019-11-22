@@ -361,7 +361,6 @@ class File
                 case 'fw': # 写入
                     $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a+');
                     if ($_write) {
-                        var_dump($msg);
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
