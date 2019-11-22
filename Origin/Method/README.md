@@ -10,7 +10,7 @@
 >> `Configuration(__item__)`
 >>> 原始配置信息：
 
->> `Cookie(__key__,__value__=null)`
+>> `Cookie(__key__,__value__)`
 >>> Cookie设置函数：
 
 >> `Import(__guide__)`
@@ -19,11 +19,38 @@
 >> `Write(__uri__,__msg__)`
 >>> 日志写入函数：
 
->> `slog(__msg__)`
+>> `sLog(__msg__)`
 >>> 数据操作日志：
 
->> `elog(__msg__)`
+>> `eLog(__msg__)`
 >>> 错误日志：
 
->> `ilog(__msg__)`
+>> `iLog(__msg__)`
 >>> 异常日志：
+
+>> `Mysql(__resource__)`
+>>> mysql数据库调用：
+
+>> `Redis(__resource__)`
+>>> redis数据库调用
+
+>> `Mongodb(__resource__)`
+>>> mongodb数据库调用
+
+>> `Input(__key__,__default__)`
+>>> 获取请求参数值
+
+>> `Number(__page__,__serach__,__cols__)`
+>>> 页码翻页函数
+
+>> `Page(__url__,__count__,__current__,__row__,__serach__)`
+>>> 翻页参数执行函数
+
+>> `Verify(__width__,__height__)`
+>>> 验证码调用方法
+
+>> `Request(__key__,__default__,__type__,__delete__)`
+>>> 请求操作函数
+
+>> `Session(__key__,__value__)`
+>>> 会话操作函数

@@ -13,7 +13,7 @@
  */
 function write($uri,$msg)
 {
-    $_files = new \Origin\Kernel\File\File();
+    $_files = new Origin\Kernel\File\File();
     # 调用结构验证方法
     return $_files->write($uri, "fw",$msg);
 }

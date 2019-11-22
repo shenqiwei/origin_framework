@@ -7,7 +7,10 @@
  */
 namespace Origin\Application;
 
+use Origin\Kernel\Load;
 use Origin\Kernel\Parameter\Output;
+use Origin\Kernel\Graph\View;
+use Exception;
 
 /**
  * 功能控制器，负责内核功能方法的预加载调用
@@ -18,24 +21,25 @@ class Controller
      * 获取当前操作类名
      * @static string $_Name_Class
     */
-    static $_Name_Class = null;
+    protected static $_Class = null;
     /**
      * 获取当前执行方法名
      * @static string $_Name_Function
     */
-    static $_Name_Function = null;
+    protected static $_Function = null;
     /**
      * 装载参数信息数组
      * @var array $_Param_Array
     */
-    private $_Param_Array = array();
+    private $_Param = array();
     /**
      * 构造方法，获取当前操作类信息
      * @access public
     */
     function __construct()
     {
-        self::$_Name_Class = get_class($this);
+        self::$_Class = Load::$_Class;
+        self::$_Function = Load::$_Function;
     }
     /**
      * 向模板加载数据信息
@@ -49,12 +53,12 @@ class Controller
         $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key) === true){
-            $this->_Param_Array[self::$_Name_Class][$key] = $value;
+            $this->_Param[self::$_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
-                throw new \Exception('Variable name contains non legal symbols');
-            }catch(\Exception $e){
+                throw new Exception('Variable name contains non legal symbols');
+            }catch(Exception $e){
                 eLog($e->getMessage());
                 $_output = new Output();
                 $_output->exception("Param Error",$e->getMessage(),debug_backtrace(0,1));
@@ -81,15 +85,14 @@ class Controller
             str_replace(Config('APPLICATION_CONTROLLER')."/", '',
                 str_replace(Config('DEFAULT_APPLICATION')."/", '',
                     str_replace('Application/', '',
-                        str_replace('\\', '/', self::$_Name_Class)))));
+                        str_replace('\\', '/', self::$_Class)))));
         if(!is_null($this->get_function())){
-            $_page = $this->get_function();
+            $_page = self::$_Function;
         }
         if($view !== null and is_true($_regular, $view) === true){
             $_page = $view;
         }
-        $_obj = new \Origin\Kernel\Graph\View($_dir, $_page);
-        $_obj->view($this->_Param_Array[self::$_Name_Class]);
+        View::view($_dir, $_page,$this->_Param[self::$_Class]);
         return null;
     }
     /**
@@ -99,7 +102,7 @@ class Controller
      */
     protected function get_class()
     {
-        return self::$_Name_Class;
+        return self::$_Class;
     }
     /**
      * 返回执行对象方法名
@@ -108,7 +111,7 @@ class Controller
      */
     protected function get_function()
     {
-        return self::$_Name_Function;
+        return self::$_Function;
     }
     /**
      * 执行成功提示信息
@@ -121,7 +124,7 @@ class Controller
     protected function success($message='success',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
-        \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
+        Output::output($time, $message, $url, $_setting);
         return null;
     }
     /**
@@ -135,7 +138,7 @@ class Controller
     protected function error($message='error',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
-        \Origin\Kernel\Parameter\Output::output($time, $message, $url, $_setting);
+        Output::output($time, $message, $url, $_setting);
         return null;
     }
     /**
@@ -145,7 +148,7 @@ class Controller
     */
     protected function json($array=null)
     {
-        \Origin\Kernel\Parameter\Output::json($array);
+        Output::json($array);
         return null;
     }
 }

@@ -16,7 +16,7 @@ function Filter($value, $type='string', $default=null){
     $_receipt = null;
     # 参数信息是否符合验证要求
     if($value !== null and preg_match('/^(string|int|integer|double|float|boolean|)$/', strtolower($type))){
-        $_filter = new \Origin\Kernel\Parameter\Filter($value, $type, $default);
+        $_filter = new Origin\Kernel\Parameter\Filter($value, $type, $default);
         $_receipt =$_filter->main();
     }else{
         # 异常提示：参数值无效

@@ -48,4 +48,8 @@ elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
 # 引入主方法文件
-include('Method'.DS.'Function.php');
+include('Method/Function.php');
+# 调用加载
+include('Kernel/Load.php');
+# 启动加载函数
+Origin\Kernel\Load::initialize();

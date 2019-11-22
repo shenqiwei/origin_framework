@@ -1187,9 +1187,12 @@ abstract class Query
         if(is_true($_regular_function_confine, $func) === true){
             if(is_true($this->_Regular_Name_Confine, $field) === true){
                 if(is_true($_regular_symbol_confine, $symbol) === true){
+                    $_symbol = array('gt' => '>', 'lt' => '<', 'et'=> '=', 'eq' => '==','neq' => '!=', 'ge' => '>=', 'le' => '<=','heq' => '===', 'nheq' => '!==');
+                    if(array_key_exists(trim(strtolower($symbol)), $_symbol))
+                        $_symbol = $_symbol[trim(strtolower($symbol))];
                     if(is_numeric($value)){
                         # 创建having信息数组
-                        $this->_Having = ' having '.$func.'('.$field.') '.Symbol($symbol).' '.$value;
+                        $this->_Having = ' having '.$func.'('.$field.') '.$_symbol.' '.$value;
                     }
                 }
             }

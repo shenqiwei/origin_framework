@@ -56,7 +56,7 @@ function is_tel($number, $type=null)
      */
     $_type  = 'telephone';
     if($type == 'telecom') $_type = 'redefine';
-    $_validate = new \Origin\Kernel\Parameter\Validate($number, $_type);
+    $_validate = new Origin\Kernel\Parameter\Validate($number, $_type);
     if($type == 'telecom'){
         $_regular = '/^(800|400){1}[\-\s]?\d{4,6}[\-\s]?\d{4}$/';
         $_validate->regular($_regular);

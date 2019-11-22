@@ -26,10 +26,8 @@ function Config($guide)
     $_receipt = null;
     # 创建配置信息初始变量
     $_config = null;
-    # 创建引导信息验证正则表达式变量
-    $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
     # 验证指引结构信息
-    if (preg_match($_regular, $guide)) {
+    if (preg_match('/^[^_\W\s]+((\\\:|_)?[^_\W\s]+)*$/u', $guide)) {
         # 判断是否存在预设连接符号
         if (strpos($guide, ':')) {
             # 拆分数组
@@ -92,7 +90,7 @@ function Configuration($guide)
     # 创建配置寄存变量
     $_array = Import('Origin/Config/Config');
     # 判断引导参数是否有效
-    if(Rule($guide)){
+    if(preg_match('/^[^_\W\s]+((\\\:|_)?[^_\W\s]+)*$/u', $guide)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中
         if(strpos($guide,':')){
             $_config = explode(':',$guide);

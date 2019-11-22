@@ -39,8 +39,8 @@ class File
      */
     function resource($guide=null)
     {
-        # 初始化根目录位置，错误信息和编码
-        $this->_Dir = ROOT;
+        # 地址目录变量
+        $_folder = null;
         # 设置返回对象
         $_receipt = false;
         # 创建对象索引变量
@@ -59,19 +59,19 @@ class File
         $_guide = explode('/',$_uri);
         for($_i = 0;$_i < count($_guide);$_i++){
             if(empty($_i))
-                $this->_Dir .= $_guide[$_i];
+                $_folder .= $_guide[$_i];
             else
-                $this->_Dir .= DS.$_guide[$_i];
+                $_folder .= DS.$_guide[$_i];
             if(strpos($_guide[$_i],'.')){
                 # 判定对象是否为文件
-                if(!is_file($this->_Dir)){
-                    $this->_Breakpoint = $this->_Dir;
+                if(!is_file(ROOT.$_folder)){
+                    $this->_Breakpoint = $_folder;
                     break;
                 }
             }else{
                 # 判断对象是否为文件夹
-                if(!is_dir($this->_Dir)){
-                    $this->_Breakpoint = $this->_Dir;
+                if(!is_dir(ROOT.$_folder)){
+                    $this->_Breakpoint = $_folder;
                     break;
                 }
             }
@@ -99,6 +99,8 @@ class File
      */
     function manage($guide=null,$operate='full',$name=null,$throw=false)
     {
+        # 地址目录变量
+        $_folder = null;
         # 设置返回对象
         $_receipt = false;
         # 创建对象索引变量
@@ -115,26 +117,26 @@ class File
         }
         # 判断返回值基本类型
         if(strtolower($operate) === "full" or strtolower($operate) === "create"){
-            $_folder = str_replace("/",DS,$this->_Dir.$guide);
+            $_fold = str_replace("/",DS,ROOT.$guide);
             # 创建文件
-            if (strpos($_folder, '.')) {
-                if ($_file = fopen($_folder, 'w')) {
+            if (strpos($_fold, '.')) {
+                if ($_file = fopen($_fold, 'w')) {
                     $_receipt = true;
                     fclose($_file);
                 }
             } else {
                 # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
-                if (mkdir($_folder, 0777))
+                if (mkdir($_fold, 0777))
                     $_receipt = true;
             }
             if(!$_receipt){
                 if(strtolower($operate) === "create"){
                     if($throw){
-                        $this->_Error = "Create folder[' . $_folder . '] failed";
+                        $this->_Error = "Create folder[' . $_fold . '] failed";
                     }else{
                         # 错误代码：00101，错误信息：文件创建失败
                         try{
-                            throw new Exception('Create folder[' . $_folder . '] failed');
+                            throw new Exception('Create folder[' . $_fold . '] failed');
                         }catch(Exception $e){
                             $_output = new Output();
                             $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
@@ -151,32 +153,32 @@ class File
                 # 根据操作状态执行不同的操作，修改，删除，清楚在特定条件下，将不执行，只返回错误信息
                 for ($_i = 0; $_i < count($_guide); $_i++) {
                     if($_i === 0){
-                        $this->_Dir .= $_guide[$_i];
+                        $_folder .= $_guide[$_i];
                     }else{
-                        $this->_Dir .= DS . $_guide[$_i];
+                        $_folder .= DS . $_guide[$_i];
                     }
-                    if(!$_resource and strlen($this->_Dir) < strlen($this->_Breakpoint))
+                    if(!$_resource and strlen($_folder) < strlen($this->_Breakpoint))
                         continue;
-                    if (strpos($this->_Dir, '.')) {
-                        if ($_file = fopen($this->_Dir, 'w')) {
+                    if (strpos($_folder, '.')) {
+                        if ($_file = fopen(ROOT.$_folder, 'w')) {
                             $_receipt = true;
                             fclose($_file);
                         }else
                             break;
                     } else {
                         # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
-                        if (mkdir($this->_Dir, 0777))
+                        if (mkdir(ROOT.$_folder, 0777))
                             $_receipt = true;
                         else
                             break;
                     }
                 }
                 if($throw){
-                    $this->_Error = "Create folder[' . $this->_Dir . '] failed";
+                    $this->_Error = "Create folder[' . $_folder . '] failed";
                 }else{
                     # 错误代码：00101，错误信息：文件创建失败
                     try{
-                        throw new Exception('Create folder[' . $this->_Dir . '] failed');
+                        throw new Exception('Create folder[' . $_folder . '] failed');
                     }catch(Exception $e){
                         $_output = new Output();
                         $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
@@ -205,8 +207,8 @@ class File
                         }
                     }
                     # 装载整体结构
-                    $_change = str_replace($_object, $name, $this->_Dir . DS . $this->_Guide);
-                    if (!rename($this->_Dir, $_change)) {
+                    $_change = str_replace($_object, $name, str_replace("/",DS,ROOT.DS.$guide));
+                    if (!rename(ROOT.$guide, $_change)) {
                         if($throw){
                             $this->_Error = "Files[' . $this->_Guide . '] rename failed";
                         }else {
@@ -223,10 +225,10 @@ class File
                     break;
                 case 'remove':
                     # 执行删除
-                    if (strpos($this->_Guide, '.')) {
-                        if (!unlink($this->_Dir . DS . $this->_Guide)) {
+                    if (strpos($guide, '.')) {
+                        if (!unlink(str_replace("/",DS,ROOT.DS.$guide))) {
                             if($throw){
-                                $this->_Error = 'Remove file[' . $this->_Guide . '] failed';
+                                $this->_Error = 'Remove file[' . $guide . '] failed';
                             }else {
                                 try {
                                     throw new Exception();
@@ -239,9 +241,9 @@ class File
                         }else
                             $_receipt= true;
                     } else {
-                        if (!rmdir($this->_Dir . DS . $this->_Guide)) {
+                        if (!rmdir(str_replace("/",DS,ROOT.DS.$guide))) {
                             if($throw){
-                                $this->_Error = 'Remove folder[' . $this->_Guide . '] failed';
+                                $this->_Error = 'Remove folder[' . $guide . '] failed';
                             }else {
                                 try {
                                     throw new Exception();
@@ -296,20 +298,16 @@ class File
     {
         # 设置返回对象
         $_receipt = false;
-        # 当对象地址索引为null
-        $_uri = $this->_Guide;
         # 创建对象索引变量
         if(!is_null($guide)){
             $_uri = $guide;
         }else{
-            if(is_null($_uri)){
-                try{
-                    throw new Exception('Files guide is invalid!');
-                }catch(Exception $e){
-                    $_output = new Output();
-                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                    exit();
-                }
+            try{
+                throw new Exception('Files guide is invalid!');
+            }catch(Exception $e){
+                $_output = new Output();
+                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                exit();
             }
         }
         # 判断错误编号是否为初始状态
@@ -335,13 +333,13 @@ class File
         if (is_object($_resource) or is_null($_resource)) {
             switch ($operate) {
                 case 'sr': # 序列化读取
-                    $_receipt = file($this->_Dir);
+                    $_receipt = file(str_replace("/",DS,ROOT.DS.$guide));
                     break;
                 case 'rw': # 读写
-                    $_receipt = fopen($this->_Dir, 'r+');
+                    $_receipt = fopen(str_replace("/",DS,ROOT.DS.$guide), 'r+');
                     break;
                 case 'w': # 写入
-                    $_write = fopen($this->_Dir, 'w');
+                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'w');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
@@ -349,35 +347,35 @@ class File
                     break;
                 case 'lw': # 写入
                 case 'cw': # 写入
-                    $_write = fopen($this->_Dir, 'w+');
+                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'w+');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'bw': # 写入
-                    $_write = fopen($this->_Dir, 'a');
+                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'a');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'fw': # 写入
-                    $_write = fopen($this->_Dir, 'a+');
+                    $_write = fopen(str_replace("/",DS,ROOT.DS.$guide), 'a+');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
                 case 'rr': # 写入
-                    $_receipt = file_get_contents($this->_Dir, false);
+                    $_receipt = file_get_contents(str_replace("/",DS,ROOT.DS.$guide), false);
                     break;
                 case 're': # 写入
-                    $_receipt = file_put_contents($this->_Dir, strval($msg));
+                    $_receipt = file_put_contents(str_replace("/",DS,ROOT.DS.$guide), strval($msg));
                     break;
                 case 'r': # 读取
                 default: # 默认状态与读取状态一致
-                    $_receipt = fopen($this->_Dir, 'r');
+                    $_receipt = fopen(str_replace("/",DS,ROOT.DS.$guide), 'r');
                     break;
             }
         }

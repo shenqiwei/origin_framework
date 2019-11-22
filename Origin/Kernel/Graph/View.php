@@ -16,43 +16,24 @@ use Exception;
 class View
 {
     /**
-     * 模板文件夹信息
-     * @var string $_Dir
-    */
-    private $_Dir = null;
-    /**
-     * 模板页名称信息
-     * @var string $_Page
-    */
-    private $_Page = null;
-    /**
-     * 构造方法用于获取模板对象
+     * 模板页加载方法
      * @access public
      * @param string $dir
      * @param string $page
-     */
-    function __construct($dir, $page)
-    {
-        $this->_Dir = $dir;
-        $this->_Page = $page;
-    }
-    /**
-     * 模板页加载方法
-     * @access public
      * @param array $param
      * @return null
     */
-    function view($param)
+    static function view($dir,$page,$param)
     {
         # 转化文件路径
-        $_guide = explode('/',$this->_Dir);
+        $_guide = explode('/',$dir);
         # 判断结构模型
         $_dir = Config('DEFAULT_APPLICATION')."/";
         # 判断引导路径中是否存在多级文件
         if(count($_guide) > 1){
             for($i=0; $i<count($_guide);$i++){
                 if(($i+1) == count($_guide))
-                    $this->_Dir = $_guide[count($_guide)-1];
+                    $dir = $_guide[count($_guide)-1];
                 else
                     $_dir = $_guide[$i].'/';
             }
@@ -66,9 +47,9 @@ class View
             # 判断前台模板目录是否有效
             if(is_dir($_url_view)){
                 # 判断应用控制器对应前台模板目录是否有效
-                if(is_dir($_url_view.$this->_Dir)){
+                if(is_dir($_url_view.$dir)){
                     # 调用模板
-                    $_page = $_url_view.$this->_Dir.DS.$this->_Page.'.html';
+                    $_page = $_url_view.$dir.DS.$page.'.html';
                     if(is_file($_page)){
                         $_label = new Label($_page, $param);
                         echo($_label->execute());
@@ -78,17 +59,17 @@ class View
                             throw new Exception('The object template '.$_page.' does not exist');
                         }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }
                 }else{
                     # 异常提示：该对象模板不存在
                     try{
-                        throw new Exception('The object template dir '.$_url_view.$this->_Dir.' does not exist');
+                        throw new Exception('The object template dir '.$_url_view.$dir.' does not exist');
                     }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -98,20 +79,16 @@ class View
                     throw new Exception('Please create the (view) folder under the current path:'.$_url);
                 }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
         }else{
-            # 异常提示：主文件夹地址不存在
-            $_output = new Output();
-            $_output->exception("View Error",'The folder address '.$_url.' does not exist',debug_backtrace(0,1));
-            exit();
             try{
-                throw new Exception('Table name is not in conformity with the naming conventions');
+                throw new Exception('The folder address '.$_url.' does not exist');
             }catch(Exception $e){
                 $_output = new Output();
-                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }

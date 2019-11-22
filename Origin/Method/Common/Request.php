@@ -60,7 +60,7 @@ function Request($key, $default=null,$type=null, $delete=false)
             $_type = strtolower(trim($type));
         }
         # 声明请求控制器对象
-        $_obj= new \Origin\Kernel\Parameter\Request($_request,$default,$_method,$_type);
+        $_obj= new Origin\Kernel\Parameter\Request($_request,$default,$_method,$_type);
         if(is_bool($delete) and $delete === true){
             # 执行删除
             $_obj->delete();
