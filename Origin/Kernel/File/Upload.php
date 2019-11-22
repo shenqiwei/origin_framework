@@ -7,40 +7,25 @@
  */
 namespace Origin\Kernel\File;
 
-use Origin\Kernel\File\File as UploadEx;
-
 class Upload
 {
     /**
      * @access private
-     * @var string $_Uri
-     * @contact 原始路径变量
+     * @var string $_Input 表单名
+     * @var string $_Size 上传大小限制
+     * @var string|array $_Type 上传类型限制
+     * @var string $_Store 存储位置
      */
-    private $_Dir = ROOT;
-    /**
-     * @access private
-     * @var object $_Object
-     * @contact 实例化对象
-     */
-    private $_Object = null;
-    /**
-     * @access private
-     * @var string $_Input_Name
-     * @contact 表单名称
-     */
-    private $_Input_Name = null;
-    /**
-     * @access private
-     * @var string $_Save_Add
-     * @contact 存储地址
-     */
-    private $_Save_Add = null;
+    private $_Input = null;
+    private $_Size = 0;
+    private $_Type = null;
+    private $_Store = null;
     /**
      * @access private
      * @var string $_Error_Msg
      * @contact 错误信息
     */
-    private $_Error_Msg = "ERROR_0000";
+    private $_Error = "ERROR_0000";
     /**
      * @access private
      * @var array $_Type_Array
@@ -60,188 +45,98 @@ class Upload
         'image/gif' => 'gif',
     );
     /**
-     * @access private
-     * @var string $_Suffix
-     * @contact 文件扩展名
-    */
-    private $_Suffix = null;
-    /**
-     * 回传类对象信息
-     * @access public
-     * @param object $object
-     */
-    public function __setUpload($object)
-    {
-        $this->_Object = $object;
-    }
-    /**
-     * 获取类对象信息,仅类及其子类能够使用
-     * @access public
-     * @return object
-     */
-    public function __getUpload()
-    {
-        return $this->_Object;
-    }
-    /**
      * @access public
      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @contact 构造函数，用于对象结构装载
      */
     function __construct($input=null)
     {
-        if(!is_null($input)){
-            $this->_Input_Name = $input;
-        }
+        $this->_Input = $input;
     }
     /**
      * @access public
-     * @param string $name 上传文件名称
-     * @return boolean|object|null
-     */
-    function form($name)
-    {
-        if(!is_null($name)){
-            $this->_Input_Name = $name;
-        }
-        return $this->_Object;
-    }
-    /**
-     * @access public
-     * @param string|array $type 上传文件类型
-     * @return boolean|object|null
+     * @param array $type 上传文件类型
      */
     function type($type=null)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(!is_null($type)){
-                if(is_array($type)){
-                    # 装载扩展名信息
-                    $this->_Suffix = $_FILES[$this->_Input_Name]['type'];
-                    # 判断文件类型信息是否存在特例内容
-                    if(key_exists($this->_Suffix,$this->_Type_Array)){
-                        $this->_Suffix = $this->_Type_Array[$_FILES[$this->_Input_Name]['type']];
-                    }
-                    # 判断扩展名是否符合设置要求
-                    if(!in_array($this->_Suffix,$type)){
-                        $this->_Error_Msg = "Files type is invalid!";
-                    }
-                }else{
-                    if($_FILES[$this->_Input_Name]['type'] != strval($type)){
-                        $this->_Error_Msg = "Files type is invalid!";
-                    }
-                }
-            }else{
-                $this->_Error_Msg = "Undefined file type!";
-            }
-        }
-        return $this->_Object;
+        if(!is_null($type))
+            $this->_Type = $type;
     }
     /**
      * @access public
      * @param int $size 上传文件大小
-     * @return boolean|object|null
      */
-    function size($size=null)
+    function size($size=0)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(!is_null($size)){
-                if(!empty(intval($size))){
-                    if($_FILES[$this->_Input_Name]['size'] > intval($size)){
-                        $this->_Error_Msg = "Files size greater than defined value!";
-                    }
-                }else{
-                    $this->_Error_Msg = "Files size value is invalid!";
-                }
-            }else{
-                $this->_Error_Msg = "Undefined file size!";
-            }
-        }
-        return $this->_Object;
+        if(!empty(intval($size)))
+            $this->_Size = $size;
     }
     /**
      * @access public
      * @param string $guide 上传文件存储路径
-     * @param boolean $mark 是否使用时间标记存储目录默认使用
-     * @return boolean|object|null
      */
-    function save($guide=null,$mark=true)
+    function store($guide=null)
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(!is_null($guide)){
-                if(strpos($guide,DS)){
-                    $_guide = explode(DS,$guide);
-                }else{
-                    if(strpos($guide,'/')){
-                        $_guide = explode('/',$guide);
-                    }
-                }
-                if(isset($_guide)){
-                    for($_i = 0;count($_guide);$_i++){
-                        if((empty($_guide[$_i]) and !is_numeric($_guide[$_i]) and is_null($_guide[$_i]))){
-                            continue;
-                        }else{
-                            if(is_null($this->_Save_Add)){
-                                $this->_Save_Add = $_guide[$_i];
-                            }else{
-                                $this->_Save_Add .= DS.$_guide[$_i];
-                            }
-                        }
-                    }
-                }
-            }
-            if(is_bool($mark) and $mark === true){
-                if(!is_null($this->_Save_Add)){
-                    $this->_Save_Add .= DS.date('Ymd',time());
-                }else{
-                    $this->_Save_Add .= date('Ymd',time());
-                }
-
-            }
-            $_files = new UploadEx();
-            if(!is_null($_files->resource(__RESOURCE__.'/Public/'.$this->_Save_Add))){
-                $_files->manage(__RESOURCE__.'/Public/'.$this->_Save_Add,'full',null);
-            }
-        }
-        return $this->_Object;
+        if(!is_null($guide))
+            $this->_Store = str_replace("/",DS,$guide);
     }
     /**
      * @access public
-     * @param boolean $custom 上传文件原始名称
-     * @return mixed
+     * @return boolean|string
      */
-    function update($custom=true)
+    function update()
     {
-        if(is_null($this->_Input_Name)){
-            $this->_Error_Msg = "Upload file input is invalid!";
-        }else{
-            if(is_bool($custom) and $custom === true){
-                $_file_name = $_FILES[$this->_Input_Name]['name'];
-            }else{
-                $_file_name = time().str_replace('.','',str_replace(' ','',microtime())).'.'.$this->_Suffix;
-            }
-            if(!move_uploaded_file($_FILES[$this->_Input_Name]['tmp_name'],
-                $this->_Dir.DS.__RESOURCE__.DS.'Public'.DS.$this->_Save_Add.DS.$_file_name)){
-                $this->_Error_Msg = "Files upload failed!";
+        $_receipt = false;
+        # 存储目录，使用年月日拆分存储内容
+        $_dir = date("Ymd",time());
+        # 验证存储主目录是否有效
+        if(is_null($this->_Store))
+            $this->_Store = str_replace("/",DS,"Resource/Upload/".$_dir);
+        if(!is_dir(str_replace("/",DS,ROOT.$this->_Store))){
+           $_file = new File();
+           $_file->manage($this->_Store,"full");
+        }
+        if($this->_Input)
+            $this->_Error = "Upload file input is invalid";
+        else{
+            $_file = $_FILES[$this->_Input];
+            for($_i = 0;$_i < count($_file["name"]);$_i++){
+                if(key_exists($_file["type"][$_i],$this->_Type_Array))
+                    $_suffix = $this->_Type_Array[$_file["type"][$_i]];
+                if(!isset($_suffix)){
+                    $_suffix = explode(".",$_file["name"][$_i])[1];
+                }
+                if(isset($_suffix)){
+                    if(!is_null($this->_Type)){
+                        if(!in_array($_suffix,$this->_Type))
+                            $this->_Error = "Files type is invalid";
+                    }
+                }else{
+                    $this->_Error = "Files type is invalid";
+                }
+                if(is_null($this->_Error)){
+                    if($this->_Size and $_file["size"][$_i] > $this->_Size)
+                        $this->_Error = "Files size greater than defined value";
+                }
+                if(is_null($this->_Error)){
+                    $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
+                    if(move_uploaded_file($_file['tmp_name'][$_i],
+                        str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
+                        $_receipt = $_dir."/".$_upload_file;
+                    }else{
+                        $this->_Error = "Files upload failed";
+                    }
+                }
             }
         }
-        if(isset($_file_name))
-            return $this->_Save_Add.'/'.$_file_name;
-        else
-            return null;
+        return $_receipt;
     }
     /**
      * @access public
      * @return mixed
      */
-    function getErrorMsg()
+    function getError()
     {
-        return $this->_Error_Msg;
+        return $this->_Error;
     }
 }
