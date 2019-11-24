@@ -76,7 +76,6 @@ class Controller
     protected function view($view=null)
     {
         $_page = null;
-        $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
         if(is_true($_regular, Config('DEFAULT_VIEW')) === true){
             $_page = Config('DEFAULT_VIEW');

@@ -18,7 +18,7 @@ class Label
      * 变量标记标签规则
      * @var string $_Var_Regular
     */
-    private $_Variable = '/\{\$[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?(\.[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?)?(\s*\|\s*[^\_\W\s]+((\_|\-)?[^\_\W]+)*(\[\d+\])?)?\}/';
+    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*}/';
     /**
      * 页面引入标签规则
      * @var string $_Include_Regular <include href="src/html/page.html"/>
@@ -57,20 +57,19 @@ class Label
     private $_Foreach_Begin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $_Foreach_End = '/\<[\/]foreach\s*\>/';
     /**
-     * 对象数据存储
-     * @var array $_Param_Array
+     * 解析代码
+     * @var string $_Obj
     */
-    private $_Param_Array = array();
+    private $_Obj;
     /**
      * 构造方法 获取引用页面地址信息
      * @access public
      * @param string $page
      * @param array $param
      */
-    function __construct($page, $param)
+    function __construct($page)
     {
         $this->_Obj = $page;
-        $this->_Param_Array = $param;
     }
     /**
      * 默认函数，用于对模板中标签进行转化和结构重组
@@ -155,7 +154,7 @@ class Label
                 $_variable = null;
                 for($_i = 0;$_i < count($_var);$_i++){
                     if(empty($_i))
-                        $_variable = $_var;
+                        $_variable = $_var[$_i];
                     else{
                         if(preg_match("/^\[.+]$/",$_var[$_i]))
                             $_variable .= $_var[$_i];

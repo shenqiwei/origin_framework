@@ -51,8 +51,24 @@ class View
                     # 调用模板
                     $_page = $_url_view.$dir.DS.$page.'.html';
                     if(is_file($_page)){
-                        $_label = new Label($_page, $param);
-                        echo($_label->execute());
+                        # 加载参数内容
+                        foreach($param as $_key => $_value){
+                            $$_key = $_value;
+                        }
+                        # 清除寄存数组信息
+                        unset($param);
+                        # 执行模板解析
+                        $_label = new Label($_page);
+                        # 获取解析后代码,生成临时缓存文件
+                        $_cache_file = tmpfile();
+                        # 写入解析后模板内容
+                        fwrite($_cache_file,$_label->execute());
+                        # 通过数据流获取缓存文件临时路径信息
+                        $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
+                        # 调用缓存文件
+                        include($_cache_uri);
+                        # 关闭缓存文件，系统自动释放缓存空间
+                        fclose($_cache_file);
                     }else{
                         # 异常提示：该对象模板不存在
                         try{
