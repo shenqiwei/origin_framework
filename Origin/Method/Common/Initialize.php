@@ -27,7 +27,7 @@ function initialize()
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View/Index", # 默认应用模板目录
                 ROOT.Config("ROOT_RESOURCE")."/Public", # 公共文件目录
                 ROOT.Config("ROOT_RESOURCE")."/Upload", # 上传文件目录
-                ROOT.Config("ROOT_RESOURCE")."/Buffer" # 上传文件目录
+                ROOT.Config("ROOT_RESOURCE")."/Buffer", # 缓存文件目录
             ),
             "folder" => array(
                 ROOT."Application" => array(
