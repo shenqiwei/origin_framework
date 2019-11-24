@@ -78,7 +78,7 @@
 >> #####`Session` 会话操作函数 
 >>>   
 >>> @Session 设置说明：   
->>> `Session(__session_item__,__key__)`
+>>> `Session(__session_item__,__key__)`   
 >>> `__session_item__`：会话操作项   
 >>> 1.会话ID 操作选项 `session:id`   
 >>> 2.注销全部会话内容 操作选项 `session:unset`   
