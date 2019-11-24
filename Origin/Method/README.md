@@ -38,19 +38,29 @@
 >> #####`Mongodb(__resource__)`mongodb数据库调用
 >>> 
 
->> #####`Number(__page__,__serach__,__cols__)`页码翻页函数
+>> #####`Number`页码翻页函数
 >>> 
+>>> @Number操作说明
+>>> `Number(__page__,__serach__,__cols__)`   
+>>>
 
 >> #####`Page(__url__,__count__,__current__,__row__,__serach__)`翻页参数执行函数
 >>> 
+>>> @Page操作说明 
+>>> `Page(__url__,__count__,__current__,__row__,__serach__)`   
+>>>
 
 >> #####`Verify(__width__,__height__)`验证码调用方法
 >>> 
+>>> @Verify 操作说明
+>>> `Verify(__width__,__height__)`   
+>>> `__width__`：设置画布宽度，默认值 120   
+>>> `__height__`：设置画布高度，默认值 50  
 
 >> #####`Input`获取请求参数值
 >>>   
 >>> @Input 操作说明：   
->>>`Input(__key__,__default__)`
+>>>`Input(__key__,__default__)`   
 >>> `__key__`：表单名称一致，推荐使用单词，或词组作为名称表达方式,约束请求类型是使用(post.|get.)开头   
 >>> `__default__`：设置无效状态默认值，无基本约束    
 >>> 该方法为Request方法的简化版本
@@ -63,6 +73,7 @@
 >>> `__default__`：设置无效状态默认值，无基本约束    
 >>> `__type__`：约束请求变量类型（string、int、float、double、boolean）   
 >>> `__delete__`：删除表单内容项，变量类型boolean（默认值false 不执行删除动作，true 执行删除动作）   
+>>> @ 返回值内容由约束类型决定   
 
 >> #####`Session` 会话操作函数 
 >>>   
@@ -83,5 +94,6 @@
 >>> `Session(__session_key__,__value__)`    
 >>> `Session(__session_key__)`获取会话内容   
 >>> `__session_key__`: 会话键值名，限制使用不以符号开头和结尾的字母数组（A-Za-z）符号(-_)的组合   
->>>` __value__`: 设置值 只能是不包非法结构的字符串，数字，true，false以及不超过两个维度的数组，不能存储对象和多为数组   
+>>>` __value__`: 设置值 只能是不包非法结构的字符串，数字，true，false以及不超过两个维度的数组，不能存储对象和多为数组 
+>>> @ 返回值内容由使用者设置会话时填入内容决定
    
