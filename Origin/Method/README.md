@@ -5,19 +5,21 @@
 >函数列表
 
 >> `Config(__item__)`  
->>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config)文件配置内容,暂不支持自定义配置栏目
+>>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config)文件配置内容,暂不支持自定义配置栏目   
 
 >> `Configuration(__item__)`
 >>> 原始配置信息：调用原始配置文件(Kernel/Config)中的配置信息
 
 >> `Cookie(__key__,__value__)`
->>> Cookie设置函数：
+>>> Cookie设置函数
+>>> Cookie 设置操作说明：
+>>> 
 
 >> `Import(__guide__)`
->>> 文件引用函数：
+>>> 文件引用函数：（框架内核文件调用共用函数，暂不支持插件结构调用）
 
 >> `Write(__uri__,__msg__)`
->>> 文件写入函数：
+>>> 文件写入函数：常规文件写入函数
 
 >> `sLog(__msg__)`
 >>> 数据操作日志：
@@ -49,8 +51,27 @@
 >> `Verify(__width__,__height__)`
 >>> 验证码调用方法
 
->> `Request(__key__,__default__,__type__,__delete__)`
->>> 请求操作函数
+>> #####`Request(__key__,__default__,__type__,__delete__)`请求操作函数
+>>> @Request 操作语法：
 
->> `Session(__key__,__value__)`
->>> 会话操作函数
+>> #####`Session` 会话操作函数 
+>>>   
+>>> @Session 设置操作说明：   
+>>> `Session(__session_item__,__key__)`设置会话   
+>>> `__session_item__`：会话操作项   
+>>> 1.会话ID 操作选项 `session:id`   
+>>> 2.注销全部会话内容 操作选项 `session:unset`   
+>>> 3.清除全部会话内容 操作选项 `session:destroy`   
+>>> 4.重置会话ID 操作选项 `session:regenerate`   
+>>> 5.重置会话内容 操作选项 `session:reset`   
+>>> 6.删除会话内容 操作选项 `session:delete` `@需设置操作对象键值`    
+>>> 7.编码会话 操作选项 `session:encode`   
+>>> 8.解码会话 操作选项 `session:decode` `@需设置操作对象键值`   
+>>> `__key__`：操作session会话键值 
+>>>
+>>> @Session 操作语法：  
+>>> `Session(__session_key__,__value__)` 设置会话语法   
+>>> `Session(__session_key__)`获取会话内容   
+>>> `__session_key__`: 会话键值名，限制使用不以符号开头和结尾的字母数组（A-Za-z）符号(-_)的组合   
+>>>` __value__`: 设置值 只能是不包非法结构的字符串，数字，true，false以及不超过两个维度的数组，不能存储对象和多为数组   
+   
