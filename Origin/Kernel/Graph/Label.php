@@ -9,6 +9,8 @@
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
  */
 namespace Origin\Kernel\Graph;
+use Cassandra\Varint;
+
 /**
  * 标签解析主函数类
  */
@@ -46,7 +48,7 @@ class Label
      */
 //    private $_For_Operate = '/^.+(\s(to)\s.+(\s(by)\s.+)?)?$/';
     private $_For_Begin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_For_End = '/\<[\/]for\s*\>/';
+    private $_For_End = '/<\/for\s*>/';
     /**
      * foreach循环标签规则
      * @var string $_Foreach_Operation 'variable (as mark_variable)'
@@ -242,41 +244,19 @@ class Label
 
     }
     /**
-     * for循环标签解释方法
-     * @access protected
-     * @param string $obj
+     * for标签结构解释方法
+     * @access public
+     * @param string $obj 进行解析的代码段
      * @return string
-    */
+     */
     function __for($obj)
     {
+        # 获取当前代码段中是否存在foreach标签
         $_count = preg_match_all($this->_For_Begin, $obj, $_begin, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
-            $_operate = explode(" as ",$_operate);
-            $_as_name = $_operate[1];
-            $_operate = $_operate[0];
-            $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
-        }
-        # 转义foreach逻辑结尾标签
-        if(preg_match($this->_For_End, $obj, $_end, PREG_SET_ORDER))
-            $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
-        return $obj;
-    }
-    /**
-     * foreach标签结构解释方法
-     * @access public
-     * @param string $obj 进行解析的代码段
-     * @param boolean $dr 是否进行解维运算默认true(进行解维运算)
-     * @return string
-    */
-    function __foreach($obj, $dr=true)
-    {
-        # 获取当前代码段中是否存在foreach标签
-        $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
-        for($_i = 0;$_i < $_count;$_i++){
-            $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
-            $_operate_i = "\$i_".preg_replace("$",null,$_operate);
-            $obj = str_replace($_begin[$_i][0],"<?php for({$_operate_i}=0;$_operate_i < count({$_operate});{$_operate_i}){ ?>",$obj);
+            $_operate_i = "\$i_".str_replace("\$",null,$_operate);
+            $obj = str_replace($_begin[$_i][0],"<?php for({$_operate_i}=0;$_operate_i < count({$_operate});{$_operate_i}++){ ?>",$obj);
             # 传入参数为初始化状态，对代码段进行筛选过滤
             preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
             # 迭代标记信息
@@ -286,10 +266,59 @@ class Label
                 # 拆分变量
                 if (strpos($_var, ".")) {
                     $_var = explode(".", $_var);
-                    if ($_var[0] == "{$_operate}[]") {
-                        $_var[0] = "{$_operate}[{$_operate_i}]";
-                        $_var = "{".implode(".",$_var)."}";
-                        $obj = str_replace($_label[$i][0],$_var,$obj);
+                    if($_var[0] == $_operate){
+                        $_variable = null;
+                        for($_m = 0;$_m < count($_var);$_m++){
+                            if(empty($_m)){
+                                $_variable = "$_var[$_m][{$_operate_i}]";
+                            }else{
+                                $_variable .= "[\"{$_var[$_m]}\"]";
+                            }
+                        }
+                        $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                    }
+                }
+            }
+        }
+        # 转义foreach逻辑结尾标签
+        if(preg_match_all($this->_For_End, $obj, $_end, PREG_SET_ORDER))
+            $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
+        return $obj;
+    }
+    /**
+     * foreach循环标签解释方法
+     * @access protected
+     * @param string $obj
+     * @return string
+    */
+    function __foreach($obj)
+    {
+        $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
+        for($_i = 0;$_i < $_count;$_i++){
+            $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
+            $_operate = explode(" as ",$_operate);
+            $_as_name = $_operate[1];
+            $_operate = $_operate[0];
+            $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
+            # 传入参数为初始化状态，对代码段进行筛选过滤
+            preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+            # 迭代标记信息
+            for($i=0; $i<count($_label);$i++) {
+                # 存在连接符号,拆分标记
+                $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
+                # 拆分变量
+                if (strpos($_var, ".")) {
+                    $_var = explode(".", $_var);
+                    if($_var[0] == $_operate) {
+                        $_variable = null;
+                        for ($_m = 0; $_m < count($_var); $_m++) {
+                            if (empty($_m)) {
+                                $_variable = "$_var[$_m]";
+                            } else {
+                                $_variable .= "[\"{$_var[$_m]}\"]";
+                            }
+                        }
+                        $obj = str_replace($_label[$i][0], "<?php echo({$_variable}); ?>", $obj);
                     }
                 }
             }
