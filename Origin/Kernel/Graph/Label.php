@@ -308,8 +308,7 @@ class Label
                 $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
                 # 拆分变量
                 if (strpos($_var, ".")) {
-                    $_var = explode(".", $_var);
-                    if($_var[0] == $_operate) {
+                    $_var = explode(".", $_var);                   if($_var[0] == $_operate) {
                         $_variable = null;
                         for ($_m = 0; $_m < count($_var); $_m++) {
                             if (empty($_m)) {
