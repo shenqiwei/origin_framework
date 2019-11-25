@@ -38,17 +38,44 @@
 >> #####`Mongodb(__resource__)`mongodb数据库调用
 >>> 
 
+>> #####`Page`翻页参数执行函数
+>>> 
+>>> @Page操作说明 
+>>> `Page(__url__,__count__,__current__,__row__,__serach__)`   
+>>> `__url__`：地址连接，使用相对地址表述 (/home/index/index.html)   
+>>> `__count__`：数据总数（使用 mysql->count() 获取数据总数）   
+>>> `__current__`：当前页页码   
+>>> `__row__`：单页显示行数 大于0的任意整型值   
+>>> `__serach__`：搜索条件使用（get结构变量请求）(&name=小明&age=12&sex=男)   
+>>> @Page函数返回值为一个数组集合,数组中各元素内容调用直接使用标签变量调用方式即可   
+>>> 'url # 连接地址   
+>>> 'size' # 显示数量   
+>>> 'num_begin' # Number区间显示翻页页码起始位置   
+>>> 'num_end' # Number区间显示翻页页码结束位置   
+>>> 'count' # 数据总数    
+>>> 'limit' # 显示（有效）数量限制    
+>>> 'current' # 当前页码   
+>>> 'first_url # 翻页第一页连接    
+>>> 'first', # 第一页参数   
+>>> 'last_url' # 翻页上一页连接   
+>>> 'last # 上一页参数   
+>>> 'next_url' # 翻页下一页连接   
+>>> 'next' # 下一页参数   
+>>> 'end_url'  # 翻页最后一页连接    
+>>> 'end' # 最后一页参数   
+
 >> #####`Number`页码翻页函数
 >>> 
 >>> @Number操作说明
 >>> `Number(__page__,__serach__,__cols__)`   
->>>
-
->> #####`Page(__url__,__count__,__current__,__row__,__serach__)`翻页参数执行函数
->>> 
->>> @Page操作说明 
->>> `Page(__url__,__count__,__current__,__row__,__serach__)`   
->>>
+>>> `__page__`：page方法返回数组集合
+>>> `__serach__`：搜索条件使用（get结构变量请求）
+>>> `__cols__`：显示页脚
+>>> ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
+>>> @Number函数返回值为一个数组集合，其内部元素的调用方法需使用for循环标签实现   
+>>> 'page' # 当前页页码   
+>>> 'url' # 翻页连接    
+>>> ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number.png)
 
 >> #####`Verify(__width__,__height__)`验证码调用方法
 >>> 
