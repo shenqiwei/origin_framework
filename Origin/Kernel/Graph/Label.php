@@ -20,7 +20,7 @@ class Label
      * 变量标记标签规则
      * @var string $_Var_Regular
     */
-    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*}/';
+    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*(\|[^_\W\s]+([_-]?[^_\W]+)*)}/';
     /**
      * 页面引入标签规则
      * @var string $_Include_Regular <include href="src/html/page.html"/>
@@ -263,6 +263,12 @@ class Label
             for($i=0; $i<count($_label);$i++) {
                 # 存在连接符号,拆分标记
                 $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
+                # 验证拆分方法
+                if(strpos($_var,"|")){
+                    $_var = explode("|",$_var);
+                    $_function = $_var[1];
+                    $_var = $_var[0];
+                }
                 # 拆分变量
                 if (strpos($_var, ".")) {
                     $_var = explode(".", $_var);
@@ -275,7 +281,10 @@ class Label
                                 $_variable .= "[\"{$_var[$_m]}\"]";
                             }
                         }
-                        $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                        if(isset($_function))
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                        else
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
                     }
                 }
             }
@@ -306,9 +315,16 @@ class Label
             for($i=0; $i<count($_label);$i++) {
                 # 存在连接符号,拆分标记
                 $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
+                # 验证拆分方法
+                if(strpos($_var,"|")){
+                    $_var = explode("|",$_var);
+                    $_function = $_var[1];
+                    $_var = $_var[0];
+                }
                 # 拆分变量
                 if (strpos($_var, ".")) {
-                    $_var = explode(".", $_var);                   if($_var[0] == $_operate) {
+                    $_var = explode(".", $_var);
+                    if($_var[0] == $_operate) {
                         $_variable = null;
                         for ($_m = 0; $_m < count($_var); $_m++) {
                             if (empty($_m)) {
@@ -317,7 +333,10 @@ class Label
                                 $_variable .= "[\"{$_var[$_m]}\"]";
                             }
                         }
-                        $obj = str_replace($_label[$i][0], "<?php echo({$_variable}); ?>", $obj);
+                        if(isset($_function))
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                        else
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
                     }
                 }
             }
