@@ -47,6 +47,10 @@
 >>> `__current__`：当前页页码   
 >>> `__row__`：单页显示行数 大于0的任意整型值   
 >>> `__serach__`：搜索条件使用（get结构变量请求）(&name=小明&age=12&sex=男)   
+
+page函数功能实现格式：   
+![page函数功能实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_page.png)   
+
 >>> @Page函数返回值为一个数组集合,数组中各元素内容调用直接使用标签变量调用方式即可   
 >>> 'url # 连接地址   
 >>> 'size' # 显示数量   
@@ -64,6 +68,8 @@
 >>> 'end_url'  # 翻页最后一页连接    
 >>> 'end' # 最后一页参数   
 
+page函数内容html实现格式：  
+
 >> #####`Number`页码翻页函数
 >>> 
 >>> @Number操作说明
@@ -72,7 +78,7 @@
 >>> `__serach__`：搜索条件使用（get结构变量请求）  
 >>> `__cols__`：显示页脚   
 
-number函数内容html实现格式：   
+number函数功能实现格式：   
 ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
 >>> @Number函数返回值为一个数组集合，其内部元素的调用方法需使用for循环标签实现   
 >>> 'page' # 当前页页码   
