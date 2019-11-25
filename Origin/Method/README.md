@@ -68,14 +68,16 @@
 >>> 
 >>> @Number操作说明
 >>> `Number(__page__,__serach__,__cols__)`   
->>> `__page__`：page方法返回数组集合
->>> `__serach__`：搜索条件使用（get结构变量请求）
+>>> `__page__`：page方法返回数组集合   
+>>> `__serach__`：搜索条件使用（get结构变量请求）  
 >>> `__cols__`：显示页脚   
->>> ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
+number函数内容html实现格式：   
+![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
 >>> @Number函数返回值为一个数组集合，其内部元素的调用方法需使用for循环标签实现   
 >>> 'page' # 当前页页码   
->>> 'url' # 翻页连接    
->>> ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number.png)
+>>> 'url' # 翻页连接 
+number函数内容html实现格式：   
+![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number.png)
 
 >> #####`Verify(__width__,__height__)`验证码调用方法
 >>> 
