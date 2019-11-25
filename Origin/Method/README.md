@@ -69,6 +69,8 @@ page函数功能实现格式：
 >>> 'end' # 最后一页参数   
 
 page函数内容html实现格式：  
+page上一页样例：![page上一页样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/last.png)   
+page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/next.png)   
 
 >> #####`Number`页码翻页函数
 >>> 
