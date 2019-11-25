@@ -18,7 +18,7 @@ class Label
      * 变量标记标签规则
      * @var string $_Var_Regular
     */
-    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*(\|[^_\W\s]+([_-]?[^_\W]+)*)}/';
+    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*(\|[^_\W\s]+([_-]?[^_\W]+)*)?}/';
     /**
      * 页面引入标签规则
      * @var string $_Include_Regular <include href="src/html/page.html"/>
