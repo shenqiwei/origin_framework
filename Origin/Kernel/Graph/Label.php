@@ -9,8 +9,6 @@
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
  */
 namespace Origin\Kernel\Graph;
-use Cassandra\Varint;
-
 /**
  * 标签解析主函数类
  */
