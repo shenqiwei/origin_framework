@@ -72,10 +72,12 @@
 >>> `__serach__`：搜索条件使用（get结构变量请求）  
 >>> `__cols__`：显示页脚   
 number函数内容html实现格式：   
+
 ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
 >>> @Number函数返回值为一个数组集合，其内部元素的调用方法需使用for循环标签实现   
 >>> 'page' # 当前页页码   
->>> 'url' # 翻页连接 
+>>> 'url' # 翻页连接    
+
 number函数内容html实现格式：   
 ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number.png)
 
