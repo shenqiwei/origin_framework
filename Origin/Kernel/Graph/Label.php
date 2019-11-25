@@ -303,10 +303,19 @@ class Label
         $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
-            $_operate = explode(" as ",$_operate);
-            $_as_name = $_operate[1];
-            $_operate = $_operate[0];
-            $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
+            if(strpos($_operate," as ")){
+                $_operate = explode(" as ",$_operate);
+                $_as_name = $_operate[1];
+                $_operate = $_operate[0];
+            }else{
+                $_as = "{$_operate}_i";
+            }
+            if(isset($_as_name)){
+                $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
+            }
+            if(isset($_as)){
+                $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as {$_as}){ ?>",$obj);
+            }
             # 传入参数为初始化状态，对代码段进行筛选过滤
             preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
             # 迭代标记信息
@@ -322,21 +331,35 @@ class Label
                 # 拆分变量
                 if (strpos($_var, ".")) {
                     $_var = explode(".", $_var);
-                    if($_var[0] == $_operate) {
-                        $_variable = null;
-                        for ($_m = 0; $_m < count($_var); $_m++) {
-                            if (empty($_m)) {
-                                $_variable = "$_var[$_m]";
-                            } else {
-                                $_variable .= "[\"{$_var[$_m]}\"]";
+                    if(isset($_as)){
+                        if($_var[0] == $_operate) {
+                            $_variable = null;
+                            for ($_m = 0; $_m < count($_var); $_m++) {
+                                if (empty($_m)) {
+                                    $_variable = "$_as";
+                                } else {
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                }
                             }
                         }
-                        if(isset($_function))
-                            $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
-                        else
-                            $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                    }
+                    if(isset($_as_name)){
+                        if($_var[0] == $_as_name) {
+                            $_variable = null;
+                            for ($_m = 0; $_m < count($_var); $_m++) {
+                                if (empty($_m)) {
+                                    $_variable = "$_var[$_m]";
+                                } else {
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                }
+                            }
+                        }
                     }
                 }
+                if(isset($_function))
+                    $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                else
+                    $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
             }
         }
         # 转义foreach逻辑结尾标签
