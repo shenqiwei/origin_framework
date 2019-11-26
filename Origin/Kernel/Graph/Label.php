@@ -17,7 +17,7 @@ class Label
     /**
      * 变量标记标签规则
      * @var string $_Var_Regular
-     */
+    */
     private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
     private $_Variable_I = '/\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?/';
     /**
@@ -60,7 +60,7 @@ class Label
     /**
      * 解析代码
      * @var string $_Obj
-     */
+    */
     private $_Obj;
     /**
      * 构造方法 获取引用页面地址信息
@@ -76,7 +76,7 @@ class Label
      * 默认函数，用于对模板中标签进行转化和结构重组
      * @access public
      * @return string
-     */
+    */
     function execute()
     {
         # 创建初始标签标记变量\
@@ -134,7 +134,7 @@ class Label
      * @access protected
      * @param string $obj
      * @return string
-     */
+    */
     function variable($obj)
     {
         # 传入参数为初始化状态，对代码段进行筛选过滤
@@ -169,7 +169,13 @@ class Label
                     }
                 }
             }else{
-                $obj = str_replace($_label[$i][0],"<?php echo({$_var}); ?>",$obj);
+                # 验证拆分方法
+                if(strpos($_var,"|")){
+                    $_var = explode("|",$_var);
+                    $obj = str_replace($_label[$i][0],"<?php echo({$_var[1]}({$_var[0]})); ?>",$obj);
+                }else{
+                    $obj = str_replace($_label[$i][0],"<?php echo({$_var}); ?>",$obj);
+                }
             }
         }
         # 传入参数为初始化状态，对代码段进行筛选过滤
@@ -204,7 +210,13 @@ class Label
                     }
                 }
             }else{
-                $obj = str_replace($_label[$i][0],"{$_var}",$obj);
+                # 验证拆分方法
+                if(strpos($_var,"|")){
+                    $_var = explode("|",$_var);
+                    $obj = str_replace($_label[$i][0],"{$_var[1]}({$_var[0]})",$obj);
+                }else{
+                    $obj = str_replace($_label[$i][0],"{$_var}",$obj);
+                }
             }
         }
         return $obj;
@@ -215,7 +227,7 @@ class Label
      * @param string $obj
      * @param boolean $dr
      * @return string
-     */
+    */
     function __if($obj, $dr=true)
     {
         # 获取if标签
@@ -265,7 +277,7 @@ class Label
      * @access protected
      * @param string $symbol
      * @return string;
-     */
+    */
     function symbol($symbol)
     {
         $_symbol = array(
@@ -367,7 +379,7 @@ class Label
      * @access protected
      * @param string $obj
      * @return string
-     */
+    */
     function __foreach($obj)
     {
         $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
