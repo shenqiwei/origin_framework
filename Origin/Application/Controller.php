@@ -18,16 +18,6 @@ use Exception;
 class Controller
 {
     /**
-     * 获取当前操作类名
-     * @static string $_Name_Class
-    */
-    protected static $_Class = null;
-    /**
-     * 获取当前执行方法名
-     * @static string $_Name_Function
-    */
-    protected static $_Function = null;
-    /**
      * 装载参数信息数组
      * @var array $_Param_Array
     */
@@ -37,10 +27,7 @@ class Controller
      * @access public
     */
     function __construct()
-    {
-        self::$_Class = Load::$_Class;
-        self::$_Function = Load::$_Function;
-    }
+    {}
     /**
      * 向模板加载数据信息
      * @access protected
@@ -53,7 +40,7 @@ class Controller
         $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key) === true){
-            $this->_Param[self::$_Class][$key] = $value;
+            $this->_Param[Load::$_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
@@ -75,7 +62,7 @@ class Controller
      */
     protected function view($view=null)
     {
-        $_page = null;
+        $_page = Load::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
         if(is_true($_regular, Config('DEFAULT_VIEW')) === true){
             $_page = Config('DEFAULT_VIEW');
@@ -84,14 +71,11 @@ class Controller
             str_replace(Config('APPLICATION_CONTROLLER')."/", '',
                 str_replace(Config('DEFAULT_APPLICATION')."/", '',
                     str_replace('Application/', '',
-                        str_replace('\\', '/', self::$_Class)))));
-        if(!is_null($this->get_function())){
-            $_page = self::$_Function;
-        }
+                        str_replace('\\', '/', Load::$_Class)))));
         if($view !== null and is_true($_regular, $view) === true){
             $_page = $view;
         }
-        View::view($_dir, $_page,$this->_Param[self::$_Class]);
+        View::view($_dir, $_page,$this->_Param[Load::$_Class]);
         return null;
     }
     /**
@@ -101,7 +85,7 @@ class Controller
      */
     protected function get_class()
     {
-        return self::$_Class;
+        return Load::$_Class;
     }
     /**
      * 返回执行对象方法名
@@ -110,7 +94,7 @@ class Controller
      */
     protected function get_function()
     {
-        return self::$_Function;
+        return Load::$_Function;
     }
     /**
      * 执行成功提示信息
