@@ -37,7 +37,6 @@ class Controller
     */
     protected function param($key, $value)
     {
-        $_method = null;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key) === true){
             $this->_Param[Load::$_Class][$key] = $value;
@@ -64,9 +63,6 @@ class Controller
     {
         $_page = Load::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-        if(is_true($_regular, Config('DEFAULT_VIEW')) === true){
-            $_page = Config('DEFAULT_VIEW');
-        }
         $_dir = str_replace('Controller', '',
             str_replace(Config('APPLICATION_CONTROLLER')."/", '',
                 str_replace(Config('DEFAULT_APPLICATION')."/", '',
