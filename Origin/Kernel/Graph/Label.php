@@ -17,8 +17,9 @@ class Label
     /**
      * 变量标记标签规则
      * @var string $_Var_Regular
-    */
-    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W]+)*)*(\|[^_\W\s]+([_-]?[^_\W]+)*)?}/';
+     */
+    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
+    private $_Variable_I = '/\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?/';
     /**
      * 页面引入标签规则
      * @var string $_Include_Regular <include href="src/html/page.html"/>
@@ -59,7 +60,7 @@ class Label
     /**
      * 解析代码
      * @var string $_Obj
-    */
+     */
     private $_Obj;
     /**
      * 构造方法 获取引用页面地址信息
@@ -75,7 +76,7 @@ class Label
      * 默认函数，用于对模板中标签进行转化和结构重组
      * @access public
      * @return string
-    */
+     */
     function execute()
     {
         # 创建初始标签标记变量\
@@ -133,7 +134,7 @@ class Label
      * @access protected
      * @param string $obj
      * @return string
-    */
+     */
     function variable($obj)
     {
         # 传入参数为初始化状态，对代码段进行筛选过滤
@@ -142,33 +143,69 @@ class Label
         for($i=0; $i<count($_label);$i++) {
             # 存在连接符号,拆分标记
             $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
-            # 判断是否包含函数调用
-            if(strpos($_var,"|")){
-                $_var = explode("|",$_var);
-                $_method = $_var[1];
-                $_var = $_var[0];
-            }
             # 拆分变量
             if(strpos($_var,".")){
                 $_var = explode(".",$_var);
                 $_variable = null;
                 for($_i = 0;$_i < count($_var);$_i++){
-                    if(empty($_i))
+                    if(empty($_i)) {
                         $_variable = $_var[$_i];
-                    else{
+                    }elseif($_i == count($_var)-1){
+                        # 验证拆分方法
+                        if(strpos($_var[$_i],"|")){
+                            $_vars = explode("|",$_var[$_i]);
+                            $_function = $_vars[1];
+                            $_variable .= "[\"{$_vars[0]}\"]";
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                        }else{
+                            $_variable .= "[\"{$_var[$_i]}\"]";
+                            $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                        }
+                    }else{
                         if(preg_match("/^\[.+]$/",$_var[$_i]))
                             $_variable .= $_var[$_i];
                         else
                             $_variable .= "[\"{$_var[$_i]}\"]";
                     }
                 }
-                $_var = $_variable;
-            }
-            # 验证函数是否已创建
-            if(isset($_method) and  function_exists($_method))
-                $obj = str_replace($_label[$i][0],"<?php echo({$_method}({$_var})); ?>",$obj);
-            else
+            }else{
                 $obj = str_replace($_label[$i][0],"<?php echo({$_var}); ?>",$obj);
+            }
+        }
+        # 传入参数为初始化状态，对代码段进行筛选过滤
+        preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+        # 迭代标记信息
+        for($i=0; $i<count($_label);$i++) {
+            # 存在连接符号,拆分标记
+            $_var = str_replace(']', '', str_replace('[', '', $_label[$i][0]));
+            # 拆分变量
+            if(strpos($_var,".")){
+                $_var = explode(".",$_var);
+                $_variable = null;
+                for($_i = 0;$_i < count($_var);$_i++){
+                    if(empty($_i)) {
+                        $_variable = $_var[$_i];
+                    }elseif($_i == count($_var)-1){
+                        # 验证拆分方法
+                        if(strpos($_var[$_i],"|")){
+                            $_vars = explode("|",$_var[$_i]);
+                            $_function = $_vars[1];
+                            $_variable .= "[\"{$_vars[0]}\"]";
+                            $obj = str_replace($_label[$i][0],"{$_function}({$_variable})",$obj);
+                        }else{
+                            $_variable .= "[\"{$_var[$_i]}\"]";
+                            $obj = str_replace($_label[$i][0],"{$_variable}",$obj);
+                        }
+                    }else{
+                        if(preg_match("/^\[.+]$/",$_var[$_i]))
+                            $_variable .= $_var[$_i];
+                        else
+                            $_variable .= "[\"{$_var[$_i]}\"]";
+                    }
+                }
+            }else{
+                $obj = str_replace($_label[$i][0],"{$_var}",$obj);
+            }
         }
         return $obj;
     }
@@ -178,7 +215,7 @@ class Label
      * @param string $obj
      * @param boolean $dr
      * @return string
-    */
+     */
     function __if($obj, $dr=true)
     {
         # 获取if标签
@@ -187,7 +224,7 @@ class Label
             # 获取条件内容
             $_condition =  preg_replace('/[\'\"]*/', '', $_IF[$_i][1]);
             # 拆分条件内容
-            $_condition = explode("\s",$_condition);
+            $_condition = explode(" ",$_condition);
             $_symbol = $this->symbol($_condition[1]);
             if(is_numeric($_condition[2])){
                 if(strpos($_condition[2],"."))
@@ -196,7 +233,7 @@ class Label
                     $_comparison = intval($_condition[2]);
             }else
                 $_comparison = strval($_condition[2]);
-            $obj = str_replace($_IF[$_i][0],"<?php if({$_condition} {$_symbol} {$_comparison}){?>",$obj);
+            $obj = str_replace($_IF[$_i][0],"<?php if({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 获取elseif标签
         $_count = preg_match_all($this->_Judge_EF, $obj, $_EF, PREG_SET_ORDER);
@@ -204,7 +241,7 @@ class Label
             # 获取条件内容
             $_condition =  preg_replace('/[\'\"]*/', '', $_EF[$_i][1]);
             # 拆分条件内容
-            $_condition = explode("\s",$_condition);
+            $_condition = explode(" ",$_condition);
             $_symbol = $this->symbol($_condition[1]);
             if(is_numeric($_condition[2])){
                 if(strpos($_condition[2],"."))
@@ -213,13 +250,13 @@ class Label
                     $_comparison = intval($_condition[2]);
             }else
                 $_comparison = strval($_condition[2]);
-            $obj = str_replace($_EF[$_i][0],"<?php }elseif({$_condition} {$_symbol} {$_comparison}){?>",$obj);
+            $obj = str_replace($_EF[$_i][0],"<?php }elseif({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 转义else逻辑语法
-        if(preg_match($this->_Judge_El, $obj, $_ELSE, PREG_SET_ORDER))
+        if(preg_match_all($this->_Judge_El, $obj, $_ELSE, PREG_SET_ORDER))
             $obj = str_replace($_ELSE[0][0], "<?php }else{ ?>", $obj);
         # 转义if逻辑结尾标签
-        if(preg_match($this->_Judge_EF, $obj, $_EIF, PREG_SET_ORDER))
+        if(preg_match_all($this->_Judge_Ie, $obj, $_EIF, PREG_SET_ORDER))
             $obj = str_replace($_EIF[0][0],"<?php } ?>",$obj);
         return $obj;
     }
@@ -228,7 +265,7 @@ class Label
      * @access protected
      * @param string $symbol
      * @return string;
-    */
+     */
     function symbol($symbol)
     {
         $_symbol = array(
@@ -261,12 +298,6 @@ class Label
             for($i=0; $i<count($_label);$i++) {
                 # 存在连接符号,拆分标记
                 $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
-                # 验证拆分方法
-                if(strpos($_var,"|")){
-                    $_var = explode("|",$_var);
-                    $_function = $_var[1];
-                    $_var = $_var[0];
-                }
                 # 拆分变量
                 if (strpos($_var, ".")) {
                     $_var = explode(".", $_var);
@@ -275,14 +306,53 @@ class Label
                         for($_m = 0;$_m < count($_var);$_m++){
                             if(empty($_m)){
                                 $_variable = "$_var[$_m][{$_operate_i}]";
+                            }elseif($_m == count($_var)-1){
+                                # 验证拆分方法
+                                if(strpos($_var[$_m],"|")){
+                                    $_vars = explode("|",$_var[$_m]);
+                                    $_function = $_vars[1];
+                                    $_variable .= "[\"{$_vars[0]}\"]";
+                                    $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                                }else{
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                    $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                                }
                             }else{
                                 $_variable .= "[\"{$_var[$_m]}\"]";
                             }
                         }
-                        if(isset($_function))
-                            $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
-                        else
-                            $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                    }
+                }
+            }
+            # 传入参数为初始化状态，对代码段进行筛选过滤
+            preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+            # 迭代标记信息
+            for($i=0; $i<count($_label);$i++) {
+                # 存在连接符号,拆分标记
+                $_var = str_replace(']', '', str_replace('[', '', $_label[$i][0]));
+                # 拆分变量
+                if (strpos($_var, ".")) {
+                    $_var = explode(".", $_var);
+                    if($_var[0] == $_operate){
+                        $_variable = null;
+                        for($_m = 0;$_m < count($_var);$_m++){
+                            if(empty($_m)){
+                                $_variable = "$_var[$_m][{$_operate_i}]";
+                            }elseif($_m == count($_var)-1){
+                                # 验证拆分方法
+                                if(strpos($_var[$_m],"|")){
+                                    $_vars = explode("|",$_var[$_m]);
+                                    $_function = $_vars[1];
+                                    $_variable .= "[\"{$_vars[0]}\"]";
+                                    $obj = str_replace($_label[$i][0],"{$_function}({$_variable})",$obj);
+                                }else{
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                    $obj = str_replace($_label[$i][0],"{$_variable}",$obj);
+                                }
+                            }else{
+                                $_variable .= "[\"{$_var[$_m]}\"]";
+                            }
+                        }
                     }
                 }
             }
@@ -297,7 +367,7 @@ class Label
      * @access protected
      * @param string $obj
      * @return string
-    */
+     */
     function __foreach($obj)
     {
         $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
@@ -307,48 +377,32 @@ class Label
                 $_operate = explode(" as ",$_operate);
                 $_as_name = $_operate[1];
                 $_operate = $_operate[0];
-            }else{
-                $_as = "{$_operate}_i";
-            }
-            if(isset($_as_name)){
                 $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
-            }
-            if(isset($_as)){
-                $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as {$_as}){ ?>",$obj);
-            }
-            # 传入参数为初始化状态，对代码段进行筛选过滤
-            preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
-            # 迭代标记信息
-            for($i=0; $i<count($_label);$i++) {
-                # 存在连接符号,拆分标记
-                $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
-                # 验证拆分方法
-                if(strpos($_var,"|")){
-                    $_var = explode("|",$_var);
-                    $_function = $_var[1];
-                    $_var = $_var[0];
-                }
-                # 拆分变量
-                if (strpos($_var, ".")) {
-                    $_var = explode(".", $_var);
-                    if(isset($_as)){
-                        if($_var[0] == $_operate) {
-                            $_variable = null;
-                            for ($_m = 0; $_m < count($_var); $_m++) {
-                                if (empty($_m)) {
-                                    $_variable = "$_as";
-                                } else {
-                                    $_variable .= "[\"{$_var[$_m]}\"]";
-                                }
-                            }
-                        }
-                    }
-                    if(isset($_as_name)){
+                # 传入参数为初始化状态，对代码段进行筛选过滤
+                preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+                # 迭代标记信息
+                for($i=0; $i<count($_label);$i++) {
+                    # 存在连接符号,拆分标记
+                    $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
+                    # 拆分变量
+                    if (strpos($_var, ".")) {
+                        $_var = explode(".", $_var);
                         if($_var[0] == $_as_name) {
                             $_variable = null;
                             for ($_m = 0; $_m < count($_var); $_m++) {
                                 if (empty($_m)) {
                                     $_variable = "$_var[$_m]";
+                                }elseif($_m == count($_var)-1){
+                                    # 验证拆分方法
+                                    if(strpos($_var[$_m],"|")){
+                                        $_vars = explode("|",$_var[$_m]);
+                                        $_function = $_vars[1];
+                                        $_variable .= "[\"{$_vars[0]}\"]";
+                                        $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                                    }else{
+                                        $_variable .= "[\"{$_var[$_m]}\"]";
+                                        $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                                    }
                                 } else {
                                     $_variable .= "[\"{$_var[$_m]}\"]";
                                 }
@@ -356,14 +410,109 @@ class Label
                         }
                     }
                 }
-                if(isset($_function))
-                    $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
-                else
-                    $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                # 传入参数为初始化状态，对代码段进行筛选过滤
+                preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+                # 迭代标记信息
+                for($i=0; $i<count($_label);$i++) {
+                    # 存在连接符号,拆分标记
+                    $_var = str_replace(']', '', str_replace('[', '', $_label[$i][0]));
+                    # 拆分变量
+                    if (strpos($_var, ".")) {
+                        $_var = explode(".", $_var);
+                        if($_var[0] == $_as_name) {
+                            $_variable = null;
+                            for ($_m = 0; $_m < count($_var); $_m++) {
+                                if (empty($_m)) {
+                                    $_variable = "$_var[$_m]";
+                                }elseif($_m == count($_var)-1){
+                                    # 验证拆分方法
+                                    if(strpos($_var[$_m],"|")){
+                                        $_vars = explode("|",$_var[$_m]);
+                                        $_function = $_vars[1];
+                                        $_variable .= "[\"{$_vars[0]}\"]";
+                                        $obj = str_replace($_label[$i][0],"{$_function}({$_variable})",$obj);
+                                    }else{
+                                        $_variable .= "[\"{$_var[$_m]}\"]";
+                                        $obj = str_replace($_label[$i][0],"{$_variable}",$obj);
+                                    }
+                                } else {
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                }
+                            }
+                        }
+                    }
+                }
+            }else{
+                $_as = "{$_operate}_i";
+                $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as {$_as}){ ?>",$obj);
+                # 传入参数为初始化状态，对代码段进行筛选过滤
+                preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+                # 迭代标记信息
+                for($i=0; $i<count($_label);$i++) {
+                    # 存在连接符号,拆分标记
+                    $_var = str_replace('}', '', str_replace('{', '', $_label[$i][0]));
+                    # 拆分变量
+                    if (strpos($_var, ".")) {
+                        $_var = explode(".", $_var);
+                        if($_var[0] == $_operate) {
+                            $_variable = null;
+                            for ($_m = 0; $_m < count($_var); $_m++) {
+                                if (empty($_m)) {
+                                    $_variable = "$_as";
+                                }elseif($_m == count($_var)-1){
+                                    # 验证拆分方法
+                                    if(strpos($_var[$_m],"|")){
+                                        $_vars = explode("|",$_var[$_m]);
+                                        $_function = $_vars[1];
+                                        $_variable .= "[\"{$_vars[0]}\"]";
+                                        $obj = str_replace($_label[$i][0],"<?php echo({$_function}({$_variable})); ?>",$obj);
+                                    }else{
+                                        $_variable .= "[\"{$_var[$_m]}\"]";
+                                        $obj = str_replace($_label[$i][0],"<?php echo({$_variable}); ?>",$obj);
+                                    }
+                                } else {
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                }
+                            }
+                        }
+                    }
+                }
+                # 传入参数为初始化状态，对代码段进行筛选过滤
+                preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+                # 迭代标记信息
+                for($i=0; $i<count($_label);$i++) {
+                    # 存在连接符号,拆分标记
+                    $_var = str_replace(']', '', str_replace('[', '', $_label[$i][0]));
+                    # 拆分变量
+                    if (strpos($_var, ".")) {
+                        $_var = explode(".", $_var);
+                        if($_var[0] == $_operate) {
+                            $_variable = null;
+                            for ($_m = 0; $_m < count($_var); $_m++) {
+                                if (empty($_m)) {
+                                    $_variable = "$_as";
+                                }elseif($_m == count($_var)-1){
+                                    # 验证拆分方法
+                                    if(strpos($_var[$_m],"|")){
+                                        $_vars = explode("|",$_var[$_m]);
+                                        $_function = $_vars[1];
+                                        $_variable .= "[\"{$_vars[0]}\"]";
+                                        $obj = str_replace($_label[$i][0],"{$_function}({$_variable})",$obj);
+                                    }else{
+                                        $_variable .= "[\"{$_var[$_m]}\"]";
+                                        $obj = str_replace($_label[$i][0],"{$_variable}",$obj);
+                                    }
+                                } else {
+                                    $_variable .= "[\"{$_var[$_m]}\"]";
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         # 转义foreach逻辑结尾标签
-        if(preg_match($this->_Foreach_End, $obj, $_end, PREG_SET_ORDER))
+        if(preg_match_all($this->_Foreach_End, $obj, $_end, PREG_SET_ORDER))
             $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
         return $obj;
     }
