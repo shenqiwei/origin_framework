@@ -29,15 +29,6 @@
 >> #####`iLog(__msg__)`异常日志：
 >>> 
 
->> #####`Mysql(__resource__)`mysql数据库调用：
->>> 
-
->> #####`Redis(__resource__)`redis数据库调用
->>> 
-
->> #####`Mongodb(__resource__)`mongodb数据库调用
->>> 
-
 >> #####`Page`翻页参数执行函数
 >>> 
 >>> @Page操作说明 

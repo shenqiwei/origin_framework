@@ -5,48 +5,6 @@
  * @copyright 2015-2019
  */
 /**
- * Mysql数据库操作方法
- * @access public
- * @param string $connect_name 链接名
- * @return object
- */
-function Mysql($connect_name=null)
-{
-    /**
-     * 调用Mysql数据库核心包
-     */
-    $_dao = new Origin\Kernel\Data\Mysql($connect_name);
-    $_dao->__setSQL($_dao);
-    return $_dao;
-}
-/**
- * Redis数据库操作方法
- * @access public
- * @param string $connect_name 链接名
- * @return object
- */
-function Redis($connect_name=null)
-{
-    /**
-     * 调用Redis数据库核心包
-     */
-    $_dao = new Origin\Kernel\Data\Redis($connect_name);
-    $_dao->__setSQL($_dao);
-    return $_dao;
-}
-/**
- * MongoDB数据库操作方法
- * @access public
- * @param string $connect_name 链接名
- * @return object
- */
-function Mongodb($connect_name=null)
-{
-    $_dao = new Origin\Kernel\Data\Mongodb($connect_name);
-    $_dao->__setSQL($_dao);
-    return $_dao;
-}
-/**
  * Input表单提交信息请求方法函数
  * @access public
  * @param string $key
