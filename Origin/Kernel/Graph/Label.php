@@ -66,7 +66,6 @@ class Label
      * 构造方法 获取引用页面地址信息
      * @access public
      * @param string $page
-     * @param array $param
      */
     function __construct($page)
     {
