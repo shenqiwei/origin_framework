@@ -24,13 +24,13 @@ class Upload
      * @access private
      * @var string $_Error_Msg
      * @contact 错误信息
-    */
-    private $_Error = "ERROR_0000";
+     */
+    private $_Error = null;
     /**
      * @access private
      * @var array $_Type_Array
      * @contact 文件扩展名比对数组
-    */
+     */
     private $_Type_Array = array(
         'text/plain' => 'txt',
         'application/vnd.ms-excel' =>  'xls',
@@ -93,18 +93,47 @@ class Upload
         if(is_null($this->_Store))
             $this->_Store = str_replace("/",DS,"Resource/Upload/".$_dir);
         if(!is_dir(str_replace("/",DS,ROOT.$this->_Store))){
-           $_file = new File();
-           $_file->manage($this->_Store,"full");
+            $_file = new File();
+            $_file->manage(str_replace(DS,"/",$this->_Store),"full");
         }
-        if($this->_Input)
+        if(!$this->_Input)
             $this->_Error = "Upload file input is invalid";
         else{
             $_file = $_FILES[$this->_Input];
-            for($_i = 0;$_i < count($_file["name"]);$_i++){
-                if(key_exists($_file["type"][$_i],$this->_Type_Array))
-                    $_suffix = $this->_Type_Array[$_file["type"][$_i]];
+            if(is_array($_file["name"])){
+                for($_i = 0;$_i < count($_file["name"]);$_i++){
+                    if(key_exists($_file["type"][$_i],$this->_Type_Array))
+                        $_suffix = $this->_Type_Array[$_file["type"][$_i]];
+                    if(!isset($_suffix)){
+                        $_suffix = explode(".",$_file["name"][$_i])[1];
+                    }
+                    if(isset($_suffix)){
+                        if(!is_null($this->_Type)){
+                            if(!in_array($_suffix,$this->_Type))
+                                $this->_Error = "Files type is invalid";
+                        }
+                    }else{
+                        $this->_Error = "Files type is invalid";
+                    }
+                    if(is_null($this->_Error)){
+                        if($this->_Size and $_file["size"][$_i] > $this->_Size)
+                            $this->_Error = "Files size greater than defined value";
+                    }
+                    if(is_null($this->_Error)){
+                        $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
+                        if(move_uploaded_file($_file['tmp_name'][$_i],
+                            str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
+                            $_receipt = $_dir."/".$_upload_file;
+                        }else{
+                            $this->_Error = "Files upload failed";
+                        }
+                    }
+                }
+            }else{
+                if(key_exists($_file["type"],$this->_Type_Array))
+                    $_suffix = $this->_Type_Array[$_file["type"]];
                 if(!isset($_suffix)){
-                    $_suffix = explode(".",$_file["name"][$_i])[1];
+                    $_suffix = explode(".",$_file["name"])[1];
                 }
                 if(isset($_suffix)){
                     if(!is_null($this->_Type)){
@@ -115,12 +144,12 @@ class Upload
                     $this->_Error = "Files type is invalid";
                 }
                 if(is_null($this->_Error)){
-                    if($this->_Size and $_file["size"][$_i] > $this->_Size)
+                    if($this->_Size and $_file["size"] > $this->_Size)
                         $this->_Error = "Files size greater than defined value";
                 }
                 if(is_null($this->_Error)){
-                    $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
-                    if(move_uploaded_file($_file['tmp_name'][$_i],
+                    $_upload_file = sha1($_file["tmp_name"]).time().".".$_suffix;
+                    if(move_uploaded_file($_file['tmp_name'],
                         str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
                         $_receipt = $_dir."/".$_upload_file;
                     }else{
