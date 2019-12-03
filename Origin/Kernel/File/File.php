@@ -13,11 +13,6 @@ use Exception;
 class File
 {
     /**
-     * 对象文件夹信息
-     * @var string $_Dir
-     */
-    private $_Dir = null;
-    /**
      * 导引路径信息
      * @var string $_Guide
      */
