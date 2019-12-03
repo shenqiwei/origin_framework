@@ -33,6 +33,15 @@ class File
     private $_Breakpoint = null;
     /**
      * @access public
+     * @return string
+     * @context 断点信息返回
+    */
+    function getBreakpoint()
+    {
+        return $this->_Breakpoint;
+    }
+    /**
+     * @access public
      * @param string $guide 文件路径
      * @return boolean
      * @content 检测文件路径索引结构完整度
