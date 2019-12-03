@@ -36,5 +36,12 @@ resource():
 >>> resource函数中使用is_file和is_dir函数判断地址有效性，常规开发中，如不需要使用集合封装函数功能，推荐直接使用is_file和is_dir函数，如果仅用于判断当前地址路径是否有效可以直接使用is_folder函数   
 
 manage():
+> 文件（夹）管理函数，用于对文件（夹）进行创建、修改、复制、删除操作
+>> `$_file->manage(__url__,__operate__,__name__,__throw__);`   
+>> ####参数说明:   
+>> `__url___`：文件（夹）路径参数，参数为非空(not null)字符串(string),路径连接符号使用（/）   
+>> `__operate__`：操作类型，提供四种参数内容选择 create(创建)、full(补全创建)、rename(重命名)、remove(移除)，其他操作项暂不支持,使用full创建文件（夹）时，函数会调用resource函数进行断点查找，并完成剩余路径信息的创建，remove不支持非空文件夹移除   
+>> `__name__`：重命名信息参数，该参数默认值为null（空），`__operate__`参数选择rename，参数需填入非空字符串
+>> `__throw__`：异常状态默认值 false 不报异常信息
 
 write():

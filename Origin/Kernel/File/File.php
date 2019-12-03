@@ -13,11 +13,6 @@ use Exception;
 class File
 {
     /**
-     * 导引路径信息
-     * @var string $_Guide
-     */
-    private $_Guide = null;
-    /**
      * 错误信息
     */
     private $_Error = null;
@@ -119,28 +114,72 @@ class File
                 exit();
             }
         }
-        # 判断返回值基本类型
-        if(strtolower($operate) === "full" or strtolower($operate) === "create"){
-            $_fold = str_replace("/",DS,ROOT.$guide);
-            # 创建文件
-            if (strpos($_fold, '.')) {
-                if ($_file = fopen($_fold, 'w')) {
-                    $_receipt = true;
-                    fclose($_file);
+        # 重命名，删除执行
+        switch (strtolower($operate)) {
+            case 'full':
+            case 'create':
+                $_fold = str_replace("/",DS,ROOT.$guide);
+                # 创建文件
+                if (strpos($_fold, '.')) {
+                    if ($_file = fopen($_fold, 'w')) {
+                        $_receipt = true;
+                        fclose($_file);
+                    }
+                } else {
+                    # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
+                    if (mkdir($_fold, 0777))
+                        $_receipt = true;
                 }
-            } else {
-                # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
-                if (mkdir($_fold, 0777))
-                    $_receipt = true;
-            }
-            if(!$_receipt){
-                if(strtolower($operate) === "create"){
+                if(!$_receipt){
+                    if(strtolower($operate) === "create"){
+                        if($throw){
+                            $this->_Error = "Create folder[' . $_fold . '] failed";
+                        }else{
+                            # 错误代码：00101，错误信息：文件创建失败
+                            try{
+                                throw new Exception('Create folder[' . $_fold . '] failed');
+                            }catch(Exception $e){
+                                $_output = new Output();
+                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                exit();
+                            }
+                        }
+                    }
+                }
+                if(!$_receipt and strtolower($operate) === "full"){
+                    # 调用路径文件验证
+                    $_resource = $this->resource($_uri);
+                    # 转化对象类型
+                    $_guide = explode('/', $_uri);
+                    # 根据操作状态执行不同的操作，修改，删除，清楚在特定条件下，将不执行，只返回错误信息
+                    for ($_i = 0; $_i < count($_guide); $_i++) {
+                        if($_i === 0){
+                            $_folder .= $_guide[$_i];
+                        }else{
+                            $_folder .= DS . $_guide[$_i];
+                        }
+                        if(!$_resource and strlen($_folder) < strlen($this->_Breakpoint))
+                            continue;
+                        if (strpos($_folder, '.')) {
+                            if ($_file = fopen(ROOT.$_folder, 'w')) {
+                                $_receipt = true;
+                                fclose($_file);
+                            }else
+                                break;
+                        } else {
+                            # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
+                            if (mkdir(ROOT.$_folder, 0777))
+                                $_receipt = true;
+                            else
+                                break;
+                        }
+                    }
                     if($throw){
-                        $this->_Error = "Create folder[' . $_fold . '] failed";
+                        $this->_Error = "Create folder[' . $_folder . '] failed";
                     }else{
                         # 错误代码：00101，错误信息：文件创建失败
                         try{
-                            throw new Exception('Create folder[' . $_fold . '] failed');
+                            throw new Exception('Create folder[' . $_folder . '] failed');
                         }catch(Exception $e){
                             $_output = new Output();
                             $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
@@ -148,134 +187,89 @@ class File
                         }
                     }
                 }
-            }
-            if(!$_receipt and strtolower($operate) === "full"){
-                # 调用路径文件验证
-                $_resource = $this->resource($_uri);
-                # 转化对象类型
-                $_guide = explode('/', $_uri);
-                # 根据操作状态执行不同的操作，修改，删除，清楚在特定条件下，将不执行，只返回错误信息
-                for ($_i = 0; $_i < count($_guide); $_i++) {
-                    if($_i === 0){
-                        $_folder .= $_guide[$_i];
-                    }else{
-                        $_folder .= DS . $_guide[$_i];
-                    }
-                    if(!$_resource and strlen($_folder) < strlen($this->_Breakpoint))
-                        continue;
-                    if (strpos($_folder, '.')) {
-                        if ($_file = fopen(ROOT.$_folder, 'w')) {
-                            $_receipt = true;
-                            fclose($_file);
-                        }else
-                            break;
+                break;
+            case 'rename':
+                # 执行重命名操作
+                $_guide = explode("/",$guide);
+                # 获取需重命名对象信息
+                $_object = $_guide[count($_guide) - 1];
+                # 判断是否有文件结构标记
+                if (strpos($_object, '.')) {
+                    # 转换数据状态，拆分文件结构
+                    $_arr = explode('.', $_object);
+                    if (strpos($name, '.')) {
+                        # 根据结构进行预处理
+                        $_name_arr = explode('.', $name);
+                        $name = $_name_arr[0] . '.' . $_arr[1];
                     } else {
-                        # 创建对象文件夹，并赋予最高控制权限，该结构在windows默认生效
-                        if (mkdir(ROOT.$_folder, 0777))
-                            $_receipt = true;
-                        else
-                            break;
+                        $name .= '.' . $_arr[1];
                     }
                 }
-                if($throw){
-                    $this->_Error = "Create folder[' . $_folder . '] failed";
-                }else{
-                    # 错误代码：00101，错误信息：文件创建失败
-                    try{
-                        throw new Exception('Create folder[' . $_folder . '] failed');
-                    }catch(Exception $e){
-                        $_output = new Output();
-                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                        exit();
-                    }
-                }
-            }
-        }else{
-            # 重命名，删除执行
-            switch ($operate) {
-                case 'rename':
-                    # 执行重命名操作
-                    $_guide = explode("/",$guide);
-                    # 获取需重命名对象信息
-                    $_object = $_guide[count($_guide) - 1];
-                    # 判断是否有文件结构标记
-                    if (strpos($_object, '.')) {
-                        # 转换数据状态，拆分文件结构
-                        $_arr = explode('.', $_object);
-                        if (strpos($name, '.')) {
-                            # 根据结构进行预处理
-                            $_name_arr = explode('.', $name);
-                            $name = $_name_arr[0] . '.' . $_arr[1];
-                        } else {
-                            $name .= '.' . $_arr[1];
-                        }
-                    }
-                    # 装载整体结构
-                    $_change = str_replace($_object, $name, str_replace("/",DS,ROOT.DS.$guide));
-                    if (!rename(ROOT.$guide, $_change)) {
-                        if($throw){
-                            $this->_Error = "Files[' . $this->_Guide . '] rename failed";
-                        }else {
-                            # 错误代码：00102，错误信息：文件重命名失败
-                            try {
-                                throw new Exception('Files[' . $this->_Guide . '] rename failed');
-                            } catch (Exception $e) {
-                                $_output = new Output();
-                                $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
-                                exit();
-                            }
-                        }
-                    }
-                    break;
-                case 'remove':
-                    # 执行删除
-                    if (strpos($guide, '.')) {
-                        if (!unlink(str_replace("/",DS,ROOT.DS.$guide))) {
-                            if($throw){
-                                $this->_Error = 'Remove file[' . $guide . '] failed';
-                            }else {
-                                try {
-                                    throw new Exception();
-                                } catch (Exception $e) {
-                                    $_output = new Output();
-                                    $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
-                                    exit();
-                                }
-                            }
-                        }else
-                            $_receipt= true;
-                    } else {
-                        if (!rmdir(str_replace("/",DS,ROOT.DS.$guide))) {
-                            if($throw){
-                                $this->_Error = 'Remove folder[' . $guide . '] failed';
-                            }else {
-                                try {
-                                    throw new Exception();
-                                } catch (Exception $e) {
-                                    $_output = new Output();
-                                    $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
-                                    exit();
-                                }
-                            }
-                        }else
-                            $_receipt = true;
-                    }
-                    break;
-                default:
+                # 装载整体结构
+                $_change = str_replace($_object, $name, str_replace("/",DS,ROOT.DS.$guide));
+                if (!rename(ROOT.$guide, $_change)) {
                     if($throw){
-                        $this->_Error = 'Folder has been created';
+                        $this->_Error = "Files[' . $guide . '] rename failed";
                     }else {
-                        # 错误代码：00100，错误信息：文件已创建
+                        # 错误代码：00102，错误信息：文件重命名失败
                         try {
-                            throw new Exception('Folder has been created');
+                            throw new Exception('Files[' . $guide . '] rename failed');
                         } catch (Exception $e) {
                             $_output = new Output();
                             $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
                             exit();
                         }
                     }
-                    break;
-            }
+                }
+                break;
+            case 'remove':
+                # 执行删除
+                if (strpos($guide, '.')) {
+                    if (!unlink(str_replace("/",DS,ROOT.DS.$guide))) {
+                        if($throw){
+                            $this->_Error = 'Remove file[' . $guide . '] failed';
+                        }else {
+                            try {
+                                throw new Exception();
+                            } catch (Exception $e) {
+                                $_output = new Output();
+                                $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                                exit();
+                            }
+                        }
+                    }else
+                        $_receipt= true;
+                } else {
+                    if (!rmdir(str_replace("/",DS,ROOT.DS.$guide))) {
+                        if($throw){
+                            $this->_Error = 'Remove folder[' . $guide . '] failed';
+                        }else {
+                            try {
+                                throw new Exception();
+                            } catch (Exception $e) {
+                                $_output = new Output();
+                                $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                                exit();
+                            }
+                        }
+                    }else
+                        $_receipt = true;
+                }
+                break;
+            default:
+                if($throw){
+                    $this->_Error = 'Folder has been created';
+                }else {
+                    # 错误代码：00100，错误信息：文件已创建
+                    try {
+                        throw new Exception('Folder has been created');
+                    } catch (Exception $e) {
+                        $_output = new Output();
+                        $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
+                }
+                break;
         }
         return $_receipt;
     }
