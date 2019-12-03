@@ -50,7 +50,26 @@ manage():
 >>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo("修改成功");`   
 >>> `}else{`   
 >>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo("修改失败");`   
->>> `}`   
->>> 当throw 值设置为true后，File封装中提供了一个异常信息出口，`$_file ->getError();`可以获取异常信息
+>>> `}`
+>>   
+>> 当throw 值设置为true后，File封装中提供了一个异常信息出口，`$_file ->getError();`可以获取异常信息   
 
 write():
+> 文件读写函数
+>> `$_file->write(__url__,__operate__,__msg__);`
+>> #### 参数说明:   
+>> `__url__`：文件（夹）路径参数，参数为非空(not null)字符串(string),路径连接符号使用（/）    
+>> `__opearte__`：操作类型，根据fopen函数内容提供了8中操作类型，并追加了两个操作类型   
+>>> r:读取操作 操作方式：r   
+>>> rw:读写操作 操作方式：r+   
+>>> sr: 数据结构读取操作 操作对应函数file   
+>>> w：写入操作 操作方式：w   
+>>> lw：前写入 操作方式：w+   
+>>> cw:缺失创建并写入 调用对应函数manage，操作方式：w+   
+>>> bw：后写入 操作方式：a   
+>>> fw：补充写入 操作方式：a+   
+>>> rr: 读取全文 调用对应函数 file_get_contents   
+>>> re：重写 调用对应函数 file_put_contents      
+>>
+>> `__msg__`：写入内容，该参数默认值为null（空），`__operate__`参数选择写入操作，参数需填入非空字符串    
+>> 函数在返回操作回执时，一般会返回true or false，但在读取操作时，回返回读取内容 or false，这里在调用函数时需注意
