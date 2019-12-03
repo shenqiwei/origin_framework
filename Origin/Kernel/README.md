@@ -25,7 +25,7 @@ File封装类中提供了三个操作函数（resource | manage | write），主
 resource():
 > 文件（夹）路径断点识别函数，用于对文件（夹）地址进行路径有效验证，如文件路径无效则进行断点跟踪，并返回断点位置参数
 >> `$_file->resource(__url__);`方法参数为非空(not null)字符串(string),路径连接符号使用（/）, 返回值为（ boolean类型）true or false
->>> 例：文件（夹）路径无效是，函数会记录断点内容，使用getBreakpoint函数就可以获得断点内容   
+>>> 例：文件（夹）路径无效，函数会记录断点内容，使用getBreakpoint函数就可以获得断点内容   
 >>> `$_file = new File();` # 实例化对象   
 >>> `$_receipt = $_file->resource("home/view/index.html")`   
 >>> `if($_receipt){` # 返回值状态    
@@ -42,6 +42,15 @@ manage():
 >> `__url___`：文件（夹）路径参数，参数为非空(not null)字符串(string),路径连接符号使用（/）   
 >> `__operate__`：操作类型，提供四种参数内容选择 create(创建)、full(补全创建)、rename(重命名)、remove(移除)，其他操作项暂不支持,使用full创建文件（夹）时，函数会调用resource函数进行断点查找，并完成剩余路径信息的创建，remove不支持非空文件夹移除   
 >> `__name__`：重命名信息参数，该参数默认值为null（空），`__operate__`参数选择rename，参数需填入非空字符串
->> `__throw__`：异常状态默认值 false 不报异常信息
+>> `__throw__`：异常状态默认值 false 不报异常信息， true报异常信息，并记录到异常日志中   
+>>> 例：   
+>>> `$_file = new File();`   
+>>> `$_receipt = $_file->manage("/home/view/old.html","rename","new",true);` # 对文件名修改，操作对象路径是以项目根目录地址为起始的相对路径，修改名仅需要填入修改名称，不需要标明路径内容    
+>>> `if($_receipt){`   
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo("修改成功");`   
+>>> `}else{`   
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo("修改失败");`   
+>>> `}`   
+>>> 当throw 值设置为true后，File封装中提供了一个异常信息出口，`$_file ->getError();`可以获取异常信息
 
 write():
