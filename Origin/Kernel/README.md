@@ -113,4 +113,38 @@ Upload封装类用于实现Origin文件上传功能
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo($_upload->getError();` # 显示错误信息    
 >> `}`   
 >
-> 上传多文件时，仅需要设置file表单名称既可以支持多文件上传,`<input type="file" name="file">`单一上传，`<input type="file" name="file[]">`多文件上传，Upload表单名设置时，仅标注名称（按照单一上传名称设置表单名）
+> 上传多文件时，仅需要设置file表单名称既可以支持多文件上传,`<input type="file" name="file">`单一上传，`<input type="file" name="file[]">`多文件上传，Upload表单名设置时，仅标注名称（按照单一上传名称设置表单名）   
+
+<span id='view'></span>
+## View显示模板封装类 [[返回TOP](#origin_top)]
+
+View主要用于Origin应用功能模板方法 `Origin\Application\Controller->view(__view__)` 的调取实现,不参与主要开发功能实现，故不进行功能说明
+
+<span id='label'></span>
+## Label模板语法解析封装类 [[返回TOP](#origin_top)]
+
+Label主要用于Origin应用功能模板中功能语法标签的解析,Label 提供了一种引用标签，一种条件表达式标签，两种循环标签
+> include 文件引用标签，主要用于调用公共html文件内容，资源应用地址起始位置 `Resource/Public`   
+>> 语法：`<include href="include_file_url"/>`
+>
+> if 逻辑表达式标签   
+>> 语法：
+>> if 起始标签 `<if condition = 'variable operative_symbol conditions_variable'>`   
+>> elseif 标签 `<elseif condition = 'variable operative_symbol conditions_variable'/>`   
+>> else 标签 `<else/>`   
+>> if 结束标签 `</if>`   
+>
+> foreach 循环标签    
+>> 语法：   
+>> foreach 起始标签 `<foreach operation = 'variable (as mark_variable)'>`   
+>> foreach 结束标签 `</foreach>`   
+>
+> for 循环标签
+>>
+>> for 起始标签 `<for operation = 'variable to circulation_count'>`   
+>> for 结束标签 `</for>`   
+   
+
+
+
+

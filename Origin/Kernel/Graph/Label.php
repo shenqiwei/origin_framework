@@ -51,7 +51,7 @@ class Label
     /**
      * foreach循环标签规则
      * @var string $_Foreach_Operation 'variable (as mark_variable)'
-     * @var string $_Foreach_Begin <foreach operation = '(as mark_variable)'>
+     * @var string $_Foreach_Begin <foreach operation = 'variable (as mark_variable)'>
      * @var string $_Foreach_End </foreach>
      */
 //    private $_Foreach_Operate= '/^.+\s(as)\s.+$/';
