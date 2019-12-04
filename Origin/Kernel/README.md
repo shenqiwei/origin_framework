@@ -102,7 +102,7 @@ Upload封装类用于实现Origin文件上传功能
 
 > 例：    
 >> `$_upload = new Upload()` # 实例化类    
->> `$_upload->input("file")` # 设置上传表单名
+>> `$_upload->input("file")` # 设置上传表单名   
 >> `$_upload->type(array("jpg","png"));` # 设置上传文件限制   
 >> `$_upload->size(50000000);` # 设置上传大小限制   
 >> `$_upload->store("Resource/user/upload")` # 设置文件存储位置    
