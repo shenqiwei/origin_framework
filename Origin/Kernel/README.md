@@ -36,6 +36,7 @@ resource():
 >>    
 >> resource函数中使用is_file和is_dir函数判断地址有效性，常规开发中，如不需要使用集合封装函数功能，推荐直接使用is_file和is_dir函数，如果仅用于判断当前地址路径是否有效可以直接使用is_folder函数   
 
+<span id='manage'></span>
 manage():
 > 文件（夹）管理函数，用于对文件（夹）进行创建、修改、复制、删除操作
 >> `$_file->manage(__url__,__operate__,__name__,__throw__);`   
@@ -55,6 +56,7 @@ manage():
 >>   
 >> 当throw 值设置为true后，File封装中提供了一个异常信息出口，`$_file ->getError();`可以获取异常信息   
 
+<span id='write'></span>
 write():
 > 文件读写函数
 >> `$_file->write(__url__,__operate__,__msg__);`
@@ -74,3 +76,41 @@ write():
 >>
 >> `__msg__`：写入内容，该参数默认值为null（空），`__operate__`参数选择写入操作，参数需填入非空字符串    
 >> 函数在返回操作回执时，一般会返回true or false，但在读取操作时，回返回读取内容 or false，这里在调用函数时需注意
+
+<span id='upload'></span>
+## Upload文件上传封装类 [[返回TOP](#origin_top)]
+
+Upload封装类用于实现Origin文件上传功能
+
+> 类的调用，省略include和require函数，直接使用命名空间调用   
+>> `use Origin\Kernel\File\Upload;`   
+
+> 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的实例化不需要标注表单名称
+>> `$_upload = new Upload()`
+
+> Upload封装类提供了基础参数设置函数
+>> `$_upload->input(__input__)` # 设置表单名称 <from>表单需增加 type = 'multipart/form-data' 上传功能有效   
+>> `$_upload->type(__type__)` # 设置文件类型限制，参数可以设置为字符串（单一类型限制），也可以设置为数组，默认值为空 不做任何限制   
+>> `$_upload->size(__size__)` # 设置文件大小限制，参数为整数，默认值 0 不做任何限制    
+>> `$_upload->store(__store__)` # 设置存储位置，默认值 null ，预设值为项目资源目录 /Resource/Upload/，在预设状态下上传文件，框架会自动生成一个以日期为标记的目录，用于拆分上传文件     
+
+> Upload上传执行函数   
+>> `$_upload->update()` # 执行上传操作，该函数会返回两种状态值，一种上传文件名称或文件列表（多文件上传），一种是返回布尔值 false 上传失败
+
+> Upload 错误回执函数
+>> `$_upload->getError()` # 上传函数返回false时，错误回执返回不为空（not null）内容信息
+
+> 例：    
+>> `$_upload = new Upload()` # 实例化类    
+>> `$_upload->input("file")` # 设置上传表单名
+>> `$_upload->type(array("jpg","png"));` # 设置上传文件限制   
+>> `$_upload->size(50000000);` # 设置上传大小限制   
+>> `$_upload->store("Resource/user/upload")` # 设置文件存储位置    
+>> `$_receipt = $_upload->update();` # 执行上传    
+>> `if($_receipt){`    
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo($_receipt);` # 返回文件上传后信息     
+>> `}else{`   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`echo($_upload->getError();` # 显示错误信息    
+>> `}`   
+>
+> 上传多文件时，仅需要设置file表单名称既可以支持多文件上传,`<input type="file" name="file">`单一上传，`<input type="file" name="file[]">`多文件上传，Upload表单名设置时，仅标注名称（按照单一上传名称设置表单名）

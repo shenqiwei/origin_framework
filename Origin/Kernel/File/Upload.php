@@ -44,15 +44,14 @@ class Upload
         'image/jpeg' => 'jpg',
         'image/gif' => 'gif',
     );
-    /**
-     * @access public
-     * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
-     * @contact 构造函数，用于对象结构装载
+     /**
+      * @access public
+      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      */
-    function __construct($input=null)
-    {
-        $this->_Input = $input;
-    }
+     function input($input)
+     {
+         $this->_Input = $input;
+     }
     /**
      * @access public
      * @param array $type 上传文件类型
@@ -87,10 +86,12 @@ class Upload
     function update()
     {
         $_receipt = false;
-        # 存储目录，使用年月日拆分存储内容
-        $_dir = date("Ymd",time());
+        # 存储目录
+        $_dir = null;
         # 验证存储主目录是否有效
         if(is_null($this->_Store))
+            # 设置存储子目录，使用年月日拆分存储内容
+            $_dir = date("Ymd",time());
             $this->_Store = str_replace("/",DS,"Resource/Upload/".$_dir);
         if(!is_dir(str_replace("/",DS,ROOT.$this->_Store))){
             $_file = new File();
@@ -101,6 +102,7 @@ class Upload
         else{
             $_file = $_FILES[$this->_Input];
             if(is_array($_file["name"])){
+                $_folder = array();
                 for($_i = 0;$_i < count($_file["name"]);$_i++){
                     if(key_exists($_file["type"][$_i],$this->_Type_Array))
                         $_suffix = $this->_Type_Array[$_file["type"][$_i]];
@@ -123,12 +125,14 @@ class Upload
                         $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
                         if(move_uploaded_file($_file['tmp_name'][$_i],
                             str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
-                            $_receipt = $_dir."/".$_upload_file;
+                            array_push($_folder,$_dir."/".$_upload_file);
                         }else{
                             $this->_Error = "Files upload failed";
+                            break;
                         }
                     }
                 }
+                $_receipt = $_folder;
             }else{
                 if(key_exists($_file["type"],$this->_Type_Array))
                     $_suffix = $this->_Type_Array[$_file["type"]];
