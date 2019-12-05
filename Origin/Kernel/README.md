@@ -123,24 +123,31 @@ View主要用于Origin应用功能模板方法 `Origin\Application\Controller->v
 <span id='label'></span>
 ## Label模板语法解析封装类 [[返回TOP](#origin_top)]
 
-Label主要用于Origin应用功能模板中功能语法标签的解析,Label 提供了一种引用标签，一种条件表达式标签，两种循环标签
+Label主要用于Origin应用功能模板中功能语法标签的解析
+
+Label输出变量方法 `{$variable_name}`即大括号，php变量符号，变量名的组合，该结构表达内容与`<?php echo($variable_name); ?>`一致,简单的概括就是带有大括号的变量即为可输出变量。
+
+Label 还提供了一种引用标签，一种条件表达式标签，两种循环标签
 > include 文件引用标签，主要用于调用公共html文件内容，资源应用地址起始位置 `Resource/Public`   
 >> 语法：`<include href="include_file_url"/>`
 >
 > if 逻辑表达式标签   
->> 语法：
+> if 条件 由变量 运算符号 条件变量/值组成 ，条件内容变量由php变量符号和变量名组成   
+>> 语法：   
 >> if 起始标签 `<if condition = 'variable operative_symbol conditions_variable'>`   
 >> elseif 标签 `<elseif condition = 'variable operative_symbol conditions_variable'/>`   
 >> else 标签 `<else/>`   
 >> if 结束标签 `</if>`   
 >
 > foreach 循环标签    
+> 与if变量语法一致，但foreach语法带有别名结构，别名设置需标注出 as 关键词，别名不需要以PHP变量符号开头    
 >> 语法：   
 >> foreach 起始标签 `<foreach operation = 'variable (as mark_variable)'>`   
 >> foreach 结束标签 `</foreach>`   
 >
 > for 循环标签
->>
+> 与if变量语法一致，for带有显示数量限制（1.0版本后限制结构语法暂时取消）
+>>语法：   
 >> for 起始标签 `<for operation = 'variable to circulation_count'>`   
 >> for 结束标签 `</for>`   
    
