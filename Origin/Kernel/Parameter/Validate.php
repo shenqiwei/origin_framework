@@ -50,6 +50,12 @@ class Validate
      */
     private $_Null = true;
     /**
+     * 错误信息返回
+     * @access private
+     * @var string $_Error
+    */
+    private $_Error = null;
+    /**
      * 构造函数 对验证值及参数条件进行装载
      * @access public
      * @param mixed $variable 参数值
@@ -138,26 +144,14 @@ class Validate
          * @var string $_empty
          * @var string $_ip
         */
-        $_receipt = true;
-        $_size = $this->__size();
-        $_type = $this->__type();
-        $_empty = $this->__empty();
-        if($_empty !== true){
-            $_receipt = $_empty;
-        }elseif($_size !== true){
-            $_receipt = $_size;
-        }elseif($_type !== true){
-            $_receipt = $_type;
-        }else{
-            if($this->_Type == 'ipv4'){
-                $_ip = $this->__ipv4();
-                if($_ip !== true){
-                    $_receipt = $_ip;
-                }
-            }elseif($this->_Type == 'ipv6'){
-                $_ip = $this->__ipv6();
-                if($_ip !== true){
-                    $_receipt = $_ip;
+        if($_receipt = $this->__size()){
+            if($_receipt = $this->__type()){
+                if($_receipt = $this->__empty()){
+                    if($this->_Type == 'ipv4'){
+                        $_receipt = $this->__ipv4();
+                    }elseif($this->_Type == 'ipv6'){
+                        $_receipt = $this->__ipv6();
+                    }
                 }
             }
         }
@@ -174,20 +168,20 @@ class Validate
         /**
          * @var mixed $_return
         */
-        $_return = true;
+        $_return = false;
         # 判断验证参数值是否被设置为可以为空
         if($this->_Null == false){
             # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
             if(is_array($this->_Variable)){
                 # Origin Class Error: Unable to verify the array
-                $_return = 'array object';
+                $this->_Error = 'Unable to verify the array';
             }else{
-                # 使用empty函数判断参数值是否为空并是用字符串长度判断函数，判断参数值长度，进行双重验证
-                if(empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) == 0){
+                # 使用empty函数判断参数值是否为空
+                if(empty(trim($this->_Variable))){
                     # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                     if(is_int($this->_Variable) and $this->_Variable == 0)
                         $_return = true;
-                    elseif((is_float($this->_Variable) or is_double($this->_Variable))and $this->_Variable == 0.0)
+                    elseif((is_float($this->_Variable) or is_double($this->_Variable)) and $this->_Variable == 0.0)
                         $_return = true;
                     elseif(is_bool($this->_Variable) and $this->_Variable == false)
                         $_return = true;
@@ -195,7 +189,7 @@ class Validate
                         $_return = true;
                     else
                         # error: Verify the value is null
-                        $_return = 'value null';
+                        $this->_Error = 'Verify the value is null';
                 }
             }
         }
@@ -216,11 +210,11 @@ class Validate
         /**
          * @var mixed $_return
         */
-        $_return = true;
+        $_return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($this->_Variable)){
             # Origin Class Error: Unable to verify the array
-            $_return = 'array object';
+            $this->_Error = 'Unable to verify the array';
         }else{
             # 判断验证参数值是否被设置为可以为空
             if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0) {
@@ -241,7 +235,7 @@ class Validate
                 if(($this->_Min == $this->_Max) and $this->_Min > 0){
                     if(strlen($this->_Variable) != $this->_Min){
                         # Origin Class Error: Verify the value length do not agree with requirements
-                        $_return = 'length error';
+                        $this->_Error = 'Verify the value length do not agree with requirements';
                     }
                 }
                 # 判断最小范围值大于零，且最大范围值等于0，执行大于等于值的判断
@@ -249,14 +243,14 @@ class Validate
                 if (($this->_Min > 0 and $this->_Max == 0)) {
                     if (strlen($this->_Variable) < $this->_Min or mb_strlen($this->_Variable) < $this->_Min) {
                         # Origin Class Error: Verify the value length is less than the minimum range
-                        $_return = 'length error';
+                        $this->_Error = 'Verify the value length is less than the minimum range';
                     }
                 }
                 # 判断最大范围值大于0，且最小范围之等于0，执行小等于值的判断
                 if ($this->_Max > 0 and $this->_Min == 0) {
                     if (strlen($this->_Variable) > $this->_Max or mb_strlen($this->_Variable) > $this->_Max) {
                         # Origin Class Error: Verify the length value is greater than the maximum range
-                        $_return = 'length error';
+                        $this->_Error = 'Verify the length value is greater than the maximum range';
                     }
                 }
                 # 判断区间范围
@@ -264,12 +258,14 @@ class Validate
                     if(strlen($this->_Variable) < $this->_Min or mb_strlen($this->_Variable) < $this->_Min
                         or strlen($this->_Variable) > $this->_Max or mb_strlen($this->_Variable) > $this->_Max){
                         # Origin Class Error: Verify the value is beyond the range
-                        $_return = 'length error';
+                        $this->_Error = 'Verify the value is beyond the range';
                     }
                 }
             }
             # 如果最小范围值和最大范围值都等于0，则不作任何判断
         }
+        if(is_null($this->_Error))
+            $_return = true;
         return $_return;
     }
     /**
@@ -282,25 +278,28 @@ class Validate
         /**
          * @var mixed $_return
          */
-        $_return = true;
+        $_return = false;
         if($this->_Type == 'redefine'){
             # Origin Class Error: Your choice of validation structure does not exist
-            $_return = 'type error';
+            $this->_Error = 'Your choice of validation structure does not exist';
         }else{
             # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
             # Origin Class Error: Unable to verify the array
             if(is_array($this->_Variable)){
-                $_return = 'array object';
+                $this->_Error = 'Unable to verify the array';
             }else{
                 # 判断验证参数值是否被设置为可以为空
                 if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
                     if(!preg_match($this->_Type, $this->_Variable)){
-                        $_return = 'type error';
+                        $this->_Error = 'Variable type error';
+                    }else{
+                        $_return = true;
                     }
+                }else{
+                    $_return = true;
                 }
             }
         }
-
         return $_return;
     }
 
@@ -316,11 +315,11 @@ class Validate
          * @var array _array
          * @var int i
          */
-        $_return = true;
+        $_return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         # error: Verify the value format does not accord with requirements
         if(is_array($this->_Variable)){
-            $_return = 'format error';
+            $this->_Error = 'Verify the value format does not accord with requirements';
         }else {
             if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
                 # 拆分ip地址，将字符串转化为数组结构
@@ -330,15 +329,17 @@ class Validate
                     # 循环遍历数组元素，进行ip地址信息特性验证
                     for ($i = 0; $i < count($_array); $i++) {
                         if ($i < 0 or $i > 255) {
-                            $_return = 'format error';
+                            $this->_Error = 'Verify the value format does not accord with requirements';
                             break;
                         }
                     }
                 } else {
-                    $_return = 'format error';
+                    $this->_Error = 'Verify the value format does not accord with requirements';
                 }
             }
         }
+        if(is_null($this->_Error))
+            $_return = true;
         return $_return;
     }
     /**
@@ -356,10 +357,10 @@ class Validate
          * @var string $_keys
          * @var string $_regular
          */
-        $_return = true;
+        $_return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($this->_Variable)){
-            $_return = 'error: Verify the value format does not accord with requirements';
+            $this->_Error = ' Verify the value format does not accord with requirements';
         }else {
             if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
                 # 判断ip地址是否为初始地址，即：0:0:0:0:0:0:0:0 或者 ::
@@ -375,7 +376,7 @@ class Validate
                             $_regular = '/^([0-9A-F]{1,4}|[0-9a-f]|)$/';
                             if (!preg_match($_regular, $_array[$i])) {
                                 # error: Verify the value format does not accord with requirements
-                                $_return = 'format error';
+                                $this->_Error = 'Verify the value format does not accord with requirements';
                                 break;
                             }else{
                                 # 查找ipv6数组中有多少个空元素
@@ -390,7 +391,8 @@ class Validate
                                     if($k >2){
                                         $_keys = explode(',',$_keys);
                                         if(intval($_keys[0]) + 1 == intval($_keys[1]) and intval($_keys[0]) + 2 == intval($_keys[2])){
-                                            $_return = 'format error';
+                                            $this->_Error = 'Variable type error';
+                                            break;
                                         }
                                     }
                                 }else{
@@ -399,11 +401,13 @@ class Validate
                             }
                         }
                     } else {
-                        $_return = 'format error';
+                        $this->_Error = 'Variable type error';
                     }
                 }
             }
         }
+        if(is_null($this->_Error))
+            $_return = true;
         return $_return;
     }
 }

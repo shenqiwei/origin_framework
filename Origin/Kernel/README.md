@@ -3,7 +3,7 @@
 该目录用于存放Origin主要功能封装类
 
 #### 快速入口
-[`File说明`](#file)|[`Upload说明`](#upload)|[`View说明`](#view)|[`Label说明`](#label)|[`request说明`](#Validate)|[`DB说明`](#db)|[`validate说明`](#validate)|[`Output说明`](#outeput)|[`Filter说明`](#filter)|[`Curl说明`](#curl)|[`Verify说明`](#verify)    
+[`File说明`](#file)|[`Upload说明`](#upload)|[`View说明`](#view)|[`Label说明`](#label)|[`request说明`](#request)|[`DB说明`](#db)|[`Validate说明`](#validate)|[`Output说明`](#outeput)|[`Filter说明`](#filter)|[`Curl说明`](#curl)|[`Verify说明`](#verify)    
 
 <span id='file'></span>
 ## File 文件操作封装类 [[返回TOP](#origin_kernel)]
@@ -169,5 +169,15 @@ Request现阶段版本仅支持get/post请求
 >
 > Request类还有一个移除函数`$_request->delete()`，当使用该函数时，请求器会直接注销当前表单名下所有内容
 
+<span id='db'></span>
+## DB数据库访问封装类 [[返回TOP](#origin_kernel)]
 
+<span id='validate'></span>
+## Validate验证封装类 [[返回TOP](#origin_kernel)]
 
+Validate主要服务于Origin基础验证结构，Validate提供了内容空状态验证（not null），值域范围验证（min < strlen(variable) or number < max），格式验证 (preg_match).
+
+> 类的调用，省略include和require函数，直接使用命名空间调用   
+>> `use Origin\Kernel\Parameter\Validate;`
+>
+> Validate声明对象时需注入
