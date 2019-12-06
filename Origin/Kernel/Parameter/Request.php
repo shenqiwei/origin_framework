@@ -27,13 +27,6 @@ class Request
     private $_Validate_Name = null;
     /**
      * 全局变量，用于方法间值的传递
-     * 请求器，被调用的参数对象的数据类型
-     * @access private
-     * @var string $_Type
-    */
-    private $_Type = 'string';
-    /**
-     * 全局变量，用于方法间值的传递
      * 请求其，当请求内容为空或不存在时，系统会放回默认值信息
      * @access private
      * @var $_Default
@@ -45,10 +38,9 @@ class Request
      * @access public
      * @param $method
      * @param $validate_name
-     * @param $type
      * @param $default
     */
-    function __construct( $validate_name, $default=null, $method='request', $type='string')
+    function __construct($validate_name, $default=null, $method='request')
     {
         /**
          * 正则变量,method 用于验证请求方式，type用于转化数据类型
@@ -61,11 +53,6 @@ class Request
             $this->_Method = $method;
         }
         $this->_Validate_Name = $validate_name;
-        # 数据类型正则，用于限定php接受值的基本数据类型
-        $_type_regular = '/^(int|integer|string|str|float|double|boolean){1}$/';
-        if(is_true($_type_regular, $type) === true){
-            $this->_Type = $type;
-        }
         $this->_Default = $default;
     }
     /**

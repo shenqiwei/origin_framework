@@ -9,11 +9,10 @@
  * @access public
  * @param string $key 请求对象键
  * @param mixed $default 请求器返回默认值
- * @param string $type 数据返回类型
  * @param boolean $delete 执行删除操作
  * @return mixed
  */
-function Request($key, $default=null,$type=null, $delete=false)
+function Request($key, $default=null, $delete=false)
 {
     /**
      * @var string $_receipt
@@ -28,8 +27,6 @@ function Request($key, $default=null,$type=null, $delete=false)
     $_regular = '/^((post|get|request|put|delete)\.)?[\w]+(\-[\w]+)*$/';
     # 创建请求类型变量
     $_method = 'request';
-    # 数据返回类型
-    $_type = 'string';
     # 判断请求参数是否合规
     if($key and is_true($_regular, trim(strtolower($key))) === true){
         # 将请求参数根据要求转为数组
@@ -55,12 +52,8 @@ function Request($key, $default=null,$type=null, $delete=false)
             $_method = strtolower($_request[0]);
             $_request = $_request[1];
         }
-        # 判断数据类型是否为有效数据类型
-        if(in_array(strtolower(trim($type)),array('string','int','boolean','bool','float','double'))){
-            $_type = strtolower(trim($type));
-        }
         # 声明请求控制器对象
-        $_obj= new Origin\Kernel\Parameter\Request($_request,$default,$_method,$_type);
+        $_obj= new Origin\Kernel\Parameter\Request($_request,$default,$_method);
         if(is_bool($delete) and $delete === true){
             # 执行删除
             $_obj->delete();

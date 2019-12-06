@@ -6,13 +6,13 @@
 [`File说明`](#file)|[`Upload说明`](#upload)|[`View说明`](#view)|[`Label说明`](#label)|[`request说明`](#Validate)|[`DB说明`](#db)|[`validate说明`](#validate)|[`Output说明`](#outeput)|[`Filter说明`](#filter)|[`Curl说明`](#curl)|[`Verify说明`](#verify)    
 
 <span id='file'></span>
-## File 文件操作封装类 [[返回TOP](#origin_top)]
+## File 文件操作封装类 [[返回TOP](#origin_kernel)]
 
 File封装类中提供了三个操作函数（resource | manage | write），主要用于文件（夹）路径查询，文件（夹）创建、修改、移动、复制、删除、文件写入功能的实现
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
 >> `use Origin\Kernel\File\File;`   
-
+>
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的File实例化时，不再需要预设目录地址，File默认从项目根目录位置开始进行内容调用   
 >> `$_file = new File()`
 
@@ -78,25 +78,25 @@ write():
 >> 函数在返回操作回执时，一般会返回true or false，但在读取操作时，回返回读取内容 or false，这里在调用函数时需注意
 
 <span id='upload'></span>
-## Upload文件上传封装类 [[返回TOP](#origin_top)]
+## Upload文件上传封装类 [[返回TOP](#origin_kernel)]
 
 Upload封装类用于实现Origin文件上传功能
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
 >> `use Origin\Kernel\File\Upload;`   
-
+>
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的实例化不需要标注表单名称
 >> `$_upload = new Upload()`
-
+>
 > Upload封装类提供了基础参数设置函数
 >> `$_upload->input(__input__)` # 设置表单名称 <from>表单需增加 type = 'multipart/form-data' 上传功能有效   
 >> `$_upload->type(__type__)` # 设置文件类型限制，参数可以设置为字符串（单一类型限制），也可以设置为数组，默认值为空 不做任何限制   
 >> `$_upload->size(__size__)` # 设置文件大小限制，参数为整数，默认值 0 不做任何限制    
 >> `$_upload->store(__store__)` # 设置存储位置，默认值 null ，预设值为项目资源目录 /Resource/Upload/，在预设状态下上传文件，框架会自动生成一个以日期为标记的目录，用于拆分上传文件     
-
+>
 > Upload上传执行函数   
 >> `$_upload->update()` # 执行上传操作，该函数会返回两种状态值，一种上传文件名称或文件列表（多文件上传），一种是返回布尔值 false 上传失败
-
+>
 > Upload 错误回执函数
 >> `$_upload->getError()` # 上传函数返回false时，错误回执返回不为空（not null）内容信息
 
@@ -116,12 +116,12 @@ Upload封装类用于实现Origin文件上传功能
 > 上传多文件时，仅需要设置file表单名称既可以支持多文件上传,`<input type="file" name="file">`单一上传，`<input type="file" name="file[]">`多文件上传，Upload表单名设置时，仅标注名称（按照单一上传名称设置表单名）   
 
 <span id='view'></span>
-## View显示模板封装类 [[返回TOP](#origin_top)]
+## View显示模板封装类 [[返回TOP](#origin_kernel)]
 
 View主要用于Origin应用功能模板方法 `Origin\Application\Controller->view(__view__)` 的调取实现,不参与主要开发功能实现，故不进行功能说明
 
 <span id='label'></span>
-## Label模板语法解析封装类 [[返回TOP](#origin_top)]
+## Label模板语法解析封装类 [[返回TOP](#origin_kernel)]
 
 Label主要用于Origin应用功能模板中功能语法标签的解析
 
@@ -151,7 +151,23 @@ Label 还提供了一种引用标签，一种条件表达式标签，两种循�
 >> for 起始标签 `<for operation = 'variable to circulation_count'>`   
 >> for 结束标签 `</for>`   
    
+<span id='request'></span>
+## Request请求器封装类 [[返回TOP](#origin_kernel)]
 
+Request现阶段版本仅支持get/post请求
+
+> 类的调用，省略include和require函数，直接使用命名空间调用   
+>> `use Origin\Kernel\Parameter\Request;`
+>
+> Request声明对象时注入三个基本参数：请求对象名称、默认值、请求类型   
+> `$_request = new Request(__variable__,__default__,__method__)`   
+>> `__veriable__`：表单名称，不能以符号或数字开头的字符串   
+>> `__default__`：请求器默认，用于在请求内容无效时，进行默认回复   
+>> `__method__`： 请求器请求方法，默认值 request(post优先的表单请求，在无post请求时直接返回get请求，如有post 请求同键名条件下返回post请求内容)   
+>
+> Request类中获取请求内容时需调用`$_request->main()`来实现请求内容的获取，该方法无参数信息，方法返回值为字符串
+>
+> Request类还有一个移除函数`$_request->delete()`，当使用该函数时，请求器会直接注销当前表单名下所有内容
 
 
 

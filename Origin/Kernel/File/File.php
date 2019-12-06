@@ -174,16 +174,18 @@ class File
                                 break;
                         }
                     }
-                    if($throw){
-                        $this->_Error = "Create folder[' . $_folder . '] failed";
-                    }else{
-                        # 错误代码：00101，错误信息：文件创建失败
-                        try{
-                            throw new Exception('Create folder[' . $_folder . '] failed');
-                        }catch(Exception $e){
-                            $_output = new Output();
-                            $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                            exit();
+                    if(!$_receipt){
+                        if($throw){
+                            $this->_Error = "Create folder[' . $_folder . '] failed";
+                        }else{
+                            # 错误代码：00101，错误信息：文件创建失败
+                            try{
+                                throw new Exception('Create folder[' . $_folder . '] failed');
+                            }catch(Exception $e){
+                                $_output = new Output();
+                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                exit();
+                            }
                         }
                     }
                 }
