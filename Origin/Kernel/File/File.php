@@ -38,8 +38,6 @@ class File
      */
     function resource($guide=null)
     {
-        # 地址目录变量
-        $_folder = null;
         # 设置返回对象
         $_receipt = false;
         # 创建对象索引变量
@@ -50,12 +48,14 @@ class File
                 throw new Exception('Files guide is invalid!');
             }catch(Exception $e){
                 $_output = new Output();
-                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
         # 判断错误编号是否为初始状态
         $_guide = explode('/',$_uri);
+        # 地址目录变量
+        $_folder = null;
         for($_i = 0;$_i < count($_guide);$_i++){
             if(empty($_i))
                 $_folder .= $_guide[$_i];

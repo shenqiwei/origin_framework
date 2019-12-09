@@ -78,7 +78,7 @@ abstract class Query
                 throw new Exception('Table name is not in conformity with the naming conventions');
             }catch(Exception $e){
                 $_output = new Output();
-                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -125,7 +125,7 @@ abstract class Query
                         throw new Exception('Field name is not in conformity with the naming conventions');
                     } catch (Exception $e) {
                         $_output = new Output();
-                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                         exit();
                     }
                 }
@@ -135,7 +135,7 @@ abstract class Query
                     throw new Exception('Field name is not in conformity with the naming conventions');
                 } catch (Exception $e) {
                     $_output = new Output();
-                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                     exit();
                 }
             }
@@ -144,7 +144,7 @@ abstract class Query
                 throw new Exception('Join Table name is not in conformity with the naming conventions');
             } catch (Exception $e) {
                 $_output = new Output();
-                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                 exit();
             }
         }
@@ -187,7 +187,7 @@ abstract class Query
                         throw new Exception('Field name is not in conformity with the naming conventions');
                     } catch (Exception $e) {
                         $_output = new Output();
-                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                         exit();
                     }
                 }
@@ -197,7 +197,7 @@ abstract class Query
                     throw new Exception('Field name is not in conformity with the naming conventions');
                 } catch (Exception $e) {
                     $_output = new Output();
-                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                     exit();
                 }
             }
@@ -206,7 +206,7 @@ abstract class Query
                 throw new Exception('Join Table name is not in conformity with the naming conventions');
             } catch (Exception $e) {
                 $_output = new Output();
-                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                 exit();
             }
         }
@@ -249,7 +249,7 @@ abstract class Query
                         throw new Exception('Field name is not in conformity with the naming conventions');
                     } catch (Exception $e) {
                         $_output = new Output();
-                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                         exit();
                     }
                 }
@@ -259,7 +259,7 @@ abstract class Query
                     throw new Exception('Field name is not in conformity with the naming conventions');
                 } catch (Exception $e) {
                     $_output = new Output();
-                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                     exit();
                 }
             }
@@ -268,7 +268,7 @@ abstract class Query
                 throw new Exception('Join Table name is not in conformity with the naming conventions');
             } catch (Exception $e) {
                 $_output = new Output();
-                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                 exit();
             }
         }
@@ -311,7 +311,7 @@ abstract class Query
                         throw new Exception('Field name is not in conformity with the naming conventions');
                     } catch (Exception $e) {
                         $_output = new Output();
-                        $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                         exit();
                     }
                 }
@@ -321,7 +321,7 @@ abstract class Query
                     throw new Exception('Field name is not in conformity with the naming conventions');
                 } catch (Exception $e) {
                     $_output = new Output();
-                    $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                     exit();
                 }
             }
@@ -330,7 +330,7 @@ abstract class Query
                 throw new Exception('Join Table name is not in conformity with the naming conventions');
             } catch (Exception $e) {
                 $_output = new Output();
-                $_output->exception("Filter Error", $e->getMessage(), debug_backtrace(0, 1));
+                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
                 exit();
             }
         }
@@ -441,7 +441,7 @@ abstract class Query
                             throw new Exception('Field name is not in conformity with the naming conventions');
                         }catch(Exception $e){
                             $_output = new Output();
-                            $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                            $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }
@@ -457,7 +457,7 @@ abstract class Query
                     throw new Exception('Field name is not in conformity with the naming conventions');
                 }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -510,7 +510,7 @@ abstract class Query
                     throw new Exception('The field name is not in conformity with the SQL naming rules');
                 }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }else{
@@ -519,7 +519,7 @@ abstract class Query
                     throw new Exception('The table name is not in conformity with the SQL naming rules');
                 }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -559,7 +559,7 @@ abstract class Query
                         throw new Exception('The field name is not in conformity with the SQL naming rules');
                     }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -570,7 +570,7 @@ abstract class Query
                 throw new Exception('Need to use an array parameter structure');
             }catch(Exception $e){
                 $_output = new Output();
-                $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -621,7 +621,7 @@ abstract class Query
                         throw new Exception('The field name is not in conformity with the SQL naming rules');
                     }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -679,7 +679,7 @@ abstract class Query
                         throw new Exception('The field name is not in conformity with the SQL naming rules');
                     }catch(Exception $e){
                         $_output = new Output();
-                        $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                        $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -695,7 +695,7 @@ abstract class Query
                                                conformity with the SQL using rules');
                 }catch(Exception $e){
                     $_output = new Output();
-                    $_output->exception("Filter Error",$e->getMessage(),debug_backtrace(0,1));
+                    $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }

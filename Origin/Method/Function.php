@@ -11,7 +11,6 @@ include("Common/Initialize.php");
 # 基础操作方法包应用
 include("Common/Request.php");
 include("Common/Validate.php");
-include("Common/Filter.php");
 include("Common/Session.php");
 include("Common/Cookie.php");
 # 应用公共函数文件
