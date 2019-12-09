@@ -201,13 +201,12 @@ function safe_password($password)
  * @param string $param
  * @param int $min
  * @param int $max
- * @param boolean $null
  * @return mixed
 */
-function is_true($regular, $param, $min=0, $max=0,$null=false)
+function is_true($regular, $param, $min=0, $max=0)
 {
     $_validate = new Origin\Kernel\Parameter\Validate($param);
-    if($_receipt = $_validate->_empty($null)){
+    if($_receipt = $_validate->_empty()){
         if($_receipt = $_validate->_size($min,$max))
             $_receipt = $_validate->_type($regular);
     }

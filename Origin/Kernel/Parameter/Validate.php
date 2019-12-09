@@ -37,45 +37,40 @@ class Validate
         $this->_Variable = strval(trim($variable));
     }
     /**
-     * 执行空值验证，当is_null为true时，验证将被跳过，反之则进行空值验证
-     * 当验证通过函数返回complete，反之返回错误信息
+     * 执行空值验证
      * @access public
-     * @param boolean $null
      * @return boolean
     */
-    public function _empty($null=false)
+    public function _empty()
     {
         /**
          * @var mixed $_return
         */
         $_return = false;
-        # 判断验证参数值是否被设置为可以为空
-        if($null == false){
-            # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
-            if(is_array($this->_Variable) and !empty($this->_Variable)){
-                $_return = true;
-            }else{
-                # 使用empty函数判断参数值是否为空
-                if(empty(trim($this->_Variable))){
-                    # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
-                    if(is_int($this->_Variable) and $this->_Variable == 0)
-                        $_return = true;
-                    elseif((is_float($this->_Variable) or is_double($this->_Variable)) and $this->_Variable == 0.0)
-                        $_return = true;
-                    elseif(is_bool($this->_Variable) and $this->_Variable == false)
-                        $_return = true;
-                    elseif(is_string($this->_Variable) and $this->_Variable == '0')
-                        $_return = true;
-                    else
-                        # error: Verify the value is null
-                        $this->_Error = 'Verify the value is null';
-                }
+        # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
+        if(is_array($this->_Variable) and !empty($this->_Variable)){
+            $_return = true;
+        }else{
+            # 使用empty函数判断参数值是否为空
+            if(empty(trim($this->_Variable))){
+                # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
+                if(is_int($this->_Variable) and $this->_Variable == 0)
+                    $_return = true;
+                elseif((is_float($this->_Variable) or is_double($this->_Variable)) and $this->_Variable == 0.0)
+                    $_return = true;
+                elseif(is_bool($this->_Variable) and $this->_Variable == false)
+                    $_return = true;
+                elseif(is_string($this->_Variable) and $this->_Variable == '0')
+                    $_return = true;
+                else
+                    # error: Verify the value is null
+                    $this->_Error = 'Verify the value is null';
             }
         }
         return $_return;
     }
     /**
-     * 执行值长度范围验证，当is_null为true时，验证会被跳过，反之则进行验证
+     * 执行值长度范围验证
      * 如果最小范围值大于最大范围值，验证参数数值对调
      * 如果最小范围值等于最大范围值，值进行大于等于值的验证
      * 如果最小范围值大于0，最大范围值小于等于0，值进行大于等于值的验证
@@ -98,7 +93,7 @@ class Validate
             $this->_Error = 'Unable to verify the array';
         }else{
             # 判断验证参数值是否被设置为可以为空
-            if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0) {
+            if($this->_empty()) {
                 # 判断范围值是否都为小于0的参数，如果小于0，则参数值都等于0
                 if ($min < 0) {
                     $min = 0;
@@ -150,33 +145,26 @@ class Validate
         return $_return;
     }
     /**
-     * 执行正则比对验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
+     * 执行正则比对验证
      * @access public
-     * @param string $type
+     * @param string $format
      * @return boolean
     */
-    function _type($type=null)
+    function _type($format)
     {
         /**
          * @var mixed $_return
          */
         $_return = false;
-        if(is_null($type)){
-            # Origin Class Error: Your choice of validation structure does not exist
-            $this->_Error = 'Your choice of validation structure does not exist';
+        # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
+        # Origin Class Error: Unable to verify the array
+        if(is_array($this->_Variable)){
+            $this->_Error = 'Unable to verify the array';
         }else{
-            # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
-            # Origin Class Error: Unable to verify the array
-            if(is_array($this->_Variable)){
-                $this->_Error = 'Unable to verify the array';
-            }else{
-                # 判断验证参数值是否被设置为可以为空
-                if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
-                    if(!preg_match($type, $this->_Variable)){
-                        $this->_Error = 'Variable type error';
-                    }else{
-                        $_return = true;
-                    }
+            # 判断验证参数值是否被设置为可以为空
+            if($this->_empty()){
+                if(!preg_match($format, $this->_Variable)){
+                    $this->_Error = 'Variable type error';
                 }else{
                     $_return = true;
                 }
