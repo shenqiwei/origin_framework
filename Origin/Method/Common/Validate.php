@@ -24,44 +24,45 @@
  * 验证中文姓名方法，支持中文英文混写，也可以用来支持名字中出现单字母的名字
  * @access public
  * @param string $name
- * @param string $type
  * @return mixed
 */
-function is_name($name, $type='cn')
+function cn_name($name)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     * @var object $_type
-    */
-    $_type = 'cn_name';
-    if($type == 'en') $_type = $type.'_name';
-    $_validate = new Origin\Kernel\Parameter\Validate($name, $_type, 1);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($name);
+    return $_validate->_type('/^[^\s\w\!\@\#\%\^\&\*\(\)\-\+\=\/\'\\"\$\:\;\,\.\<\>\`\~]+$/');
 }
 /**
- * 验证固定电话方法，支持加区号电话号码，同时对400和800进行支持
+ * 验证英文姓名方法
+ * @access public
+ * @param string $name
+ * @return mixed
+ */
+function en_name($name)
+{
+    $_validate = new Origin\Kernel\Parameter\Validate($name);
+    return $_validate->_type('/^([A-Za-z]+[\.\s]?)+$/');
+}
+/**
+ * 验证固定电话方法，支持加区号电话号码
  * @access public
  * @param string $number
- * @param string $type
+ * @return mixed
+ */
+function is_tel($number)
+{
+    $_validate = new Origin\Kernel\Parameter\Validate($number);
+    return $_validate->_type('/^([0]{1}\d{2,3})?([^0]\d){1}\d{2,10}$/');
+}
+/**
+ * 验证400和800固定电话方法
+ * @access public
+ * @param string $number
  * @return mixed
 */
-function is_tel($number, $type=null)
+function is_tel2($number)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     * @var string $_type
-     * @var string $_regular
-     */
-    $_type  = 'telephone';
-    if($type == 'telecom') $_type = 'redefine';
-    $_validate = new Origin\Kernel\Parameter\Validate($number, $_type);
-    if($type == 'telecom'){
-        $_regular = '/^(800|400){1}[\-\s]?\d{4,6}[\-\s]?\d{4}$/';
-        $_validate->regular($_regular);
-    }
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($number);
+    return $_validate->_type('/^(800|400){1}[\-\s]?\d{4,6}[\-\s]?\d{4}$/');
 }
 
 /**
@@ -72,12 +73,8 @@ function is_tel($number, $type=null)
 */
 function is_mobile($number)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($number, 'mobile');
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($number);
+    return $_validate->_type('/^[1][3|4|5|7|8]{1}\d{9}$/');
 }
 /**
  * 邮箱验证方法
@@ -87,31 +84,30 @@ function is_mobile($number)
 */
 function is_email($email)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($email, 'email');
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($email);
+    return $_validate->_type('/^([^\_\W]+[\.\-]*)+\@(([^\_\W]+[\.\-]*)+\.)+[^\_\W]{2,8}$/');
 }
 /**
- * ip地址验证方法
+ * ipv4地址验证方法
  * @access public
  * @param string $ip
- * @param string $type
  * @return mixed
  */
-function is_ip($ip, $type = 'ipv4')
+function is_ipv4($ip)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     * @var string $_regular
-     */
-    $_type = 'ipv4';
-    if($type == 'ipv6') $_type = 'ipv6';
-    $_validate = new Origin\Kernel\Parameter\Validate($ip, $_type);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($ip);
+    return $_validate->_ipv4();
+}
+/**
+ * ipv6地址验证方法
+ * @access public
+ * @param string $ip
+ * @return mixed
+ */
+function is_ipv6($ip)
+{
+    $_validate = new Origin\Kernel\Parameter\Validate($ip);
+    return $_validate->_ipv6();
 }
 /**
  * host地址验证方法
@@ -121,8 +117,8 @@ function is_ip($ip, $type = 'ipv4')
  */
 function is_host($host)
 {
-    $_validate = new Origin\Kernel\Parameter\Validate($host, 'host');
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($host);
+    return $_validate->_type('/^((http|https):\/\/)?(www.)?([\w\-]+\.)+[a-zA-z]+(\/[\w\-\.][a-zA-Z]+)*(\?([^\W\_][\w])+[\w\*\&\@\%\-=])?$/');
 }
 /**
  * 中文验证方法
@@ -132,12 +128,8 @@ function is_host($host)
 */
 function is_cn($cn)
 {
-    /**
-      * 调用验证结构包，并声明验证对象
-      * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($cn, 'chinese');
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($cn);
+    return $_validate->_type('/^[\x{4e00}-\x{9fa5}]+$/u'); # 中文检测需要在结尾夹u
 }
 /**
  * 英文验证方法
@@ -147,80 +139,60 @@ function is_cn($cn)
 */
 function is_en($en)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($en, 'english');
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($en);
+    return $_validate->_type('/^[^\_\d\W]+$/');
 }
 /**
  * 验证用户名方法
  * @access public
  * @param string $username
- * @param int $min
- * @param int $max
  * @return mixed
 */
-function is_username($username, $min=0, $max=0)
+function is_username($username)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($username, 'username', $min, $max);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($username);
+    return $_validate->_type('/^[\w\.\-\@\+\$\#\*\~\%\^\&]+$/');
 }
 /**
  * 弱密码验证方法
  * @access public
  * @param string $password
- * @param int $min
- * @param int $max
  * @return mixed
 */
-function weak_password($password, $min=0, $max=0)
+function weak_password($password)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($password, 'weak', $min, $max);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($password);
+    return $_validate->_type('/^([^\_\W]+([\_\.\-\@\+\$\#\*\~\%\^\&]*))+$/');
 }
 /**
  * 强密码验证方法
  * @access public
  * @param string $password
- * @param int $min
- * @param int $max
  * @return mixed
 */
-function strong_password($password, $min=0, $max=0)
+function strong_password($password)
 {
     /**
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new Origin\Kernel\Parameter\Validate($password, 'strong', $min, $max);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($password);
+    return $_validate->_type('/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]*)+$/');
 }
 /**
  * 安全密码验证方法
  * @access public
  * @param string $password
- * @param int $min
- * @param int $max
  * @return mixed
 */
-function safe_password($password, $min=0, $max=0)
+function safe_password($password)
 {
     /**
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new Origin\Kernel\Parameter\Validate($password, 'safety', $min, $max);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($password);
+    return $_validate->_type('/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]+)+$/');
 }
 /**
  * 自定义验证方法
@@ -229,15 +201,15 @@ function safe_password($password, $min=0, $max=0)
  * @param string $param
  * @param int $min
  * @param int $max
+ * @param boolean $null
  * @return mixed
 */
-function is_true($regular, $param, $min=0, $max=0)
+function is_true($regular, $param, $min=0, $max=0,$null=false)
 {
-    /**
-     * 调用验证结构包，并声明验证对象
-     * @var object $_validate
-     */
-    $_validate = new Origin\Kernel\Parameter\Validate($param, 'redefine', $min, $max);
-    $_validate->regular($regular);
-    return $_validate->main();
+    $_validate = new Origin\Kernel\Parameter\Validate($param);
+    if($_receipt = $_validate->_empty($null)){
+        if($_receipt = $_validate->_size($min,$max))
+            $_receipt = $_validate->_type($regular);
+    }
+    return $_receipt;
 }

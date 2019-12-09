@@ -28,7 +28,7 @@ function Request($key, $default=null, $delete=false)
     # 创建请求类型变量
     $_method = 'request';
     # 判断请求参数是否合规
-    if($key and is_true($_regular, trim(strtolower($key))) === true){
+    if($key and is_true($_regular, trim(strtolower($key)))){
         # 将请求参数根据要求转为数组
         if(strpos($key, '.')){
             $_request = explode('.', trim($key));

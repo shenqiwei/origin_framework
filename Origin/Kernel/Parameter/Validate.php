@@ -1,7 +1,7 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.5
+ * @version 1.0
  * @copyright 2015-2017
  * @context:
  * IoC 变量验证封装类，可以对预设结构或自定义结构进行验证
@@ -22,34 +22,6 @@ class Validate
      */
     private $_Variable = null;
     /**
-     * 全局变量 用户方法间值得传递
-     * 传递验证类型
-     * @access private
-     * @var string $_Type
-     */
-    private $_Type = null;
-    /**
-     * 全局变量 用户方法间值得传递
-     * 传递最小值域
-     * @access private
-     * @var int $_Min
-     */
-    private $_Min = 0;
-    /**
-     * 全局变量 用户方法间值得传递
-     * 传递最大值域
-     * @access private
-     * @var int $_Max
-     */
-    private $_Max = 0;
-    /**
-     * 全局变量 用户方法间值得传递
-     * 传递至是否进行空验证，并根据选择状态，来进行其他验证执行
-     * @access private
-     * @var boolean $_Null
-     */
-    private $_Null = true;
-    /**
      * 错误信息返回
      * @access private
      * @var string $_Error
@@ -59,122 +31,29 @@ class Validate
      * 构造函数 对验证值及参数条件进行装载
      * @access public
      * @param mixed $variable 参数值
-     * @param string $type 参数类型
-     * @param int $min_range 最小值域
-     * @param int $max_range 最大值域
-     * @param boolean $is_null 是否为空
      */
-    function __construct($variable, $type='redefine', $min_range=0, $max_range=0, $is_null=false)
+    function __construct($variable)
     {
-        /**
-         * 验证模型正则数组
-         * @var array $_regular
-         * 数组中包含15中基础验证正则表达式
-         * telephone：固定电话
-         * mobile：移动电话 仅支持国内所有运营商号段
-         * ipv4：ip4地址
-         * ipv6：ip6地址
-         * host：域名地址 支持多级域名及带参域名
-         * chinese：中文
-         * english：英文
-         * numeric：纯数字
-         * cn_name：名字，可以同时支持中文英文混写，也可以用来支持名字中出现单字母的名字
-         * en_name：名字，可以同时支持英文，也可以用来支持名字中出现单字母的名字
-         * nickname：昵称 支持中文英文数字及部分特殊符号,在一些特定条件下可以重构部分验证结构，提高验证精度
-         * username：用户名 仅支持英文数字及部分特殊符号,在一些特定条件下可以重构部分验证结构，提高验证精度
-         * weak：弱密码 支持纯英文数字或作为链接结构的部分特殊符号
-         * strong：健壮密码 必须同时存在大写，小写，数字或部分特殊符号
-         * safety：强密码 必须同时存在大写，小写，数据及部分特殊符号
-         * redefine：自定义结构
-         */
-        # 正则表达式数组变量
-        $_regular = array(
-            'telephone' => '/^([0]{1}\d{2,3})?([^0]\d){1}\d{2,10}$/',
-            'mobile' => ' /^[1][3|4|5|7|8]{1}\d{9}$/',
-            'email' => '/^([^\_\W]+[\.\-]*)+\@(([^\_\W]+[\.\-]*)+\.)+[^\_\W]{2,8}$/',
-            'ipv4' => '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/',
-            'ipv6' => '/^([0-9A-F]{4}|[0-9a-f]{4}|:{1,2}){1,8}$/',
-            'host' => '/^((http|https):\/\/)?(www.)?([\w\-]+\.)+[a-zA-z]+(\/[\w\-\.][a-zA-Z]+)*(\?([^\W\_][\w])+[\w\*\&\@\%\-=])?$/',
-            'chinese' => '/^[\x{4e00}-\x{9fa5}]+$/u', # 中文检测需要在结尾夹u
-            'english' => '/^[^\_\d\W]+$/',
-            'numeric' => '/^\d+$/',
-//            'cn_name' => '/^([u4e00-u9fafA-Za-z]+[\.\·\s]?)+$/u',
-//            'cn_name' => '/^([\x7f-\xffA-Za-z]+[\.\·\s]?)+$/',
-            'cn_name' => '/^[^\s\w\!\@\#\%\^\&\*\(\)\-\+\=\/\'\"\$\:\;\,\.\<\>\`\~]+$/',
-            'en_name' =>  '/^([A-Za-z]+[\.\s]?)+$/',
-            'nickname' => '/^[\u4e00-\u9faf\w\.\-\@\+\$\#\~\%\^\&]+$/',
-            'username' => '/^[\w\.\-\@\+\$\#\*\~\%\^\&]+$/',
-            'weak' => '/^([^\_\W]+([\_\.\-\@\+\$\#\*\~\%\^\&]*))+$/',
-            'strong' => '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]*)+$/',
-            'safety' => '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]+)+$/',
-        );
         $this->_Variable = strval(trim($variable));
-        if(array_key_exists(strval(trim($type)),$_regular)){
-            $this->_Type = strval($_regular[trim($type)]);
-        }else{
-            $this->_Type = 'redefine';
-        }
-        $this->_Min = intval($min_range);
-        $this->_Max = intval($max_range);
-        $this->_Null = boolval($is_null);
-    }
-    /**
-     * 重定义正则表达式接入方法
-     * @access public
-     * @param string $regular
-     * @return null
-    */
-    public function regular($regular)
-    {
-        if($this->_Type == 'redefine') $this->_Type = $regular;
-        return null;
-    }
-    /**
-     * 执行验证功能默认方法
-     * 本方法根据运算方法返回结构，进行基本判断，返回 pass 或者错误信息
-     * @access public
-     * @return mixed
-    */
-    public function main()
-    {
-        /**
-         * @var mixed $_receipt
-         * @var string $_size
-         * @var string $_type
-         * @var string $_empty
-         * @var string $_ip
-        */
-        if($_receipt = $this->__size()){
-            if($_receipt = $this->__type()){
-                if($_receipt = $this->__empty()){
-                    if($this->_Type == 'ipv4'){
-                        $_receipt = $this->__ipv4();
-                    }elseif($this->_Type == 'ipv6'){
-                        $_receipt = $this->__ipv6();
-                    }
-                }
-            }
-        }
-        return $_receipt;
     }
     /**
      * 执行空值验证，当is_null为true时，验证将被跳过，反之则进行空值验证
      * 当验证通过函数返回complete，反之返回错误信息
-     * @access private
-     * @return string
+     * @access public
+     * @param boolean $null
+     * @return boolean
     */
-    private function __empty()
+    public function _empty($null=false)
     {
         /**
          * @var mixed $_return
         */
         $_return = false;
         # 判断验证参数值是否被设置为可以为空
-        if($this->_Null == false){
+        if($null == false){
             # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
-            if(is_array($this->_Variable)){
-                # Origin Class Error: Unable to verify the array
-                $this->_Error = 'Unable to verify the array';
+            if(is_array($this->_Variable) and !empty($this->_Variable)){
+                $_return = true;
             }else{
                 # 使用empty函数判断参数值是否为空
                 if(empty(trim($this->_Variable))){
@@ -202,10 +81,12 @@ class Validate
      * 如果最小范围值大于0，最大范围值小于等于0，值进行大于等于值的验证
      * 如果最小范围值等于小于0，最大范围值大于等于0，值进行小于等于值的验证、
      * 如果最小范围值和最小范围值小于等于0，则不限制大小，参数值全部默认等于0
-     * @access private
-     * @return string
+     * @access public
+     * @param int|float|double $min
+     * @param int|float|double $max
+     * @return boolean
     */
-    private function __size()
+    public function _size($min=0,$max=0)
     {
         /**
          * @var mixed $_return
@@ -217,46 +98,46 @@ class Validate
             $this->_Error = 'Unable to verify the array';
         }else{
             # 判断验证参数值是否被设置为可以为空
-            if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0) {
+            if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0) {
                 # 判断范围值是否都为小于0的参数，如果小于0，则参数值都等于0
-                if ($this->_Min < 0) {
-                    $this->_Min = 0;
+                if ($min < 0) {
+                    $min = 0;
                 }
-                if ($this->_Max < 0) {
-                    $this->_Max = 0;
+                if ($max < 0) {
+                    $max = 0;
                 }
                 # 比对范围值大小，如果最小范围值大于最大范围值，执行参数值置换
-                if ($this->_Min > $this->_Max and $this->_Max > 0) {
-                    $_middle = $this->_Min;
-                    $this->_Min = $this->_Max;
-                    $this->_Max = $_middle;
+                if ($min > $max and $max > 0) {
+                    $_middle = $min;
+                    $min = $max;
+                    $max = $_middle;
                 }
                 # 当最大范围值和最小范围值相等时
-                if(($this->_Min == $this->_Max) and $this->_Min > 0){
-                    if(strlen($this->_Variable) != $this->_Min){
+                if(($min == $max) and $min > 0){
+                    if(strlen($this->_Variable) != $min){
                         # Origin Class Error: Verify the value length do not agree with requirements
                         $this->_Error = 'Verify the value length do not agree with requirements';
                     }
                 }
                 # 判断最小范围值大于零，且最大范围值等于0，执行大于等于值的判断
                 # 如果最小范围值等于最大范围值，且值大于0，也将执行大于等于值的判断
-                if (($this->_Min > 0 and $this->_Max == 0)) {
-                    if (strlen($this->_Variable) < $this->_Min or mb_strlen($this->_Variable) < $this->_Min) {
+                if (($min > 0 and $max == 0)) {
+                    if (strlen($this->_Variable) < $min or mb_strlen($this->_Variable) < $min) {
                         # Origin Class Error: Verify the value length is less than the minimum range
                         $this->_Error = 'Verify the value length is less than the minimum range';
                     }
                 }
                 # 判断最大范围值大于0，且最小范围之等于0，执行小等于值的判断
-                if ($this->_Max > 0 and $this->_Min == 0) {
-                    if (strlen($this->_Variable) > $this->_Max or mb_strlen($this->_Variable) > $this->_Max) {
+                if ($max > 0 and $min == 0) {
+                    if (strlen($this->_Variable) > $max or mb_strlen($this->_Variable) > $max) {
                         # Origin Class Error: Verify the length value is greater than the maximum range
                         $this->_Error = 'Verify the length value is greater than the maximum range';
                     }
                 }
                 # 判断区间范围
-                if($this->_Min > 0 and $this->_Max > 0 and $this->_Min < $this->_Max){
-                    if(strlen($this->_Variable) < $this->_Min or mb_strlen($this->_Variable) < $this->_Min
-                        or strlen($this->_Variable) > $this->_Max or mb_strlen($this->_Variable) > $this->_Max){
+                if($min > 0 and $max > 0 and $min < $max){
+                    if(strlen($this->_Variable) < $min or mb_strlen($this->_Variable) < $min
+                        or strlen($this->_Variable) > $max or mb_strlen($this->_Variable) > $max){
                         # Origin Class Error: Verify the value is beyond the range
                         $this->_Error = 'Verify the value is beyond the range';
                     }
@@ -270,16 +151,17 @@ class Validate
     }
     /**
      * 执行正则比对验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
-     * @access private
-     * @return string
+     * @access public
+     * @param string $type
+     * @return boolean
     */
-    private function __type()
+    function _type($type=null)
     {
         /**
          * @var mixed $_return
          */
         $_return = false;
-        if($this->_Type == 'redefine'){
+        if(is_null($type)){
             # Origin Class Error: Your choice of validation structure does not exist
             $this->_Error = 'Your choice of validation structure does not exist';
         }else{
@@ -289,8 +171,8 @@ class Validate
                 $this->_Error = 'Unable to verify the array';
             }else{
                 # 判断验证参数值是否被设置为可以为空
-                if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
-                    if(!preg_match($this->_Type, $this->_Variable)){
+                if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
+                    if(!preg_match($type, $this->_Variable)){
                         $this->_Error = 'Variable type error';
                     }else{
                         $_return = true;
@@ -305,10 +187,10 @@ class Validate
 
     /**
      * 执行ipv4地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
-     * @access private
-     * @return string
+     * @access public
+     * @return boolean
     */
-    private function __ipv4()
+    function _ipv4()
     {
         /**
          * @var mixed $_return
@@ -321,7 +203,7 @@ class Validate
         if(is_array($this->_Variable)){
             $this->_Error = 'Verify the value format does not accord with requirements';
         }else {
-            if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
+            if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
                 # 拆分ip地址，将字符串转化为数组结构
                 $_array = explode('.', $this->_Variable);
                 # 判断转化后数组状态，是否可以进行进一步验证
@@ -344,10 +226,10 @@ class Validate
     }
     /**
      * 执行ipv6地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
-     * @access private
-     * @return string
+     * @access public
+     * @return boolean
      */
-    private function __ipv6()
+    function _ipv6()
     {
         /**
          * @var mixed $_return
@@ -362,7 +244,7 @@ class Validate
         if(is_array($this->_Variable)){
             $this->_Error = ' Verify the value format does not accord with requirements';
         }else {
-            if($this->_Null == false or !empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
+            if(!empty(trim($this->_Variable)) or strlen(trim($this->_Variable)) > 0){
                 # 判断ip地址是否为初始地址，即：0:0:0:0:0:0:0:0 或者 ::
                 if($this->_Variable != '0:0:0:0:0:0:0:0' and $this->_Variable != '::'){
                     # 拆分ip地址，将字符串转化为数组结构
@@ -409,5 +291,9 @@ class Validate
         if(is_null($this->_Error))
             $_return = true;
         return $_return;
+    }
+
+    function getError(){
+        return $this->_Error;
     }
 }

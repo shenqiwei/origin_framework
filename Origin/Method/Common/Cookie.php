@@ -23,7 +23,7 @@ function Cookie($key, $value=null)
     # 获取cookie配置表
     $_cookie = Config('CONFIG');
     # 进行验证，如果键名结构验证失败，则抛出异常
-    if(is_true($_validate_key, $key) === true){
+    if(is_true($_validate_key, $key)){
         if(strpos($key, ':')){
             $_operate = explode(':', $key);
             if(count($_operate) > 3){

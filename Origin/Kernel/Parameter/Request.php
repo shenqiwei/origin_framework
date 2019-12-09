@@ -49,7 +49,7 @@ class Request
          */
         # 请求方式正则，涵盖基本的5中表单请求
         $_method_regular = '/^(request|post|get|delete|put){1}$/';
-        if(is_true($_method_regular, $method) === true){
+        if(is_true($_method_regular, $method)){
             $this->_Method = $method;
         }
         $this->_Validate_Name = $validate_name;

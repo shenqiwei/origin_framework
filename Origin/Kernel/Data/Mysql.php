@@ -415,11 +415,12 @@ class Mysql extends Query
         // TODO: Implement count() method.
         # 创建返回信息变量
         $_receipt = null;
-        if(is_true($this->_Regular_Select_Count, strtolower($query)) === true){
+        if(is_true($this->_Regular_Select_Count, strtolower($query))){
             $_select_count = null;
-        }elseif(is_true($this->_Regular_Select, strtolower($query)) === true){
+        }elseif(is_true($this->_Regular_Select, strtolower($query))){
             // 表示为完整的查询语句
-        }elseif(is_true($this->_Regular_from, strtolower($query)) === true){
+            null;
+        }elseif(is_true($this->_Regular_from, strtolower($query))){
             $query = 'select * '.strtolower($query);
         }
         if(strpos(strtolower($query),"select ") === 0){

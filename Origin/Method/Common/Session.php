@@ -32,7 +32,7 @@ function Session($key, $value=null)
     # 获取session配置列表
     $_session = Config('SESSION');
     # 进行验证，如果键名结构验证失败，则抛出异常
-    if(is_true($_validate_key,$key) === true){
+    if(is_true($_validate_key,$key)){
         # 判断php.ini是否设置了自动启用session会话,如果未开启，则启动session会话
         if(!ini_get('session.auto_start')) session_start();
         if(strpos($key, ':')){
@@ -54,9 +54,9 @@ function Session($key, $value=null)
                 }
                 # 判断session设置基本条件是否符合预设语法规则
                 if($_operate[0] == 'session' and ((count($_operate) == 3
-                            and (is_true($_validate_operate,$_operate[1] !== true)
-                                and is_true($_validate_operate,$_operate[2]) !== true))
-                        or (count($_operate) == 2 and is_true($_validate_operate,$_operate[1]) !== true))){
+                            and (!is_true($_validate_operate,$_operate[1])
+                                and !is_true($_validate_operate,$_operate[2])))
+                        or (count($_operate) == 2 and !is_true($_validate_operate,$_operate[1])))){
                     # 创建中间变量 resource
                     $_resource = null;
                     # 创建中间变量 set
@@ -107,10 +107,10 @@ function Session($key, $value=null)
                 }else{
                     $_set = null;
                     if($_operate[0] == 'session'){
-                        if(is_true($_validate_operate, $_operate[1]) === true)
+                        if(is_true($_validate_operate, $_operate[1]))
                             $_set = $_operate[1];
                     }else{
-                        if(is_true($_validate_operate, $_operate[0]) === true)
+                        if(is_true($_validate_operate, $_operate[0]))
                             $_set = $_operate[0];
                         else
                             $_set = $_operate[1];

@@ -38,7 +38,7 @@ class Controller
     protected function param($key, $value)
     {
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
-        if(is_true($_regular, $key) === true){
+        if(is_true($_regular, $key)){
             $this->_Param[Load::$_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
@@ -68,7 +68,7 @@ class Controller
                 str_replace(Config('DEFAULT_APPLICATION')."/", '',
                     str_replace('Application/', '',
                         str_replace('\\', '/', Load::$_Class)))));
-        if($view !== null and is_true($_regular, $view) === true){
+        if($view !== null and is_true($_regular, $view)){
             $_page = $view;
         }
         View::view($_dir, $_page,$this->_Param[Load::$_Class]);
