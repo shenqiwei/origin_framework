@@ -46,9 +46,8 @@ class Mysql extends Query
                         break;
                     }
                 }
-            }else{
+            }else
                 $_connect_config = $_connect_conf;
-            }
             # 创建数据库链接地址，端口，应用数据库信息变量
             $_DSN = 'mysql:host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];
             $_username = $_connect_config['DATA_USER']; # 数据库登录用户
