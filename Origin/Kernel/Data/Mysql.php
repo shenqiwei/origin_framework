@@ -80,7 +80,6 @@ class Mysql extends Query
      */
     function count()
     {
-        // TODO: Implement count() method.
         # 创建返回信息变量
         $_receipt = null;
         # 起始结构
@@ -119,7 +118,6 @@ class Mysql extends Query
      */
     function select()
     {
-        // TODO: Implement select() method.
         # 创建返回信息变量
         $_receipt = null;
         # 执行主函数
@@ -263,7 +261,6 @@ class Mysql extends Query
      */
     function insert()
     {
-        // TODO: Implement insert() method.
         $_receipt = null;
         # 执行主函数
         $_sql = 'insert into';
@@ -318,7 +315,6 @@ class Mysql extends Query
      */
     function update()
     {
-        // TODO: Implement update() method.
         $_receipt = null;
         # 执行主函数
         $_sql = 'update';
@@ -373,7 +369,6 @@ class Mysql extends Query
      */
     function delete()
     {
-        // TODO: Implement delete() method.
         $_receipt = null;
         # 执行主函数
         $_sql = 'delete ';
@@ -411,7 +406,6 @@ class Mysql extends Query
      */
     function query($query)
     {
-        // TODO: Implement count() method.
         # 创建返回信息变量
         $_receipt = null;
         if(is_true($this->_Regular_Select_Count, strtolower($query))){
