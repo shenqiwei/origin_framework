@@ -1281,7 +1281,7 @@ abstract class Query
      * @param mixed $fetch_type
      * @return object
     */
-    function fetchType($fetch_type)
+    function fetch($fetch_type)
     {
         if(in_array(strtolower(trim($fetch_type)),array('all','nv','kv'))){
             $this->_Fetch_Type = strtolower(trim($fetch_type));

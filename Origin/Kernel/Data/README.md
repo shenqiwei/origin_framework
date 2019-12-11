@@ -20,6 +20,25 @@
 > Mysql函数
 >> 当前origin版本中，Mysql封装类提供了几乎完整mysql操作支持函数内容，个别重用语法，在版本中进行了拆分，已减少开发者记忆负担
 >>
->> `mysql->table`函数：   
+>> `table`函数：   
+>>`$_mysql->table(__table_name__,__as_name__);`      
+>> 用于设定操作主表信息，该函数包好两个参数项，第一个参数用于设置操作对象表名称，第二个参数用于设置表别名（在多表查询，级联查询时，更加实用）默认值为null   
 >> 
+>> `field`函数：   
+>> `$_mysql->field(__array__)` 
+>> 
+>> `data`函数：   
+>> `$_mysql->data(__array__)`     
+>> 
+>> `where`函数：   
+>> `$_mysql->where(__condition__)`   
+>> 
+>> `limit`函数：   
+>> `$_mysql->limit(__start__,__row__)`
+>> 
+>> `order`函数：   
+>> `$_mysql->order(__order__)`
+>> 
+>> `fetch`函数：   
+>> `$_mysql->fetch(__type__)`         
 
