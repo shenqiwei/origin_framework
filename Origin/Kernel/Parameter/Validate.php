@@ -65,6 +65,9 @@ class Validate
                 else
                     # error: Verify the value is null
                     $this->_Error = 'Verify the value is null';
+            }else{
+                if(!is_null(trim($this->_Variable)))
+                    $_return = true;
             }
         }
         return $_return;
