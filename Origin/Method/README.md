@@ -106,9 +106,10 @@ number函数内容html实现格式：
 >> #####`Input`获取请求参数值
 >>>   
 >>> @Input 操作说明：   
->>>`Input(__key__,__default__)`   
+>>> `Input(__key__,__default__)`   
+>>> 调用方法：`$_input = Input("input_name");`    
 >>> `__key__`：表单名称一致，推荐使用单词，或词组作为名称表达方式,约束请求类型是使用(post.|get.)开头   
->>> `__default__`：设置无效状态默认值，无基本约束    
+>>> `__default__`：设置无效状态默认值，无基本约束，默认值为null    
 >>> 该方法为Request方法的简化版本
 
 >> #####`Request`请求操作函数
