@@ -14,8 +14,11 @@
 >继承controller主控器方法与父类继承语法一致，假定现在继承的应用控制器文件为index.class.php,即控制器名称Index（class name）
 >>`class Index extends Controller`  
 >>`{`  
->>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`  
->>`}`
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`function index(){` # 每个新建控制，需创建一个index函数方法，框架会在访问该控制器时，默认方法该方法    
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view();` # 模板调用方法，模板在不进行标注时，默认访问与该方法同名模板      
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`   
+>>`}`   
 
 #### Controller.php函数说明
 
