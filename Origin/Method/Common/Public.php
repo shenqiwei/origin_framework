@@ -29,11 +29,11 @@ function Input($key, $default = null)
 function Page($url,$count,$current,$row,$search){
     $page=array(
         'url'=>$url, # 连接地址
-        'size'=>intval($row), # 显示数量
+        'limit'=>intval($row), # 显示数量
         'num_begin'=>0, # Number区间显示翻页页码起始位置
         'num_end'=>0, # Number区间显示翻页页码结束位置
         'count'=>0, # 总数
-        'limit'=>0, # 显示（有效）数量限制
+        'begin'=>0, # 当前列表起始位置
         'current'=>1, # 当前页码
         'first_url'=>'','first'=>0, # 第一页参数
         'last_url'=>'','last'=>0, # 上一页参数
@@ -46,7 +46,7 @@ function Page($url,$count,$current,$row,$search){
     if($page['current']<=0) $page['current']=1;
     if($page['current']>$page['count']) $page['current']=$page['count'];
     if($page['count']<=0) $page['current']=$page['count']=1;
-    $page['limit']=$page['size']*($page['current']-1);//其实点运算
+    $page['begin']=$page['size']*($page['current']-1);//其实点运算
     $page['page_one']=$page['limit']+1;
     $page['page_end']=($page['limit']+$page['size'])>$count?$count:$page['limit']+$page['size'];
     //判断翻页状态1

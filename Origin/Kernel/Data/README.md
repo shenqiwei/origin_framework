@@ -26,9 +26,11 @@
 >> 
 >> `field`函数：   
 >> `$_mysql->field(__array__)` 
+>> 用于select操作下，限定查询的字段，参数类型为数组，设置字段时，使用Key/Value数组，key为字段名，value为字段别名
 >> 
 >> `data`函数：   
 >> `$_mysql->data(__array__)`     
+>> 用于insert和update操作的数据接入，参数类型为Key/Value数组，Key为字段名，Value为插入(修改)值
 >> 
 >> `where`函数：   
 >> `$_mysql->where(__condition__)`   
