@@ -17,6 +17,10 @@
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view();`   
 >> `}`
 >
+>#### 函数快速入口
+>[`mysql操作函数说明`](#mysql_operation)|[`mysql执行语法说明`](#mysql_excute)
+>
+><span id='resource'></span>
 > Mysql函数
 >> 当前origin版本中，Mysql封装类提供了几乎完整mysql操作支持函数内容，个别重用语法，在版本中进行了拆分，已减少开发者记忆负担
 >>
@@ -73,4 +77,6 @@
 >>> number/value 样例：   
 >>> `$_mysql->fetch("nv")` # 值为: nv 返回 number/value 结构    
 >>
-
+>
+><span id='resource'></span>
+> Mysql执行函数
