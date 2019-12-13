@@ -27,6 +27,11 @@
 >> `field`函数：   
 >> `$_mysql->field(__array__)` 
 >> 用于select操作下，限定查询的字段，参数类型为数组，设置字段时，使用Key/Value数组，key为字段名，value为字段别名
+>>> 无别名样例：
+>>> `$_mysql->field(array("id","time"))`
+>>
+>>> 有别名样例：
+>>> `$_mysql->fetch(array("id"=>"id_as_name","time"=>"time_as_name"))`
 >> 
 >> `data`函数：   
 >> `$_mysql->data(__array__)`     
@@ -34,14 +39,38 @@
 >> 
 >> `where`函数：   
 >> `$_mysql->where(__condition__)`   
+>> 该函数用于设定mysql语句执行条件，参数支持数组和字符串两种格式，数组基于多维数组的结构解析，字符串直接参数sql语句语言进行设置，需要注意的是where函数同时支持运算符号和运算符号代称   
 >> 
 >> `limit`函数：   
 >> `$_mysql->limit(__start__,__row__)`    
 >> 用于限制列表显示数量，参数类型都为整数，第一参数为列表起始位置（当第二参数不进行设置时），参数值大于了代表显示数量，参数小于等于零时，mysql默认不进行显示数量限制，第二参数设置显示数量，当参数值为0时，框架只对第一参数进行执行操作
+>>> 显示数量样例：    
+>>> `$_mysql->limit(6)` # 这里表示数据库查询显示5条信息   
 >> 
+>>> 区间显示样例：   
+>>> `$_mysql->limit(2,10)`, # 本样例表示数据指针从2开始显示10条数据   
+>>
 >> `order`函数：   
 >> `$_mysql->order(__order__)`
+>> Mysql封装，查询语句排序函数，参数支持数组和字符串双类型:   
+>>> 数组实例：  
+>>> `$_mysql->order(array("id"=>"asc","time"=>"desc"))`   
+>>
+>>> 字符串实例：   
+>>> `$_mysql->order("id asc,time desc")`   
+>>
+>> 两组表达出来内容同为 `order by id asc,time desc`    
 >> 
 >> `fetch`函数：   
->> `$_mysql->fetch(__type__)`         
+>> `$_mysql->fetch(__type__)`   
+>> 用于约束查询语句显示格式，默认值为 null 同时返回 number/value 和 key/value 结构列表  
+>>> 默认结构样例：   
+>>> `$_mysql->fetch()`    
+>>
+>>> key/value 样例：   
+>>> `$_mysql->fetch("kv")` # 值为：kv 返回 key/value 结构   
+>>
+>>> number/value 样例：   
+>>> `$_mysql->fetch("nv")` # 值为: nv 返回 number/value 结构    
+>>
 
