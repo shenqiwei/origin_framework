@@ -89,17 +89,17 @@
 >
 >> select函数：   
 >>> 用于进行数据内容查询，其返回结果为二维数组，其结构表述方式（number/value：数值数组）和（key/value：关联数组）混合结构，该返回结构可以使用`$_mysql->fetch()`进行设置   
->>> `$_mysql->select()`
+>>> `$_mysql->select()`   
 >>> select查询单条数据是可以使用`$_mysql->limit(1)`约束其返回内容为只用一条数据的二维数组也可以使用PHP特性`$_mysql->select()[0]`获取返回值中首元素值，该值为一维数组   
 >
 >> insert函数：   
 >>> 用于数据插入，函数调用必须与`$_mysql->data()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
->>> `$_mysql->insert()` # sql语句表达结构 insert into *.table (*.field) value (*.value)   
+>>> `$_mysql->insert()` # sql语句表达结构 insert into .table (.field) value (.value)   
 >
 >> update函数：
 >>> 用于数据的修改更新，该函数调用必须与`$_mysql->data()`和`$_mysql->where()`配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
->>> `$_mysql->update()` # update *.table set *.date where *.condition   
+>>> `$_mysql->update()` # update .table set .date where .condition   
 >
 >> delete桉树：
 >>> 用于数据的删除，函数调用必须与`$_mysql->where()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数   
->>> `$_mysql->delete()` # sql语句表述结构 delete from *.table where *.condition    
+>>> `$_mysql->delete()` # sql语句表述结构 delete from .table where .condition    
