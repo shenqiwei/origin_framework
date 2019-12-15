@@ -18,7 +18,7 @@
 >> `}`
 >
 >#### 函数快速入口
->[`mysql操作函数说明`](#mysql_operation)|[`mysql执行语法说明`](#mysql_excute)
+>[`mysql操作函数说明`](#mysql_operation)|[`mysql执行函数说明`](#mysql_excute)
 >
 ><span id='resource'></span>
 > Mysql函数
@@ -67,16 +67,34 @@
 >> 
 >> `fetch`函数：   
 >> `$_mysql->fetch(__type__)`   
->> 用于约束查询语句显示格式，默认值为 null 同时返回 number/value 和 key/value 结构列表  
+>> 用于约束查询语句显示格式，默认值为 null 同时返回 number/value（数值数组） 和 key/value（关联数组） 结构列表  
 >>> 默认结构样例：   
 >>> `$_mysql->fetch()`    
 >>
->>> key/value 样例：   
+>>> key/value 关联数组样例：   
 >>> `$_mysql->fetch("kv")` # 值为：kv 返回 key/value 结构   
 >>
->>> number/value 样例：   
+>>> number/value 数值数组样例：   
 >>> `$_mysql->fetch("nv")` # 值为: nv 返回 number/value 结构    
 >>
 >
 ><span id='resource'></span>
 > Mysql执行函数
+>
+> 在Mysql封装中，提供了count，select，insert，update，delete，query6个执行函数，函数无参数内容，调用函数既返回最终执行结果，结尾不再具备调用其他函数的功能：
+>
+>> [`count`]为select衍生执行函数，仅负责执行查询数量的操作，该函数执行方式为在sql语句`select`内中默认增加`count(*)`,其返回类型为 等大于零（greater than or equal to zero）的整数   
+>> `$_mysql->count()` # 该方法与select查询中`$_mysql->total()`函数调用所有实现的效果相同
+>
+>> [`select`]用于进行数据内容查询，其返回结果为二维数组，其结构表述方式（number/value：数值数组）和（key/value：关联数组）混合结构，该返回结构可以使用`$_mysql->fetch()`进行设置   
+>> `$_mysql->select()`
+>> select查询单条数据是可以使用`$_mysql->limit(1)`约束其返回内容为只用一条数据的二维数组也可以使用PHP特性`$_mysql->select()[0]`获取返回值中首元素值，该值为一维数组   
+>
+>> [`insert`]用于数据插入，函数调用必须与`$_mysql->data()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
+>> `$_mysql->insert()` # sql语句表达结构 insert into *.table (*.field) value (*.value)   
+>
+>> [`update`]用于数据的修改更新，该函数调用必须与`$_mysql->data()`和`$_mysql->where()`配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
+>> `$_mysql->update()` # update *.table set *.date where *.condition   
+>
+>> [`delete`]用于数据的删除，函数调用必须与`$_mysql->where()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数   
+>> `$_mysql->delete()` # sql语句表述结构 delete from *.table where *.condition    
