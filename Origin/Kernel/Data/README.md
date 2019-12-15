@@ -20,7 +20,7 @@
 >#### 函数快速入口
 >[`mysql操作函数说明`](#mysql_operation)|[`mysql执行函数说明`](#mysql_excute)
 >
-><span id='resource'></span>
+><span id='mysql_operation'></span>
 > Mysql函数
 >> 当前origin版本中，Mysql封装类提供了几乎完整mysql操作支持函数内容，个别重用语法，在版本中进行了拆分，已减少开发者记忆负担
 >>
@@ -78,7 +78,7 @@
 >>> `$_mysql->fetch("nv")` # 值为: nv 返回 number/value 结构    
 >>
 >
-><span id='resource'></span>
+><span id='mysql_excute'></span>
 > Mysql执行函数
 >
 > 在Mysql封装中，提供了count，select，insert，update，delete，query6个执行函数，函数无参数内容，调用函数既返回最终执行结果，结尾不再具备调用其他函数的功能：
