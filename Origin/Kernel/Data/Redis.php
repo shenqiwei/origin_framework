@@ -62,39 +62,27 @@ class Redis
 
     function key()
     {
-        $_redis = new Key($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Key($this->_Connect);
     }
     function string()
     {
-        $_redis = new Str($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Str($this->_Connect);
     }
     function set()
     {
-        $_redis = new Set($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Set($this->_Connect);
     }
     function hash()
     {
-        $_redis = new Hash($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Hash($this->_Connect);
     }
     function lists()
     {
-        $_redis = new Lists($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Lists($this->_Connect);
     }
     function seq()
     {
-        $_redis = new Sequence($this->_Connect);
-        $_redis->__setSQL($_redis);
-        return $_redis;
+        return new Sequence($this->_Connect);
     }
     /**
      * 执行Redis刷新
