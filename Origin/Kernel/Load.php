@@ -282,6 +282,7 @@ class Load
      */
     static function error($obj,$error,$type)
     {
-        include(str_replace('/',DS,ROOT.RING.'Template/Load.html'));
+        if(DEBUG or ERROR)
+            include(str_replace('/',DS,ROOT.RING.'Template/Load.html'));
     }
 }
