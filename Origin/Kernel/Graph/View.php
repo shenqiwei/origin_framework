@@ -7,6 +7,7 @@
  */
 namespace Origin\Kernel\Graph;
 
+use Origin\Kernel\File\File;
 use Origin\Kernel\Parameter\Output;
 use Exception;
 
@@ -61,8 +62,20 @@ class View
                         $_label = new Label($_page);
                         # 获取解析后代码,生成临时缓存文件
                         $_cache_file = tmpfile();
+                        # 获取解析后文件内容
+                        $_cache_code = $_label->execute();
+                        if(DEBUG){
+                            $_debug_tmp = "Resource/Buffer/Debug/".sha1($_page).".tmp";
+                            $_file = new File();
+                            if(!is_file(str_replace("/",DS,ROOT.$_debug_tmp))){
+                                $_file->manage($_debug_tmp,"full");
+                                $_file->write($_debug_tmp,"w",$_cache_code);
+                            }else{
+                                $_file->write($_debug_tmp,"w",$_cache_code);
+                            }
+                        }
                         # 写入解析后模板内容
-                        fwrite($_cache_file,$_label->execute());
+                        fwrite($_cache_file,$_cache_code);
                         # 通过数据流获取缓存文件临时路径信息
                         $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
                         # 调用缓存文件
