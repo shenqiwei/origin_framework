@@ -61,7 +61,7 @@ class Load
             # 对请求对象地址请求内容进行截取
             if(strpos($_request,'?'))
                 $_request = substr($_request,0,strpos($_request,'?'));
-            # 调用日志结构函数
+            # 执行初始化
             # 判断执行对象是否为程序单元
             $_bool = false;
             $_suffix = array(".html",".htm",".php");
@@ -108,6 +108,7 @@ class Load
                 $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
                 # 设置引导地址
                 set_include_path(ROOT);
+                Loading:
                 # 判断文件是否存在
                 if(is_file(str_replace('/', DS, "Application/{$_path}.php"))){
                     # 使用预注册加载函数，实现自动化加载
@@ -116,11 +117,16 @@ class Load
                         require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
                     });
                 }else{
-                    try {
-                        throw new Exception('Origin Method Error: Not Fount Control Document');
-                    }catch(Exception $e){
-                        self::error(str_replace('/', DS, "Application/{$_path}.php"),$e->getMessage(),"File");
-                        exit(0);
+                    if(DEBUG){
+                        initialize();
+                        goto Loading;
+                    }else {
+                        try {
+                            throw new Exception('Origin Method Error: Not Fount Control Document');
+                        } catch (Exception $e) {
+                            self::error(str_replace('/', DS, "Application/{$_path}.php"), $e->getMessage(), "File");
+                            exit(0);
+                        }
                     }
                 }
                 # 链接记录日志
@@ -136,11 +142,15 @@ class Load
                     # 声明类对象
                     $_object = new $_class();
                 }else{
-                    try {
-                        throw new Exception('Origin Method Error: Not Fount Control Class');
-                    }catch(Exception $e){
-                        self::error("{$_class}",$e->getMessage(),"Class");
-                        exit(0);
+                    if(DEBUG){
+                        initialize();
+                    }else{
+                        try {
+                            throw new Exception('Origin Method Error: Not Fount Control Class');
+                        }catch(Exception $e){
+                            self::error("{$_class}",$e->getMessage(),"Class");
+                            exit(0);
+                        }
                     }
                 }
                 # 判断是否有方法标记信息
@@ -156,11 +166,15 @@ class Load
                     # 执行方法调用
                     $_object->$_method();
                 }else{
-                    try {
-                        throw new Exception('Origin Method Error: Not Fount Function Object');
-                    }catch(Exception $e){
-                        self::error("{$_method}",$e->getMessage(),"Function");
-                        exit(0);
+                    if(DEBUG){
+                        initialize();
+                    }else {
+                        try {
+                            throw new Exception('Origin Method Error: Not Fount Function Object');
+                        } catch (Exception $e) {
+                            self::error("{$_method}", $e->getMessage(), "Function");
+                            exit(0);
+                        }
                     }
                 }
             }

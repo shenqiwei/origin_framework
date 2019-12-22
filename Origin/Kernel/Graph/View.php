@@ -68,11 +68,9 @@ class View
                             $_debug_tmp = "Resource/Buffer/Debug/".sha1($_page).".tmp";
                             $_file = new File();
                             if(!is_file(str_replace("/",DS,ROOT.$_debug_tmp))){
-                                $_file->manage($_debug_tmp,"full");
+                                $_file->write($_debug_tmp,"cw",$_cache_code);
+                            }else
                                 $_file->write($_debug_tmp,"w",$_cache_code);
-                            }else{
-                                $_file->write($_debug_tmp,"w",$_cache_code);
-                            }
                         }
                         # 写入解析后模板内容
                         fwrite($_cache_file,$_cache_code);

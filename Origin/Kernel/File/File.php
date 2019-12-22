@@ -52,26 +52,28 @@ class File
                 exit();
             }
         }
-        # 判断错误编号是否为初始状态
-        $_guide = explode('/',$_uri);
-        # 地址目录变量
-        $_folder = null;
-        for($_i = 0;$_i < count($_guide);$_i++){
-            if(empty($_i))
-                $_folder .= $_guide[$_i];
-            else
-                $_folder .= DS.$_guide[$_i];
-            if(strpos($_guide[$_i],'.')){
-                # 判定对象是否为文件
-                if(!is_file(ROOT.$_folder)){
-                    $this->_Breakpoint = $_folder;
-                    break;
-                }
-            }else{
-                # 判断对象是否为文件夹
-                if(!is_dir(ROOT.$_folder)){
-                    $this->_Breakpoint = $_folder;
-                    break;
+        if(!is_file(str_replace("/",DS,ROOT.$_uri))){
+            # 判断错误编号是否为初始状态
+            $_guide = explode('/',$_uri);
+            # 地址目录变量
+            $_folder = null;
+            for($_i = 0;$_i < count($_guide);$_i++){
+                if(empty($_i))
+                    $_folder = $_guide[$_i];
+                else
+                    $_folder .= DS.$_guide[$_i];
+                if(strpos($_guide[$_i],'.')){
+                    # 判定对象是否为文件
+                    if(!is_file(ROOT.$_folder)){
+                        $this->_Breakpoint = $_folder;
+                        break;
+                    }
+                }else{
+                    # 判断对象是否为文件夹
+                    if(!is_dir(ROOT.$_folder)){
+                        $this->_Breakpoint = $_folder;
+                        break;
+                    }
                 }
             }
         }
@@ -312,70 +314,70 @@ class File
         }
         # 判断错误编号是否为初始状态
         # 调用路径文件验证
-        $_resource = $this->resource($_uri);
-        # 判断返回值基本类型
-        if (!$_resource) {
-            if ($operate === 'cw' or $operate == 'fw') {
-                $_resource = $this->manage($_uri, 'full');
-            } else {
-                try{
-                    throw new Exception('Not Found Object File ' . $_resource);
-                }catch(Exception $e){
-                    $_output = new Output();
-                    $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                    exit();
+        if(!is_file(str_replace("/",DS,ROOT.$_uri))){
+            $_resource = $this->resource($_uri);
+            # 判断返回值基本类型
+            if (!$_resource) {
+                if ($operate === 'cw' or $operate == 'fw') {
+                    $this->manage($_uri, 'full');
+                } else {
+                    try{
+                        throw new Exception('Not Found Object File ' . $_resource);
+                    }catch(Exception $e){
+                        $_output = new Output();
+                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                        exit();
+                    }
                 }
             }
         }
         # 未发生错误执行
-        if ($_resource) {
-            switch ($operate) {
-                case 'sr': # 序列化读取
-                    $_receipt = file(str_replace("/",DS,ROOT.$guide));
-                    break;
-                case 'rw': # 读写
-                    $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r+');
-                    break;
-                case 'w': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case 'lw': # 写入
-                case 'cw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w+');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case 'bw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case 'fw': # 写入
-                    $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a+');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case 'rr': # 写入
-                    $_receipt = file_get_contents(str_replace("/",DS,ROOT.$guide), false);
-                    break;
-                case 're': # 写入
-                    $_receipt = file_put_contents(str_replace("/",DS,ROOT.$guide), strval($msg));
-                    break;
-                case 'r': # 读取
-                default: # 默认状态与读取状态一致
-                    $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r');
-                    break;
-            }
+        switch ($operate) {
+            case 'sr': # 序列化读取
+                $_receipt = file(str_replace("/",DS,ROOT.$guide));
+                break;
+            case 'rw': # 读写
+                $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r+');
+                break;
+            case 'w': # 写入
+                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case 'lw': # 写入
+            case 'cw': # 写入
+                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w+');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case 'bw': # 写入
+                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case 'fw': # 写入
+                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a+');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case 'rr': # 写入
+                $_receipt = file_get_contents(str_replace("/",DS,ROOT.$guide), false);
+                break;
+            case 're': # 写入
+                $_receipt = file_put_contents(str_replace("/",DS,ROOT.$guide), strval($msg));
+                break;
+            case 'r': # 读取
+            default: # 默认状态与读取状态一致
+                $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r');
+                break;
         }
         return $_receipt;
     }
