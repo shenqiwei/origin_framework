@@ -144,6 +144,7 @@ class Load
                 }else{
                     if(DEBUG){
                         initialize();
+                        goto Loading;
                     }else{
                         try {
                             throw new Exception('Origin Method Error: Not Fount Control Class');
@@ -168,6 +169,7 @@ class Load
                 }else{
                     if(DEBUG){
                         initialize();
+                        goto Loading;
                     }else {
                         try {
                             throw new Exception('Origin Method Error: Not Fount Function Object');
