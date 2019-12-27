@@ -28,17 +28,20 @@ function Input($key, $default = null)
  */
 function Page($url,$count,$current=1,$row=10,$search=null){
     $page=array(
+        # 基本参数
         'url'=>$url, # 连接地址
-        'limit'=>intval($row), # 显示数量
-        'num_begin'=>0, # Number区间显示翻页页码起始位置
-        'num_end'=>0, # Number区间显示翻页页码结束位置
         'count'=>0, # 总数
-        'begin'=>0, # 当前列表起始位置
         'current'=>1, # 当前页码
+        'begin'=>0, # 当前列表起始位置
+        'limit'=>intval($row), # 显示数量
+        # 连接参数
         'first_url'=>'','first'=>0, # 第一页参数
         'last_url'=>'','last'=>0, # 上一页参数
         'next_url'=>'','next'=>0, # 下一页参数
         'end_url'=>'','end'=>0, # 最后一页参数
+        # number结构参数
+        'num_begin'=>0, # Number区间显示翻页页码起始位置
+        'num_end'=>0, # Number区间显示翻页页码结束位置
     );
     $page['current']=intval($current);
     $page['count']=$count%$page['limit']!=0?intval(($count/$page['limit'])+1):intval($count/$page['limit']);
@@ -84,44 +87,20 @@ function Number($page,$cols=5,$search=null){
         if(($page['current']-$k)>1 && ($page['current']+$k)<$page['count']){
             $page['num_begin']=$page['current']-$k;
             $page['num_end']=$page['current']+$k;
-            for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
-                if($i==$page['current']){
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                }else{
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                }
-            }
         }else{
-            if(($page['current']-$k)<=1){
-                $page['num_begin']=1;
-                $page['num_end']=$cols;
-                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
-                    if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }else{
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }
-                }
-            }elseif(($page['current']+$k)>=$page['count']){
+            if(($page['current']+$k)>=$page['count']){
                 $page['num_begin']=$page['count']-($cols-1);
                 $page['num_end']=$page['count'];
-                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
-                    if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }else{
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }
-                }
             }else{
                 $page['num_begin']=1;
                 $page['num_end']=$cols;
-                for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
-                    if($i==$page['current']){
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }else{
-                        array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
-                    }
-                }
+            }
+        }
+        for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
+            if($i==$page['current']){
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
+            }else{
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
             }
         }
     }else{
