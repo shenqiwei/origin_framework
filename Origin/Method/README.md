@@ -60,20 +60,14 @@ page函数功能实现格式：
 
 >>> @Page函数返回值为一个数组集合,数组中各元素内容调用直接使用标签变量调用方式即可   
 >>> 'url # 连接地址   
->>> 'limit' # 显示数量   
->>> 'num_begin' # Number区间显示翻页页码起始位置   
->>> 'num_end' # Number区间显示翻页页码结束位置   
 >>> 'count' # 数据总数    
->>> 'begin' # 当前列表起始查询位置    
 >>> 'current' # 当前页码   
+>>> 'begin' # 当前列表起始查询位置    
+>>> 'limit' # 显示数量   
 >>> 'first_url # 翻页第一页连接    
->>> 'first', # 第一页参数   
 >>> 'last_url' # 翻页上一页连接   
->>> 'last # 上一页参数   
 >>> 'next_url' # 翻页下一页连接   
->>> 'next' # 下一页参数   
 >>> 'end_url'  # 翻页最后一页连接    
->>> 'end' # 最后一页参数   
 
 page函数内容html实现格式：  
 page上一页样例：![page上一页样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/last.png)   
