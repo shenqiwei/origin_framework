@@ -89,10 +89,11 @@ class Upload
         # 存储目录
         $_dir = null;
         # 验证存储主目录是否有效
-        if(is_null($this->_Store))
+        if(is_null($this->_Store)){
             # 设置存储子目录，使用年月日拆分存储内容
             $_dir = date("Ymd",time());
             $this->_Store = str_replace("/",DS,"Resource/Upload/".$_dir);
+        }
         if(!is_dir(str_replace("/",DS,ROOT.$this->_Store))){
             $_file = new File();
             $_file->manage(str_replace(DS,"/",$this->_Store),"full");
