@@ -19,14 +19,14 @@ function Input($key, $default = null)
 /**
  * @access public
  * @param string $url 链接
- * @param string $count 总数
- * @param string $current 当前页
- * @param string $row 分页大小
+ * @param int $count 总数
+ * @param int $current 当前页
+ * @param int $row 分页大小
  * @param string $search 搜索条件
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function Page($url,$count,$current,$row,$search){
+function Page($url,$count,$current=1,$row=10,$search=null){
     $page=array(
         'url'=>$url, # 连接地址
         'limit'=>intval($row), # 显示数量
@@ -71,12 +71,12 @@ function Page($url,$count,$current,$row,$search){
 /**
  * @access public
  * @param array $page 分页数组
+ * @param int $cols 页码数量
  * @param string $search 搜索条件
- * @param string $cols 页码数量
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function Number($page,$search,$cols){
+function Number($page,$cols=5,$search=null){
     //执行数字页码
     $n=array();
     if($page['count']>$cols){

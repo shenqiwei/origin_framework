@@ -51,9 +51,9 @@
 >>> `Page(__url__,__count__,__current__,__row__,__serach__)`   
 >>> `__url__`：地址连接，使用相对地址表述 (/home/index/index.html)   
 >>> `__count__`：数据总数（使用 mysql->count() 获取数据总数），整数类型   
->>> `__current__`：当前页页码，整数类型   
->>> `__row__`：单页显示行数 大于0的任意整型值，整数类型   
->>> `__serach__`：搜索条件使用（get结构变量请求）(&name=小明&age=12&sex=男)   
+>>> `__current__`：当前页页码，整数类型，默认值：1   
+>>> `__row__`：单页显示行数 大于0的任意整型值，整数类型，默认值：10   
+>>> `__serach__`：搜索条件使用（get结构变量请求）(&name=小明&age=12&sex=男)，默认值：null   
 
 page函数功能实现格式：   
 ![page函数功能实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_page.png)   
@@ -84,8 +84,8 @@ page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin
 >>> @Number操作说明
 >>> `Number(__page__,__serach__,__cols__)`   
 >>> `__page__`：page方法返回数组集合   
->>> `__serach__`：搜索条件使用（get结构变量请求）  
->>> `__cols__`：显示页脚，整数类型   
+>>> `__cols__`：显示页脚，整数类型，默认值：5    
+>>> `__serach__`：搜索条件使用（get结构变量请求），默认值：null  
 
 number函数功能实现格式：   
 ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
