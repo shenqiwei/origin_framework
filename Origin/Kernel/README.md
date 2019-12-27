@@ -89,7 +89,7 @@ Upload封装类用于实现Origin文件上传功能
 >> `$_upload = new Upload()`
 >
 > Upload封装类提供了基础参数设置函数
->> `$_upload->input(__input__)` # 设置表单名称 <from>表单需增加 type = 'multipart/form-data' 上传功能有效   
+>> `$_upload->input(__input__)` # 设置表单名称 <from>表单需增加 enctype = 'multipart/form-data' 上传功能有效   
 >> `$_upload->type(__type__)` # 设置文件类型限制，参数可以设置为字符串（单一类型限制），也可以设置为数组，默认值为空 不做任何限制   
 >> `$_upload->size(__size__)` # 设置文件大小限制，参数为整数，默认值 0 不做任何限制    
 >> `$_upload->store(__store__)` # 设置存储位置，默认值 null ，预设值为项目资源目录 /Resource/Upload/，在预设状态下上传文件，框架会自动生成一个以日期为标记的目录，用于拆分上传文件     

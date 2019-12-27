@@ -100,6 +100,6 @@
 >>> 用于数据的修改更新，该函数调用必须与`$_mysql->data()`和`$_mysql->where()`配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
 >>> `$_mysql->update()` # update *table* set *date* where *condition*   
 >
->> delete桉树：
+>> delete函数：
 >>> 用于数据的删除，函数调用必须与`$_mysql->where()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数   
 >>> `$_mysql->delete()` # sql语句表述结构 delete from *table* where *condition*    
