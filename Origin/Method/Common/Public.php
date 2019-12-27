@@ -41,12 +41,12 @@ function Page($url,$count,$current,$row,$search){
         'end_url'=>'','end'=>0, # 最后一页参数
     );
     $page['current']=intval($current);
-    $page['count']=$count%$page['size']!=0?intval(($count/$page['size'])+1):intval($count/$page['size']);
+    $page['count']=$count%$page['limit']!=0?intval(($count/$page['limit'])+1):intval($count/$page['limit']);
     //判断页标状态
     if($page['current']<=0) $page['current']=1;
     if($page['current']>$page['count']) $page['current']=$page['count'];
     if($page['count']<=0) $page['current']=$page['count']=1;
-    $page['begin']=$page['size']*($page['current']-1);//其实点运算
+    $page['begin']=$page['limit']*($page['current']-1);//其实点运算
     $page['page_one']=$page['limit']+1;
     $page['page_end']=($page['limit']+$page['size'])>$count?$count:$page['limit']+$page['size'];
     //判断翻页状态1
