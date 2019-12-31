@@ -32,9 +32,7 @@ class DB
         /**
          * 调用Redis数据库核心包
          */
-        $_dao = new Redis($connect_name);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        return new Redis($connect_name);
     }
     /**
      * MongoDB数据库操作方法
