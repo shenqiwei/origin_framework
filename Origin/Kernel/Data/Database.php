@@ -1,21 +1,20 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 1.0.1
- * @copyright 2015-2019
- * @context: IoC Mysql封装类
+ * @version 1.0
+ * @copyright 2015-2020
+ * @context: Origin框架SQL执行语句封装类
  */
 namespace Origin\Kernel\Data;
 
+use Origin\Kernel\Data\Database\Query;
 use Origin\Kernel\Parameter\Output;
 use PDOException;
 use PDO;
 
-/**
- * Mysql操作类
-*/
-class Mysql extends Query
+class Database extends Query
 {
+    # 数据库连接
     private $_Connect = null;
     # select 为起始词
     private $_Regular_Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
@@ -27,12 +26,15 @@ class Mysql extends Query
     private $_Row_Count = 0;
     # 只有table
     # 构造函数
-    function __construct($connect_name=null)
+    function __construct($connect_name=null,$type="mysql")
     {
+        if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql"))){
+            $this->_Data_Type = strtolower(trim($type));
+        }
         $_connect_config = Config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
-                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql"
+                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "SQL"
                     and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
                     $_connect_conf = $_connect_config[$_i];
                     break;
@@ -40,7 +42,7 @@ class Mysql extends Query
             }
             if(!isset($_connect_conf)){
                 for($_i = 0; $_i < count($_connect_config); $_i++){
-                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "mysql")
+                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "SQL")
                         or !key_exists("DATA_TYPE",$_connect_config[$_i])){
                         $_connect_config = $_connect_config[$_i];
                         break;
@@ -49,30 +51,35 @@ class Mysql extends Query
             }else
                 $_connect_config = $_connect_conf;
             # 创建数据库链接地址，端口，应用数据库信息变量
-            $_DSN = 'mysql:host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];
+            $_DSN = strtolower(trim($type)).':host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];
             $_username = $_connect_config['DATA_USER']; # 数据库登录用户
             $_password = $_connect_config['DATA_PWD']; # 登录密码
             $_option = array(
                 # 设置数据库编码规则
-                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
                 PDO::ATTR_PERSISTENT => true,
             );
+            if($this->_Data_Type == "mysql")
+               $_option[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES utf8';
             # 创建数据库连接对象
             $this->_Connect = new PDO($_DSN, $_username, $_password, $_option);
             # 设置数据库参数信息
             $this->_Connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             # 是否使用持久链接
             $this->_Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
-            # mysql自动提交单语句
+            # SQL自动提交单语句
 //                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
-            # mysql请求超时时间
+            # SQL请求超时时间
             if(intval(Config('DATA_TIMEOUT')))
                 $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
-            # mysql是否使用缓冲查询
-            if(boolval(Config('DATA_USE_BUFFER')))
-                $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
+            # SQL是否使用缓冲查询
+            if(boolval(Config('DATA_USE_BUFFER'))){
+                if($this->_Data_Type == "mysql")
+                    $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
+            }
+
         }
     }
+
     /**
      * 返回查询信息的总数
      * @access public
@@ -105,7 +112,7 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -123,12 +130,12 @@ class Mysql extends Query
         # 执行主函数
         # 起始结构
         $_sql = null;
-        # top关键字信息 mysql 不支持
-//            if(!is_null($this->_Top)) $_sql .= $this->_Top;
-        # 首条信息 mysql 不支持
-//            if(!is_null($this->_First)) $_sql .= $this->_First;
-        # 末尾信息 mysql 不支持
-//            if(!is_null($this->_Last)) $_sql .= $this->_Last;
+        # top关键字信息 mysql,pgsql 不支持 , mssql语法内容
+        if(!is_null($this->_Top)) $_sql .= $this->_Top;
+//        # 首条信息 SQL 不支持
+//        if(!is_null($this->_First)) $_sql .= $this->_First;
+//        # 末尾信息 SQL 不支持
+//        if(!is_null($this->_Last)) $_sql .= $this->_Last;
         # 求总和
         if(!is_null($this->_Total)){
             if(!is_null($_sql) or !is_null($this->_Group))
@@ -189,8 +196,6 @@ class Mysql extends Query
         if(!is_null($this->_LowerCase)) $_sql .= $this->_LowerCase;
         # 信息截取
         if(!is_null($this->_Mid)) $_sql .= $this->_Mid;
-        # 信息长度 mysql中使用length
-//            if($this->_Len!= null) $_sql .= $this->_Len;
         if(!is_null($this->_Length)) $_sql .= $this->_Length;
         # 信息四舍五入
         if(!is_null($this->_Round)) $_sql .= $this->_Round;
@@ -248,7 +253,7 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -294,7 +299,7 @@ class Mysql extends Query
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
             # 返回查询结构
-            $_receipt = $this->_Connect->lastInsertId();
+            $_receipt = $this->_Connect->lastInsertId($this->_Primary);
             # 释放连接
             $_statement->closeCursor();
             # 记录最后操作表格
@@ -302,7 +307,7 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -356,7 +361,7 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -392,7 +397,7 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -450,7 +455,7 @@ class Mysql extends Query
                         $_receipt = $_statement->fetchAll();
                     }
             }elseif($_query_type === "insert")
-                $_receipt = $this->_Connect->lastInsertId();
+                $_receipt = $this->_Connect->lastInsertId($this->_Primary);
             else
                 $_receipt = $_statement->rowCount();
             # 释放连接
@@ -458,21 +463,21 @@ class Mysql extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("Mysql Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
     }
     /**
      * 执行事务提交
-    */
+     */
     function getCommit()
     {
         $this->_Connect->commit();
     }
     /**
      * 执行事务回滚
-    */
+     */
     function getRollBack()
     {
         $this->_Connect->rollBack();
@@ -480,7 +485,7 @@ class Mysql extends Query
     /**
      * @access public
      * @contact 返回select查询条数信息
-    */
+     */
     function getRowCount()
     {
         return $this->_Row_Count;
@@ -488,7 +493,7 @@ class Mysql extends Query
     /**
      * @access public
      * @contact 析构函数：数据库链接释放
-    */
+     */
     function __destruct()
     {
         $this->_Connect = null;

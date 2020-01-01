@@ -1,11 +1,11 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
+ * @version 1.0
  * @copyright 2015-2017
  * @context: IoC Sql操作封装类
  */
-namespace Origin\Kernel\Data;
+namespace Origin\Kernel\Data\Database;
 
 use Origin\Kernel\Parameter\Output;
 use Exception;
@@ -48,6 +48,30 @@ abstract class Query
      */
     protected function __getSQL()
     {
+        return $this->_Object;
+    }
+    /**
+     * @access protected
+     * @var string $_Data_Type 数据源类型
+    */
+    #
+    protected $_Data_Type = "mysql";
+    /**
+     * @access protected
+     * @var string $_Primary 自增主键字段
+    */
+    protected $_Primary = null;
+    /**
+     * 设置自增主键字段名信息
+     * @access public
+     * @param string $field 主键名称
+     * @return object
+     */
+    function setPrimary($field)
+    {
+        if(is_true($this->_Regular_Name_Confine, $field)){
+            $this->_Primary = $field;
+        }
         return $this->_Object;
     }
     /**
@@ -876,9 +900,18 @@ abstract class Query
      * @param mixed $field
      * @return object
      */
-    function toUpper($field)
+    function upper($field)
     {
         $this->_UpperCase = null;
+        switch($this->_Data_Type){
+            case "mssql":
+            case "pgsql":
+                $_func = "upper";
+                break;
+            default:
+                $_func = "ucase";
+                break;
+        }
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -887,14 +920,14 @@ abstract class Query
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_LowerCase .= $_symbol.'ucase('.$field[$_i].')';
+                    $this->_LowerCase .= "{$_symbol} {$_func}({$field[$_i]})";
                 }else{
-                    $this->_LowerCase .= $_symbol.'ucase('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_LowerCase .= "{$_symbol} {$_func}({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_UpperCase = ', ucase('.$field.')';
+                $this->_UpperCase = ", {$_func}({$field})";
         }
         return $this->__getSQL();
     }
@@ -910,9 +943,18 @@ abstract class Query
      * @param mixed $field
      * @return object
      */
-    function toLower($field)
+    function lower($field)
     {
         $this->_LowerCase = null;
+        switch($this->_Data_Type){
+            case "mssql":
+            case "pgsql":
+                $_func = "lower";
+                break;
+            default:
+                $_func = "lcase";
+                break;
+        }
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -922,14 +964,14 @@ abstract class Query
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_LowerCase .= $_symbol.'lcase('.$field[$_i].')';
+                    $this->_LowerCase = "{$_symbol} {$_func}({$field[$_i]})";
                 }else{
-                    $this->_LowerCase .= $_symbol.'lcase('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_LowerCase = "{$_symbol} {$_func}({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_LowerCase = ', lcase('.$field.')';
+                $this->_LowerCase = ", {$_func}({$field})";
         }
         return $this->__getSQL();
     }
@@ -984,42 +1026,6 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Len
-     * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
-     */
-    protected $_Len = null;
-    /**
-     * 计算指定字段列记录值长度，一般只应用于文本格式信息
-     * 方法支持两种数据类型，如果只对一个字段进行操作，使用字符串类型
-     * 对多个字段进行操作，则使用自然数标记数组
-     * @access public
-     * @param string $field
-     * @return object
-    */
-    function len($field)
-    {
-        $this->_Len = null;
-        /**
-         * @var array $_value
-         */
-        if(is_array($field)){
-            # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            for($_i=0;$_i<count($field);$_i++){
-                $_symbol = '';
-                if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
-                    $this->_Len .= $_symbol.'len('.$field[$_i].')';
-                }else{
-                    $this->_Len .= $_symbol.'len('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
-                }
-            }
-        }else{
-            if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Len  = ', len('.$field.')';
-        }
-        return $this->__getSQL();
-    }
-    /**
      * @var mixed $_Length
      * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
      */
@@ -1034,24 +1040,46 @@ abstract class Query
      */
     function length($field)
     {
-        $this->_Len = null;
+        $this->_Length = null;
         /**
          * @var array $_value
          */
-        if(is_array($field)){
-            # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            for($_i=0;$_i<count($field);$_i++){
-                $_symbol = '';
-                if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
-                    $this->_Len .= $_symbol.'length('.$field[$_i].')';
+        switch($this->_Data_Type){
+            case "mssql":
+                if(is_array($field)){
+                    # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
+                    for($_i=0;$_i<count($field);$_i++){
+                        $_symbol = '';
+                        if($_i!=0) $_symbol = ',';
+                        if(is_numeric(array_keys($field)[0])){
+                            $this->_Length .= $_symbol.'len('.$field[$_i].')';
+                        }else{
+                            $this->_Length .= $_symbol.'len('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                        }
+                    }
                 }else{
-                    $this->_Len .= $_symbol.'length('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    if(is_true($this->_Regular_Name_Confine, $field))
+                        $this->_Length  = ', len('.$field.')';
                 }
-            }
-        }else{
-            if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Len  = ', length('.$field.')';
+                break;
+            case "mysql":
+            default:
+                if(is_array($field)){
+                    # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
+                    for($_i=0;$_i<count($field);$_i++){
+                        $_symbol = '';
+                        if($_i!=0) $_symbol = ',';
+                        if(is_numeric(array_keys($field)[0])){
+                            $this->_Length .= $_symbol.'length('.$field[$_i].')';
+                        }else{
+                            $this->_Length .= $_symbol.'length('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                        }
+                    }
+                }else{
+                    if(is_true($this->_Regular_Name_Confine, $field))
+                        $this->_Length  = ', length('.$field.')';
+                }
+                break;
         }
         return $this->__getSQL();
     }
@@ -1263,9 +1291,16 @@ abstract class Query
     {
         if(is_int($start) and $start >= 0){
             if(is_int($length) and $length > 0){
-                $this->_Limit = ' limit '.$start.','.$length.'';
+                switch($this->_Data_Type){
+                    case "pgsql":
+                        $this->_Limit = " limit {$length} offset {$start}";
+                        break;
+                    default:
+                        $this->_Limit = " limit {$start},{$length}";
+                        break;
+                }
             }else{
-                $this->_Limit = ' limit '.$start;
+                $this->_Limit = " limit {$start}";
             }
         }
         return $this->__getSQL();

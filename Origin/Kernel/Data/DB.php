@@ -3,21 +3,45 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 1.0.1
  * @copyright 2015-2019
- * @context: IoC Mysql封装类
+ * @context: Origin框架Mysql封装类
  */
 namespace Origin\Kernel\Data;
 
 class DB
 {
     /**
-     * Mysql数据库操作方法
+ * Mysql数据库操作方法
+ * @access public
+ * @param string $connect_name 链接名
+ * @return object
+ */
+    static function mysql($connect_name=null)
+    {
+        $_dao = new Database($connect_name,"mysql");
+        $_dao->__setSQL($_dao);
+        return $_dao;
+    }
+    /**
+     * PostgreSQL数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
      */
-    static function mysql($connect_name=null)
+    static function pgsql($connect_name=null)
     {
-        $_dao = new Mysql($connect_name);
+        $_dao = new Database($connect_name,"pgsql");
+        $_dao->__setSQL($_dao);
+        return $_dao;
+    }
+    /**
+     * SQL server数据库操作方法
+     * @access public
+     * @param string $connect_name 链接名
+     * @return object
+     */
+    static function mssql($connect_name=null)
+    {
+        $_dao = new Database($connect_name,"mssql");
         $_dao->__setSQL($_dao);
         return $_dao;
     }
