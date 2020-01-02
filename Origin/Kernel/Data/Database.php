@@ -34,7 +34,7 @@ class Database extends Query
         $_connect_config = Config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
-                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "SQL"
+                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->_Data_Type
                     and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
                     $_connect_conf = $_connect_config[$_i];
                     break;
@@ -42,7 +42,7 @@ class Database extends Query
             }
             if(!isset($_connect_conf)){
                 for($_i = 0; $_i < count($_connect_config); $_i++){
-                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === "SQL")
+                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->_Data_Type)
                         or !key_exists("DATA_TYPE",$_connect_config[$_i])){
                         $_connect_config = $_connect_config[$_i];
                         break;

@@ -46,6 +46,30 @@ class DB
         return $_dao;
     }
     /**
+     * sqlite数据库操作方法
+     * @access public
+     * @param string $connect_name 链接名
+     * @return object
+     */
+    static function sqlite($connect_name=null)
+    {
+        $_dao = new Database($connect_name,"sqlite");
+        $_dao->__setSQL($_dao);
+        return $_dao;
+    }
+    /**
+     * SQL server数据库操作方法
+     * @access public
+     * @param string $connect_name 链接名
+     * @return object
+     */
+    static function oracle($connect_name=null)
+    {
+        $_dao = new Database($connect_name,"oracle");
+        $_dao->__setSQL($_dao);
+        return $_dao;
+    }
+    /**
      * Redis数据库操作方法
      * @access public
      * @param string $connect_name 链接名
