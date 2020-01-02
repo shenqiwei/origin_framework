@@ -50,8 +50,28 @@ class Database extends Query
                 }
             }else
                 $_connect_config = $_connect_conf;
+            switch($this->_Data_Type){
+                case "pgsql":
+                    $_DSN = "pgsql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
+                    break;
+                case "mssql":
+                    $_DSN = "dblib:host={$_connect_config["DATA_HOST"]}:{$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
+                    break;
+                case "sqlite":
+                    $_DSN = "sqlite:{$_connect_config["DATA_DB"]}}";
+                    break;
+                case "oracle":
+                    $_oci = "(DESCRIPTION =
+                            (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = {$_connect_config["DATA_HOST"]})(PORT = 1521)))
+                            (CONNECT_DATA = (SERVICE_NAME = orcl))";
+                    $_DSN = "oci:dbname={$_oci}";
+                    break;
+                case "mariadb":
+                default:
+                    $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
+                    break;
+            }
             # 创建数据库链接地址，端口，应用数据库信息变量
-            $_DSN = strtolower(trim($type)).':host='.$_connect_config['DATA_HOST'].';port='.$_connect_config['DATA_PORT'].';dbname='.$_connect_config['DATA_DB'];
             $_username = $_connect_config['DATA_USER']; # 数据库登录用户
             $_password = $_connect_config['DATA_PWD']; # 登录密码
             $_option = array(
