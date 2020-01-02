@@ -28,7 +28,7 @@ class Database extends Query
     # 构造函数
     function __construct($connect_name=null,$type="mysql")
     {
-        if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql"))){
+        if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql","sqlite","oracle","mariadb"))){
             $this->_Data_Type = strtolower(trim($type));
         }
         $_connect_config = Config('DATA_MATRIX_CONFIG');
@@ -132,10 +132,6 @@ class Database extends Query
         $_sql = null;
         # top关键字信息 mysql,pgsql 不支持 , mssql语法内容
         if(!is_null($this->_Top)) $_sql .= $this->_Top;
-//        # 首条信息 SQL 不支持
-//        if(!is_null($this->_First)) $_sql .= $this->_First;
-//        # 末尾信息 SQL 不支持
-//        if(!is_null($this->_Last)) $_sql .= $this->_Last;
         # 求总和
         if(!is_null($this->_Total)){
             if(!is_null($_sql) or !is_null($this->_Group))
@@ -190,6 +186,15 @@ class Database extends Query
             }
 
         }
+        # 新增函数支持 begin
+        if(!is_null($this->_Abs)) $_sql .= $this->_Abs;
+        if(!is_null($this->_Mod)) $_sql .= $this->_Mod;
+        if(!is_null($this->_Random)) $_sql .= $this->_Random;
+        if(!is_null($this->_L_Trim)) $_sql .= $this->_L_Trim;
+        if(!is_null($this->_Trim)) $_sql .= $this->_Trim;
+        if(!is_null($this->_R_Trim)) $_sql .= $this->_R_Trim;
+        if(!is_null($this->_Replace)) $_sql .= $this->_Replace;
+        # 新增函数end
         # 信息大写
         if(!is_null($this->_UpperCase)) $_sql .= $this->_UpperCase;
         # 信息小写

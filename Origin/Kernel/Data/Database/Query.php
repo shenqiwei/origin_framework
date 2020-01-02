@@ -375,13 +375,19 @@ abstract class Query
     function top($number, $percent=false)
     {
         $this->_Top = null;
-        # top 关键字后边只能接数组，所以在拼接语句时，要对number进行类型转化
-        $this->_Top .=' top '.intval($number);
-        # 判断是否使用百分比进行查询
-        if($percent and intval($number) > 100)
-            $this->_Top = ' top 100 percent';
-        elseif($percent and intval($number) <= 100)
-            $this->_Top .= ' percent';
+        switch($this->_Data_Type){
+            case "mssql":
+                # top 关键字后边只能接数组，所以在拼接语句时，要对number进行类型转化
+                $this->_Top .=' top '.intval($number);
+                # 判断是否使用百分比进行查询
+                if($percent and intval($number) > 100)
+                    $this->_Top = ' top 100 percent';
+                elseif($percent and intval($number) <= 100)
+                    $this->_Top .= ' percent';
+                break;
+            default:
+                break;
+        }
         return $this->__getSQL();
     }
     /**
@@ -411,7 +417,7 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Total = ' count('.$field.')';
+                $this->_Total = 'count('.$field.')';
         }
         return $this->__getSQL();
     }
@@ -505,7 +511,7 @@ abstract class Query
          * 进行传入值结构判断
          */
         if(is_true($this->_Regular_Name_Confine, $field))
-            $this->_Distinct = ' distinct '.$field;
+            $this->_Distinct = ',distinct '.$field;
         return $this->__getSQL();
     }
     /**
@@ -727,6 +733,36 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
+     * @var string $_Abs
+     * 求正整数
+    */
+    protected $_Abs = null;
+    /**
+     * 求正WW数值
+     * @access public
+     * @param mixed $field
+     * @return object
+    */
+    function abs($field)
+    {
+        $this->_Avg = null;
+        if(is_array($field)){
+            for($_i=0;$_i<count($field);$_i++){
+                $_symbol = '';
+                if($_i!=0) $_symbol = ',';
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_Abs .= $_symbol.'abs('.$field[$_i].')';
+                }else{
+                    $this->_Abs .= $_symbol.'abs('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                }
+            }
+        }else{
+            if(is_true($this->_Regular_Name_Confine, $field))
+                $this->_Abs = ' abs('.$field.')';
+        }
+        return $this->_Object;
+    }
+    /**
      * @var string $_Avg
      * 求平均数函数的字段名
      */
@@ -734,7 +770,7 @@ abstract class Query
     /**
      * 查询语句指定字段值平均数，支持单字段名
      * @access public
-     * @param string $field
+     * @param mixed $field
      * @return object
      */
     function avg($field)
@@ -752,49 +788,7 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Avg = ' avg('.$field.')';
-        }
-        return $this->__getSQL();
-    }
-    /**
-     * @var string $_First
-     * 指定字段下第一个记录值的字段名
-     */
-    protected $_First = null;
-    /**
-     * 查询语句指定字段值第一个记录值，支持单字段名
-     * @access public
-     * @param string $field
-     * @return object
-     */
-    function first($field)
-    {
-        if(is_array($field)){
-            $this->_First = ', first('.array_keys($field)[0].') as '.$field[array_keys($field)[0]];
-        }else{
-            if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_First = ', first('.$field.')';
-        }
-        return $this->__getSQL();
-    }
-    /**
-     * @var string $_Last
-     * 指定字段下最后一个记录值的字段名
-     */
-    protected $_Last = null;
-    /**
-     * 查询语句指定字段值最后一个记录值，支持单字段名
-     * @access public
-     * @param string $field
-     * @return object
-     */
-    function last($field)
-    {
-        if(is_array($field)){
-            $this->_Last = ', last('.array_keys($field)[0].') as '.$field[array_keys($field)[0]];
-        }else{
-            if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Last = ', last('.$field.')';
+                $this->_Avg = 'avg('.$field.')';
         }
         return $this->__getSQL();
     }
@@ -806,7 +800,7 @@ abstract class Query
     /**
      * 查询语句指定字段中最大值，支持单字段名
      * @access public
-     * @param string $field
+     * @param mixed $field
      * @return object
      */
     function max($field)
@@ -824,7 +818,7 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Max = ' max('.$field.')';
+                $this->_Max = 'max('.$field.')';
         }
         return $this->__getSQL();
     }
@@ -836,7 +830,7 @@ abstract class Query
     /**
      * 查询语句指定字段中最小值，支持单字段名
      * @access public
-     * @param string $field
+     * @param mixed $field
      * @return object
      */
     function min($field)
@@ -854,7 +848,7 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Min = ' min('.$field.')';
+                $this->_Min = 'min('.$field.')';
         }
         return $this->__getSQL();
     }
@@ -866,7 +860,7 @@ abstract class Query
     /**
      * 返回指定字段下所有列值的总和，只支持数字型字段列
      * @access public
-     * @param string $field
+     * @param mixed $field
      * @return object
      */
     function sum($field)
@@ -884,7 +878,276 @@ abstract class Query
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Sum = ' sum('.$field.')';
+                $this->_Sum = 'sum('.$field.')';
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 取余
+     * @var string $_Mod
+    */
+    protected $_Mod = null;
+    /**
+     * 取余
+     * @access public
+     * @param mixed $field
+     * @param int second
+     * @return object
+    */
+    protected function mod($field,$second=0)
+    {
+        $this->_Sum = null;
+        switch($this->_Data_Type){
+            case "sqlite":
+                null;
+                break;
+            case "mssql":
+            case "mariadb":
+            case "oracle":
+            case "pgsql":
+            default:
+                if(is_array($field)){
+                    for($_i=0;$_i<count($field);$_i++){
+                        if(!key_exists("as_name",$field[$_i])){
+                            $this->_Mod = ",mod(".$field[$_i]["first"].",".$field[$_i]["second"].")";
+                        }else{
+                            $this->_Mod = ",mod(".$field[$_i]["first"].",".$field[$_i]["second"].") as ".$field[$_i]["as_name"];
+                        }
+                    }
+                }else{
+                    if(is_true($this->_Regular_Name_Confine, $field))
+                        $this->_Mod = ", mod({$field},{$second})";
+                }
+                break;
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 求随机数
+     * @var string $_Random
+    */
+    protected $_Random = null;
+    /**
+     * 求随机数
+     * @access public
+     * @return object
+    */
+    protected function random()
+    {
+        switch ($this->_Data_Type){
+            case "pgsql":
+            case "sqlite":
+                $this->_Random = ",random()";
+                break;
+            case "oracle":
+                $this->_Random = ",dbms_random.value";
+                break;
+            case "mssql":
+            case "mariadb":
+            default:
+                $this->_Random = ",rand()";
+                break;
+        }
+        return $this->_Object;
+    }
+    /**
+     * 去除左边指定字符（空格）
+     * @var string $_L_Trim;
+    */
+    protected $_L_Trim = null;
+    /**
+     * 去除左边指定字符（空格）
+     * @access public
+     * @param mixed $field
+     * @param string $str
+     * @return object
+    */
+    protected function lTrim($field,$str=null)
+    {
+        $this->_L_Trim = null;
+        if(is_array($field)){
+            for($_i=0;$_i<count($field);$_i++){
+                $_str = null;
+                switch ($this->_Data_Type){
+                    case "pgsql":
+                    case "sqlite":
+                    case "oracle":
+                        if(!is_null($field[$_i]["str"]))
+                            $_str = ",{$field[$_i]["str"]}";
+                        break;
+                    case "mssql":
+                    case "mariadb":
+                    default:
+                        null;
+                        break;
+                }
+                if(!key_exists("as_name",$field[$_i])){
+                    $this->_L_Trim = ",ltrim({$field[$_i]["field"]}{$_str})";
+                }else{
+                    $this->_L_Trim = ",ltrim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
+                }
+            }
+        }else{
+            $_str = null;
+            switch ($this->_Data_Type){
+                case "pgsql":
+                case "sqlite":
+                case "oracle":
+                    if(!is_null($str))
+                        $_str = ",{$str}";
+                    break;
+                case "mssql":
+                case "mariadb":
+                default:
+                    null;
+                    break;
+            }
+            if(is_true($this->_Regular_Name_Confine, $field))
+                $this->_L_Trim = ",ltrim({$field}{$_str}))";
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 去除指定字符（空格）
+     * @var string $_Trim;
+     */
+    protected $_Trim = null;
+    /**
+     * 去除指定字符（空格）
+     * @access public
+     * @param mixed $field
+     * @param string $str
+     * @return object
+     */
+    protected function trim($field,$str=null)
+    {
+        $this->_Trim = null;
+        if($this->_Data_Type != "mssql"){
+            if(is_array($field)){
+                for($_i=0;$_i<count($field);$_i++){
+                    $_str = null;
+                    switch ($this->_Data_Type){
+                        case "pgsql":
+                        case "sqlite":
+                        case "oracle":
+                            if(!is_null($field[$_i]["str"]))
+                                $_str = ",{$field[$_i]["str"]}";
+                            break;
+                        case "mariadb":
+                        default:
+                            null;
+                            break;
+                    }
+                    if(!key_exists("as_name",$field[$_i])){
+                        $this->_Trim = ",trim({$field[$_i]["field"]}{$_str})";
+                    }else{
+                        $this->_Trim = ",trim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
+                    }
+                }
+            }else{
+                $_str = null;
+                switch ($this->_Data_Type){
+                    case "pgsql":
+                    case "sqlite":
+                    case "oracle":
+                        if(!is_null($str))
+                            $_str = ",{$str}";
+                        break;
+                    case "mariadb":
+                    default:
+                        null;
+                        break;
+                }
+                if(is_true($this->_Regular_Name_Confine, $field))
+                    $this->_Trim = ",trim({$field}{$_str}))";
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 去除右边指定字符（空格）
+     * @var string $_R_Trim;
+     */
+    protected $_R_Trim = null;
+    /**
+     * 去除右边指定字符（空格）
+     * @access public
+     * @param mixed $field
+     * @param string $str
+     * @return object
+     */
+    protected function rTrim($field,$str=null)
+    {
+        $this->_R_Trim = null;
+        if(is_array($field)){
+            for($_i=0;$_i<count($field);$_i++){
+                $_str = null;
+                switch ($this->_Data_Type){
+                    case "pgsql":
+                    case "sqlite":
+                    case "oracle":
+                        if(!is_null($field[$_i]["str"]))
+                            $_str = ",{$field[$_i]["str"]}";
+                        break;
+                    case "mssql":
+                    case "mariadb":
+                    default:
+                        null;
+                        break;
+                }
+                if(!key_exists("as_name",$field[$_i])){
+                    $this->_R_Trim = ",rtrim({$field[$_i]["field"]}{$_str})";
+                }else{
+                    $this->_R_Trim = ",rtrim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
+                }
+            }
+        }else{
+            $_str = null;
+            switch ($this->_Data_Type){
+                case "pgsql":
+                case "sqlite":
+                case "oracle":
+                    if(!is_null($str))
+                        $_str = ",{$str}";
+                    break;
+                case "mssql":
+                case "mariadb":
+                default:
+                    null;
+                    break;
+            }
+            if(is_true($this->_Regular_Name_Confine, $field))
+                $this->_R_Trim = ",rtrim({$field}{$_str}))";
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 指定字符替换
+     * @var string $_Replace
+    */
+    protected $_Replace = null;
+    /**
+     * 指定字符替换
+     * @access public
+     * @param mixed $field
+     * @param string $pattern
+     * @param string $replace
+     * @return object
+    */
+    function replace($field,$pattern=null,$replace=null)
+    {
+        $this->_Replace = null;
+        if(is_array($field)){
+            for($_i=0;$_i<count($field);$_i++){
+                if(!key_exists("as_name",$field[$_i])){
+                    $this->_LowerCase .= ",replace({$field[$_i]["field"]},{$field[$_i]["pattern"]},{$field[$_i]["replace"]})";
+                }else{
+                    $this->_LowerCase .= ",replace({$field[$_i]["field"]},{$field[$_i]["pattern"]},{$field[$_i]["replace"]}) as ".$field[$_i]["as_name"];
+                }
+            }
+        }else{
+            if(is_true($this->_Regular_Name_Confine, $field))
+                $this->_Replace = ",replace({$field},{$pattern},{$replace})";
         }
         return $this->__getSQL();
     }
@@ -903,31 +1166,20 @@ abstract class Query
     function upper($field)
     {
         $this->_UpperCase = null;
-        switch($this->_Data_Type){
-            case "mssql":
-            case "pgsql":
-                $_func = "upper";
-                break;
-            default:
-                $_func = "ucase";
-                break;
-        }
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
-                $_symbol = '';
-                if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_LowerCase .= "{$_symbol} {$_func}({$field[$_i]})";
+                    $this->_LowerCase .= ",upper({$field[$_i]})";
                 }else{
-                    $this->_LowerCase .= "{$_symbol} {$_func}({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
+                    $this->_LowerCase .= ",upper({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_UpperCase = ", {$_func}({$field})";
+                $this->_UpperCase = ",upper({$field})";
         }
         return $this->__getSQL();
     }
@@ -946,32 +1198,21 @@ abstract class Query
     function lower($field)
     {
         $this->_LowerCase = null;
-        switch($this->_Data_Type){
-            case "mssql":
-            case "pgsql":
-                $_func = "lower";
-                break;
-            default:
-                $_func = "lcase";
-                break;
-        }
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             for($_i=0;$_i<count($field);$_i++){
-                $_symbol = '';
-                if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_LowerCase = "{$_symbol} {$_func}({$field[$_i]})";
+                    $this->_LowerCase = ",lower({$field[$_i]})";
                 }else{
-                    $this->_LowerCase = "{$_symbol} {$_func}({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
+                    $this->_LowerCase = ",lower({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_LowerCase = ", {$_func}({$field})";
+                $this->_LowerCase = ",lower({$field})";
         }
         return $this->__getSQL();
     }
@@ -991,37 +1232,40 @@ abstract class Query
     function mid($field, $start=0, $length=0)
     {
         $this->_Mid = null;
-        /**
-         * @var string $_key
-         * @var array $_value
-        */
-        # 判断数据类型
-        if(is_array($field)){
-            # 变量数组信息
-            foreach($field as $_key => $_value){
-                # 判断数组传入结构是否与程序要求相同
-                if(is_array($_value) and array_key_exists('start', $_value) and array_key_exists('length', $_value)){
-                    $_as = null;
-                    if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
-                    # 判断字段名是否符合命名规则
-                    if(is_true($this->_Regular_Name_Confine, $_key)){
-                        if($_value['length'] > 0){
-                            $this->_Mid .= ', mid(' . $_key . ','.intval($_value['start']).','.intval($_value['length']).')'.$_as;
-                        }else{
-                            $this->_Mid .= ', mid(' . $_key . ','.intval($_value['start']).')'.$_as;
+        switch($this->_Data_Type){
+            case "mysql":
+            case "mariadb":
+                # 判断数据类型
+                if(is_array($field)){
+                    # 变量数组信息
+                    foreach($field as $_key => $_value){
+                        # 判断数组传入结构是否与程序要求相同
+                        if(is_array($_value) and array_key_exists('start', $_value) and array_key_exists('length', $_value)){
+                            $_as = null;
+                            if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
+                            # 判断字段名是否符合命名规则
+                            if(is_true($this->_Regular_Name_Confine, $_key)){
+                                if($_value['length'] > 0){
+                                    $this->_Mid .= ', mid(' . $_key . ','.intval($_value['start']).','.intval($_value['length']).')'.$_as;
+                                }else{
+                                    $this->_Mid .= ', mid(' . $_key . ','.intval($_value['start']).')'.$_as;
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    # 当传入值为字符串结构，判断字段名是否符合命名规则
+                    if (is_true($this->_Regular_Name_Confine, $field) and $start >= 0){
+                        if ($length > 0){
+                            $this->_Mid = ', mid(' . $field . ','.intval($start).','.intval($length).')';
+                        }else {
+                            $this->_Mid = ', mid(' . $field . ',' . intval($start) . ')';
                         }
                     }
                 }
-            }
-        }else {
-            # 当传入值为字符串结构，判断字段名是否符合命名规则
-            if (is_true($this->_Regular_Name_Confine, $field) and $start >= 0){
-                if ($length > 0){
-                    $this->_Mid = ', mid(' . $field . ','.intval($start).','.intval($length).')';
-                }else {
-                    $this->_Mid = ', mid(' . $field . ',' . intval($start) . ')';
-                }
-            }
+                break;
+            default:
+                break;
         }
         return $this->__getSQL();
     }
@@ -1041,45 +1285,30 @@ abstract class Query
     function length($field)
     {
         $this->_Length = null;
-        /**
-         * @var array $_value
-         */
         switch($this->_Data_Type){
             case "mssql":
-                if(is_array($field)){
-                    # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-                    for($_i=0;$_i<count($field);$_i++){
-                        $_symbol = '';
-                        if($_i!=0) $_symbol = ',';
-                        if(is_numeric(array_keys($field)[0])){
-                            $this->_Length .= $_symbol.'len('.$field[$_i].')';
-                        }else{
-                            $this->_Length .= $_symbol.'len('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
-                        }
-                    }
-                }else{
-                    if(is_true($this->_Regular_Name_Confine, $field))
-                        $this->_Length  = ', len('.$field.')';
-                }
+                $_func = "len";
                 break;
-            case "mysql":
+            case "pgsql":
+            case "sqlite":
+            case "mariadb":
+            case "oracle":
             default:
-                if(is_array($field)){
-                    # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-                    for($_i=0;$_i<count($field);$_i++){
-                        $_symbol = '';
-                        if($_i!=0) $_symbol = ',';
-                        if(is_numeric(array_keys($field)[0])){
-                            $this->_Length .= $_symbol.'length('.$field[$_i].')';
-                        }else{
-                            $this->_Length .= $_symbol.'length('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
-                        }
-                    }
-                }else{
-                    if(is_true($this->_Regular_Name_Confine, $field))
-                        $this->_Length  = ', length('.$field.')';
-                }
+                $_func = "length";
                 break;
+        }
+        if(is_array($field)){
+            # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
+            for($_i=0;$_i<count($field);$_i++){
+                if(is_numeric(array_keys($field)[0])){
+                    $this->_Length .= ",length({$field[$_i]})";
+                }else{
+                    $this->_Length .= ",length(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
+                }
+            }
+        }else{
+            if(is_true($this->_Regular_Name_Confine, $field))
+                $this->_Length = ",{$_func}({$field})";
         }
         return $this->__getSQL();
     }
@@ -1094,15 +1323,12 @@ abstract class Query
      * @access public
      * @param mixed $field
      * @param int $decimals
+     * @param int 取舍精度 mssql支持语法参数项
      * @return object
     */
-    function round($field, $decimals = 0)
+    function round($field, $decimals = 0,$accuracy=0)
     {
         $this->_Round = null;
-        /**
-         * @var string $_key
-         * @var array $_value
-        */
         # 判断数据类型
         if(is_array($field)){
             # 变量数组信息
@@ -1113,18 +1339,22 @@ abstract class Query
                     if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
                     # 判断字段名是否符合命名规则
                     if(is_true($this->_Regular_Name_Confine, $_key)){
-                        if($_value['length'] > 0){
-                            $this->_Round .= ', round(' . $_key . ','.intval($_value['start']).','.intval($_value['length']).')'.$_as;
-                        }else{
-                            $this->_Round .= ', round(' . $_key . ','.intval($_value['start']).')'.$_as;
-                        }
+                        $_decimals = ",".intval($_value['field']);
+                        $_accuracy = null;
+                        if($this->_Data_Type == "mssql")
+                            $_accuracy = ",".intval($_value['decimals']);
+                        $this->_Round .= ",round({$_key}{$_decimals}{$_accuracy})".$_as;
                     }
                 }
             }
         }else {
             # 当传入值为字符串结构，判断字段名是否符合命名规则
-            if (is_true($this->_Regular_Name_Confine, $field) and $decimals >= 0){
-                $this->_Round = ', round(' . $field . ','.intval($decimals).')';
+            if (is_true($this->_Regular_Name_Confine, $field)){
+                $_decimals = ",".intval($decimals);
+                $_accuracy = null;
+                if($this->_Data_Type == "mssql")
+                    $_accuracy = ",".intval($accuracy);
+                $this->_Round = ",round({$field}{$_decimals}{$_accuracy})";
             }
         }
         return $this->__getSQL();
@@ -1157,32 +1387,33 @@ abstract class Query
     function format($field, $format = null)
     {
         $this->_Format = null;
-        /**
-         * 格式结构验证，仅对一般xss攻击进行符号过滤
-         * @var string $_regular
-         * @var string $_key
-         * @var array $_value
-        */
-        # 创建验证正则
-        $_regular = '/^[^\<\>]+$/';
-        # 判断数据类型
-        if(is_array($field)){
-            # 变量数组信息
-            foreach($field as $_key => $_value){
-                # 判断数组传入结构是否与程序要求相同
-                if(is_array($_value) and array_key_exists('format', $_value)){
-                    $_as = null;
-                    if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
-                    # 判断字段名是否符合命名规则
-                    if(is_true($this->_Regular_Name_Confine, $_key)){
-                        $this->_Format .= ', format(' . $_key . ','.$_value['format'].')'.$_as;
+        switch ($this->_Data_Type){
+            case "mysql":
+            case "mariadb":
+                # 创建验证正则
+                $_regular = '/^[^\<\>]+$/';
+                # 判断数据类型
+                if(is_array($field)){
+                    # 变量数组信息
+                    foreach($field as $_key => $_value){
+                        # 判断数组传入结构是否与程序要求相同
+                        if(is_array($_value) and array_key_exists('format', $_value)){
+                            $_as = null;
+                            if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
+                            # 判断字段名是否符合命名规则
+                            if(is_true($this->_Regular_Name_Confine, $_key)){
+                                $this->_Format .= ',format(' . $_key . ','.$_value['format'].')'.$_as;
+                            }
+                        }
                     }
+                }else {
+                    # 当传入值为字符串结构，判断字段名是否符合命名规则
+                    if (is_true($this->_Regular_Name_Confine, $field) and is_true($_regular, $format))
+                        $this->_Format = ',format('.$field.','.$format.')';
                 }
-            }
-        }else {
-            # 当传入值为字符串结构，判断字段名是否符合命名规则
-            if (is_true($this->_Regular_Name_Confine, $field) and is_true($_regular, $format))
-                $this->_Format = ', format('.$field.','.$format.')';
+                break;
+            default:
+                break;
         }
         return $this->__getSQL();
     }
@@ -1293,14 +1524,27 @@ abstract class Query
             if(is_int($length) and $length > 0){
                 switch($this->_Data_Type){
                     case "pgsql":
+                    case "sqlite":
                         $this->_Limit = " limit {$length} offset {$start}";
                         break;
+                    case "mssql": # mssql不支持limit语法
+                        null;
+                        break;
+                    case "oracle":
+                        $this->_Limit = " rownum <= {$start}";
+                        break;
+                    case "mariadb":
                     default:
                         $this->_Limit = " limit {$start},{$length}";
                         break;
                 }
             }else{
-                $this->_Limit = " limit {$start}";
+                if($this->_Data_Type == "oracle")
+                    $this->_Limit = " rownum <= {$start}";
+                elseif($this->_Data_Type == "mssql")
+                    null;
+                else
+                    $this->_Limit = " limit {$start}";
             }
         }
         return $this->__getSQL();
