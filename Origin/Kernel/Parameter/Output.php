@@ -3,7 +3,7 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 1.0
  * @copyright 2015-2019
- * @context: IoC 模板管理
+ * @context: Origin模板管理
  */
 namespace Origin\Kernel\Parameter;
 # 文件内容输出

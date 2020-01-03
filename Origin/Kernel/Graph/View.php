@@ -1,9 +1,9 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @copyright 2015-2017
- * @context: IoC 变量过滤封装类
+ * @version 0.5
+ * @copyright 2015-2019
+ * @context: Origin框架变量过滤封装类
  */
 namespace Origin\Kernel\Graph;
 

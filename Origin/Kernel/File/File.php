@@ -1,9 +1,9 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.3
- * @copyright 2015-2017
- * @context: IoC 文件操作封装
+ * @version 1.0
+ * @copyright 2015-2019
+ * @context: Origin框架文件操作封装
  */
 namespace Origin\Kernel\File;
 

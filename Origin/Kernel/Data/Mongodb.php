@@ -3,7 +3,7 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 1.0
  * @copyright 2015-2019
- * @context: IoC MongoDB封装类（新版本支持包）
+ * @context: Origin框架MongoDB封装类（新版本支持包）
  */
 namespace Origin\Kernel\Data;
 

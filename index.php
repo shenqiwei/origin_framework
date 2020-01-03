@@ -4,7 +4,7 @@
  * @version 0.5
  * @copyright 2015-2019
  * @context:
- * IoC 单向入口操作文件
+ * Origin框架单向入口操作文件
 */
 # 设置调试状态
 define('DEBUG',true);

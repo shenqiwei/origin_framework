@@ -3,7 +3,7 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 0.5
  * @copyright 2015-2019
- * @context 自动加载封装类
+ * @context Origin自动加载封装类
  */
 namespace Origin\Kernel;
 

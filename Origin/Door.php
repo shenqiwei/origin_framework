@@ -4,7 +4,7 @@
  * @version 0.5
  * @copyright 2015-2019
  * @context:
- * IoC 单向入口操作文件
+ * Origin单向入口操作文件
  */
 # 版本控制
 if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 5.5');
