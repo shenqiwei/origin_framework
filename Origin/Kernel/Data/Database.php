@@ -58,7 +58,7 @@ class Database extends Query
                     $_DSN = "dblib:host={$_connect_config["DATA_HOST"]}:{$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
                 case "sqlite":
-                    $_DSN = "sqlite:{$_connect_config["DATA_DB"]}}";
+                    $_DSN = "sqlite:{$_connect_config["DATA_DB"]}";
                     break;
                 case "oracle":
                     $_oci = "(DESCRIPTION =
