@@ -21,7 +21,7 @@ class Controller
      * 装载参数信息数组
      * @var array $_Param_Array
     */
-    private $_Param = array();
+    private array $_Param = array();
     /**
      * 构造方法，获取当前操作类信息
      * @access public
@@ -31,8 +31,8 @@ class Controller
     /**
      * 向模板加载数据信息
      * @access protected
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      * @return null
     */
     protected function param($key, $value)
@@ -56,7 +56,7 @@ class Controller
     /**
      * 调用模板方法
      * @access protected
-     * @param $view
+     * @param string $view
      * @return null
      */
     protected function view($view=null)
@@ -94,9 +94,9 @@ class Controller
     /**
      * 执行成功提示信息
      * @access protected
-     * @param $message
-     * @param $url
-     * @param $time
+     * @param string $message
+     * @param string $url
+     * @param int $time
      * @return null
     */
     protected function success($message='success',$url='#',$time=3)
@@ -108,9 +108,9 @@ class Controller
     /**
      * 错误提示
      * @access protected
-     * @param $message
-     * @param $url
-     * @param $time
+     * @param string $message
+     * @param string $url
+     * @param int $time
      * @return null
     */
     protected function error($message='error',$url='#',$time=3)
