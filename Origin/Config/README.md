@@ -67,21 +67,21 @@ __数据源配置：[[返回](#config)]__
 `DATA_CONNECT_MAX` 数据服务最大访问数量,设置该参数后,连接将会被监听,当到达最大连接值时,系统将挂起连接服务,直到有空余连接位置，默认值0（不作限制）  
 `DATA_CONNECT_THREAD` 连接是否使用线程,当前版本暂不支持线程  
 `DATA_USE_FACTORY` 是否是用数据工厂模式,当前版本暂不支持线程  
-`DATA_TYPE` 选择数据库类型,当前版本只支持mysql （现阶段版本更新中，对redis和mongodb进行了支持，功能测试中，完成测试后会将支持结构上传）  
-`DATA_HOST`  mysql服务访问地址  
-`DATA_USER`  mysql登录用户  
-`DATA_PWD` mysql登录密码  
-`DATA_PORT`  mysql默认访问端口  
-`DATA_DB` mysql访问数据库  
+`DATA_TYPE` 选择数据库类型,当前版本支持Mysql,MariaDB,SQL server(mssql),PostgreSQL(pgsql),sqlite,Oracle,Redis,MongoDB(基础操作支持)   
+`DATA_HOST`  服务访问地址  
+`DATA_USER`  登录用户  
+`DATA_PWD` 登录密码  
+`DATA_PORT`  默认访问端口 mysql:3306,mariadb:3306,PostgreSQL:5432,Redis:6379,MongoDB:27017    
+`DATA_DB` 访问数据库  
 `DATA_USE_MEMCACHE` mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境(暂时取消该功能支持)  
 `MEMCACHE_SET_ADDRESSL:ADDRESS`  
 `MEMCACHE_SET_ADDRESSL:CAPACITY`  
 `DATA_MATRIX_CONFIG:DATA_NAME` 当前数据源名称(多数据结构支持，亦支持分布式数据结构)  
-`DATA_MATRIX_CONFIG:DATA_HOST` mysql服务访问地址  
-`DATA_MATRIX_CONFIG:DATA_USER` mysql登录用户  
-`DATA_MATRIX_CONFIG:DATA_PWD` mysql登录密码  
-`DATA_MATRIX_CONFIG:DATA_PORT` mysql默认访问端口  
-`DATA_MATRIX_CONFIG:DATA_DB` mysql访问数据库  
+`DATA_MATRIX_CONFIG:DATA_HOST` 服务访问地址  
+`DATA_MATRIX_CONFIG:DATA_USER` 登录用户  
+`DATA_MATRIX_CONFIG:DATA_PWD` 登录密码  
+`DATA_MATRIX_CONFIG:DATA_PORT` 默认访问端口  
+`DATA_MATRIX_CONFIG:DATA_DB` 访问数据库  
 
 <span id='config_view'></span>
 __访问显示模式配置：(`功能完善中`)[[返回](#config)]__  
