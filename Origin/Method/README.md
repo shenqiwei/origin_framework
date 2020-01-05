@@ -76,10 +76,10 @@ page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin
 >> #####`Number`页码翻页函数
 >>> 
 >>> @Number操作说明
->>> `Number(__page__,__serach__,__cols__)`   
+>>> `Number(__page__,__cols__,__serach__)`   
 >>> `__page__`：page方法返回数组集合   
->>> `__cols__`：显示页脚，整数类型，默认值：5    
 >>> `__serach__`：搜索条件使用（get结构变量请求），默认值：null  
+>>> `__cols__`：显示页脚，整数类型，默认值：5    
 
 number函数功能实现格式：   
 ![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)

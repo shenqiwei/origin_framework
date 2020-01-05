@@ -21,7 +21,7 @@ class Controller
      * 装载参数信息数组
      * @var array $_Param_Array
     */
-    private array $_Param = array();
+    private $_Param = array();
     /**
      * 构造方法，获取当前操作类信息
      * @access public
