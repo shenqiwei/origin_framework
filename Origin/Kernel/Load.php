@@ -110,13 +110,9 @@ class Load
                 set_include_path(ROOT);
                 Loading:
                 # 判断文件是否存在
-                if(is_file(str_replace('/', DS, "Application/{$_path}.php"))){
-                    # 使用预注册加载函数，实现自动化加载
-                    # 使用自动加载，实际过程中，会自动补全当前项目应用程序控制器根目录到控制器描述信息之间缺省部分
-                    spl_autoload_register(function($_path){
-                        require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
-                    });
-                }else{
+                if(!spl_autoload_register(function($_path){
+                    require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
+                })){
                     if(DEBUG){
                         initialize();
                         goto Loading;
