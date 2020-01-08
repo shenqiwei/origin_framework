@@ -29,6 +29,8 @@ if(!defined('ERROR')) define('ERROR',false);
 if(!defined('DEFAULT_VISIT')) define('DEFAULT',false);
 # 使用空元素补充
 if(!defined('USE_EMPTY')) define('USE_EMPTY',false);
+# 请求器类型
+if(!defined('REQUEST_METHOD')) define('REQUEST_METHOD',$_SERVER["REQUEST_METHOD"]);
 # 错误信息显示
 # E_ALL = 11 所有的错误信息
 # E_ERROR = 1 报致命错误
