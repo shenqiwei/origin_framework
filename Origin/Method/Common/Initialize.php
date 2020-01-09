@@ -18,7 +18,6 @@ function initialize()
                 ROOT."Application/Common", # 应用公共函数目录
                 ROOT."Application/Config", # 应用公共配置目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION"), # 默认应用主目录
-                ROOT."Application/".Config("DEFAULT_APPLICATION")."/Config", # 默认应用公共配置目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/Common", # 默认应用公共函数目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/Controller", # 默认应用控制器目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View", # 默认应用模板目录
