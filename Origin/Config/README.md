@@ -14,7 +14,7 @@ __目录配置：[[返回](#config)]__
 `APPLICATION_FUNCTION` 公共方法文件目录，系统公共方法公共调用文件存储位置 默认值：`Common`(1.0后配置不再影响框架内容)    
 `APPLICATION_CONFIG` 开发者或用户自定义或改写系统配置文件存储位置 默认值：`Config`(1.0后配置不再影响框架内容)    
 `APPLICATION_CONTROLLER` 执行程序文件目录 默认值：`Controller`  
-`APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model`  
+`APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model`(1.0后配置不再影响框架内容)  
 `APPLICATION_VIEW` 模板（Template）文件目录 默认值：`View`  
 `ROOT_RESOURCE` 资源主目录 默认值：`Resource`   
 `ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`(1.0后配置不再影响框架内容)  

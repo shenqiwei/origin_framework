@@ -9,11 +9,7 @@ return array(
     // 默认访问文件根目录
     'DEFAULT_APPLICATION' => 'Home',
     // 应用目录 (1.0版本后逐步消除配置文件夹对框架内容的影响)
-    'APPLICATION_METHOD' => 'Common', // 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用
-    'APPLICATION_FUNCTION' => 'Common', // 公共方法文件目录，系统公共方法公共调用文件存储位置
-    'APPLICATION_CONFIG' => 'Config', // 开发者或用户自定义或改写系统配置文件存储位置
     'APPLICATION_CONTROLLER' => 'Controller', // 执行程序文件目录
-    'APPLICATION_MODEL' => 'Model', // 数据操作语句文件目录
     'APPLICATION_VIEW' => 'View', // 模板（Template）文件目录
     // 资源目录
     'ROOT_RESOURCE' => 'Resource', // 资源主目录
@@ -100,8 +96,4 @@ return array(
     // 访问数据缓冲及显示模式设置
     'BUFFER_TYPE' => 0, //使用缓存器类型（0:不适用缓存器,1:使用数据缓存,2:生成php缓存文件,3:生成静态文件）
     'BUFFER_TIME' => 0, //缓存器生命周期（0:不设限制,内容发生变化,缓存器执行更新,大于0时以秒为时间单位进行周期更新）
-    // 路由类型用于决定程序使用地址解析结构
-    // default：使用伪静态路径结构进行访问
-    'ROUTE_CATALOGUE' => 'Route/', // 路由主目录
-    'ROUTE_FILES' => 'Route.php', // 路由文件
 );
