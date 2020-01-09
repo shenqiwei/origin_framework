@@ -116,16 +116,11 @@ class Load
                 if(!spl_autoload_register(function($_path){
                     require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
                 })){
-                    if(DEBUG){
-                        initialize();
-                        goto Loading;
-                    }else {
-                        try {
-                            throw new Exception('Origin Method Error: Not Fount Control Document');
-                        } catch (Exception $e) {
-                            self::error(str_replace('/', DS, "Application/{$_path}.php"), $e->getMessage(), "File");
-                            exit(0);
-                        }
+                    try {
+                        throw new Exception('Origin Method Error: Not Fount Control Document');
+                    } catch (Exception $e) {
+                        self::error(str_replace('/', DS, "Application/{$_path}.php"), $e->getMessage(), "File");
+                        exit(0);
                     }
                 }
                 # 链接记录日志
@@ -141,16 +136,11 @@ class Load
                     # 声明类对象
                     $_object = new $_class();
                 }else{
-                    if(DEBUG){
-                        initialize();
-                        goto Loading;
-                    }else{
-                        try {
-                            throw new Exception('Origin Method Error: Not Fount Control Class');
-                        }catch(Exception $e){
-                            self::error("{$_class}",$e->getMessage(),"Class");
-                            exit(0);
-                        }
+                    try {
+                        throw new Exception('Origin Method Error: Not Fount Control Class');
+                    }catch(Exception $e){
+                        self::error("{$_class}",$e->getMessage(),"Class");
+                        exit(0);
                     }
                 }
                 # 判断是否有方法标记信息
@@ -166,16 +156,11 @@ class Load
                     # 执行方法调用
                     $_object->$_method();
                 }else{
-                    if(DEBUG){
-                        initialize();
-                        goto Loading;
-                    }else {
-                        try {
-                            throw new Exception('Origin Method Error: Not Fount Function Object');
-                        } catch (Exception $e) {
-                            self::error("{$_method}", $e->getMessage(), "Function");
-                            exit(0);
-                        }
+                    try {
+                        throw new Exception('Origin Method Error: Not Fount Function Object');
+                    } catch (Exception $e) {
+                        self::error("{$_method}", $e->getMessage(), "Function");
+                        exit(0);
                     }
                 }
             }
