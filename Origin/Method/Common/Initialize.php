@@ -21,8 +21,6 @@ function initialize()
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/Config", # 默认应用公共配置目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/Common", # 默认应用公共函数目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/Controller", # 默认应用控制器目录
-                ROOT."Application/".Config("DEFAULT_APPLICATION")."/Route", # 应用访问路由配置目录
-                ROOT."Application/".Config("DEFAULT_APPLICATION")."/Route/Index", # 默认访问路由配置目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View", # 默认应用模板目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View/Index", # 默认应用模板目录
                 ROOT.Config("ROOT_RESOURCE")."/Public", # 公共文件目录
@@ -33,8 +31,8 @@ function initialize()
                 ROOT."Application" => array(
                     "Common/Public.php",
                     "Config/Config.php",
+                    "Config/Route.php",
                     Config("DEFAULT_APPLICATION")."/Common/Public.php",
-                    Config("DEFAULT_APPLICATION")."/Route/Route/Index.php",
                     Config("DEFAULT_APPLICATION")."/Controller/Index.php",
                     Config("DEFAULT_APPLICATION")."/View/Index/index.html",
                 ),

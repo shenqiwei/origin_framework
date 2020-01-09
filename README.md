@@ -27,8 +27,7 @@ Home：应用访问目录，默认访问目录（开发者编辑文件目录）
 >>>>Common：公共函数目录（自定义编辑，框架默认引用文件：Public.php）  
 Controller：应用控制器文件目录（默认控制器：Index.php）  
 Model：数据映射模板文件目录（暂不使用）  
-View：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`Index(首字母大写)，以及与`函数同名`index.html（全小写））  
-Route：路由配置目录  
+View：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`Index(首字母大写)，以及与`函数同名`index.html（全小写））   
 
 >>Origin：框架核心目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">查看文档</a>  
 >>>Application：应用主控制封装目录  
