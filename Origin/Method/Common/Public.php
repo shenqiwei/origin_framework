@@ -116,8 +116,8 @@ function Number($page,$cols=5,$search=null){
 }
 /**
  * Verify验证函数
- * @param $width
- * @param $height
+ * @param int $width
+ * @param int $height
  * @return object
  */
 function Verify($width = 120, $height = 50)

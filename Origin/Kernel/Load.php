@@ -14,8 +14,8 @@ class Load
     /**
      * @access public
      * @static
-     * @var $_Class
-     * @var $_Function
+     * @var string $_Class
+     * @var string $_Function
     */
     public static $_Class = null;
     public static $_Function = null;

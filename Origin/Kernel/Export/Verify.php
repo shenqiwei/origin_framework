@@ -13,28 +13,28 @@ class Verify
 {
     /**
      * 画布宽度
-     * @var $_Width
+     * @var int $_Width
     */
     private $_Width = 120;
     /**
      * 画布高度
-     * @var $_Height
+     * @var int $_Height
     */
     private $_Height = 50;
     /**
      * 初始宽度差值
-     * @var $_Width_Fold
+     * @var int $_Width_Fold
     */
     private $_Width_Fold = 1;
     /**
      * 初始高度差值
-     * @var $_Height_Fold
+     * @var int $_Height_Fold
     */
     private $_Height_Fold = 1;
     /**
      * 构造方法，对参数结构进行预设
-     * @param $width
-     * @param $height
+     * @param int $width
+     * @param int $height
     */
     function __construct($width=120,$height=50)
     {
@@ -46,7 +46,7 @@ class Verify
     /**
      * 字母混合验证码主执行方法
      * @access public
-     * @param $data
+     * @param string $data
     */
     private function execute($data)
     {

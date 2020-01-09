@@ -368,8 +368,8 @@ abstract class Query
     /**
      * Top 语句结构
      * @access public
-     * @param $number
-     * @param $percent
+     * @param int $number
+     * @param boolean $percent
      * @return object
      */
     function top($number, $percent=false)
@@ -685,7 +685,7 @@ abstract class Query
         $this->_Group = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
-         * @var string int $_key
+         * @var string|int $_key
          * @var mixed $_value
          */
         # 判断传入参数类型

@@ -22,14 +22,14 @@ class Request
      * 全局变量，用于方法间值的传递
      * 请求器，需调用的参数对象
      * @access private
-     * @var $_Validate_Name
+     * @var string $_Validate_Name
     */
     private $_Validate_Name = null;
     /**
      * 全局变量，用于方法间值的传递
      * 请求其，当请求内容为空或不存在时，系统会放回默认值信息
      * @access private
-     * @var $_Default
+     * @var mixed $_Default
     */
     private $_Default = null;
     /**
