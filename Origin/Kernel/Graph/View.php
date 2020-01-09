@@ -60,26 +60,28 @@ class View
                         unset($param);
                         # 执行模板解析
                         $_label = new Label($_page);
-                        # 获取解析后代码,生成临时缓存文件
-                        $_cache_file = tmpfile();
                         # 获取解析后文件内容
                         $_cache_code = $_label->execute();
                         if(DEBUG){
                             $_debug_tmp = "Resource/Buffer/Debug/".sha1($_page).".tmp";
                             $_file = new File();
-                            if(!is_file(str_replace("/",DS,ROOT.$_debug_tmp))){
+                            $_cache_uri = str_replace("/",DS,ROOT.$_debug_tmp);
+                            if(!is_file($_cache_uri) or time() > strtotime("+30 minutes",filemtime($_cache_uri))){
                                 $_file->write($_debug_tmp,"cw",$_cache_code);
-                            }else
-                                $_file->write($_debug_tmp,"w",$_cache_code);
+                            }
+                        }else{
+                            # 获取解析后代码,生成临时缓存文件
+                            $_cache_file = tmpfile();
+                            # 写入解析后模板内容
+                            fwrite($_cache_file,$_cache_code);
+                            # 通过数据流获取缓存文件临时路径信息
+                            $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
                         }
-                        # 写入解析后模板内容
-                        fwrite($_cache_file,$_cache_code);
-                        # 通过数据流获取缓存文件临时路径信息
-                        $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
                         # 调用缓存文件
                         include($_cache_uri);
                         # 关闭缓存文件，系统自动释放缓存空间
-                        fclose($_cache_file);
+                        if(isset($_cache_file))
+                            fclose($_cache_file);
                     }else{
                         # 异常提示：该对象模板不存在
                         try{

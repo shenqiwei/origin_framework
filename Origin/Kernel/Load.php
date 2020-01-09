@@ -19,12 +19,9 @@ class Load
     */
     public static $_Class = null;
     public static $_Function = null;
-    /**
-     * @access private
-     */
-    private const ROUTE_ITEM_NAME = "name";
-    private const ROUTE_ITEM_URI = "route";
-    private const ROUTE_ITEM_MAPPING = "mapping";
+    const ROUTE_ITEM_NAME = "name";
+    const ROUTE_ITEM_URI = "route";
+    const ROUTE_ITEM_MAPPING = "mapping";
     /**
      * 默认模式，自动加载入口
      * @access public
