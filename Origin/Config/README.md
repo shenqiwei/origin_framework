@@ -19,8 +19,13 @@ __目录配置：[[返回](#config)]__
 `ROOT_RESOURCE` 资源主目录 默认值：`Resource`   
 `ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`(1.0后配置不再影响框架内容)  
 `ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`(1.0后配置不再影响框架内容)  
->`ROOT_RESOURCE_BUFFER` 缓存目录 默认值：`Buffer`(1.0后配置不再影响框架内容)   
-`ROOT_LOG` 日志主目录 默认值：`Logs/`  
+`ROOT_RESOURCE_BUFFER` 缓存目录 默认值：`Buffer`(1.0后配置不再影响框架内容)   
+
+__缓存状态配置：[[返回](#config)]__  
+>`ROOT_USE_BUFFER` 缓存状态设置 默认值：`true` true：缓存文件机制启动，false：缓存文件机制关闭，不再生成新的缓存文件内容    
+
+__日志目录配置：[[返回](#config)]__  
+>`ROOT_LOG` 日志主目录 默认值：`Logs/`  
 `LOG_ACCESS` 服务请求链接日志 默认值：`Access/`  
 `LOG_CONNECT` 数据库连接日志 默认值：`Connect/`   
 `LOG_EXCEPTION` 系统异常信息日志 默认值：`Error/`  
@@ -84,11 +89,11 @@ __数据源配置：[[返回](#config)]__
 `DATA_MATRIX_CONFIG:DATA_DB` 访问数据库  
 
 <span id='config_view'></span>
-__访问显示模式配置：(`功能完善中`)[[返回](#config)]__  
+__访问显示模式配置：(`1.0版本后改配置被取消`)[[返回](#config)]__  
 `BUFFER_TYPE` 使用缓存器类型（0:不适用缓存器,1:使用数据缓存,2:生成php缓存文件,3:生成静态文件）  
 `BUFFER_TIME` 缓存器生命周期（0:不设限制,内容发生变化,缓存器执行更新,大于0时以秒为时间单位进行周期更新）  
 
 <span id='config_route'></span>
-__路由应用配置：(`功能测试修改中`)[[返回](#config)]__  
+__路由应用配置：(`1.0版本后改配置被取消`)[[返回](#config)]__  
 >`ROUTE_CATALOGUE` 路由主目录  
 `ROUTE_FILES` 路由文件

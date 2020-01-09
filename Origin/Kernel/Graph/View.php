@@ -62,7 +62,7 @@ class View
                         $_label = new Label($_page);
                         # 获取解析后文件内容
                         $_cache_code = $_label->execute();
-                        if(DEBUG){
+                        if(Config("ROOT_USE_BUFFER")){
                             $_debug_tmp = "Resource/Buffer/Debug/".sha1($_page).".tmp";
                             $_file = new File();
                             $_cache_uri = str_replace("/",DS,ROOT.$_debug_tmp);
