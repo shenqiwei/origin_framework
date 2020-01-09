@@ -109,9 +109,19 @@ class Load
                 Import("Application/{$_catalogue}Common/Public");
                 # 根据配置信息拼接控制器路径
                 $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
+                # 验证文件地址是否可以访问
+                if(!is_file(str_replace('/', DS, "Application/{$_path}.php"))){
+                    if(!DEBUG or !initialize()){
+                        try {
+                            throw new Exception('Origin Method Error: Not Fount Control Document');
+                        } catch (Exception $e) {
+                            self::error(str_replace('/', DS, "Application/{$_path}.php"), $e->getMessage(), "File");
+                            exit(0);
+                        }
+                    }
+                }
                 # 设置引导地址
                 set_include_path(ROOT);
-                Loading:
                 # 判断文件是否存在
                 if(!spl_autoload_register(function($_path){
                     require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
