@@ -127,7 +127,7 @@ class Load
                     require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
                 })){
                     try {
-                        throw new Exception('Origin Method Error: Not Fount Control Document');
+                        throw new Exception('Origin Method Error: Registration load failed');
                     } catch (Exception $e) {
                         self::error(str_replace('/', DS, "Application/{$_path}.php"), $e->getMessage(), "File");
                         exit(0);
