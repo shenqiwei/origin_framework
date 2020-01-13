@@ -34,6 +34,8 @@ function Page($url,$count,$current=1,$row=10,$search=null){
         'current'=>1, # 当前页码
         'begin'=>0, # 当前列表起始位置
         'limit'=>intval($row), # 显示数量
+        'page_begin' => ($current-1)*intval($row)+1,
+        'page_count' => $current*intval($row),
         # 连接参数
         'first_url'=>'','first'=>0, # 第一页参数
         'last_url'=>'','last'=>0, # 上一页参数
