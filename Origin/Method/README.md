@@ -64,6 +64,8 @@ page函数功能实现格式：
 >>> 'current' # 当前页码   
 >>> 'begin' # 当前列表起始查询位置    
 >>> 'limit' # 显示数量   
+>>> 'page_begin' # 列表数据显示起始位置    
+>>> 'page_count' # 列表数据显示结束位置    
 >>> 'first_url # 翻页第一页连接    
 >>> 'last_url' # 翻页上一页连接   
 >>> 'next_url' # 翻页下一页连接   
@@ -76,9 +78,8 @@ page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin
 >> #####`Number`页码翻页函数
 >>> 
 >>> @Number操作说明
->>> `Number(__page__,__cols__,__serach__)`   
+>>> `Number(__page__,__cols__)`   
 >>> `__page__`：page方法返回数组集合   
->>> `__serach__`：搜索条件使用（get结构变量请求），默认值：null  
 >>> `__cols__`：显示页脚，整数类型，默认值：5    
 
 number函数功能实现格式：   
