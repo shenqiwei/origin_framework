@@ -36,6 +36,7 @@ function Page($url,$count,$current=1,$row=10,$search=null){
         'limit'=>intval($row), # 显示数量
         'page_begin' => ($current-1)*intval($row)+1,
         'page_count' => $current*intval($row),
+        'search' => $search, # 搜索内容
         # 连接参数
         'first_url'=>'','first'=>0, # 第一页参数
         'last_url'=>'','last'=>0, # 上一页参数
@@ -67,10 +68,10 @@ function Page($url,$count,$current=1,$row=10,$search=null){
     }else{
         $page['next']=$page['current']+1;
     }
-    $page['first_url']=$page['url'].'?page=1'.$search;//第一页
-    $page['last_url']=$page['url'].'?page='.$page['last'].$search;//上一页
-    $page['next_url']=$page['url'].'?page='.$page['next'].$search;//下一页
-    $page['end_url']=$page['url'].'?page='.$page['count'].$search;//最后一页
+    $page['first_url']=$page['url'].'?page=1'.$page["search"];//第一页
+    $page['last_url']=$page['url'].'?page='.$page['last'].$page["search"];//上一页
+    $page['next_url']=$page['url'].'?page='.$page['next'].$page["search"];//下一页
+    $page['end_url']=$page['url'].'?page='.$page['count'].$page["search"];//最后一页
     return $page;
 }
 /**
@@ -100,17 +101,17 @@ function Number($page,$cols=5,$search=null){
         }
         for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
             if($i==$page['current']){
-                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
             }else{
-                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
             }
         }
     }else{
         for($i=1;$i<=$page['count'];$i++){
             if($i==$page['current']){
-                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
             }else{
-                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$search));
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
             }
         }
     }
