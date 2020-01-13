@@ -78,11 +78,10 @@ function Page($url,$count,$current=1,$row=10,$search=null){
  * @access public
  * @param array $page 分页数组
  * @param int $cols 页码数量
- * @param string $search 搜索条件
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function Number($page,$cols=5,$search=null){
+function Number($page,$cols=5){
     //执行数字页码
     $n=array();
     if($page['count']>$cols){
