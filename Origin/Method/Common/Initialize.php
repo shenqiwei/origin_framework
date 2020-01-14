@@ -24,6 +24,7 @@ function initialize()
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View", # 默认应用模板目录
                 ROOT."Application/".Config("DEFAULT_APPLICATION")."/View/Index", # 默认应用模板目录
                 ROOT.Config("ROOT_RESOURCE")."/Public", # 公共文件目录
+                ROOT.Config("ROOT_RESOURCE")."/Public/Temp", # 500,404自定义模板位置
                 ROOT.Config("ROOT_RESOURCE")."/Upload", # 上传文件目录
                 ROOT.Config("ROOT_RESOURCE")."/Buffer", # 缓存文件目录
             ),
