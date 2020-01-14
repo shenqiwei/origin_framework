@@ -34,13 +34,20 @@ class Output
         $_message =  htmlspecialchars(trim($message));
         $_url = htmlspecialchars(trim($url));
         $_setting = $setting;
-        include(str_replace('/',DS,ROOT.RING.'Template/Message.html'));
-        exit();
+        if(strtolower($setting["title"]) == "success"){
+            $_model = str_replace("/",DS,ROOT.Config("ROOT_RESOURCE")."/Public/Temp/200.html");
+        }elseif(strtolower($setting["title"]) == "error"){
+            $_model = str_replace("/",DS,ROOT.Config("ROOT_RESOURCE")."/Public/Temp/400.html");
+        }
+        if(isset($_model) and is_file($_model))
+            include($_model);
+        else
+            include(str_replace('/',DS,ROOT.RING.'Template/Message.html'));
+        exit(0);
     }
     /**
      * @access public
      * @param array $error_arr 异常信息数组
-     * @return null
      * @context 底层异常显示模块
      */
     public function base($error_arr)
@@ -56,14 +63,13 @@ class Output
         $_error_zero[1] = "In : ".$_error_zero[1];
         array_splice($_error_msg,0,1,$_error_zero);
         include(str_replace('/',DS,ROOT.RING.'Template/Debug.html'));
-        return null;
+        exit(0);
     }
     /**
      * @access public
      * @param string $error_title 异常标题
      * @param array $error_arr 异常信息数组
      * @param array $error_file 异常文件描述数组
-     * @return null;
      * @context 应用服务异常显示模块
      */
     function error($error_title,$error_arr,$error_file)
@@ -76,14 +82,13 @@ class Output
             "class" => "{$error_file[0]["class"]}"
         );
         include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
-        return null;
+        exit(0);
     }
     /**
      * @access public
      * @param string $error_title 异常标题
      * @param string $error_msg 异常信息数组
      * @param array $error_file 异常文件描述数组
-     * @return null;
      * @context 应用异常显示模块
      */
     function exception($error_title,$error_msg,$error_file)
@@ -99,6 +104,6 @@ class Output
         eLog($_error_msg["msg"]);
         eLog("in:{$_error_msg["file"]}");
         eLog("line:{$_error_msg["line"]}");
-        return null;
+        exit(0);
     }
 }
