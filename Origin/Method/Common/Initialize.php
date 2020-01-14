@@ -6,11 +6,12 @@
  */
 function initialize()
 {
+    $_log = Config('ROOT_LOG').Config('LOG_INITIALIZE').'initialize.log';
     # 判断日志文件
-    if(!is_file(str_replace("/",DS,Config('ROOT_LOG').Config('LOG_INITIALIZE').'initialize.log'))){
+    if(!is_file(str_replace("/",DS,ROOT.$_log))){
         $_date = date("Y-m-d");
         # 调用日志
-        iLog("Origin framework initialization on {$_date} ");
+        note($_log,"Origin framework initialization on {$_date} ");
         # 创建初始化列表
         $_ini = array(
             "catalog" => array( # 根目录
@@ -37,7 +38,7 @@ function initialize()
                 ),
             )
         );
-        iLog("Origin initialize ...");
+        note($_log,"Origin initialize ...");
         # 遍历配置数组
         foreach($_ini as $_key => $_array){
             # 配置信息为主目录
@@ -47,13 +48,13 @@ function initialize()
                     $_datetime = date("Y-m-d H:i:s",time());
                     # 判断文件目录是否创建
                     if(is_dir($_array[$_i])){
-                        iLog("[{$_datetime}] directory：{$_array[$_i]}, created...");
+                        note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...");
                     }else{
                         # 创建目录
                         if(mkdir(str_replace("/",DS,$_array[$_i]),0777)){
-                            iLog("[{$_datetime}] directory：{$_array[$_i]}, created...[complete]");
+                            note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[complete]");
                         }else{
-                            iLog("[{$_datetime}] directory：{$_array[$_i]}, created...[failed]");
+                            note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[failed]");
                         }
                     }
                 }
@@ -66,19 +67,19 @@ function initialize()
                         $_datetime = date("Y-m-d H:i:s",time());
                         # 判断文件目录是否创建
                         if(is_file(ROOT."Application".str_replace("/",DS,"/{$_dir[$_i]}"))){
-                            iLog("[{$_datetime}] file：{$_dir[$_i]}, created...");
+                            note($_log,"[{$_datetime}] file：{$_dir[$_i]}, created...");
                         }else{
                             # 拷贝应用预设文件
                             if(copy(ROOT.str_replace("/",DS,"Origin/lMethod/Storage/{$_dir[$_i]}"),ROOT."Application".str_replace("/",DS,"/{$_dir[$_i]}"))){
-                                iLog("[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]");
+                                note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]");
                             }else{
-                                iLog("[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]");
+                                note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]");
                             }
                             # 修改权限
                             if(chmod(ROOT."Application".str_replace("/",DS,"/{$_dir[$_i]}"),0777)){
-                                iLog("[{$_datetime}] file：{$_dir[$_i]}, changed limit ...[complete]");
+                                note($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit ...[complete]");
                             }else{
-                                iLog("[{$_datetime}] file：{$_dir[$_i]}, changed limit...[failed]");
+                                note($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit...[failed]");
                             }
                         }
                     }
@@ -86,6 +87,39 @@ function initialize()
             }
         }
         # 调用日志
-        iLog("Initialization complete, thank you for use Origin framework ... :P");
+        note($_log,"Initialization complete, thank you for use Origin framework ... :P");
+        return true;
+    }else{
+        return false;
     }
+}
+
+function note($folder,$context)
+{
+    $_folder = explode("/",$folder);
+    $_dir = null;
+    for($_i = 0;$_i < count($_folder);$_i++){
+        if($_i == count($_folder) - 1){
+            break;
+        }else{
+            if(empty($_i))
+                $_symbol = null;
+            else
+                $_symbol = DS;
+            $_dir .= $_symbol.$_folder[$_i];
+            if(!is_dir(ROOT.$_dir)){
+                mkdir(ROOT.$_dir);
+            }
+        }
+    }
+    $_receipt = false;
+    # 使用写入方式进行日志创建创建和写入
+    $_handle = fopen(ROOT.DS.$folder,"a");
+    if($_handle){
+        # 执行写入操作，并返回操作回执
+        $_receipt = fwrite($_handle,$context.PHP_EOL);
+        # 关闭文件源
+        fclose($_handle);
+    }
+    return $_receipt;
 }

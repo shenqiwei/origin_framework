@@ -41,15 +41,3 @@ function eLog($msg)
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg);
 }
-/**
- * 异常记录日志 exception log
- * @access public
- * @param string $msg 日志模板信息
- * @return mixed
- */
-function iLog($msg)
-{
-    $_uri = Config('ROOT_LOG').Config('LOG_INITIALIZE').'initialize.log';
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg);
-}
