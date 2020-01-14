@@ -126,7 +126,7 @@ class Load
                     }else{
                         $_404 = str_replace("/",DS,ROOT.Config("ROOT_RESOURCE")."/Public/Temp/404.html");
                         if(is_file($_404)){
-                            echo("404");
+                            echo("ERROR:404");
                             exit();
                         }else{
                             include($_404);
