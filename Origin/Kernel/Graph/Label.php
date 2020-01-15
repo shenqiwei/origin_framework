@@ -244,7 +244,10 @@ class Label
                     $_comparison = intval($_condition[2]);
             }else
                 $_comparison = strval($_condition[2]);
-            $obj = str_replace($_IF[$_i][0],"<?php if({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
+            if($_symbol == "in")
+                $obj = str_replace($_IF[$_i][0],"<?php if(in_array({$_condition[0]},{$_comparison})){?>",$obj);
+            else
+                $obj = str_replace($_IF[$_i][0],"<?php if({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 获取elseif标签
         $_count = preg_match_all($this->_Judge_EF, $obj, $_EF, PREG_SET_ORDER);
@@ -261,7 +264,10 @@ class Label
                     $_comparison = intval($_condition[2]);
             }else
                 $_comparison = strval($_condition[2]);
-            $obj = str_replace($_EF[$_i][0],"<?php }elseif({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
+            if($_symbol == "in")
+                $obj = str_replace($_EF[$_i][0],"<?php }elseif(in_array({$_condition[0]},{$_comparison})){?>",$obj);
+            else
+                $obj = str_replace($_EF[$_i][0],"<?php }elseif({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 转义else逻辑语法
         if(preg_match_all($this->_Judge_El, $obj, $_ELSE, PREG_SET_ORDER))
@@ -275,13 +281,14 @@ class Label
      * 逻辑批处理方法
      * @access protected
      * @param string $symbol
-     * @return string;
+     * @return string
     */
     function symbol($symbol)
     {
         $_symbol = array(
             "gt" => ">","lt" => "<","ge" => ">=","le" => "<=",
-            "heq" => "===","nheq" => "!==","eq" => "==","neq" => "!="
+            "heq" => "===","nheq" => "!==","eq" => "==","neq" => "!=",
+            "in" => "in"
         );
         if(key_exists($symbol,$_symbol))
             return $_symbol[$symbol];
