@@ -232,7 +232,7 @@ class Database extends Query
         if(!is_null($this->_Distinct)) $_sql .= $this->_Distinct;
         # 表名
         if(!is_null($this->_Table)) $_sql .= ' from '.$this->_Table;
-        if(!is_null($this->_As_Table)) $_sql .=  ' as '.$this->_As_Table;
+        if(!is_null($this->_AsTable)) $_sql .=  ' as '.$this->_AsTable;
         # 连接结构信息
         if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
         # 复制结构
@@ -273,8 +273,6 @@ class Database extends Query
                 $_receipt = $_statement->fetchAll();
             # 释放连接
             $_statement->closeCursor();
-            # 记录最后操作表格
-            $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
@@ -327,8 +325,6 @@ class Database extends Query
             $_receipt = $this->_Connect->lastInsertId($this->_Primary);
             # 释放连接
             $_statement->closeCursor();
-            # 记录最后操作表格
-            $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
@@ -381,8 +377,6 @@ class Database extends Query
             $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
-            # 记录最后操作表格
-            $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
@@ -417,8 +411,6 @@ class Database extends Query
             $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
-            # 记录最后操作表格
-            $this->_Run_Table = $this->_Table;
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();

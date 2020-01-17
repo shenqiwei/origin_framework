@@ -79,8 +79,7 @@ abstract class Query
      * 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
      */
     protected $_Table = null;
-    protected $_As_Table = null;
-    protected $_Run_Table = null;
+    protected $_AsTable = null;
     /**
      * 表名获取方法
      * @access public
@@ -90,12 +89,45 @@ abstract class Query
      */
     function table($table,$table_as=null)
     {
-        $this->_Table = null;
+        # 初始化所有参与项
+        $this->_Table = null; # 主表名
+        $this->_AsTable = null; # 主表别名
+        $this->_JoinOn = null; # 关联结构式
+        $this->_Top = null; # sql语法top
+        $this->_Total = null; # count 语法结构式
+        $this->_Field = null; # field语法结构式
+        $this->_Distinct = null; # 不重复结构式
+        $this->_Union = null; # 相同合并结构式
+        $this->_Data = null; # 提交数据结构式用于支持insert和update
+        $this->_Where = null; # 条件结构式
+        $this->_Group = null; # 分组结构式
+        $this->_Abs = null; # 求正整数
+        $this->_Avg = null; # 求平均数
+        $this->_Max = null; # 求最大值
+        $this->_Min = null; # 求最小值
+        $this->_Sum = null; # 求数值综合综合
+        $this->_Mod = null; # 取余结构式
+        $this->_Random = null; # 随机数结构式
+        $this->_L_Trim = null; # 去左空格或指定符号内容
+        $this->_Trim = null; # 去两侧空格或指定符号内容
+        $this->_R_Trim = null; # 去右空格或指定符号内容
+        $this->_Replace = null; # 替换指定符号内容
+        $this->_UpperCase = null; # 全大写
+        $this->_LowerCase = null; # 全小写
+        $this->_Mid = null; # 截取字段
+        $this->_Length = null; # 求字符长度
+        $this->_Round = null; # 四舍五入
+        $this->_Now = null; # 当前服务器时间
+        $this->_Format = null; # 格式化显示数据
+        $this->_Having = null; # 类似where可控语法函数
+        $this->_Order = null; # 排序
+        $this->_Limit = null; # 显示范围
+        $this->_Fetch_Type = "all"; # 显示类型
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if(is_true($this->_Regular_Comma_Confine, $table)){
             $this->_Table = strtolower($table);
             if(!is_null($table_as) and is_true($this->_Regular_Comma_Confine, $table_as)){
-                $this->_As_Table = $table_as;
+                $this->_AsTable = $table_as;
             }
         }else{
             try{
@@ -121,27 +153,29 @@ abstract class Query
      * @param string $join_field
      * @param string $major_field
      * @param string $join_table_as
+     * @param string $join_type
      * @return object
      */
-    function join($join_table,$join_field,$major_field,$join_table_as=null)
+    function join($join_table,$join_field,$major_field,$join_table_as=null,$join_type=null)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_JoinOn = null;
+        $_join_type = null;
+        if(in_array(strtolower(trim($join_type)),array("inner","left","right")))
+            $_join_type = strtolower(trim($join_type))." ";
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if (is_true($this->_Regular_Comma_Confine, $join_table)) {
             # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
             if (is_true($this->_Regular_Comma_Confine, $join_field)) {
                 if (is_true($this->_Regular_Comma_Confine, $major_field)) {
                     if(is_null($join_table_as)){
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
+                        if(is_null($this->_AsTable))
+                            $this->_JoinOn .= " {$_join_type}join {$join_table} on {$join_table}.{$join_field} = {$this->_Table}.{$major_field}";
                         else
-                            $this->_JoinOn .= " join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                            $this->_JoinOn .= " {$_join_type}join {$join_table} on {$join_table}.{$join_field} = {$this->_AsTable}.{$major_field}";
                     }else{
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
+                        if(is_null($this->_AsTable))
+                            $this->_JoinOn .= " {$_join_type}join {$join_table} as {$join_table_as} on {$join_table_as}.{$join_field} = {$this->_Table}.{$major_field}";
                         else
-                            $this->_JoinOn .= " join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
+                            $this->_JoinOn .= " {$_join_type}join {$join_table} as {$join_table_as} on {$join_table_as}.{$join_field} = {$this->_AsTable}.{$major_field}";
                     }
                 } else {
                     # 异常处理：字段名称不符合命名规范
@@ -187,53 +221,8 @@ abstract class Query
      */
     function iJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
-        if (is_true($this->_Regular_Comma_Confine, $join_table)) {
-            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
-            if (is_true($this->_Regular_Comma_Confine, $join_field)) {
-                if (is_true($this->_Regular_Comma_Confine, $major_field)) {
-                    if(is_null($join_table_as)){
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }else{
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " inner join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }
-                } else {
-                    # 异常处理：字段名称不符合命名规范
-                    try {
-                        throw new Exception('Field name is not in conformity with the naming conventions');
-                    } catch (Exception $e) {
-                        $_output = new Output();
-                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                        exit();
-                    }
-                }
-            } else {
-                # 异常处理：字段名称不符合命名规范
-                try {
-                    throw new Exception('Field name is not in conformity with the naming conventions');
-                } catch (Exception $e) {
-                    $_output = new Output();
-                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                    exit();
-                }
-            }
-        } else {
-            try {
-                throw new Exception('Join Table name is not in conformity with the naming conventions');
-            } catch (Exception $e) {
-                $_output = new Output();
-                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                exit();
-            }
-        }
+        $this->join($join_table,$join_field,$major_field,$join_table_as,"inner");
         return $this->__getSQL();
     }
     /**
@@ -249,53 +238,8 @@ abstract class Query
      */
     function lJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
-        if (is_true($this->_Regular_Comma_Confine, $join_table)) {
-            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
-            if (is_true($this->_Regular_Comma_Confine, $join_field)) {
-                if (is_true($this->_Regular_Comma_Confine, $major_field)) {
-                    if(is_null($join_table_as)){
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }else{
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " left join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }
-                } else {
-                    # 异常处理：字段名称不符合命名规范
-                    try {
-                        throw new Exception('Field name is not in conformity with the naming conventions');
-                    } catch (Exception $e) {
-                        $_output = new Output();
-                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                        exit();
-                    }
-                }
-            } else {
-                # 异常处理：字段名称不符合命名规范
-                try {
-                    throw new Exception('Field name is not in conformity with the naming conventions');
-                } catch (Exception $e) {
-                    $_output = new Output();
-                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                    exit();
-                }
-            }
-        } else {
-            try {
-                throw new Exception('Join Table name is not in conformity with the naming conventions');
-            } catch (Exception $e) {
-                $_output = new Output();
-                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                exit();
-            }
-        }
+        $this->join($join_table,$join_field,$major_field,$join_table_as,"left");
         return $this->__getSQL();
     }
     /**
@@ -311,53 +255,8 @@ abstract class Query
      */
     function rJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_JoinOn = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
-        if (is_true($this->_Regular_Comma_Confine, $join_table)) {
-            # 根据SQL数据库命名规则判断字段名是否符合规则要求，如果符合装在进SQL模块Field变量中
-            if (is_true($this->_Regular_Comma_Confine, $join_field)) {
-                if (is_true($this->_Regular_Comma_Confine, $major_field)) {
-                    if(is_null($join_table_as)){
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }else{
-                        if(is_null($this->_As_Table))
-                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_Table.".".$major_field;
-                        else
-                            $this->_JoinOn .= " right join ".$join_table." on ".$join_table_as.".".$join_field." = ".$this->_As_Table.".".$major_field;
-                    }
-                } else {
-                    # 异常处理：字段名称不符合命名规范
-                    try {
-                        throw new Exception('Field name is not in conformity with the naming conventions');
-                    } catch (Exception $e) {
-                        $_output = new Output();
-                        $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                        exit();
-                    }
-                }
-            } else {
-                # 异常处理：字段名称不符合命名规范
-                try {
-                    throw new Exception('Field name is not in conformity with the naming conventions');
-                } catch (Exception $e) {
-                    $_output = new Output();
-                    $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                    exit();
-                }
-            }
-        } else {
-            try {
-                throw new Exception('Join Table name is not in conformity with the naming conventions');
-            } catch (Exception $e) {
-                $_output = new Output();
-                $_output->exception("Query Error", $e->getMessage(), debug_backtrace(0, 1));
-                exit();
-            }
-        }
+        $this->join($join_table,$join_field,$major_field,$join_table_as,"right");
         return $this->__getSQL();
     }
     /**
@@ -374,7 +273,6 @@ abstract class Query
      */
     function top($number, $percent=false)
     {
-        $this->_Top = null;
         switch($this->_Data_Type){
             case "mssql":
                 # top 关键字后边只能接数组，所以在拼接语句时，要对number进行类型转化
@@ -403,21 +301,19 @@ abstract class Query
      */
     function total($field)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_Total = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Total .= $_symbol.'count('.$field[$_i].')';
+                    $this->_Total .= "{$_symbol}count({$field[$_i]})";
                 }else{
-                    $this->_Total .= $_symbol.'count('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Total .= "{$_symbol}count(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Total = 'count('.$field.')';
+                $this->_Total = "count({$field})";
         }
         return $this->__getSQL();
     }
@@ -435,8 +331,6 @@ abstract class Query
      */
     function field($field)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_Field = null;
         /**
          * 进行传入值结构判断，如果传入值为数组并且数组元素总数大于0
          * @var int $i; 计数变量
@@ -456,14 +350,14 @@ abstract class Query
                         if(is_true($this->_Regular_Comma_Confine, $_key) and !is_numeric($_key)){
                             # 判断计数变量当前值，等于0时不添加连接符号
                             if ($i == 0)
-                                $this->_Field = ' '.$_key.' as '.$_value;
+                                $this->_Field = " {$_key} as {$_value}";
                             else
-                                $this->_Field .= ','.$_key.' as '.$_value;
+                                $this->_Field .= ",{$_key} as {$_value}";
                         }else{
                             if($i == 0)
                                 $this->_Field = $_value;
                             else
-                                $this->_Field .= ', '.$_value;
+                                $this->_Field .= ",{$_value}";
                         }
                         $i += 1;
                     }else{
@@ -511,7 +405,7 @@ abstract class Query
          * 进行传入值结构判断
          */
         if(is_true($this->_Regular_Name_Confine, $field))
-            $this->_Distinct = ',distinct '.$field;
+            $this->_Distinct = ",distinct {$field}";
         return $this->__getSQL();
     }
     /**
@@ -533,7 +427,7 @@ abstract class Query
          */
         # 判断传入参数表名和字段名是否符合命名规则
         if(is_true($this->_Regular_Name_Confine, $table) and is_true($this->_Regular_Name_Confine, $field))
-            $this->_Union = ' union select '.$field.' from '.$table;
+            $this->_Union = " union select {$field} from {$table}";
         else{
             if(is_true($this->_Regular_Name_Confine, $table)){
                 try{
@@ -569,7 +463,6 @@ abstract class Query
      */
     function data($field)
     {
-        $this->_Data = null;
         /**
          * 验证传入值结构，符合数组要求时，进行内容验证
          * @var string $_key
@@ -621,8 +514,6 @@ abstract class Query
      */
     function where($field=null)
     {
-        if(!is_null($this->_Run_Table) and $this->_Table != $this->_Run_Table)
-            $this->_Where = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -633,16 +524,16 @@ abstract class Query
                     # 将数组信息存入类变量
                     if($_i == 0){
                         if(is_integer($_value) or is_float($_value) or is_double($_value)){
-                            $this->_Where = ' where '.$_key.'='.$_value;
+                            $this->_Where = " where {$_key} = {$_value}";
                         }else{
-                            $this->_Where = ' where '.$_key.'=\''.$_value.'\'';
+                            $this->_Where = " where {$_key} = '{$_value}'";
                         }
 
                     }else{
                         if(is_int($_value) or is_float($_value) or is_double($_value)){
-                            $this->_Where .= ' and '.$_key.'='.$_value;
+                            $this->_Where .= " and {$_key} = {$_value}";
                         }else{
-                            $this->_Where .= ' and '.$_key.'=\''.$_value.'\'';
+                            $this->_Where .= " and {$_key} = {$_value}";
                         }
                     }
                 else{
@@ -664,7 +555,7 @@ abstract class Query
                 foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
                     $field = preg_replace($key, $value, $field);
                 }
-                $this->_Where = ' where '.$field;
+                $this->_Where = " where {$field}";
             }
         }
         return $this->__getSQL();
@@ -682,7 +573,6 @@ abstract class Query
      */
     function group($field)
     {
-        $this->_Group = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          * @var string|int $_key
@@ -698,10 +588,9 @@ abstract class Query
                 if(is_true($this->_Regular_Name_Confine, $_value)){
                     # 拼接条件信息
                     if($_i == 0)
-                        $this->_Group = ' group by '.$_value;
+                        $this->_Group = " group by {$_value}";
                     else
-                        $this->_Group .= ', '.$_value;
-
+                        $this->_Group .= ",{$_value}";
                     $_i++;
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
@@ -717,7 +606,7 @@ abstract class Query
         }else{
             # 使用多条件结构正则验证字符串内容
             if(is_true($this->_Regular_Comma_Confine, $field))
-                $this->_Group = ' group by '.$field;
+                $this->_Group = " group by {$field}";
             else{
                 # 异常处理：GROUP语法字段名结构不符合SQL使用规则
                 try{
@@ -745,20 +634,19 @@ abstract class Query
     */
     function abs($field)
     {
-        $this->_Avg = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Abs .= $_symbol.'abs('.$field[$_i].')';
+                    $this->_Abs .= "{$_symbol}abs({$field[$_i]})";
                 }else{
-                    $this->_Abs .= $_symbol.'abs('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Abs .= "{$_symbol}abs(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Abs = ' abs('.$field.')';
+                $this->_Abs = "abs({$field})";
         }
         return $this->_Object;
     }
@@ -775,20 +663,19 @@ abstract class Query
      */
     function avg($field)
     {
-        $this->_Avg = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Avg .= $_symbol.'avg('.$field[$_i].')';
+                    $this->_Avg .= "{$_symbol}avg({$field[$_i]})";
                 }else{
-                    $this->_Avg .= $_symbol.'avg('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Avg .= "{$_symbol}avg(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Avg = 'avg('.$field.')';
+                $this->_Avg = "avg({$field})";
         }
         return $this->__getSQL();
     }
@@ -805,20 +692,19 @@ abstract class Query
      */
     function max($field)
     {
-        $this->_Max = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Max .= $_symbol.'max('.$field[$_i].')';
+                    $this->_Max .= "{$_symbol}max({$field[$_i]})";
                 }else{
-                    $this->_Max .= $_symbol.'max('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Max .= "{$_symbol}max(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Max = 'max('.$field.')';
+                $this->_Max = "max({$field})";
         }
         return $this->__getSQL();
     }
@@ -835,20 +721,19 @@ abstract class Query
      */
     function min($field)
     {
-        $this->_Min = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Min .= $_symbol.'min('.$field[$_i].')';
+                    $this->_Min .= "{$_symbol}min({$field[$_i]})";
                 }else{
-                    $this->_Min .= $_symbol.'min('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Min .= "{$_symbol}min(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Min = 'min('.$field.')';
+                $this->_Min = "min({$field})";
         }
         return $this->__getSQL();
     }
@@ -865,20 +750,19 @@ abstract class Query
      */
     function sum($field)
     {
-        $this->_Sum = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Sum .= $_symbol.'sum('.$field[$_i].')';
+                    $this->_Sum .= "{$_symbol}sum({$field[$_i]})";
                 }else{
-                    $this->_Sum .= $_symbol.'sum('.array_keys($field)[$_i].') as '.$field[array_keys($field)[$_i]];
+                    $this->_Sum .= "{$_symbol}sum(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
             if(is_true($this->_Regular_Name_Confine, $field))
-                $this->_Sum = 'sum('.$field.')';
+                $this->_Sum = "sum({$field})";
         }
         return $this->__getSQL();
     }
@@ -896,7 +780,6 @@ abstract class Query
     */
     protected function mod($field,$second=0)
     {
-        $this->_Sum = null;
         switch($this->_Data_Type){
             case "sqlite":
                 null;
@@ -909,9 +792,9 @@ abstract class Query
                 if(is_array($field)){
                     for($_i=0;$_i<count($field);$_i++){
                         if(!key_exists("as_name",$field[$_i])){
-                            $this->_Mod = ",mod(".$field[$_i]["first"].",".$field[$_i]["second"].")";
+                            $this->_Mod = ",mod({$field[$_i]["first"]},{$field[$_i]["second"]})";
                         }else{
-                            $this->_Mod = ",mod(".$field[$_i]["first"].",".$field[$_i]["second"].") as ".$field[$_i]["as_name"];
+                            $this->_Mod = ",mod({$field[$_i]["first"]},{$field[$_i]["second"]}}) as {$field[$_i]["as_name"]}";
                         }
                     }
                 }else{
@@ -964,7 +847,6 @@ abstract class Query
     */
     protected function lTrim($field,$str=null)
     {
-        $this->_L_Trim = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_str = null;
@@ -1021,7 +903,6 @@ abstract class Query
      */
     protected function trim($field,$str=null)
     {
-        $this->_Trim = null;
         if($this->_Data_Type != "mssql"){
             if(is_array($field)){
                 for($_i=0;$_i<count($field);$_i++){
@@ -1078,7 +959,6 @@ abstract class Query
      */
     protected function rTrim($field,$str=null)
     {
-        $this->_R_Trim = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 $_str = null;
@@ -1136,7 +1016,6 @@ abstract class Query
     */
     function replace($field,$pattern=null,$replace=null)
     {
-        $this->_Replace = null;
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
                 if(!key_exists("as_name",$field[$_i])){
@@ -1165,7 +1044,6 @@ abstract class Query
      */
     function upper($field)
     {
-        $this->_UpperCase = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -1197,7 +1075,6 @@ abstract class Query
      */
     function lower($field)
     {
-        $this->_LowerCase = null;
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
@@ -1224,14 +1101,13 @@ abstract class Query
     /**
      * 查询语句对指定字段进行截取
      * @access public
-     * @param $field
-     * @param $start
-     * @param $length
+     * @param string|array $field
+     * @param int $start
+     * @param int $length
      * @return object
     */
     function mid($field, $start=0, $length=0)
     {
-        $this->_Mid = null;
         switch($this->_Data_Type){
             case "mysql":
             case "mariadb":
@@ -1284,7 +1160,6 @@ abstract class Query
      */
     function length($field)
     {
-        $this->_Length = null;
         switch($this->_Data_Type){
             case "mssql":
                 $_func = "len";
@@ -1328,7 +1203,6 @@ abstract class Query
     */
     function round($field, $decimals = 0,$accuracy=0)
     {
-        $this->_Round = null;
         # 判断数据类型
         if(is_array($field)){
             # 变量数组信息
@@ -1386,7 +1260,6 @@ abstract class Query
     */
     function format($field, $format = null)
     {
-        $this->_Format = null;
         switch ($this->_Data_Type){
             case "mysql":
             case "mariadb":
@@ -1402,14 +1275,14 @@ abstract class Query
                             if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
                             # 判断字段名是否符合命名规则
                             if(is_true($this->_Regular_Name_Confine, $_key)){
-                                $this->_Format .= ',format(' . $_key . ','.$_value['format'].')'.$_as;
+                                $this->_Format .= ",format({$_key},{$_value["format"]}){$_as}";
                             }
                         }
                     }
                 }else {
                     # 当传入值为字符串结构，判断字段名是否符合命名规则
                     if (is_true($this->_Regular_Name_Confine, $field) and is_true($_regular, $format))
-                        $this->_Format = ',format('.$field.','.$format.')';
+                        $this->_Format = ",format({$field},{$format})";
                 }
                 break;
             default:
@@ -1451,7 +1324,7 @@ abstract class Query
                         $_symbol = $_symbol[trim(strtolower($symbol))];
                     if(is_numeric($value)){
                         # 创建having信息数组
-                        $this->_Having = ' having '.$func.'('.$field.') '.$_symbol.' '.$value;
+                        $this->_Having = " having {$func}({$field}) {$_symbol} {$value}";
                     }
                 }
             }
@@ -1472,7 +1345,6 @@ abstract class Query
     */
     function order($field, $type='asc')
     {
-        $this->_Order = null;
         /**
          * 使用字符串作为唯一数据类型，通过对参数进行验证，判断参数数据结构
          * @var string $_regular_order
@@ -1487,9 +1359,9 @@ abstract class Query
             $_i = 0;
             foreach($field as $_key => $_type){
                 if($_i == 0)
-                    $this->_Order .= ' order by '.$_key.' '.$_type;
+                    $this->_Order .= " order by {$_key} {$_type}";
                 else
-                    $this->_Order .= ', '.$_key.' '.$_type;
+                    $this->_Order .= ",{$_key} {$_type}";
                 $_i++;
             }
 
@@ -1499,7 +1371,7 @@ abstract class Query
             else{
                 if(is_true($this->_Regular_Name_Confine, $field)){
                     if(is_true($_regular_order_confine, $type)){
-                        $this->_Order = ' order by '.$field.' '.$type;
+                        $this->_Order = " order by {$field} {$type}";
                     }
                 }
             }
