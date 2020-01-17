@@ -7,6 +7,8 @@
  */
 namespace Origin\Kernel\Protocol;
 
+use CURLFile;
+
 class Curl
 {
     /**
@@ -21,11 +23,13 @@ class Curl
      * @context 是否执行utf-8转码
      */
     protected $_curl_utf_8 = false;
+
     # 构造方法
-    function __construct($bool=false)
+    function __construct($bool = false)
     {
         $this->_curl_utf_8 = boolval($bool);
     }
+
     /**
      * @access public
      * @param string $url 访问地址
@@ -35,20 +39,20 @@ class Curl
      * @return mixed
      * @content get请求函数
      */
-    function get($url=null,$param=null,$ssl_peer=false,$ssl_host=false)
+    function get($url = null, $param = null, $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
-        if(!is_null($url)){
+        if (!is_null($url)) {
             $_curl = curl_init();
-            curl_setopt($_curl,CURLOPT_URL,$url);
-            curl_setopt($_curl,CURLOPT_POST,false);
-            curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($_curl,CURLOPT_SSL_VERIFYPEER,boolval($ssl_peer));
-            curl_setopt($_curl,CURLOPT_SSL_VERIFYHOST,boolval($ssl_host));
-            if(!is_null($param))
-                curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
+            curl_setopt($_curl, CURLOPT_URL, $url);
+            curl_setopt($_curl, CURLOPT_POST, false);
+            curl_setopt($_curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($_curl, CURLOPT_SSL_VERIFYPEER, boolval($ssl_peer));
+            curl_setopt($_curl, CURLOPT_SSL_VERIFYHOST, boolval($ssl_host));
+            if (!is_null($param))
+                curl_setopt($_curl, CURLOPT_POSTFIELDS, $param);
             $_receipt = curl_exec($_curl);
-            if($this->_curl_utf_8)
+            if ($this->_curl_utf_8)
                 # 将会输内容强制转化为utf-8
                 $_receipt = mb_convert_encoding($_receipt, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
             $this->_curl_receipt['errno'] = curl_errno($_curl);
@@ -57,6 +61,7 @@ class Curl
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $url 访问地址
@@ -67,47 +72,71 @@ class Curl
      * @return mixed
      * @content get请求函数
      */
-    function post($url,$param,$type='from',$ssl_peer=false,$ssl_host=false)
+    function post($url, $param, $type = 'from', $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
-        if(!is_null($url)){
+        if (!is_null($url)) {
             $_curl = curl_init();
-            curl_setopt($_curl,CURLOPT_URL,$url);
-            curl_setopt($_curl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($_curl,CURLOPT_HEADER,false);
-            curl_setopt($_curl,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
-            curl_setopt($_curl,CURLOPT_SSL_VERIFYPEER,boolval($ssl_peer));
-            curl_setopt($_curl,CURLOPT_SSL_VERIFYHOST,boolval($ssl_host));
-            curl_setopt($_curl,CURLOPT_POST,true);
-            if($type !== 'from' or (is_numeric($type) and $type !== 0)){
-                if($type === 'json' or (is_numeric($type) and $type === 1)){
-                    if(is_array($param)){
+            curl_setopt($_curl, CURLOPT_URL, $url);
+            curl_setopt($_curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($_curl, CURLOPT_HEADER, false);
+            curl_setopt($_curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
+            curl_setopt($_curl, CURLOPT_SSL_VERIFYPEER, boolval($ssl_peer));
+            curl_setopt($_curl, CURLOPT_SSL_VERIFYHOST, boolval($ssl_host));
+            curl_setopt($_curl, CURLOPT_POST, true);
+            if ($type !== 'from' or (is_numeric($type) and $type !== 0)) {
+                if ($type === 'json' or (is_numeric($type) and $type === 1)) {
+                    if (is_array($param)) {
                         $param = json_encode($param);
                     }
-                    curl_setopt($_curl,CURLOPT_HTTPHEADER,
+                    curl_setopt($_curl, CURLOPT_HTTPHEADER,
                         array(
                             'Content-Type:application/json;charset=utf-8',
-                            'Content-Length:'.strlen($param)
+                            'Content-Length:' . strlen($param)
                         )
                     );
-                }elseif($type === 'xml' or (is_numeric($type) and $type === 2)){
-                    curl_setopt($_curl,CURLOPT_HTTPHEADER,
+                } elseif ($type === 'xml' or (is_numeric($type) and $type === 2)) {
+                    curl_setopt($_curl, CURLOPT_HTTPHEADER,
                         array(
                             'Content-Type:text/xml;charset=utf-8'
                         )
                     );
                 }
             }
-            curl_setopt($_curl,CURLOPT_TIMEOUT,30);
-            curl_setopt($_curl,CURLOPT_POSTFIELDS,$param);
+            curl_setopt($_curl, CURLOPT_TIMEOUT, 30);
+            curl_setopt($_curl, CURLOPT_POSTFIELDS, $param);
             $_receipt = curl_exec($_curl);
-            if($this->_curl_utf_8)
+            if ($this->_curl_utf_8)
                 # 将会输内容强制转化为utf-8
                 $_receipt = mb_convert_encoding($_receipt, 'UTF-8', 'UTF-8,GBK,GB2312,BIG5');
             $this->_curl_receipt['errno'] = curl_errno($_curl);
             $this->_curl_receipt['error'] = curl_error($_curl);
             curl_close($_curl);
         }
+        return $_receipt;
+    }
+
+    /**
+     * @access public
+     * @param string $url 访问地址
+     * @param string $folder 本地文件地址
+     * @param string $type 文件类型
+     * @param string $input 表单名
+     * @param boolean $ssl_peer 验证证书
+     * @param boolean $ssl_host 验证地址
+     * @return mixed
+     * @context 文件上传
+     */
+    function upload($url, $folder, $type, $input = "pic", $ssl_peer = false, $ssl_host = false)
+    {
+        $_curl = curl_init();
+        $_file = new CURLFile($folder,$type);
+        curl_setopt($_curl, CURLOPT_URL, $url);
+        curl_setopt($_curl, CURLOPT_POSTFIELDS,array($input=>$_file));
+        curl_setopt($_curl, CURLOPT_SSL_VERIFYPEER, boolval($ssl_peer));
+        curl_setopt($_curl, CURLOPT_SSL_VERIFYHOST, boolval($ssl_host));
+        $_receipt = curl_exec($_curl);
+        curl_close($_curl);
         return $_receipt;
     }
 
