@@ -440,7 +440,7 @@ class Database extends Query
         }
         if(strpos(strtolower($query),"select ") === 0){
             $_query_type = "select";
-        }elseif(strpos(strtolower($query),"insert into ") === 0){
+        }elseif(strpos(strtolower($query),"insert ") === 0){
             $_query_type = "insert";
         }else{
             $_query_type = "change";
