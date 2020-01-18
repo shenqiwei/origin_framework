@@ -1,5 +1,5 @@
 {
-  "name": "Origin/OriginFramework",
+  "name": "origin/originFramework",
   "description": "The origin framework for php.",
   "authors": ["shenqiwei"],
   "homepage": "https://github.com/shenqiwei/Origin-Framework",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "php": ">=5.6 or <=7.4"
+    "php": ">=5.6"
   },
   "repositories": {
     "packagist": {
