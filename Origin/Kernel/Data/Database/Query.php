@@ -1415,8 +1415,10 @@ abstract class Query
                     $this->_Limit = " rownum <= {$start}";
                 elseif($this->_Data_Type == "mssql")
                     null;
-                else
-                    $this->_Limit = " limit {$start}";
+                else{
+                    if($this->_Data_Type != "mysql" or $start != 0)
+                        $this->_Limit = " limit {$start}";
+                }
             }
         }
         return $this->__getSQL();
