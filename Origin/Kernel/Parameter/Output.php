@@ -42,7 +42,7 @@ class Output
         if(isset($_model) and is_file($_model))
             include($_model);
         else
-            include(str_replace('/',DS,ROOT.RING.'Template/Message.html'));
+            include(str_replace('/',DS,ROOT.RING.'Template/message.html'));
         exit(0);
     }
     /**
@@ -62,32 +62,13 @@ class Output
         $_error_zero[1] = $_error_zero[1][0];
         $_error_zero[1] = "In : ".$_error_zero[1];
         array_splice($_error_msg,0,1,$_error_zero);
-        include(str_replace('/',DS,ROOT.RING.'Template/Debug.html'));
+        include(str_replace('/',DS,ROOT.RING.'Template/debug.html'));
         exit(0);
     }
     /**
      * @access public
      * @param string $error_title 异常标题
-     * @param array $error_arr 异常信息数组
-     * @param array $error_file 异常文件描述数组
-     * @context 应用服务异常显示模块
-     */
-    function error($error_title,$error_arr,$error_file)
-    {
-        $_error_msg = array(
-            "msg" => "{$error_title} [Error Code:{$error_arr[0]}] {$error_arr[2]}",
-            "file" => "{$error_file[0]["file"]}",
-            "line" => "{$error_file[0]["line"]}",
-            "function" => "{$error_file[0]["function"]}",
-            "class" => "{$error_file[0]["class"]}"
-        );
-        include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
-        exit(0);
-    }
-    /**
-     * @access public
-     * @param string $error_title 异常标题
-     * @param string $error_msg 异常信息数组
+     * @param string|array $error_msg 异常信息数组
      * @param array $error_file 异常文件描述数组
      * @context 应用异常显示模块
      */
@@ -100,7 +81,9 @@ class Output
             "function" => "{$error_file[0]["function"]}",
             "class" => "{$error_file[0]["class"]}"
         );
-        include(str_replace('/',DS,ROOT.RING.'Template/Error.html'));
+        if(is_array($_error_msg))
+            $_error_msg["msg"] = "{$error_title} [Error Code:{$error_msg[0]}] {$error_msg[2]}";
+        include(str_replace('/',DS,ROOT.RING.'Template/error.html'));
         eLog($_error_msg["msg"]);
         eLog("in:{$_error_msg["file"]}");
         eLog("line:{$_error_msg["line"]}");

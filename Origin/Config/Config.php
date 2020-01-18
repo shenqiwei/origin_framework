@@ -18,7 +18,7 @@ return array(
     'ROOT_RESOURCE_UPLOAD' => 'Upload', // 上传目录
     'ROOT_RESOURCE_BUFFER' => 'Buffer', // 缓存文件目录
     //缓存设置
-    'ROOT_USE_BUFFER' => true, // 缓存文件使用状态
+    'ROOT_USE_BUFFER' => false, // 缓存文件使用状态
     // 日志主目录
     'ROOT_LOG' => 'Logs/',
     // 日志目录

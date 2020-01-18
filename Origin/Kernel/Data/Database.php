@@ -132,7 +132,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -276,7 +276,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -328,7 +328,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -380,7 +380,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -414,7 +414,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -480,7 +480,7 @@ class Database extends Query
         }catch(PDOException $e){
             eLog($e->getMessage());
             $_output = new Output();
-            $_output->error("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;

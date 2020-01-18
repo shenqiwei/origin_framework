@@ -33,7 +33,6 @@ class Controller
      * @access protected
      * @param string $key
      * @param mixed $value
-     * @return null
     */
     protected function param($key, $value)
     {
@@ -51,13 +50,11 @@ class Controller
                 exit();
             }
         }
-        return null;
     }
     /**
      * 调用模板方法
      * @access protected
      * @param string $view
-     * @return null
      */
     protected function view($view=null)
     {
@@ -70,8 +67,7 @@ class Controller
         if($view !== null and is_true($_regular, $view)){
             $_page = $view;
         }
-        View::view($_dir, $_page,$this->_Param[Load::$_Class]);
-        return null;
+        View::view($_dir, $_page,$this->_Param[Load::$_Class],Load::$_LoadTime);
     }
     /**
      * 返回执行对象类名
@@ -97,13 +93,11 @@ class Controller
      * @param string $message
      * @param string $url
      * @param int $time
-     * @return null
     */
     protected function success($message='success',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
         Output::output($time, $message, $url, $_setting);
-        return null;
     }
     /**
      * 错误提示
@@ -111,22 +105,18 @@ class Controller
      * @param string $message
      * @param string $url
      * @param int $time
-     * @return null
     */
     protected function error($message='error',$url='#',$time=3)
     {
         $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
         Output::output($time, $message, $url, $_setting);
-        return null;
     }
     /**
      * @access public
      * @param array $array
-     * @return null
     */
     protected function json($array=null)
     {
         Output::json($array);
-        return null;
     }
 }

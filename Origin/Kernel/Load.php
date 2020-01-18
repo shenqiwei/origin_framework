@@ -19,16 +19,21 @@ class Load
      * @static
      * @var string $_Class
      * @var string $_Function
+     * @var float $_LoadTime
     */
     public static $_Class = null;
     public static $_Function = null;
+    public static $_LoadTime = 0.0;
     /**
      * 默认模式，自动加载入口
      * @access public
-     * @return null
      */
     static function initialize()
     {
+
+        # 运行起始时间
+        self::$_LoadTime = explode(" ",microtime());
+        self::$_LoadTime = floatval(self::$_LoadTime[0])+floatval(self::$_LoadTime[1]);
         /**
          * 使用请求器和验证结构进行入口保护
          * @var string $_class 带命名空间信息的类信息
@@ -188,7 +193,6 @@ class Load
                 }
             }
         }
-        return null;
     }
 
     static function route($route){
@@ -238,6 +242,6 @@ class Load
     static function error($obj,$error,$type)
     {
         if(DEBUG or ERROR)
-            include(str_replace('/',DS,ROOT.RING.'Template/Load.html'));
+            include(str_replace('/',DS,ROOT.RING.'Template/load.html'));
     }
 }

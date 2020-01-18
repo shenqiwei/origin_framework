@@ -22,9 +22,9 @@ class View
      * @param string $dir
      * @param string $page
      * @param array $param
-     * @return null
+     * @param float $time
     */
-    static function view($dir,$page,$param)
+    static function view($dir,$page,$param,$time)
     {
         # 转化文件路径
         $_guide = explode('/',$dir);
@@ -52,6 +52,18 @@ class View
                     # 调用模板
                     $_page = $_url_view.$dir.DS.$page.'.html';
                     if(is_file($_page)){
+                        # 创建运行时间模板
+                        $_temp = null;
+                        if(DEBUG){
+                            $_temp = ROOT."Origin/Template/time.html";
+                            if(is_file(str_replace("/",DS,$_temp))){
+                                $_load_end = explode(" ",microtime());
+                                $_load_end = floatval($_load_end[0])+floatval($_load_end[1]);
+                                $_time= round(($_load_end-$time)*1000,2);
+                                $_temp = file_get_contents($_temp);
+                                $_temp = str_replace('{/time/}',$_time,$_temp);
+                            }
+                        }
                         # 加载参数内容
                         foreach($param as $_key => $_value){
                             $$_key = $_value;
@@ -67,13 +79,13 @@ class View
                             $_file = new File();
                             $_cache_uri = str_replace("/",DS,ROOT.$_debug_tmp);
                             if(!is_file($_cache_uri) or time() > strtotime("+30 minutes",filemtime($_cache_uri))){
-                                $_file->write($_debug_tmp,"cw",$_cache_code);
+                                $_file->write($_debug_tmp,"cw",$_cache_code.$_temp);
                             }
                         }else{
                             # 获取解析后代码,生成临时缓存文件
                             $_cache_file = tmpfile();
                             # 写入解析后模板内容
-                            fwrite($_cache_file,$_cache_code);
+                            fwrite($_cache_file,$_cache_code.$_temp);
                             # 通过数据流获取缓存文件临时路径信息
                             $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
                         }
@@ -121,6 +133,5 @@ class View
                 exit();
             }
         }
-        return null;
     }
 }
