@@ -95,7 +95,7 @@ abstract class Query
         $this->_JoinOn = null; # 关联结构式
         $this->_Top = null; # sql语法top
         $this->_Total = null; # count 语法结构式
-        $this->_Field = null; # field语法结构式
+        $this->_Field = "*"; # field语法结构式
         $this->_Distinct = null; # 不重复结构式
         $this->_Union = null; # 相同合并结构式
         $this->_Data = null; # 提交数据结构式用于支持insert和update
