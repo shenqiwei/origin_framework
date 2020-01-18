@@ -1,13 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: DELL
- * Date: 2018/8/17
- * Time: 16:00
+ * @author 沈起葳 <cheerup.shen@foxmail.com>
+ * @version 0.1
+ * @copyright 2015-2019
+ * @context: Origin框架Redis封装类
  */
-
 namespace Origin\Kernel\Data\Redis;
-
 
 class Sequence
 {
