@@ -1411,13 +1411,16 @@ abstract class Query
                         break;
                 }
             }else{
-                if($this->_Data_Type == "oracle")
-                    $this->_Limit = " rownum <= {$start}";
-                elseif($this->_Data_Type == "mssql")
-                    null;
-                else{
-                    if($this->_Data_Type != "mysql" or $start != 0)
-                        $this->_Limit = " limit {$start}";
+                switch($this->_Data_Type){
+                    case "oracle":
+                        if($start > 0)
+                            $this->_Limit = " rownum <= {$start}";
+                        break;
+                    case "mssql": # mssql不支持limit语法
+                        break;
+                    default:
+                        if($start > 0)
+                            $this->_Limit = " limit {$start}";
                 }
             }
         }
