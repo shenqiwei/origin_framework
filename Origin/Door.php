@@ -25,10 +25,6 @@ if(!defined("__HOST__")) define("__HOST__",__PROTOCOL__.$_SERVER["HTTP_HOST"]."/
 if(!defined('DEBUG')) define('DEBUG',false);
 # 错误信息常量
 if(!defined('ERROR')) define('ERROR',false);
-# 自动调用默认访问信息
-if(!defined('DEFAULT_VISIT')) define('DEFAULT',false);
-# 使用空元素补充
-if(!defined('USE_EMPTY')) define('USE_EMPTY',false);
 # 请求器类型
 if(!defined('REQUEST_METHOD')) define('REQUEST_METHOD',strtolower($_SERVER["REQUEST_METHOD"]));
 # 错误信息显示

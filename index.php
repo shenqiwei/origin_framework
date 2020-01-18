@@ -12,9 +12,5 @@ define('DEBUG',true);
 define('ERROR',false);
 # 代码重加载
 define('MARK_RELOAD',false);
-# 调用默认访问
-define('DEFAULT_VISIT',false);
-# 使用空元素补充
-define('USE_EMPTY',false);
 # 调用通道入口文件
 include('Origin/Door.php');
