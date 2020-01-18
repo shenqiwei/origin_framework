@@ -67,7 +67,7 @@ return array(
             "DATA_NAME" =>"redis_test", # 当前数据源名称
             "DATA_TYPE"=>"redis",
             "DATA_CONN" => "normal",# 连接类型 redis下设置生效
-            'DATA_HOST' => 'localhost', # redis服务访问地址
+            'DATA_HOST' => '127.0.0.1', # redis服务访问地址,不推荐localhost，该配置内容影响访问速度
             'DATA_PWD' => '', # redis登录密码
             'DATA_PORT' => '6379', # redis默认访问端口
             "DATA_P_CONNECT" => false, # 是否使用持久链接
