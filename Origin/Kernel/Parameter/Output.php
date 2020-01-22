@@ -81,7 +81,7 @@ class Output
             "function" => "{$error_file[0]["function"]}",
             "class" => "{$error_file[0]["class"]}"
         );
-        if(is_array($_error_msg))
+        if(is_array($error_msg))
             $_error_msg["msg"] = "{$error_title} [Error Code:{$error_msg[0]}] {$error_msg[2]}";
         include(str_replace('/',DS,ROOT.RING.'Template/error.html'));
         eLog($_error_msg["msg"]);

@@ -77,7 +77,6 @@ class Mongodb
             if (isset($_mongo_user) and isset($_mongo_pwd))
                 $_mongo_user_pwd = $_mongo_user . ":" . $_mongo_pwd . "@";
             $this->_Connect = new Manager("mongodb://" . $_mongo_user_pwd . $_mongo_host . ":" . $_mongo_port);
-
             $this->_DB = $_connect_config['DATA_DB'];
         }
     }
@@ -530,6 +529,8 @@ class Mongodb
         try{
             # 调用映射id生成类
             $this->_Data["_id"] = new ObjectId();
+            # 自定义唯一识别标记
+            $this->_Data["_origin_id"] = strval($this->_Data["_id"]);
             # 调用数据写入驱动类
             $_insert = new BulkWrite();
             # 执行写入操作

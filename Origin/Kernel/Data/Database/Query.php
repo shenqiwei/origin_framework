@@ -505,9 +505,11 @@ abstract class Query
      */
     protected $_Where = null;
     /**
-     * 条件信息加载方法，传入值类型支持字符串、数组
-     * 当为数组key为字段名，数组value为条件值，数组类型下，仅支持等于条件
-     * 当为字符串，要求条件信息符合SQL语句规则
+     * 条件信息加载方法，传入值类型支持字符串、数组，数组结构可以为多级数组
+     * 1.当数组key为字段名，数组value为条件值，条件表述为等于条件，若数组value为数组结构
+     * 2.当数组key为特定字符串（$and 或 $or）,数组value必须为数组结构，数组结构表述与表述 1要求相同
+     * 3.数组关系结构中，同级条件结构放在同一个上级数组内容
+     * 3.当为字符串，要求条件信息符合SQL语句规则
      * @access public
      * @param mixed $field
      * @return object
@@ -518,25 +520,104 @@ abstract class Query
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
         if(is_array($field)){# 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            $_i = 0;
-            foreach($field as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key))
-                    # 将数组信息存入类变量
-                    if($_i == 0){
-                        if(is_integer($_value) or is_float($_value) or is_double($_value)){
-                            $this->_Where = " where {$_key} = {$_value}";
-                        }else{
-                            $this->_Where = " where {$_key} = '{$_value}'";
+            $this->_Where = " where ".$this->multiWhere($field);
+        }else{
+            # 对输入字符串进行特殊字符转义，降低XSS攻击
+            # 用预设逻辑语法数组替代特殊运算符号
+            if(!is_null($field) and !empty($field)){
+                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=','/\s+in\s+/'=>'in','/\s+nin\s+/'=>"not in") as $key => $value){
+                    $field = preg_replace($key, $value, $field);
+                }
+                $this->_Where = " where {$field}";
+            }
+        }
+        return $this->__getSQL();
+    }
+    /**
+     * 条件拆分函数
+     * @access private
+     * @param array $where
+     * @return string
+    */
+    private function multiWhere($where)
+    {
+        $_where = null;
+        if(is_array($where)){
+            $_is_multi = false;
+            if(count($where) > 1) $_is_multi = true;
+            foreach($where as $_key => $_value) {
+                if ($_key == "\$and") {
+                    if ($_is_multi)
+                        $_where .= " and (" . $this->multiWhere($_value) . ")";
+                    else
+                        $_where .= " and " . $this->multiWhere($_value);
+                } elseif ($_key == "\$or") {
+                    if ($_is_multi)
+                        $_where .= " or (" . $this->multiWhere($_value) . ")";
+                    else
+                        $_where .= " or " . $this->multiWhere($_value);
+                } elseif (is_true($this->_Regular_Name_Confine, $_key)) {
+                    if (is_array($_value)) {
+                        $_first_key = array_keys($_value)[0];
+                        $_symbol = "=";
+                        switch ($_first_key) {
+                            case "\$eq":
+                                $_symbol = "=";
+                                break;
+                            case "\$lt":
+                                $_symbol = "<";
+                                break;
+                            case "\$gt":
+                                $_symbol = ">";
+                                break;
+                            case "\$in":
+                                $_symbol = "in";
+                                break;
+                            case "\$le":
+                                $_symbol = "<=";
+                                break;
+                            case "\$ge":
+                                $_symbol = ">=";
+                                break;
+                            case "\$neq":
+                                $_symbol = "!=";
+                                break;
+                            case "\$nin":
+                                $_symbol = "not in";
+                                break;
+                            default:
+                                continue;
                         }
-
-                    }else{
-                        if(is_int($_value) or is_float($_value) or is_double($_value)){
-                            $this->_Where .= " and {$_key} = {$_value}";
-                        }else{
-                            $this->_Where .= " and {$_key} = {$_value}";
+                        if (is_null($this->_Where)) {
+                            if (is_integer($_value) or is_float($_value) or is_double($_value)) {
+                                $_where = " {$_key} {$_symbol} {$_value}";
+                            } else {
+                                $_where = " {$_key} {$_symbol} '{$_value}'";
+                            }
+                        } else {
+                            if (is_int($_value) or is_float($_value) or is_double($_value)) {
+                                $_where .= " and {$_key} {$_symbol} {$_value}";
+                            } else {
+                                $_where .= " and {$_key} {$_symbol} {$_value}";
+                            }
+                        }
+                    } else {
+                        # 将数组信息存入类变量
+                        if (is_null($this->_Where)) {
+                            if (is_integer($_value) or is_float($_value) or is_double($_value)) {
+                                $_where = " {$_key} = {$_value}";
+                            } else {
+                                $_where = " {$_key} = '{$_value}'";
+                            }
+                        } else {
+                            if (is_int($_value) or is_float($_value) or is_double($_value)) {
+                                $_where .= " and {$_key} = {$_value}";
+                            } else {
+                                $_where .= " and {$_key} = {$_value}";
+                            }
                         }
                     }
-                else{
+                }else{
                     # 异常处理：字段名不符合SQL命名规则
                     try{
                         throw new Exception('The field name is not in conformity with the SQL naming rules');
@@ -546,19 +627,9 @@ abstract class Query
                         exit();
                     }
                 }
-                $_i++;
-            }
-        }else{
-            # 对输入字符串进行特殊字符转义，降低XSS攻击
-            # 用预设逻辑语法数组替代特殊运算符号
-            if(!is_null($field) and !empty($field)){
-                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
-                    $field = preg_replace($key, $value, $field);
-                }
-                $this->_Where = " where {$field}";
             }
         }
-        return $this->__getSQL();
+        return $_where;
     }
     /**
      * @var mixed $_Group
