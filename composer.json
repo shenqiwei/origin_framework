@@ -1,7 +1,7 @@
 {
-  "name": "origin/origin-framework",
+  "name": "origin/origin_framework",
   "description": "The origin framework for php.",
-  "homepage": "https://github.com/shenqiwei/Origin-Framework",
+  "homepage": "https://github.com/shenqiwei/Origin_Framework",
   "keywords": ["php","framework","open source"],
   "license": "MIT",
   "type": "project",
