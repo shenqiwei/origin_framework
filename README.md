@@ -1,4 +1,4 @@
-# Origin-Framework
+# Origin Framework
 Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应用问题： 
 
 ![欢迎页](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/welcome.png)
