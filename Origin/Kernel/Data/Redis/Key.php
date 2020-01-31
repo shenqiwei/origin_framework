@@ -15,7 +15,7 @@ class Key
     private $_Connect = null;
     /**
      * @access public
-     * @param string $connect redis主类链接信息
+     * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {

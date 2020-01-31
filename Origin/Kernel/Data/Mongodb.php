@@ -37,7 +37,7 @@ class Mongodb
      */
     private $_Connect = null;
     /**
-     * @var object $_DB 数据库对象
+     * @var string $_DB 数据库对象
      */
     protected $_DB = null;
     /**

@@ -12,13 +12,13 @@ class Upload
     /**
      * @access private
      * @var string $_Input 表单名
-     * @var string $_Size 上传大小限制
-     * @var string|array $_Type 上传类型限制
+     * @var int $_Size 上传大小限制
+     * @var array $_Type 上传类型限制
      * @var string $_Store 存储位置
      */
     private $_Input = null;
     private $_Size = 0;
-    private $_Type = null;
+    private $_Type = array();
     private $_Store = null;
     /**
      * @access private
@@ -111,7 +111,7 @@ class Upload
                         $_suffix = explode(".",$_file["name"][$_i])[1];
                     }
                     if(isset($_suffix)){
-                        if(!is_null($this->_Type)){
+                        if(!empty($this->_Type)){
                             if(!in_array($_suffix,$this->_Type))
                                 $this->_Error = "Files type is invalid";
                         }

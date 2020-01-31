@@ -98,7 +98,7 @@ abstract class Query
         $this->_Field = "*"; # field语法结构式
         $this->_Distinct = null; # 不重复结构式
         $this->_Union = null; # 相同合并结构式
-        $this->_Data = null; # 提交数据结构式用于支持insert和update
+        $this->_Data = array(); # 提交数据结构式用于支持insert和update
         $this->_Where = null; # 条件结构式
         $this->_Group = null; # 分组结构式
         $this->_Abs = null; # 求正整数
@@ -409,7 +409,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var array $_Union 低效相同列，相同数，支持单个或多个
+     * @var string $_Union 低效相同列，相同数，支持单个或多个
      */
     protected $_Union = null;
     /**
@@ -454,7 +454,7 @@ abstract class Query
      * @var array $_Data
      * 用户存储需要修改或者添加的数据信息，该模块与验证模块连接使用
      */
-    protected $_Data = null;
+    protected $_Data = array();
     /**
      * 添加修改值获取方法,传入值结构为数组，数组key为字段名，数组value为传入值
      * @access public
@@ -500,7 +500,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Where
+     * @var string $_Where
      * sql语句条件变量，分别为两种数据类型，当为字符串时，直接引用，当为数组时，转化执行
      */
     protected $_Where = null;
@@ -632,7 +632,7 @@ abstract class Query
         return $_where;
     }
     /**
-     * @var mixed $_Group
+     * @var string $_Group
      * 分组变量，与where功能支持相似
      */
     protected $_Group = null;
@@ -1102,7 +1102,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Uppercase
+     * @var string $_Uppercase
      * 需返回信息中所有字母大写的字段名，返回值为数组
      */
     protected $_UpperCase = null;
@@ -1133,7 +1133,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Lowercase
+     * @var string $_Lowercase
      * 需返回信息中所有字母小写的字段名，返回值为数组
      */
     protected $_LowerCase = null;
@@ -1165,7 +1165,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var array $_Mid
+     * @var string $_Mid
      * 返回指定字段截取字符特定长度的信息，数组类型
      */
     protected $_Mid = null;
@@ -1217,7 +1217,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Length
+     * @var string $_Length
      * 计算指定字段记录值长度的字段名,同时支持字符串和数组类型
      */
     protected $_Length = null;
@@ -1259,7 +1259,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var array $_Round
+     * @var string $_Round
      * 需进行指定小数点长度的四舍五入计算的字段名及截取长度数组
      */
     protected $_Round = null;
@@ -1318,7 +1318,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var array $_Format
+     * @var string $_Format
      * 需进行格式化的记录的字段名及格式信息数组
      */
     protected $_Format = null;
@@ -1450,7 +1450,7 @@ abstract class Query
         return $this->__getSQL();
     }
     /**
-     * @var mixed $_Limit
+     * @var string $_Limit
      * 查询界限值，int或者带两组数字的字符串
      */
     protected $_Limit = null;
