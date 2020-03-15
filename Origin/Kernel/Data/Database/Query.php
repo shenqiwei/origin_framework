@@ -1235,10 +1235,6 @@ abstract class Query
             case "mssql":
                 $_func = "len";
                 break;
-            case "pgsql":
-            case "sqlite":
-            case "mariadb":
-            case "oracle":
             default:
                 $_func = "length";
                 break;
@@ -1247,9 +1243,9 @@ abstract class Query
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             for($_i=0;$_i<count($field);$_i++){
                 if(is_numeric(array_keys($field)[0])){
-                    $this->_Length .= ",length({$field[$_i]})";
+                    $this->_Length .= ",{$_func}({$field[$_i]})";
                 }else{
-                    $this->_Length .= ",length(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
+                    $this->_Length .= ",{$_func}(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
                 }
             }
         }else{
@@ -1268,8 +1264,8 @@ abstract class Query
      * 参数同时支持
      * @access public
      * @param mixed $field
-     * @param int $decimals
-     * @param int 取舍精度 mssql支持语法参数项
+     * @param int $decimals 取舍精度
+     * @param int $accuracy 截断精度 mssql支持语法参数项
      * @return object
     */
     function round($field, $decimals = 0,$accuracy=0)
