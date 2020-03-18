@@ -53,7 +53,10 @@ class Load
             # 转换信息
             $_path_array = array();
             # 获取的路径信息
-            $_path = self::route($_SERVER['PATH_INFO']);
+            if(is_null($_SERVER['PATH_INFO']) or empty($_SERVER['PATH_INFO']))
+                $_path = self::route($_SERVER["REQUEST_URI"]);
+            else
+                $_path = self::route($_SERVER['PATH_INFO']); // nginx条件下PATH_INFO返回值为空
             # 获取协议信息
             $_protocol = $_SERVER["SERVER_PROTOCOL"];
             # 获取服务软件信息
