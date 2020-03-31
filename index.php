@@ -13,4 +13,4 @@ define('ERROR',false);
 # 代码重加载
 define('MARK_RELOAD',false);
 # 调用通道入口文件
-include('Origin/Door.php');
+include('Origin/door.php');
