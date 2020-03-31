@@ -161,11 +161,11 @@ class Load
                 write($_uri,$_model_msg);
                 # 创建class完整信息变量
                 $_class = $_class_path = explode("/","Application".DS.$_path);
-                for($_i = 0;$_i < count($_class_path);$_i++){
-                    if(empty($_i))
-                        $_class = ucfirst($_class_path[$_i]);
+                for($_u = 0;$_u < count($_class_path);$_u++){
+                    if(empty($_u))
+                        $_class = ucfirst($_class_path[$_u]);
                     else
-                        $_class .= "\\".ucfirst($_class_path[$_i]);
+                        $_class .= "\\".ucfirst($_class_path[$_u]);
                 }
                 # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
                 if(class_exists($_class)){
