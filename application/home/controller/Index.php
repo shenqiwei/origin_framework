@@ -35,9 +35,4 @@ class Index extends Controller
         $this->param('time', '2019/11/23');
         $this->view();
     }
-
-    function history()
-    {
-        $this->view();
-    }
 }

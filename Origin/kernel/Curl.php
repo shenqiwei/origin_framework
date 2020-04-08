@@ -74,13 +74,12 @@ class Curl
      * @param string $url 访问地址
      * @param string/array 访问参数，（k/v）数组结构
      * @param array $header 报文
-     * @param string/int $type 请求值类型 0：from 表单请求，1：json json字符串请求，2：xml xml文本标记请求
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
      * @return mixed
      * @content get请求函数
      */
-    function post($url, $param, $header=array(), $type = 'from', $ssl_peer = false, $ssl_host = false)
+    function post($url, $param, $header=array(), $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
         if (!is_null($url)) {
@@ -98,25 +97,6 @@ class Curl
             curl_setopt($_curl, CURLOPT_SSL_VERIFYPEER, boolval($ssl_peer));
             curl_setopt($_curl, CURLOPT_SSL_VERIFYHOST, boolval($ssl_host));
             curl_setopt($_curl, CURLOPT_POST, true);
-            if ($type !== 'from' or (is_numeric($type) and $type !== 0)) {
-                if ($type === 'json' or (is_numeric($type) and $type === 1)) {
-                    if (is_array($param)) {
-                        $param = json_encode($param);
-                    }
-                    curl_setopt($_curl, CURLOPT_HTTPHEADER,
-                        array(
-                            'Content-Type:application/json;charset=utf-8',
-                            'Content-Length:' . strlen($param)
-                        )
-                    );
-                } elseif ($type === 'xml' or (is_numeric($type) and $type === 2)) {
-                    curl_setopt($_curl, CURLOPT_HTTPHEADER,
-                        array(
-                            'Content-Type:text/xml;charset=utf-8'
-                        )
-                    );
-                }
-            }
             curl_setopt($_curl, CURLOPT_TIMEOUT, 30);
             curl_setopt($_curl, CURLOPT_POSTFIELDS, $param);
             $_receipt = curl_exec($_curl);

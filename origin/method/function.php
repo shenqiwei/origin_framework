@@ -17,7 +17,7 @@ include("cookie.php");
 include("log.php"); # 引用日志函数包
 include("public.php"); # 文件操作函数包
 # 应用结构包调用
-include(ROOT."application/common/public.php");
+include(ROOT . "application/common/public.php");
 # 框架柱目录文件路径
 if(!defined("RING")) define("RING", "Origin".DS);
 # 创建基础常量
