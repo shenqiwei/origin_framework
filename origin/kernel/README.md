@@ -1,5 +1,5 @@
 <span id='origin_kernel'></span>
-## Kernel 内核目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">返回</a>]
+## Kernel 内核目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">返回</a>]
 该目录用于存放Origin主要功能封装类
 
 #### 快速入口
@@ -11,7 +11,7 @@
 File封装类中提供了三个操作函数（resource | manage | write），主要用于文件（夹）路径查询，文件（夹）创建、修改、移动、复制、删除、文件写入功能的实现
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\File\File;`   
+>> `use Origin\Kernel\File;`   
 >
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的File实例化时，不再需要预设目录地址，File默认从项目根目录位置开始进行内容调用   
 >> `$_file = new File()`
@@ -83,7 +83,7 @@ write():
 Upload封装类用于实现Origin文件上传功能
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\File\Upload;`   
+>> `use Origin\Kernel\Upload;`   
 >
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的实例化不需要标注表单名称
 >> `$_upload = new Upload()`
@@ -157,7 +157,7 @@ Label 还提供了一种引用标签，一种条件表达式标签，两种循�
 Request现阶段版本仅支持get/post请求
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Parameter\Request;`
+>> `use Origin\Kernel\Request;`
 >
 > Request声明对象时注入三个基本参数：请求对象名称、默认值、请求类型   
 > `$_request = new Request(__variable__,__default__,__method__)`   
@@ -170,7 +170,7 @@ Request现阶段版本仅支持get/post请求
 > Request类还有一个移除函数`$_request->delete()`，当使用该函数时，请求器会直接注销当前表单名下所有内容
 
 <span id='db'></span>
-## DB数据库访问封装类 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin/Kernel/Data">[查看详情]</a>[[返回TOP](#origin_kernel)]
+## DB数据库访问封装类 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin/kernel/database">[查看详情]</a>[[返回TOP](#origin_kernel)]
 
 <span id='validate'></span>
 ## Validate验证封装类 [[返回TOP](#origin_kernel)]
@@ -178,7 +178,7 @@ Request现阶段版本仅支持get/post请求
 Validate主要服务于Origin基础验证结构，Validate提供了内容空状态验证（not null），值域范围验证（min < strlen(variable) or number < max），格式验证 (preg_match).
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Parameter\Validate;`
+>> `use Origin\Kernel\Validate;`
 >
 > Validate声明对象时需注入验证对象变量内容,验证结构提供是三个基本函数（_empty,_size,_type），两个独立功能验证函数(_ipv4,_ipv6),一个错误信息返回函数（getError）
 >> `$_validate = new Validate(__variable);`
@@ -217,7 +217,7 @@ Validate主要服务于Origin基础验证结构，Validate提供了内容空状�
 Output封装类负责基本内容的输出和展示，其中包括Json格式输出，提示信息的展示，异常错误的提醒
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Parameter\Output;`
+>> `use Origin\Kernel\Output;`
 >
 > Output实例化
 >> `$_output = new Output();`

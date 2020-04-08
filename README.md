@@ -20,29 +20,29 @@ Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应�
 ## 目录说明：
 > Root
 
->>Application： 应用目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Application">查看文档</a>  
->>>Common：公共函数目录  
-Config：自定义配置目录  
-Home：应用访问目录，默认访问目录（开发者编辑文件目录）  
->>>>Common：公共函数目录（自定义编辑，框架默认引用文件：Public.php）  
-Controller：应用控制器文件目录（默认控制器：Index.php）  
-Model：数据映射模板文件目录（暂不使用）  
-View：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`Index(首字母大写)，以及与`函数同名`index.html（全小写））   
+>>application： 应用目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/application">查看文档</a>  
+>>>common：公共函数目录  
+config：自定义配置目录  
+home：应用访问目录，默认访问目录（开发者编辑文件目录）  
+>>>>common：公共函数目录（自定义编辑，框架默认引用文件：public.php）  
+controller：应用控制器文件目录（默认控制器：Index.php）  
+model：数据映射模板文件目录（暂不使用）  
+view：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`index(首字母大写)，以及与`函数同名`index.html（全小写））   
 
->>Origin：框架核心目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">查看文档</a>  
->>>Application：应用主控制封装目录  
-Config：框架配置目录  
-Font：框架字体文件目录  
-Kernel框架功能内核目录  
-Method框架方法封装目录
+>>origin：框架核心目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">查看文档</a>  
+>>>application：应用主控制封装目录  
+config：框架配置目录  
+font：框架字体文件目录  
+kernel框架功能内核目录  
+method框架方法封装目录
 
->>Resource：资源目录  （HTML资源常量：\_\_RESOURCE__）
+>>resource：资源目录  （HTML资源常量：\_\_RESOURCE__）
 >>>Jscript：Javascript文件目录（已取消该结构预设）  
 Media：多媒体文件目录（已取消该结构预设）  
 Style：样式文件目录（已取消该结构预设）  
-Public：公共文件目录（web资源文件，公共html）   
-Upload：上传文件目录（根据<天>时间进行分割存储上传文件，子文件夹自动创建）   
-Buffer：缓存文件目录   
+public：公共文件目录（web资源文件，公共html）   
+upload：上传文件目录（根据<天>时间进行分割存储上传文件，子文件夹自动创建）   
+buffer：缓存文件目录   
 `注：原始结构常量中取消该文件夹模板常量标记解析功能`
 
 >>.htaccess：地址重定义配置  

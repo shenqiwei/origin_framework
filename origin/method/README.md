@@ -1,5 +1,5 @@
 <span id='origin_method'></span>
-## Method 功能函数目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">返回</a>]
+## Method 功能函数目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">返回</a>]
 
 该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中
 >函数列表

@@ -1,4 +1,4 @@
-## Config 框架主配置目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/Origin">返回</a>]
+## Config 框架主配置目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">返回</a>]
 该目录中主要存储的是Origin框架各个功能配置设定内容项（Config.cfg.php）
 通过该文件内容项的修改来为开发提供有利支持。配置选项，使用全字母大写，完整单词描述方式进行展现
 `在不进行任何设置的情况下，框架可以进行基础的开发操作，满足网站及一般应用需求的情况，只需要在应用配置目录下的Config.cfg.php文件中，编写自己数据库配置内容既可以进行开发和功能实现编写
