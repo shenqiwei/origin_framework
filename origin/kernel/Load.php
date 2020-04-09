@@ -97,7 +97,7 @@ class Load
                         (strtolower($_path_array[$_i]) != Config('DEFAULT_APPLICATION') and
                             is_dir(str_replace('/', DS, ROOT."application/".strtolower($_path_array[0]))))) {
                         # 变更应用文件夹位置
-                        $_catalogue = $_path_array[$_i] . DS;
+                        $_catalogue = $_path_array[$_i] . "/";
                         # 指针下移
                         $_i += 1;
                         if ($_i < count($_path_array)) {
