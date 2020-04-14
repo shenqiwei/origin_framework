@@ -210,7 +210,10 @@ class Load
         $_start = 0;
         if(strpos("/",$route) == 0)
             $_start = 1;
-        $_path = substr($route, $_start, strpos($route,'.')-1);
+        if(strpos($route,'.'))
+            $_path = substr($route, $_start, strpos($route,'.')-1);
+        else
+            $_path = substr($route, $_start);
         $_receipt = $_path;
         # 创建路由文件目录变量
         $_files = str_replace('/', DS, ROOT."application/config/route.php");
