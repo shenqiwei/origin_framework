@@ -6,16 +6,37 @@
  */
 /**
  * @access public
- * @param string $uri 日志路径
- * @param string $msg 日志模板
+ * @param string $folder 日志路径
+ * @param string $context 日志模板
  * @return  boolean
  * @content 日志写入
  */
-function write($uri,$msg)
+function write($folder,$context)
 {
-    $_files = new Origin\Kernel\File();
-    # 调用结构验证方法
-    return $_files->write($uri, "fw",$msg);
+    $_receipt = false;
+    logWrite:
+    # 使用写入方式进行日志创建创建和写入
+    $_handle = fopen(ROOT.str_replace(RE_DS,DS,$folder),"a");
+    if($_handle){
+        # 执行写入操作，并返回操作回执
+        $_receipt = fwrite($_handle,$context);
+        # 关闭文件源
+        fclose($_handle);
+    }else{
+        if(!file_exists($folder)){
+            $_dir = substr($folder,0,strrpos($folder,"/"));
+            $_dir = explode("/",$_dir);
+            $_new = null;
+            for($_i = 0;$_i < count($_dir);$_i++){
+                $_new .= DS.$_dir[$_i];
+                if(!is_dir(ROOT.$_new)){
+                    mkdir(ROOT.$_new,0777);
+                }
+            }
+            goto logWrite;
+        }
+    }
+    return $_receipt;
 }
 /**
  * 数据库操作日志 statement log

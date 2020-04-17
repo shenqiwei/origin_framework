@@ -145,7 +145,18 @@ class Load
                 set_include_path(ROOT);
                 # 判断文件是否存在
                 if(!spl_autoload_register(function($_path){
-                    require_once(str_replace('\\',DS,str_replace('/', DS, $_path.'.php')));
+                    # 转化命名空间内容，拆分结构
+                    $_file = explode("\\",$_path);
+                    # 循环修改命名空间元素首字母
+                    for($_i = 0;$_i < count($_file);$_i++){
+                        # 修改文件名,类文件名跳过
+                        if($_i === (count($_file) - 1))
+                            continue;
+                        $_file[$_i] = strtolower($_file[$_i]);
+                    }
+                    # 重组加载信息内容
+                    $file = implode(DS,$_file);
+                    require_once($file.'.php');
                 })){
                     try {
                         throw new Exception('Origin Method Error: Registration load failed');
