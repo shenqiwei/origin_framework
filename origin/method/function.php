@@ -19,7 +19,7 @@ include("public.php"); # 文件操作函数包
 # 应用结构包调用
 include(ROOT . "application/common/public.php");
 # 框架柱目录文件路径
-if(!defined("RING")) define("RING", "Origin".DS);
+if(!defined("RING")) define("RING", "origin".DS);
 # 创建基础常量
 # 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
 if(!defined("__APPLICATION__")) define("__APPLICATION__", Configuration("DEFAULT_APPLICATION"));
