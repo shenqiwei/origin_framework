@@ -598,7 +598,7 @@ abstract class Query
                             if (is_int($_value) or is_float($_value) or is_double($_value)) {
                                 $_where .= " and {$_key} {$_symbol} {$_value}";
                             } else {
-                                $_where .= " and {$_key} {$_symbol} {$_value}";
+                                $_where .= " and {$_key} {$_symbol} '{$_value}'";
                             }
                         }
                     } else {
@@ -613,7 +613,7 @@ abstract class Query
                             if (is_int($_value) or is_float($_value) or is_double($_value)) {
                                 $_where .= " and {$_key} = {$_value}";
                             } else {
-                                $_where .= " and {$_key} = {$_value}";
+                                $_where .= " and {$_key} = '{$_value}'";
                             }
                         }
                     }
