@@ -588,7 +588,7 @@ abstract class Query
                             default:
                                 continue;
                         }
-                        if (is_null($this->_Where)) {
+                        if (is_null($_where)) {
                             if (is_integer($_value) or is_float($_value) or is_double($_value)) {
                                 $_where = " {$_key} {$_symbol} {$_value}";
                             } else {
@@ -603,7 +603,7 @@ abstract class Query
                         }
                     } else {
                         # 将数组信息存入类变量
-                        if (is_null($this->_Where)) {
+                        if (is_null($_where)) {
                             if (is_integer($_value) or is_float($_value) or is_double($_value)) {
                                 $_where = " {$_key} = {$_value}";
                             } else {
