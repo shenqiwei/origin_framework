@@ -585,8 +585,6 @@ abstract class Query
                             case "\$nin":
                                 $_symbol = "not in";
                                 break;
-                            default:
-                                continue;
                         }
                         if (is_null($_where)) {
                             if (is_integer($_value) or is_float($_value) or is_double($_value)) {
