@@ -140,8 +140,7 @@ function danger()
         E_COMPILE_ERROR | E_RECOVERABLE_ERROR| E_PARSE );
     if($_error && ($_error["type"]===($_error["type"] & E_FATAL))) {
         if(DEBUG){
-            $_debug = new  Origin\Kernel\Output();
-            $_debug->base($_error);
+            base($_error);
         }
     }
     return null;

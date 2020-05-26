@@ -8,6 +8,7 @@
 include("import.php");
 include("config.php");
 include("initialize.php");
+include("exception.php");
 # 基础操作方法包应用
 include("request.php");
 include("validate.php");

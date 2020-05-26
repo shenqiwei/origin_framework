@@ -32,8 +32,7 @@ function Cookie($key, $value=null)
                 try{
                     throw new Exception('Is beyond the scope biggest execution');
                 }catch(Exception $e){
-                    $_output = new Origin\Kernel\Output();
-                    $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
+                    exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -51,8 +50,7 @@ function Cookie($key, $value=null)
                         try{
                             throw new Exception('The framework of short duration does not support the session Settings');
                         }catch(Exception $e){
-                            $_output = new Origin\Kernel\Output();
-                            $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
+                            exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }else{
@@ -94,8 +92,7 @@ function Cookie($key, $value=null)
         try{
             throw new Exception('The cookie name does not conform to the naming conventions');
         }catch(Exception $e){
-            $_output = new Origin\Kernel\Output();
-            $_output->exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Cookie Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
     }

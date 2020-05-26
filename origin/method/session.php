@@ -47,8 +47,7 @@ function Session($key, $value=null)
                         throw new Exception('Is beyond the scope biggest execution');
                     }catch(Exception $e){
                         eLog($e->getMessage());
-                        $_output = new Origin\Kernel\Output();
-                        $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
+                        exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -70,8 +69,7 @@ function Session($key, $value=null)
                                 throw new Exception('Origin Method Error: The framework of short duration does not support the session Settings');
                             }catch(Exception $e){
                                 eLog($e->getMessage());
-                                $_output = new Origin\Kernel\Output();
-                                $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
+                                exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                                 exit();
                             }
                         }else{
@@ -149,8 +147,7 @@ function Session($key, $value=null)
                         throw new Exception('Origin Method Error: Session can support more than three dimensional array structure');
                     }catch(Exception $e){
                         eLog($e->getMessage());
-                        $_output = new Origin\Kernel\Output();
-                        $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
+                        exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }else{
@@ -217,8 +214,7 @@ function Session($key, $value=null)
             throw new Exception('error: The session name does not conform to the naming conventions');
         }catch(Exception $e){
             eLog($e->getMessage());
-            $_output = new Origin\Kernel\Output();
-            $_output->exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
     }

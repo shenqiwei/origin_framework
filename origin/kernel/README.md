@@ -228,10 +228,10 @@ Output封装类负责基本内容的输出和展示，其中包括Json格式输�
 > 提示信息展示函数：   
 >> `$_output->output(__time__,__message__,__redirect__,__setting__);`：该函数主要用于用户操作提示内容的展示，模板和参数一一对应，该函数主要是为Origin/Application/Controller内函数`$this->success()`和`$this->error()`提供功能支持，暂不对开发者和一般用开发实际功能   
 >
-> PHP层异常提示函数：   
+> PHP层异常提示函数(已取消类方法内容)：   
 >> `$_output->base()`: 用于支持php底层异常捕捉函数`error_get_last()`返回的信息内容输出，该函数不对开发者和一般用户开放    
 >
-> 框架封装类内部封装功能支持异常提示函数：
+> 框架封装类内部封装功能支持异常提示函数(已取消类方法内容)：
 >> `$_output->exception()`：该函数与`$_output->error()`函数在功能和实现上完全一致，不同在于该函数中假如异常日志记录的功能，该函数暂不对开发者和一般用户开发   
 
 <span id='curl'></span>
