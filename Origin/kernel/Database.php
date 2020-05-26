@@ -8,7 +8,6 @@
 namespace Origin\Kernel;
 
 use Origin\Kernel\Database\Query;
-use Origin\Kernel\Output;
 use PDOException;
 use PDO;
 
@@ -131,8 +130,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -275,8 +273,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -327,8 +324,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -379,8 +375,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -413,8 +408,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         # 返回数据
@@ -479,8 +473,7 @@ class Database extends Query
             $_statement->closeCursor();
         }catch(PDOException $e){
             eLog($e->getMessage());
-            $_output = new Output();
-            $_output->exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;

@@ -7,7 +7,6 @@
  */
 namespace Origin\Kernel;
 
-use Origin\Kernel\Output;
 use Exception;
 
 class File
@@ -47,8 +46,7 @@ class File
             try{
                 throw new Exception('Files guide is invalid!');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -111,8 +109,7 @@ class File
             try{
                 throw new Exception('Files guide is invalid!');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -141,8 +138,7 @@ class File
                             try{
                                 throw new Exception('Create folder[' . $_fold . '] failed');
                             }catch(Exception $e){
-                                $_output = new Output();
-                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                                 exit();
                             }
                         }
@@ -184,8 +180,7 @@ class File
                             try{
                                 throw new Exception('Create folder[' . $_folder . '] failed');
                             }catch(Exception $e){
-                                $_output = new Output();
-                                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                                exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                                 exit();
                             }
                         }
@@ -219,8 +214,7 @@ class File
                         try {
                             throw new Exception('Files[' . $guide . '] rename failed');
                         } catch (Exception $e) {
-                            $_output = new Output();
-                            $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                            exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
                             exit();
                         }
                     }
@@ -236,8 +230,7 @@ class File
                             try {
                                 throw new Exception();
                             } catch (Exception $e) {
-                                $_output = new Output();
-                                $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                                exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
                                 exit();
                             }
                         }
@@ -251,8 +244,7 @@ class File
                             try {
                                 throw new Exception();
                             } catch (Exception $e) {
-                                $_output = new Output();
-                                $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                                exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
                                 exit();
                             }
                         }
@@ -268,8 +260,7 @@ class File
                     try {
                         throw new Exception('Folder has been created');
                     } catch (Exception $e) {
-                        $_output = new Output();
-                        $_output->exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exception("File Error", $e->getMessage(), debug_backtrace(0, 1));
                         exit();
                     }
                 }
@@ -307,8 +298,7 @@ class File
             try{
                 throw new Exception('Files guide is invalid!');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -324,8 +314,7 @@ class File
                     try{
                         throw new Exception('Not Found Object File ' . $_resource);
                     }catch(Exception $e){
-                        $_output = new Output();
-                        $_output->exception("File Error",$e->getMessage(),debug_backtrace(0,1));
+                        exception("File Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }

@@ -7,8 +7,6 @@
  */
 namespace Origin\Kernel;
 
-use Origin\Kernel\File;
-use Origin\Kernel\Output;
 use Exception;
 
 /**
@@ -99,8 +97,7 @@ class View
                         try{
                             throw new Exception('The object template '.$_page.' does not exist');
                         }catch(Exception $e){
-                            $_output = new Output();
-                            $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                            exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                             exit();
                         }
                     }
@@ -109,8 +106,7 @@ class View
                     try{
                         throw new Exception('The object template dir '.$_url_view.$dir.' does not exist');
                     }catch(Exception $e){
-                        $_output = new Output();
-                        $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                        exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -119,8 +115,7 @@ class View
                 try{
                     throw new Exception('Please create the (view) folder under the current path:'.$_url);
                 }catch(Exception $e){
-                    $_output = new Output();
-                    $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                    exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -128,8 +123,7 @@ class View
             try{
                 throw new Exception('The folder address '.$_url.' does not exist');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("View Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("View Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }

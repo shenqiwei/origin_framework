@@ -9,7 +9,6 @@ namespace Origin\Kernel;
 
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Manager;
-use Origin\Kernel\Output;
 use Exception;
 use MongoDB\BSON\ObjectId;
 use MongoDB\Driver\BulkWrite;
@@ -133,8 +132,7 @@ class Mongodb
             try{
                 throw new Exception('Set(table) name is not in conformity with the naming conventions');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -169,8 +167,7 @@ class Mongodb
                     try{
                         throw new Exception('The column name is not in conformity with the naming rules');
                     }catch(Exception $e){
-                        $_output = new Output();
-                        $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+                        exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
                         exit();
                     }
                 }
@@ -180,8 +177,7 @@ class Mongodb
             try{
                 throw new Exception('Need to use an array parameter structure');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("Query Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -242,8 +238,7 @@ class Mongodb
                 try{
                     throw new Exception('The column name is not in conformity with the naming rules');
                 }catch(Exception $e){
-                    $_output = new Output();
-                    $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+                    exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
             }
@@ -269,8 +264,7 @@ class Mongodb
             try{
                 throw new Exception('Projection format is array');
             }catch(Exception $e){
-                $_output = new Output();
-                $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+                exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
         }
@@ -446,20 +440,16 @@ class Mongodb
             $_cursor = $this->_Connect->executeCommand($this->_DB,$_command);
             $_receipt = $_cursor->toArray()[0]->n;
         }catch(ConnectionTimeoutException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch (ConnectionException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(Exception $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         } catch (\MongoDB\Driver\Exception\Exception $e) {
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
@@ -504,16 +494,13 @@ class Mongodb
                 array_push($_receipt,(array)$_document);
             }
         }catch(ConnectionTimeoutException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch (ConnectionException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(Exception $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
@@ -542,20 +529,16 @@ class Mongodb
             # 返回执行参数
             $_receipt = $_result->getInsertedCount();
         }catch (BulkWriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteConcernException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(Exception $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
@@ -579,20 +562,16 @@ class Mongodb
             # 返回执行参数
             $_receipt = $_result->getModifiedCount();
         }catch (BulkWriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteConcernException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(Exception $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
@@ -616,20 +595,16 @@ class Mongodb
             # 返回执行参数
             $_receipt = $_result->getDeletedCount();
         }catch (BulkWriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(WriteConcernException $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }catch(Exception $e){
-            $_output = new Output();
-            $_output->exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
+            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
