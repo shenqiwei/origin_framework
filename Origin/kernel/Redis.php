@@ -27,7 +27,7 @@ class Redis
     */
     function __construct($connect_name=null)
     {
-        $_connect_config = Config('DATA_MATRIX_CONFIG');
+        $_connect_config = config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
                 # 判断数据库类型

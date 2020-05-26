@@ -12,7 +12,7 @@
  * @param boolean $delete 执行删除操作
  * @return mixed
  */
-function Request($key, $default=null, $delete=false)
+function request($key, $default=null, $delete=false)
 {
     /**
      * @var string $_receipt

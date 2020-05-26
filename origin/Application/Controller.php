@@ -59,8 +59,8 @@ class Controller
     {
         $_page = Load::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-        $_dir = str_replace(Config('APPLICATION_CONTROLLER')."/", '',
-                str_replace(Config('DEFAULT_APPLICATION')."/", '',
+        $_dir = str_replace(config('APPLICATION_CONTROLLER')."/", '',
+                str_replace(config('DEFAULT_APPLICATION')."/", '',
                     str_replace('application/', '',
                         str_replace('\\', '/', strtolower(Load::$_Class)))));
         if($view !== null and is_true($_regular, $view)){

@@ -10,7 +10,7 @@
  * @param string $guide
  * @return null
  */
-function Config($guide)
+function config($guide)
 {
     /**
      * 执行结构为两种，一种是直接调用公共配置文件或者主配置文件，另一种是筛查配置信息位置，在读取配置信息
@@ -33,7 +33,7 @@ function Config($guide)
             # 拆分数组
             $_guide = explode(':', $guide);
             # 调取公共配置信息
-            $_config = Import("application/config/config");
+            $_config = import("application/config/config");
             # 判断返回信息
             if ($_config) {
                 # 引导信息数组，并对数据内容进行匹配
@@ -59,12 +59,12 @@ function Config($guide)
             }
         } else {
             # 调取公共配置信息
-            $_config = Import("application/config/config");
+            $_config = import("application/config/config");
             if ($_config[$guide]) {
                 $_receipt = $_config[$guide];
             } else {
                 # 调取主配置信息
-                $_receipt = Configuration($guide);
+                $_receipt = configuration($guide);
             }
         }
     }
@@ -76,7 +76,7 @@ function Config($guide)
  * @param string $guide 配置名称，不区分大小写
  * @return string
  */
-function Configuration($guide)
+function configuration($guide)
 {
     /**
      * @var array $_array
@@ -88,7 +88,7 @@ function Configuration($guide)
     # 创建配置结构变量
     $_config = null;
     # 创建配置寄存变量
-    $_array = Import('origin/config/config');
+    $_array = import('origin/config/config');
     # 判断引导参数是否有效
     if(preg_match('/^[^_\W\s]+((\\\:|_)?[^_\W\s]+)*$/u', $guide)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中

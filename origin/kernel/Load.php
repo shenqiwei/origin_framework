@@ -43,13 +43,13 @@ class Load
         # 判断自动加载方法
         if(function_exists('spl_autoload_register')){
             # 设置基础控制器参数变量
-            $_catalogue = Config('DEFAULT_APPLICATION')."/";
+            $_catalogue = config('DEFAULT_APPLICATION')."/";
             # 默认控制器文件名
-            $_files = Config('DEFAULT_CONTROLLER');
+            $_files = config('DEFAULT_CONTROLLER');
             # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = Configuration('DEFAULT_CONTROLLER');
+            # $_class = configuration('DEFAULT_CONTROLLER');
             # 默认控制器方法名
-            $_method = Config('DEFAULT_METHOD');
+            $_method = config('DEFAULT_METHOD');
             # 转换信息
             $_path_array = array();
             # 获取的路径信息
@@ -93,8 +93,8 @@ class Load
                     $_path_array = explode('/',$_path);
                     # 判断首元素结构是否与默认应用目录相同
                     if(empty($_path_array) and $_path_array[0] != '0' or
-                        strtolower($_path_array[$_i]) == Config('DEFAULT_APPLICATION')  or
-                        (strtolower($_path_array[$_i]) != Config('DEFAULT_APPLICATION') and
+                        strtolower($_path_array[$_i]) == config('DEFAULT_APPLICATION')  or
+                        (strtolower($_path_array[$_i]) != config('DEFAULT_APPLICATION') and
                             is_dir(str_replace('/', DS, ROOT."application/".strtolower($_path_array[0]))))) {
                         # 变更应用文件夹位置
                         $_catalogue = $_path_array[$_i] . "/";
@@ -114,9 +114,9 @@ class Load
                     }
                 }
                 # 使用加载函数引入应用公共方法文件
-                Import("application/{$_catalogue}common/public");
+                import("application/{$_catalogue}common/public");
                 # 根据配置信息拼接控制器路径
-                $_path = $_catalogue.Config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
+                $_path = $_catalogue.config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
                 # 初始化重启位置
                 load:
                 # 验证文件地址是否可以访问
@@ -132,7 +132,7 @@ class Load
                             exit(0);
                         }
                     }else{
-                        $_404 = str_replace("/",DS,ROOT.Config("ROOT_RESOURCE")."/public/temp/404.html");
+                        $_404 = str_replace("/",DS,ROOT.config("ROOT_RESOURCE")."/public/temp/404.html");
                         if(!is_file($_404)){
                             echo("ERROR:404");
                             exit();
@@ -166,7 +166,7 @@ class Load
                     }
                 }
                 # 链接记录日志
-                $_uri = Config('ROOT_LOG').Config('LOG_ACCESS').date('Ymd').'.log';
+                $_uri = config('ROOT_LOG').config('LOG_ACCESS').date('Ymd').'.log';
                 $_msg = "[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use;
                 $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$_msg.PHP_EOL;
                 write($_uri,$_model_msg);

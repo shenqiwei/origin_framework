@@ -11,10 +11,10 @@
  * @param mixed $default
  * @return string
  */
-function Input($key, $default = null)
+function input($key, $default = null)
 {
     # 直接调用Request请求器函数
-    return Request($key, $default);
+    return request($key, $default);
 }
 /**
  * @access public
@@ -26,7 +26,7 @@ function Input($key, $default = null)
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function Page($url,$count,$current=1,$row=10,$search=null){
+function page($url,$count,$current=1,$row=10,$search=null){
     $page=array(
         # 基本参数
         'url'=>$url, # 连接地址
@@ -81,7 +81,7 @@ function Page($url,$count,$current=1,$row=10,$search=null){
  * @return array
  * @contact 比较逻辑运算符双向转化方法
  */
-function Number($page,$cols=5){
+function number($page,$cols=5){
     //执行数字页码
     $n=array();
     if($page['count']>$cols){
@@ -122,7 +122,7 @@ function Number($page,$cols=5){
  * @param int $height
  * @return object
  */
-function Verify($width = 120, $height = 50)
+function verify($width = 120, $height = 50)
 {
     return new Origin\Kernel\Verify($width, $height);
 }

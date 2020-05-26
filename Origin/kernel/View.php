@@ -27,7 +27,7 @@ class View
         # 转化文件路径
         $_guide = explode('/',$dir);
         # 判断结构模型
-        $_dir = Config('DEFAULT_APPLICATION')."/";
+        $_dir = config('DEFAULT_APPLICATION')."/";
         # 判断引导路径中是否存在多级文件
         if(count($_guide) > 1){
             for($i=0; $i<count($_guide);$i++){
@@ -42,7 +42,7 @@ class View
         # 判断应用目录是否有效
         if(is_dir($_url)){
             # 获得前台模板目录
-            $_url_view = str_replace('/', DS, $_url.Config('APPLICATION_VIEW')."/");
+            $_url_view = str_replace('/', DS, $_url.config('APPLICATION_VIEW')."/");
             # 判断前台模板目录是否有效
             if(is_dir($_url_view)){
                 # 判断应用控制器对应前台模板目录是否有效
@@ -72,7 +72,7 @@ class View
                         $_label = new Label($_page);
                         # 获取解析后文件内容
                         $_cache_code = $_label->execute();
-                        if(Config("ROOT_USE_BUFFER")){
+                        if(config("ROOT_USE_BUFFER")){
                             $_debug_tmp = "resource/buffer/".sha1($_page).".tmp";
                             $_file = new File();
                             $_cache_uri = str_replace("/",DS,ROOT.$_debug_tmp);

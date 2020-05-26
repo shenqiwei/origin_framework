@@ -6,7 +6,7 @@
  */
 function initialize()
 {
-    $_log = Config('ROOT_LOG').Config('LOG_INITIALIZE').'initialize.log';
+    $_log = config('ROOT_LOG').config('LOG_INITIALIZE').'initialize.log';
     # 判断日志文件
     if(!is_file(str_replace("/",DS,ROOT.$_log))){
         $_date = date("Y-m-d");
@@ -18,24 +18,24 @@ function initialize()
                 ROOT."application", # 应用目录
                 ROOT."application/common", # 应用公共函数目录
                 ROOT."application/config", # 应用公共配置目录
-                ROOT."application/".Config("DEFAULT_APPLICATION"), # 默认应用主目录
-                ROOT."application/".Config("DEFAULT_APPLICATION")."/common", # 默认应用公共函数目录
-                ROOT."application/".Config("DEFAULT_APPLICATION")."/controller", # 默认应用控制器目录
-                ROOT."application/".Config("DEFAULT_APPLICATION")."/view", # 默认应用模板目录
-                ROOT."application/".Config("DEFAULT_APPLICATION")."/view/index", # 默认应用模板目录
-                ROOT.Config("ROOT_RESOURCE")."/public", # 公共文件目录
-                ROOT.Config("ROOT_RESOURCE")."/public/temp", # 500,404自定义模板位置
-                ROOT.Config("ROOT_RESOURCE")."/upload", # 上传文件目录
-                ROOT.Config("ROOT_RESOURCE")."/buffer", # 缓存文件目录
+                ROOT."application/".config("DEFAULT_APPLICATION"), # 默认应用主目录
+                ROOT."application/".config("DEFAULT_APPLICATION")."/common", # 默认应用公共函数目录
+                ROOT."application/".config("DEFAULT_APPLICATION")."/controller", # 默认应用控制器目录
+                ROOT."application/".config("DEFAULT_APPLICATION")."/view", # 默认应用模板目录
+                ROOT."application/".config("DEFAULT_APPLICATION")."/view/index", # 默认应用模板目录
+                ROOT.config("ROOT_RESOURCE")."/public", # 公共文件目录
+                ROOT.config("ROOT_RESOURCE")."/public/temp", # 500,404自定义模板位置
+                ROOT.config("ROOT_RESOURCE")."/upload", # 上传文件目录
+                ROOT.config("ROOT_RESOURCE")."/buffer", # 缓存文件目录
             ),
             "folder" => array(
                 ROOT."application" => array(
                     "common/public.php",
                     "config/config.php",
                     "config/route.php",
-                    Config("DEFAULT_APPLICATION")."/common/public.php",
-                    Config("DEFAULT_APPLICATION")."/controller/Index.php",
-                    Config("DEFAULT_APPLICATION")."/view/index/index.html",
+                    config("DEFAULT_APPLICATION")."/common/public.php",
+                    config("DEFAULT_APPLICATION")."/controller/Index.php",
+                    config("DEFAULT_APPLICATION")."/view/index/index.html",
                 ),
             )
         );

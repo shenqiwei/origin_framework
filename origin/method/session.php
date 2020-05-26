@@ -11,7 +11,7 @@
  * @param mixed $value
  * @return mixed
  */
-function Session($key, $value=null)
+function session($key, $value=null)
 {
     /**
      * @var string $_receipt
@@ -30,7 +30,7 @@ function Session($key, $value=null)
     # 创建操作验证变量正则
     $_validate_operate = '/^(id|session|encode|reset|regenerate|destroy|unset|delete|encode|decode){1}$/';
     # 获取session配置列表
-    $_session = Config('SESSION');
+    $_session = config('SESSION');
     # 进行验证，如果键名结构验证失败，则抛出异常
     if(is_true($_validate_key,$key)){
         # 判断php.ini是否设置了自动启用session会话,如果未开启，则启动session会话

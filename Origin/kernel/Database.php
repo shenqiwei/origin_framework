@@ -30,7 +30,7 @@ class Database extends Query
         if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql","sqlite","oracle","mariadb"))){
             $this->_Data_Type = strtolower(trim($type));
         }
-        $_connect_config = Config('DATA_MATRIX_CONFIG');
+        $_connect_config = config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
                 if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->_Data_Type
@@ -88,10 +88,10 @@ class Database extends Query
             # SQL自动提交单语句
 //                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
             # SQL请求超时时间
-            if(intval(Config('DATA_TIMEOUT')))
+            if(intval(config('DATA_TIMEOUT')))
                 $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
             # SQL是否使用缓冲查询
-            if(boolval(Config('DATA_USE_BUFFER'))){
+            if(boolval(config('DATA_USE_BUFFER'))){
                 if($this->_Data_Type == "mysql")
                     $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
             }
@@ -314,7 +314,7 @@ class Database extends Query
         sLog($_sql);
         try{
             # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
+            if(boolval(config("DATA_USE_TRANSACTION")))
                 $this->_Connect->beginTransaction();
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
@@ -365,7 +365,7 @@ class Database extends Query
         sLog($_sql);
         try{
             # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
+            if(boolval(config("DATA_USE_TRANSACTION")))
                 $this->_Connect->beginTransaction();
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
@@ -398,7 +398,7 @@ class Database extends Query
         sLog($_sql);
         try{
             # 事务状态
-            if(boolval(Config("DATA_USE_TRANSACTION")))
+            if(boolval(config("DATA_USE_TRANSACTION")))
                 $this->_Connect->beginTransaction();
             # 执行查询搜索
             $_statement = $this->_Connect->query($_sql);
@@ -440,7 +440,7 @@ class Database extends Query
             $_query_type = "change";
         }
         # 事务状态
-        if(boolval(Config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
+        if(boolval(config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
             $this->_Connect->beginTransaction();
         # 条件运算结构转义
         foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){

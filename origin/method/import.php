@@ -5,7 +5,7 @@
  * @param string $guide 文件路径，使用 :（冒号）作为连接符
  * @return null
  */
-function Import($guide)
+function import($guide)
 {
     /**
      * @var mixed $_hook 指引结构数组
