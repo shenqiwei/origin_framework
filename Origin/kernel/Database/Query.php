@@ -126,7 +126,7 @@ abstract class Query
         if(is_true($this->_Regular_Comma_Confine, $table)){
             $this->_Table = strtolower($table);
             if(!is_null($table_as) and is_true($this->_Regular_Comma_Confine, $table_as)){
-                $this->_AsTable = $table_as;
+                $this->_AsTable = "as ".$table_as;
             }
         }else{
             try{

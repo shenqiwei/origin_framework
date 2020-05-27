@@ -70,7 +70,7 @@ class Database extends Query
                     $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
             }
-            if($this->_Data_Type != "sqlite"){
+            if(!in_array($this->_Data_Type,array("sqlite"))){
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_username = $_connect_config['DATA_USER']; # 数据库登录用户
                 $_password = $_connect_config['DATA_PWD']; # 登录密码
@@ -95,7 +95,7 @@ class Database extends Query
                 $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
             # SQL是否使用缓冲查询
             if(boolval(config('DATA_USE_BUFFER'))){
-                if($this->_Data_Type == "mysql")
+                if(in_array($this->_Data_Type,array("mysql","mariadb")))
                     $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
             }
         }
@@ -108,35 +108,11 @@ class Database extends Query
      */
     function count()
     {
-        # 创建返回信息变量
-        $_receipt = null;
+        $_field = (!is_null($this->_Field))?"count({$this->_Field})":"count(*)";
         # 起始结构
-        $_sql = 'select ';
-        if(!is_null($this->_Field)) $_sql .= ' count('.$this->_Field.')';
-        else $_sql .= ' count(*)';
-        # 表名
-        if(!is_null($this->_Table))  $_sql .= ' from '.$this->_Table;
-        # 连接结构信息
-        if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
-        # 复制结构
-        if(!is_null($this->_Union)) $_sql .= $this->_Union;
-        # 条件
-        if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        sLog($_sql);
-        try{
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            # 返回查询结构
-            $_receipt = $_statement->fetch(PDO::FETCH_NUM)[0];
-            # 释放连接
-            $_statement->closeCursor();
-        }catch(PDOException $e){
-            eLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
-            exit();
-        }
+        $_sql = "select {$_field} from {$this->_Table} {$this->_JoinOn} {$this->_Union} {$this->_Where}";
         # 返回数据
-        return $_receipt;
+        return $this->query($_sql);
     }
     /**
      * 查询信息函数
@@ -145,141 +121,41 @@ class Database extends Query
      */
     function select()
     {
-        # 创建返回信息变量
-        $_receipt = null;
-        # 执行主函数
-        # 起始结构
-        $_sql = null;
-        # top关键字信息 mysql,pgsql 不支持 , mssql语法内容
-        if(!is_null($this->_Top)) $_sql .= $this->_Top;
         # 求总和
         if(!is_null($this->_Total)){
-            if(!is_null($_sql) or !is_null($this->_Group))
-                $_sql .= ','.$this->_Total;
-            else
-                $_sql .= $this->_Total;
+            if(!is_null($this->_Field))
+                $this->_Total = ','.$this->_Total;
         }
         # 平均数信息 与field冲突，需要group by配合使用
         if(!is_null($this->_Avg)){
-            if(!is_null($_sql) or !is_null($this->_Group))
-                $_sql .= ','.$this->_Avg;
-            else{
-                if(!is_null($_sql) or !is_null($this->_Total))
-                    $_sql .= ','.$this->_Avg;
-                else
-                    $_sql .= $this->_Avg;
-            }
+            if(!is_null($this->_Total))
+                $this->_Avg = ','.$this->_Avg;
         }
         # 最大值 与field冲突，需要group by配合使用
         if(!is_null($this->_Max)){
-            if(!is_null($_sql) or !is_null($this->_Group))
-                $_sql .= ','.$this->_Max;
-            else{
-                if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg))
-                    $_sql .= ','.$this->_Max;
-                else
-                    $_sql .= $this->_Max;
-            }
+            if(!is_null($this->_Total) or !is_null($this->_Avg))
+                $this->_Max = ','.$this->_Max;
 
         }
         # 最小值 与field冲突，需要group by配合使用
         if(!is_null($this->_Min)){
-            if(!is_null($_sql) or !is_null($this->_Group))
-                $_sql .= ','.$this->_Min;
-            else{
-                if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max))
-                    $_sql .= ','.$this->_Min;
-                else
-                    $_sql .= $this->_Min;
-            }
-
+            if(!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max))
+                $this->_Min = ','.$this->_Min;
         }
         # 求和 与field冲突，需要group by配合使用
         if(!is_null($this->_Sum)){
-            if(!is_null($_sql) or !is_null($this->_Group))
-                $_sql .= ','.$this->_Sum;
-            else{
-                if(!is_null($_sql) or !is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min))
-                    $_sql .= ','.$this->_Sum;
-                else
-                    $_sql .= $this->_Sum;
-            }
-
-        }
-        # 新增函数支持 begin
-        if(!is_null($this->_Abs)) $_sql .= $this->_Abs;
-        if(!is_null($this->_Mod)) $_sql .= $this->_Mod;
-        if(!is_null($this->_Random)) $_sql .= $this->_Random;
-        if(!is_null($this->_L_Trim)) $_sql .= $this->_L_Trim;
-        if(!is_null($this->_Trim)) $_sql .= $this->_Trim;
-        if(!is_null($this->_R_Trim)) $_sql .= $this->_R_Trim;
-        if(!is_null($this->_Replace)) $_sql .= $this->_Replace;
-        # 新增函数end
-        # 信息大写
-        if(!is_null($this->_UpperCase)) $_sql .= $this->_UpperCase;
-        # 信息小写
-        if(!is_null($this->_LowerCase)) $_sql .= $this->_LowerCase;
-        # 信息截取
-        if(!is_null($this->_Mid)) $_sql .= $this->_Mid;
-        if(!is_null($this->_Length)) $_sql .= $this->_Length;
-        # 信息四舍五入
-        if(!is_null($this->_Round)) $_sql .= $this->_Round;
-        # 当前数据服务器时间
-        if(!is_null($this->_Now)) $_sql .= $this->_Now;
-        # 信息格式化
-        if(!is_null($this->_Format)) $_sql .= $this->_Format;
-        # 单字段不重复值
-        if(!is_null($this->_Distinct)) $_sql .= $this->_Distinct;
-        # 表名
-        if(!is_null($this->_Table)) $_sql .= ' from '.$this->_Table;
-        if(!is_null($this->_AsTable)) $_sql .=  ' as '.$this->_AsTable;
-        # 连接结构信息
-        if(!is_null($this->_JoinOn)) $_sql .= $this->_JoinOn;
-        # 复制结构
-        if(!is_null($this->_Union)) $_sql .= $this->_Union;
-        # 条件
-        if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        # 去重
-        if(!is_null($this->_Group)) $_sql .= $this->_Group;
-        # 排序
-        if(!is_null($this->_Order)) $_sql .= $this->_Order;
-        # 函数调用
-        if(!is_null($this->_Having)) $_sql .= $this->_Having;
-        # 标尺
-        if(!is_null($this->_Limit)) $_sql .= $this->_Limit;
-        # 判定结构然后
-        # 字段名信息
-        if(!is_null($this->_Group)){
-            $_sql = $this->_Field.$_sql;
-        }else{
-            if(is_null($this->_Avg) and is_null($this->_Sum) and is_null($this->_Max) and is_null($this->_Min) and is_null($this->_Total)) {
-                $_sql = $this->_Field . $_sql;
-            }
+            if(!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min))
+                $this->_Sum = ','.$this->_Sum;
         }
         # 添加查询头
-        $_sql = 'select '.$_sql;
-        sLog($_sql);
-        try{
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            # 回写select查询条数
-            $this->_Row_Count = $_statement->rowCount();
-            # 返回查询结构
-            if($this->_Fetch_Type === 'nv')
-                $_receipt = $_statement->fetchAll(PDO::FETCH_NUM);
-            elseif($this->_Fetch_Type === 'kv')
-                $_receipt = $_statement->fetchAll(PDO::FETCH_ASSOC);
-            else
-                $_receipt = $_statement->fetchAll();
-            # 释放连接
-            $_statement->closeCursor();
-        }catch(PDOException $e){
-            eLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
-            exit();
-        }
+        # 添加查询头
+        $_sql = "select {$this->_Field}{$this->_Top}{$this->_Total}{$this->_Avg}{$this->_Max}{$this->_Min}{$this->_Sum}{$this->_Abs}{$this->_Mod}
+                    {$this->_Random}{$this->_L_Trim}{$this->_Trim}{$this->_R_Trim}{$this->_Replace}{$this->_UpperCase}{$this->_LowerCase}
+                    {$this->_Mid}{$this->_Length}{$this->_Round}{$this->_Now}{$this->_Format}{$this->_Distinct} 
+                    from {$this->_Table} {$this->_JoinOn} {$this->_AsTable} {$this->_Union} {$this->_Where} {$this->_Group} 
+                    {$this->_Order} {$this->_Having} {$this->_Limit}";
         # 返回数据
-        return $_receipt;
+        return $this->query($_sql);
     }
     /**
      * 插入信息函数
@@ -288,11 +164,6 @@ class Database extends Query
      */
     function insert()
     {
-        $_receipt = null;
-        # 执行主函数
-        $_sql = 'insert into';
-        # 表名
-        if(!is_null($this->_Table)) $_sql .= ' '.$this->_Table;
         $_columns = null;
         $_values = null;
         for($_i = 0; $_i < count($this->_Data); $_i++){
@@ -312,25 +183,10 @@ class Database extends Query
                 }
             }
         }
-        $_sql .= '('.$_columns.')values('.$_values.')';
-        sLog($_sql);
-        try{
-            # 事务状态
-            if(boolval(config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            # 返回查询结构
-            $_receipt = $this->_Connect->lastInsertId($this->_Primary);
-            # 释放连接
-            $_statement->closeCursor();
-        }catch(PDOException $e){
-            eLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
-            exit();
-        }
+        # 执行主函数
+        $_sql = "insert into {$this->_Table} ({$_columns})value({$_values})";
         # 返回数据
-        return $_receipt;
+        return $this->query($_sql);
     }
     /**
      * 修改信息函数
@@ -339,12 +195,6 @@ class Database extends Query
      */
     function update()
     {
-        $_receipt = null;
-        # 执行主函数
-        $_sql = 'update';
-        # 表名
-        if(!is_null($this->_Table)) $_sql .= ' '.$this->_Table;
-        $_sql .= ' set ';
         $_columns = null;
         for($_i = 0; $_i < count($this->_Data); $_i++){
             foreach($this->_Data[$_i] as $_key => $_value){
@@ -361,27 +211,10 @@ class Database extends Query
                 }
             }
         }
-        $_sql .= $_columns;
-        # 条件
-        if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        sLog($_sql);
-        try{
-            # 事务状态
-            if(boolval(config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            # 返回查询结构
-            $_receipt = $_statement->rowCount();
-            # 释放连接
-            $_statement->closeCursor();
-        }catch(PDOException $e){
-            eLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
-            exit();
-        }
+        # 执行主函数
+        $_sql = "update {$this->_Table} set {$_columns} {$this->_Where}";
         # 返回数据
-        return $_receipt;
+        return $this->query($_sql);
     }
     /**
      * 删除信息函数
@@ -390,31 +223,10 @@ class Database extends Query
      */
     function delete()
     {
-        $_receipt = null;
         # 执行主函数
-        $_sql = 'delete ';
-        # 表名
-        if(!is_null($this->_Table)) $_sql .= 'from '.$this->_Table;
-        # 条件
-        if(!is_null($this->_Where)) $_sql .= $this->_Where;
-        sLog($_sql);
-        try{
-            # 事务状态
-            if(boolval(config("DATA_USE_TRANSACTION")))
-                $this->_Connect->beginTransaction();
-            # 执行查询搜索
-            $_statement = $this->_Connect->query($_sql);
-            # 返回查询结构
-            $_receipt = $_statement->rowCount();
-            # 释放连接
-            $_statement->closeCursor();
-        }catch(PDOException $e){
-            eLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
-            exit();
-        }
+        $_sql = "delete from {$this->_Table} {$this->_Where}";
         # 返回数据
-        return $_receipt;
+        return $this->query($_sql);
     }
     /**
      * 自定义语句执行函数
