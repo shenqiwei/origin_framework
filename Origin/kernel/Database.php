@@ -61,8 +61,8 @@ class Database extends Query
                     break;
                 case "oracle":
                     $_oci = "(DESCRIPTION =
-                            (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = {$_connect_config["DATA_HOST"]})(PORT = 1521)))
-                            (CONNECT_DATA = (SERVICE_NAME = orcl))";
+                            (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = {$_connect_config["DATA_HOST"]})(PORT = {$_connect_config["DATA_PORT"]})))
+                            (CONNECT_DATA = (SERVICE_NAME = {$_connect_config["DATA_DB"]}))";
                     $_DSN = "oci:dbname={$_oci}";
                     break;
                 case "mariadb":
@@ -70,23 +70,25 @@ class Database extends Query
                     $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
             }
-            # 创建数据库链接地址，端口，应用数据库信息变量
-            $_username = $_connect_config['DATA_USER']; # 数据库登录用户
-            $_password = $_connect_config['DATA_PWD']; # 登录密码
-            $_option = array(
-                # 设置数据库编码规则
-                PDO::ATTR_PERSISTENT => true,
-            );
-            if($this->_Data_Type == "mysql")
-               $_option[PDO::MYSQL_ATTR_INIT_COMMAND] = 'SET NAMES utf8';
-            # 创建数据库连接对象
-            $this->_Connect = new PDO($_DSN, $_username, $_password, $_option);
+            if($this->_Data_Type != "sqlite"){
+                # 创建数据库链接地址，端口，应用数据库信息变量
+                $_username = $_connect_config['DATA_USER']; # 数据库登录用户
+                $_password = $_connect_config['DATA_PWD']; # 登录密码
+                $_option = array(
+                    # 设置数据库编码规则
+                    PDO::ATTR_PERSISTENT => true,
+                );
+                # 创建数据库连接对象
+                $this->_Connect = new PDO($_DSN, $_username, $_password, $_option);
+            }else{
+                $this->_Connect = new PDO($_DSN);
+            }
             # 设置数据库参数信息
             $this->_Connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             # 是否使用持久链接
             $this->_Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
             # SQL自动提交单语句
-//                        $this->_Connect->setAttribute(\PDO::ATTR_AUTOCOMMIT,boolval($_connect_conf['DATA_AUTO']));
+//            $this->_Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
             # SQL请求超时时间
             if(intval(config('DATA_TIMEOUT')))
                 $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
