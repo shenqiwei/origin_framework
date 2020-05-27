@@ -149,11 +149,11 @@ class Database extends Query
         }
         # 添加查询头
         # 添加查询头
-        $_sql = "select {$this->_Field}{$this->_Top}{$this->_Total}{$this->_Avg}{$this->_Max}{$this->_Min}{$this->_Sum}{$this->_Abs}{$this->_Mod}
-                    {$this->_Random}{$this->_L_Trim}{$this->_Trim}{$this->_R_Trim}{$this->_Replace}{$this->_UpperCase}{$this->_LowerCase}
-                    {$this->_Mid}{$this->_Length}{$this->_Round}{$this->_Now}{$this->_Format}{$this->_Distinct} 
-                    from {$this->_Table} {$this->_JoinOn} {$this->_AsTable} {$this->_Union} {$this->_Where} {$this->_Group} 
-                    {$this->_Order} {$this->_Having} {$this->_Limit}";
+        $_sql = "select {$this->_Field}{$this->_Top}{$this->_Total}{$this->_Avg}{$this->_Max}{$this->_Min}{$this->_Sum}{$this->_Abs}{$this->_Mod}".
+                "{$this->_Random}{$this->_L_Trim}{$this->_Trim}{$this->_R_Trim}{$this->_Replace}{$this->_UpperCase}{$this->_LowerCase}".
+                "{$this->_Mid}{$this->_Length}{$this->_Round}{$this->_Now}{$this->_Format}{$this->_Distinct}".
+                " from {$this->_Table} {$this->_JoinOn} {$this->_AsTable} {$this->_Union} {$this->_Where} {$this->_Group}".
+                " {$this->_Order} {$this->_Having} {$this->_Limit}";
         # 返回数据
         return $this->query($_sql);
     }
