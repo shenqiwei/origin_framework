@@ -88,7 +88,7 @@ class Database extends Query
             # 是否使用持久链接
             $this->_Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
             # SQL自动提交单语句
-//            $this->_Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
+            $this->_Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
             # SQL请求超时时间
             if(intval(config('DATA_TIMEOUT')))
                 $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
@@ -97,7 +97,6 @@ class Database extends Query
                 if($this->_Data_Type == "mysql")
                     $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
             }
-
         }
     }
 
