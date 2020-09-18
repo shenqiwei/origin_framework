@@ -71,7 +71,7 @@ function initialize()
                             note($_log,"[{$_datetime}] file：{$_dir[$_i]}, created...");
                         }else{
                             # 拷贝应用预设文件
-                            if(copy(ROOT.str_replace("/",DS,"origin/method/storage/{$_dir[$_i]}"),ROOT."application".str_replace("/",DS,"/{$_dir[$_i]}"))){
+                            if(copy(ROOT.str_replace("/",DS,"origin/library/storage/{$_dir[$_i]}"),ROOT."application".str_replace("/",DS,"/{$_dir[$_i]}"))){
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]");
                             }else{
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]");

@@ -50,7 +50,7 @@ elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
 # 引入主方法文件
-include('method/function.php');
+include('library/function.php');
 # 调用加载
 include('kernel/Load.php');
 # 启动加载函数

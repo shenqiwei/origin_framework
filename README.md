@@ -34,7 +34,7 @@ view：`视图模板文件（html文件）`目录（默认结构包含：`控制
 config：框架配置目录  
 font：框架字体文件目录  
 kernel框架功能内核目录  
-method框架方法封装目录
+library框架方法封装目录
 
 >>resource：资源目录  （HTML资源常量：\_\_RESOURCE__）
 >>>Jscript：Javascript文件目录（已取消该结构预设）  

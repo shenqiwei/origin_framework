@@ -126,7 +126,7 @@ class Load
                             goto load;
                         }
                         try {
-                            throw new Exception('Origin Method Error: Not Fount Control Document');
+                            throw new Exception('Origin Loading Error: Not Fount Control Document');
                         } catch (Exception $e) {
                             self::error(str_replace('/', DS, "application/{$_path}.php"), $e->getMessage(), "File");
                             exit(0);
@@ -159,7 +159,7 @@ class Load
                     require_once($file.'.php');
                 })){
                     try {
-                        throw new Exception('Origin Method Error: Registration load failed');
+                        throw new Exception('Origin Loading Error: Registration load failed');
                     } catch (Exception $e) {
                         self::error(str_replace('/', DS, "application/{$_path}.php"), $e->getMessage(), "File");
                         exit(0);
@@ -185,7 +185,7 @@ class Load
                     $_object = new $_class();
                 }else{
                     try {
-                        throw new Exception('Origin Method Error: Not Fount Control Class');
+                        throw new Exception('Origin Loading Error: Not Fount Control Class');
                     }catch(Exception $e){
                         self::error("{$_class}",$e->getMessage(),"Class");
                         exit(0);
@@ -205,7 +205,7 @@ class Load
                     $_object->$_method();
                 }else{
                     try {
-                        throw new Exception('Origin Method Error: Not Fount Function Object');
+                        throw new Exception('Origin Loading Error: Not Fount Function Object');
                     } catch (Exception $e) {
                         self::error("{$_method}", $e->getMessage(), "Function");
                         exit(0);

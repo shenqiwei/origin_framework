@@ -66,7 +66,7 @@ function session($key, $value=null)
                         if(!array_key_exists($_operate[1], $_session) and !array_key_exists($_operate[2], $_session)){
                             # 异常提示：框架暂不支持该session设置项
                             try{
-                                throw new Exception('Origin Method Error: The framework of short duration does not support the session Settings');
+                                throw new Exception('Origin Support Error: The framework of short duration does not support the session Settings');
                             }catch(Exception $e){
                                 eLog($e->getMessage());
                                 exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
@@ -144,7 +144,7 @@ function session($key, $value=null)
                 if(count($key) > 3){
                     # 异常提示：session无法支持超过3个维度的数组结构
                     try{
-                        throw new Exception('Origin Method Error: Session can support more than three dimensional array structure');
+                        throw new Exception('Origin Support Error: Session can support more than three dimensional array structure');
                     }catch(Exception $e){
                         eLog($e->getMessage());
                         exception("Session Error",$e->getMessage(),debug_backtrace(0,1));

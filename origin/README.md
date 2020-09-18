@@ -41,7 +41,7 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 这里主要是放置origin框架主体功能函数封装，其中包含了数据库访问，模板解码，变量请求监听，http的远程访问   
 
 <span id='origin_method'></span>
-## Method 功能函数目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin/method">[查看详情]</a> [[返回TOP](#origin_top)]
+## Library 功能函数目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin/library">[查看详情]</a> [[返回TOP](#origin_top)]
 该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中   
  
 

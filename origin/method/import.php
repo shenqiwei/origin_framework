@@ -62,7 +62,7 @@ function import($guide)
         }else{
             # 异常提示:文件加载失败
             try {
-                throw new Exception('Origin Method Error[1002]: File ' . $_folder . $_file . $_suffix . ' loading failure');
+                throw new Exception('Origin Import Error[1002]: File ' . $_folder . $_file . $_suffix . ' loading failure');
             } catch (Exception $e) {
                 exception("Import Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
@@ -71,7 +71,7 @@ function import($guide)
     }else{
         # 异常提示：无法引入空地址文件
         try{
-            throw new Exception('Origin Method Error[1005]: Unable to introduce empty address file');
+            throw new Exception('Origin Import Error[1005]: Unable to introduce empty address file');
         }catch(Exception $e){
             exception("Import Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
