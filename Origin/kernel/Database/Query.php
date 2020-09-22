@@ -513,7 +513,7 @@ abstract class Query
         }else{
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
-            if(!is_null($field) and !empty($field)){
+            if(!empty($field)){
                 foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=','/\s+in\s+/'=>'in','/\s+nin\s+/'=>"not in") as $key => $value){
                     $field = preg_replace($key, $value, $field);
                 }
