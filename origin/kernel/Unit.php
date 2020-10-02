@@ -5,17 +5,14 @@
  * @copyright 2015-2017
  * @context: Origin公共控制器
  */
-namespace Origin\Application;
+namespace Origin\Kernel;
 
-use Origin\Kernel\Load;
-use Origin\Kernel\Output;
-use Origin\Kernel\View;
 use Exception;
 
 /**
  * 功能控制器，负责内核功能方法的预加载调用
 */
-class Controller
+abstract class Unit
 {
     /**
      * 装载参数信息数组

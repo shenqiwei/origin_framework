@@ -7,7 +7,6 @@
  */
 namespace Origin\Kernel;
 
-use Origin\Kernel\Database\Query;
 use PDOException;
 use PDO;
 

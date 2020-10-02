@@ -4,9 +4,9 @@
  */
 namespace Application\Home\Controller;
 
-use Origin\Application\Controller;
+use Origin\Kernel\Unit;
 
-class Index extends Controller
+class Index extends Unit
 {
     function __construct()
     {

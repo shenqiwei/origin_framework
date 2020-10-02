@@ -3,7 +3,83 @@
 该目录用于存放Origin主要功能封装类
 
 #### 快速入口
-[`File说明`](#file)|[`Upload说明`](#upload)|[`View说明`](#view)|[`Label说明`](#label)|[`request说明`](#request)|[`DB说明`](#db)|[`Validate说明`](#validate)|[`Output说明`](#output)|[`Curl说明`](#curl)|[`Verify说明`](#verify)    
+[`Unit说明`](#unit)|[`File说明`](#file)|[`Upload说明`](#upload)|[`View说明`](#view)|[`Label说明`](#label)|[`request说明`](#request)|[`DB说明`](#db)|[`Validate说明`](#validate)|[`Output说明`](#output)|[`Curl说明`](#curl)|[`Verify说明`](#verify)    
+<span id='unit'></span>
+## Unit.php调用
+>主控制器的调用方式与其他PHP文件的调用方式一致，省略include与require引用操作，直接使用命名空间调用，使用继承方式来实现应用控制器对Origin核心功能的调用： 
+>>`use Origin\Kernel\Unit;`
+
+>继承controller主控器方法与父类继承语法一致，假定现在继承的应用控制器文件为index.class.php,即控制器名称Index（class name）
+>>`class Index extends Unit`  
+>>`{`  
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`function index(){` # 每个新建控制，需创建一个index函数方法，框架会在访问该控制器时，默认方法该方法    
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view();` # 模板调用方法，模板在不进行标注时，默认访问与该方法同名模板      
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`}`   
+>>`}`   
+
+## Unit.php函数说明
+
+#### 函数快速路口
+[`param()`](#func_3) | [`view()`](#func_4) | [`get_class()`](#func_5) | [`get_function()`](#func_6) | [`success()`](#func_7) | [`error()`](#func_8) | [`json()`](#func_10) | [`xml()`](#func_11) | [`html()`](#func_12) 
+
+<span id='func_3'></span>
+__param()__：
+> 参数预设函数，用于前后端数据内容传递的中间函数变量，可以存储除object（对象）外的任意类型变量内容  
+>>`$this->param(variable_key,variable_value);` 方法调用时需要填写非空（null and ‘’）字符串作为参数的键值（variable_key）,相对于参数值（variable_value）得要求比较宽松，填入非对象变量值   
+>>>例：使用默认访问函数进行param方法调用   
+>>>`function index()`  
+>>>`{`  
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->param('welcome', '欢迎使用Origin框架'); # 参数设置函数`  
+>>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view(); # 视图模板调用函数`  
+>>> `}`  
+>>> 在视图模板页（html页面）中设置对应变量 `{$welcome}`来获取函数中参数内容，在页面中显示内容为 `欢迎使用Origin框架`
+
+<span id='func_4'></span>
+__view()__：
+> 视图模板函数，用于调用控制器对应函数视图模板，也可以根据实际需要设定其他模板内容  
+>>`$this->view("html_name");` 方法调用时参数可以为空，方法参数是用于指定需调用视图模板页（html页），当前版本紧支持同应用目录下的所有模板文件，跨目录调用暂不支持。默认访问模视图模板页是根据`get_class()`和`get_function()`函数方法获取访问对象信息，创建模板时需在同主应用目录下的view文件夹中创建同控制器名文件夹，再在其中创建同方法名模板文件  
+
+<span id='func_5'></span>
+__get_class()__：
+> 获取应用控制器名称函数  
+>> `$this->get_class();` 该函数方法可以直接获取当前访问对象的控制器名称  
+
+<span id='func_6'></span>
+ __get_function()__：
+>获取应用函数名称函数  
+>> `$this->get_function();` 该函数方法可以直接获取当前访问对象的函数名臣  
+
+<span id='func_7'></span>
+__success()__：
+> 操作成功信息返回函数  
+>> `$this->success(message_info,skip_url,waiting_time);` 信息提醒函数，包含三个基本参数，message_info：信息内容，skip_url：跳转地址（默认值#，当填写空内容时，函数将不进行跳转操作，填写#则回退到前一个页面），waiting_time：等待周期时间（默认时间：5秒）   
+
+<span id='func_8'></span>
+__error()__：
+> 操作异常信息返回函数  
+>> `$this->error(message_info,skip_url,waiting_time);` 其函数方法应用方式一致，请参数success函数说明。 
+
+<span id='func_10'></span>
+__json()__：
+> json格式转化并执行输出函数  
+>>`$this->json($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出  
+>>> `header("Content-Type:application/json;charset=utf-8");`Json输出的文件格式
+
+<span id='func_11'></span>
+__xml()__：
+> xml格式转化并执行输出函数 (该方法已取消)  
+>>`$this->xml($message_array);` 该函数会对填入参数数组，进行转化，并进行制定格式内容的输出    
+>>> `header("Content-Type:text/xml;charset=utf-8");`XML输出的文件格式  
+
+<span id='func_12'></span>
+__html()__：
+> html格式转化并执行输出函数 (该方法已取消)
+>>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
+
+`Unit部分功能调用样例：`  
+![Unit部分功能样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/i_controller.png)
+
 
 <span id='file'></span>
 ## File 文件操作封装类 [[返回TOP](#origin_kernel)]
@@ -170,7 +246,111 @@ Request现阶段版本仅支持get/post请求
 > Request类还有一个移除函数`$_request->delete()`，当使用该函数时，请求器会直接注销当前表单名下所有内容
 
 <span id='db'></span>
-## DB数据库访问封装类 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin/kernel/database">[查看详情]</a>[[返回TOP](#origin_kernel)]
+## DB数据库访问封装类 [[返回TOP](#origin_kernel)]
+## Origin 框架数据功能目录
+
+当前版本Origin支持Mysql，Redis，Mongodb（试验开发阶段），配置内容调用根据Config文件中的`DATA_TYPE`选项内容表述类型(mysql,redis,mongo)限定
+
+当前版本数据库的引入不再使用对应方法调用，改用类静态方法`Origin\Kernel\DB::DB_Func()`的方式进行调用
+
+> Mysql说明
+>> 当前版本的Origin框架Mysql封装结构使用PDO::Mysql进行开发，并取消mysqld内容支持，调用mysql对象时直接使用`Origin\Kernel\Data\DB::Mysql(__Resource_name__)`获取实例，`__resource_name__`为数据源名称，既Config中`DATA_NAME`选项内容
+>
+> Mysql语法说明
+>> Mysql数据库使用串联结构语法，方法引用后默认返回对象，在调用执行语法钱，可以一直通过函数返回值状态实现函数调用：   
+>> `function origin(){`    
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$_mysql = Origin\Kernel\DB::Mysql("origin_mysql");` # 获取mysql实例   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$_list = $_mysql->table("origin")->where("id <> 0")->select()` # 串联语法查询    
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->param("list",$_list);`   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view();`   
+>> `}`
+>
+>#### 函数快速入口
+>[`mysql操作函数说明`](#mysql_operation)|[`mysql执行函数说明`](#mysql_excute)
+>
+><span id='mysql_operation'></span>
+> Mysql函数
+>> 当前origin版本中，Mysql封装类提供了几乎完整mysql操作支持函数内容，个别重用语法，在版本中进行了拆分，已减少开发者记忆负担
+>>
+>> table函数：   
+>>>`$_mysql->table(__table_name__,__as_name__);`      
+>>> 用于设定操作主表信息，该函数包好两个参数项，第一个参数用于设置操作对象表名称，第二个参数用于设置表别名（在多表查询，级联查询时，更加实用）默认值为null   
+>> 
+>> field函数：   
+>>> `$_mysql->field(__array__)` 
+>>> 用于select操作下，限定查询的字段，参数类型为数组，设置字段时，使用Key/Value数组，key为字段名，value为字段别名
+>>> 无别名样例：
+>>> `$_mysql->field(array("id","time"))`
+>>
+>>> 有别名样例：
+>>> `$_mysql->fetch(array("id"=>"id_as_name","time"=>"time_as_name"))`
+>> 
+>> data函数：   
+>>> `$_mysql->data(__array__)`     
+>>> 用于insert和update操作的数据接入，参数类型为Key/Value数组，Key为字段名，Value为插入(修改)值
+>> 
+>> where函数：   
+>>> `$_mysql->where(__condition__)`   
+>>> 该函数用于设定mysql语句执行条件，参数支持数组和字符串两种格式，数组基于多维数组的结构解析，字符串直接参数sql语句语言进行设置，需要注意的是where函数同时支持运算符号和运算符号代称   
+>> 
+>> limit函数：   
+>>> `$_mysql->limit(__start__,__row__)`    
+>>> 用于限制列表显示数量，参数类型都为整数，第一参数为列表起始位置（当第二参数不进行设置时），参数值大于了代表显示数量，参数小于等于零时，mysql默认不进行显示数量限制，第二参数设置显示数量，当参数值为0时，框架只对第一参数进行执行操作
+>>> 显示数量样例：    
+>>> `$_mysql->limit(6)` # 这里表示数据库查询显示5条信息   
+>> 
+>>> 区间显示样例：   
+>>> `$_mysql->limit(2,10)`, # 本样例表示数据指针从2开始显示10条数据   
+>>
+>> order函数：   
+>>> `$_mysql->order(__order__)`
+>>> Mysql封装，查询语句排序函数，参数支持数组和字符串双类型:   
+>>> 数组实例：  
+>>> `$_mysql->order(array("id"=>"asc","time"=>"desc"))`   
+>>
+>>> 字符串实例：   
+>>> `$_mysql->order("id asc,time desc")`   
+>>
+>> 两组表达出来内容同为 `order by id asc,time desc`    
+>> 
+>> fetch函数：   
+>>> `$_mysql->fetch(__type__)`   
+>>> 用于约束查询语句显示格式，默认值为 null 同时返回 number/value（数值数组） 和 key/value（关联数组） 结构列表  
+>>> 默认结构样例：   
+>>> `$_mysql->fetch()`    
+>>
+>>> key/value 关联数组样例：   
+>>> `$_mysql->fetch("kv")` # 值为：kv 返回 key/value 结构   
+>>
+>>> number/value 数值数组样例：   
+>>> `$_mysql->fetch("nv")` # 值为: nv 返回 number/value 结构    
+>>
+>
+><span id='mysql_excute'></span>
+> Mysql执行函数
+>
+> 在Mysql封装中，提供了count，select，insert，update，delete，query6个执行函数，函数无参数内容，调用函数既返回最终执行结果，结尾不再具备调用其他函数的功能：
+>
+>> count函数：   
+>>> 为select衍生执行函数，仅负责执行查询数量的操作，该函数执行方式为在sql语句`select`内中默认增加`count(*)`,其返回类型为 等大于零（greater than or equal to zero）的整数   
+>>> `$_mysql->count()` # 该方法与select查询中`$_mysql->total()`函数调用所有实现的效果相同
+>
+>> select函数：   
+>>> 用于进行数据内容查询，其返回结果为二维数组，其结构表述方式（number/value：数值数组）和（key/value：关联数组）混合结构，该返回结构可以使用`$_mysql->fetch()`进行设置   
+>>> `$_mysql->select()`   
+>>> select查询单条数据是可以使用`$_mysql->limit(1)`约束其返回内容为只用一条数据的二维数组也可以使用PHP特性`$_mysql->select()[0]`获取返回值中首元素值，该值为一维数组   
+>
+>> insert函数：   
+>>> 用于数据插入，函数调用必须与`$_mysql->data()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
+>>> `$_mysql->insert()` # sql语句表达结构 insert into *table* (*field*) value (*value*)   
+>
+>> update函数：
+>>> 用于数据的修改更新，该函数调用必须与`$_mysql->data()`和`$_mysql->where()`配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数    
+>>> `$_mysql->update()` # update *table* set *date* where *condition*   
+>
+>> delete函数：
+>>> 用于数据的删除，函数调用必须与`$_mysql->where()`功能函数配合使用，函数返回值为 等大于零（greater than or equal to zero）等整数   
+>>> `$_mysql->delete()` # sql语句表述结构 delete from *table* where *condition*    
 
 <span id='validate'></span>
 ## Validate验证封装类 [[返回TOP](#origin_kernel)]
