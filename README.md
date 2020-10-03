@@ -1,7 +1,7 @@
 # Origin Framework
 Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应用问题： 
 
-![欢迎页](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/welcome.png)
+![欢迎页](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/welcome.png)
 ## 基本说明：
 1) Origin使用PHP7.3及以下版本进行开发，部分功能可支持到5.4版本，7.4及以上版本将作为独立版本支持
 
@@ -20,7 +20,7 @@ Origin 架构主要是为解决入门级开发人员在PHP开发中的基础应�
 ## 目录说明：
 > Root
 
->>application： 应用目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/application">查看文档</a>  
+>>application： 应用目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/application">查看文档</a>  
 >>>common：公共函数目录  
 config：自定义配置目录  
 home：应用访问目录，默认访问目录（开发者编辑文件目录）  
@@ -29,8 +29,8 @@ controller：应用控制器文件目录（默认控制器：Index.php）
 model：数据映射模板文件目录（暂不使用）  
 view：`视图模板文件（html文件）`目录（默认结构包含：`控制器同名文件夹`index(首字母大写)，以及与`函数同名`index.html（全小写））   
 
->>origin：框架核心目录 <a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">查看文档</a>  
->>>application：应用主控制封装目录  
+>>origin：框架核心目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin">查看文档</a>  
+>>>application：应用主控制封装目录（已取消该结构，该目录中文件全部转移至kernel目录中）  
 config：框架配置目录  
 font：框架字体文件目录  
 kernel框架功能内核目录  
