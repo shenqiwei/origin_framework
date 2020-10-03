@@ -1,5 +1,5 @@
 <span id='origin_kernel'></span>
-## Kernel 内核目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">返回</a>]
+## Kernel 内核目录 [<a href="https://github.com/shenqiwei/origin_framework/tree/master/origin">返回</a>]
 该目录用于存放Origin主要功能封装类
 
 #### 快速入口
@@ -78,7 +78,7 @@ __html()__：
 >>`$this->html(html_head,html_body);` 该函数会对填入参数为html页面的head结构代码和html页面的body结构代码，代码不会被框架进行html内容转化  
 
 `Unit部分功能调用样例：`  
-![Unit部分功能样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/i_controller.png)
+![Unit部分功能样例](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/i_controller.png)
 
 
 <span id='file'></span>

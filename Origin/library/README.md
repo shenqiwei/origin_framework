@@ -1,11 +1,11 @@
 <span id='origin_method'></span>
-## Method 功能函数目录 [<a href="https://github.com/shenqiwei/Origin-Framework/tree/master/origin">返回</a>]
+## Method 功能函数目录 [<a href="https://github.com/shenqiwei/origin_framework/tree/master/origin">返回</a>]
 
 该目录中存放Origin预设功能函数以及集合型功能函数，所以函数的调用方法都存放在Function.php文件中
 >函数列表
 
 >> `Config(__item__)`  
->>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config)文件配置内容,暂不支持自定义配置栏目   
+>>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config.php)文件配置内容,暂不支持自定义配置栏目   
 
 >> `Configuration(__item__)`
 >>> 原始配置信息：调用原始配置文件(Kernel/Config)中的配置信息
@@ -56,7 +56,7 @@
 >>> `__serach__`：搜索条件使用（get结构变量请求）(&name=小明&age=12&sex=男)，默认值：null   
 
 page函数功能实现格式：   
-![page函数功能实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_page.png)   
+![page函数功能实现格式](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/mysql_page.png)   
 
 >>> @Page函数返回值为一个数组集合,数组中各元素内容调用直接使用标签变量调用方式即可   
 >>> 'url # 连接地址   
@@ -72,8 +72,8 @@ page函数功能实现格式：
 >>> 'end_url'  # 翻页最后一页连接    
 
 page函数内容html实现格式：  
-page上一页样例：![page上一页样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/last.png)   
-page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/next.png)   
+page上一页样例：![page上一页样例](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/last.png)   
+page下一页样例：![page下一页样例](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/next.png)   
 
 >> #####`Number`页码翻页函数
 >>> 
@@ -83,13 +83,13 @@ page下一页样例：![page下一页样例](https://github.com/shenqiwei/Origin
 >>> `__cols__`：显示页脚，整数类型，默认值：5    
 
 number函数功能实现格式：   
-![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number_param.png)
+![number函数内容html实现格式](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/mysql_number_param.png)
 >>> @Number函数返回值为一个数组集合，其内部元素的调用方法需使用for循环标签实现   
 >>> 'page' # 当前页页码   
 >>> 'url' # 翻页连接    
 
 number函数内容html实现格式：   
-![number函数内容html实现格式](https://github.com/shenqiwei/Origin-Framework/blob/master/Screenshot/mysql_number.png)
+![number函数内容html实现格式](https://github.com/shenqiwei/origin_framework/blob/master/Screenshot/mysql_number.png)
 
 >> #####`Verify(__width__,__height__)`验证码调用方法
 >>> 
