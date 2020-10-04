@@ -45,9 +45,9 @@ class Load
             # 设置基础控制器参数变量
             $_catalogue = config('DEFAULT_APPLICATION')."/";
             # 默认控制器文件名
-            $_files = config('DEFAULT_CLASSES');
+            $_files = config('DEFAULT_CLASS');
             # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = configuration('DEFAULT_CLASSES');
+            # $_class = configuration('DEFAULT_CLASS');
             # 默认控制器方法名
             $_method = config('DEFAULT_METHOD');
             # 转换信息
@@ -126,7 +126,7 @@ class Load
                             goto load;
                         }
                         try {
-                            throw new Exception('Origin Loading Error: Not Fount Control Document');
+                            throw new Exception('Origin Loading Error: Not Fount Classes Document');
                         } catch (Exception $e) {
                             self::error(str_replace('/', DS, "application/{$_path}.php"), $e->getMessage(), "File");
                             exit(0);
