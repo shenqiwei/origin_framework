@@ -114,7 +114,9 @@ class Load
                     }
                 }
                 # 使用加载函数引入应用公共方法文件
-                import("application/{$_catalogue}common/public");
+                $_public = str_replace(RE_DS,DS,ROOT."application/{$_catalogue}common/public.php");
+                if(is_file($_public))
+                    include($_public);
                 # 根据配置信息拼接控制器路径
                 $_path = $_catalogue.config('APPLICATION_CLASSES')."/".ucfirst($_files);
                 # 初始化重启位置
