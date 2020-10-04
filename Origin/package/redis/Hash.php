@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin框架Redis封装类
  */
-namespace Origin\Kernel\Redis;
+namespace Origin\Package\Redis;
 
 class Hash
 {

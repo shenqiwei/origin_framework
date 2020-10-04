@@ -9,8 +9,8 @@ return array(
     // 默认访问文件根目录
     'DEFAULT_APPLICATION' => 'home',
     // 应用目录 (1.0版本后逐步消除配置文件夹对框架内容的影响)
-    'APPLICATION_CONTROLLER' => 'controller', // 执行程序文件目录
-    'APPLICATION_VIEW' => 'view', // 模板（Template）文件目录
+    'APPLICATION_CLASSES' => 'classes', // 执行程序文件目录
+    'APPLICATION_VIEW' => 'template', // 模板（Template）文件目录
     // 资源目录
     'ROOT_RESOURCE' => 'resource', // 资源主目录
     //资源结构下目录(1.0版本后，配置内容不再影响框架使用)
@@ -28,7 +28,7 @@ return array(
     'LOG_INITIALIZE' => 'initialize/', // 框架初始化日志
     'LOG_OPERATE' => 'action/', // 系统操作日志
     // 引导信息
-    'DEFAULT_CONTROLLER' => 'index', // 默认访问控制器对象
+    'DEFAULT_CLASS' => 'index', // 默认访问控制器对象
     'DEFAULT_METHOD' => 'index', // 默认访问函数方法
     'DEFAULT_VIEW' => 'index', // 默认访问模板
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用

@@ -28,7 +28,7 @@
 */
 function cn_name($name)
 {
-    $_validate = new Origin\Kernel\Validate($name);
+    $_validate = new Origin\Package\Validate($name);
     return $_validate->_type('/^[^\s\w\!\@\#\%\^\&\*\(\)\-\+\=\/\'\\"\$\:\;\,\.\<\>\`\~]+$/');
 }
 /**
@@ -39,7 +39,7 @@ function cn_name($name)
  */
 function en_name($name)
 {
-    $_validate = new Origin\Kernel\Validate($name);
+    $_validate = new Origin\Package\Validate($name);
     return $_validate->_type('/^([A-Za-z]+[\.\s]?)+$/');
 }
 /**
@@ -50,7 +50,7 @@ function en_name($name)
  */
 function is_tel($number)
 {
-    $_validate = new Origin\Kernel\Validate($number);
+    $_validate = new Origin\Package\Validate($number);
     return $_validate->_type('/^([0]{1}\d{2,3})?([^0]\d){1}\d{2,10}$/');
 }
 /**
@@ -61,7 +61,7 @@ function is_tel($number)
 */
 function is_tel2($number)
 {
-    $_validate = new Origin\Kernel\Validate($number);
+    $_validate = new Origin\Package\Validate($number);
     return $_validate->_type('/^(800|400){1}[\-\s]?\d{4,6}[\-\s]?\d{4}$/');
 }
 
@@ -73,7 +73,7 @@ function is_tel2($number)
 */
 function is_mobile($number)
 {
-    $_validate = new Origin\Kernel\Validate($number);
+    $_validate = new Origin\Package\Validate($number);
     return $_validate->_type('/^[1][3|4|5|7|8]{1}\d{9}$/');
 }
 /**
@@ -84,7 +84,7 @@ function is_mobile($number)
 */
 function is_email($email)
 {
-    $_validate = new Origin\Kernel\Validate($email);
+    $_validate = new Origin\Package\Validate($email);
     return $_validate->_type('/^([^\_\W]+[\.\-]*)+\@(([^\_\W]+[\.\-]*)+\.)+[^\_\W]{2,8}$/');
 }
 /**
@@ -95,7 +95,7 @@ function is_email($email)
  */
 function is_ipv4($ip)
 {
-    $_validate = new Origin\Kernel\Validate($ip);
+    $_validate = new Origin\Package\Validate($ip);
     return $_validate->_ipv4();
 }
 /**
@@ -106,7 +106,7 @@ function is_ipv4($ip)
  */
 function is_ipv6($ip)
 {
-    $_validate = new Origin\Kernel\Validate($ip);
+    $_validate = new Origin\Package\Validate($ip);
     return $_validate->_ipv6();
 }
 /**
@@ -117,7 +117,7 @@ function is_ipv6($ip)
  */
 function is_host($host)
 {
-    $_validate = new Origin\Kernel\Validate($host);
+    $_validate = new Origin\Package\Validate($host);
     return $_validate->_type('/^((http|https):\/\/)?(www.)?([\w\-]+\.)+[a-zA-z]+(\/[\w\-\.][a-zA-Z]+)*(\?([^\W\_][\w])+[\w\*\&\@\%\-=])?$/');
 }
 /**
@@ -128,7 +128,7 @@ function is_host($host)
 */
 function is_cn($cn)
 {
-    $_validate = new Origin\Kernel\Validate($cn);
+    $_validate = new Origin\Package\Validate($cn);
     return $_validate->_type('/^[\x{4e00}-\x{9fa5}]+$/u'); # 中文检测需要在结尾夹u
 }
 /**
@@ -139,7 +139,7 @@ function is_cn($cn)
 */
 function is_en($en)
 {
-    $_validate = new Origin\Kernel\Validate($en);
+    $_validate = new Origin\Package\Validate($en);
     return $_validate->_type('/^[^\_\d\W]+$/');
 }
 /**
@@ -150,7 +150,7 @@ function is_en($en)
 */
 function is_username($username)
 {
-    $_validate = new Origin\Kernel\Validate($username);
+    $_validate = new Origin\Package\Validate($username);
     return $_validate->_type('/^[\w\.\-\@\+\$\#\*\~\%\^\&]+$/');
 }
 /**
@@ -161,7 +161,7 @@ function is_username($username)
 */
 function weak_password($password)
 {
-    $_validate = new Origin\Kernel\Validate($password);
+    $_validate = new Origin\Package\Validate($password);
     return $_validate->_type('/^([^\_\W]+([\_\.\-\@\+\$\#\*\~\%\^\&]*))+$/');
 }
 /**
@@ -176,7 +176,7 @@ function strong_password($password)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new Origin\Kernel\Validate($password);
+    $_validate = new Origin\Package\Validate($password);
     return $_validate->_type('/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]*)+$/');
 }
 /**
@@ -191,7 +191,7 @@ function safe_password($password)
      * 调用验证结构包，并声明验证对象
      * @var object $_validate
      */
-    $_validate = new Origin\Kernel\Validate($password);
+    $_validate = new Origin\Package\Validate($password);
     return $_validate->_type('/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]+)+$/');
 }
 /**
@@ -205,7 +205,7 @@ function safe_password($password)
 */
 function is_true($regular, $param, $min=0, $max=0)
 {
-    $_validate = new Origin\Kernel\Validate($param);
+    $_validate = new Origin\Package\Validate($param);
     if($_receipt = $_validate->_empty()){
         if($_receipt = $_validate->_size($min,$max))
             $_receipt = $_validate->_type($regular);

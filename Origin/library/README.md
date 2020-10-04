@@ -5,10 +5,10 @@
 >函数列表
 
 >> `Config(__item__)`  
->>> 配置信息：调用框架配置(Kernel/Config)及应用配置(Application/Config/Config.php)文件配置内容,暂不支持自定义配置栏目   
+>>> 配置信息：调用框架配置(Package/Config)及应用配置(Application/Config/Config.php)文件配置内容,暂不支持自定义配置栏目   
 
 >> `Configuration(__item__)`
->>> 原始配置信息：调用原始配置文件(Kernel/Config)中的配置信息
+>>> 原始配置信息：调用原始配置文件(Package/Config)中的配置信息
 
 >> #####`Cookie(__key__,__value__)`Cookie设置函数
 >>> Cookie 设置操作说明：该函数操作流程和功能模块暂时不提供使用

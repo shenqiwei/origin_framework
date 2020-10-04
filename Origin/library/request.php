@@ -53,7 +53,7 @@ function request($key, $default=null, $delete=false)
             $_request = $_request[1];
         }
         # 声明请求控制器对象
-        $_obj= new Origin\Kernel\Request($_request,$default,$_method);
+        $_obj= new Origin\Package\Request($_request,$default,$_method);
         if(is_bool($delete) and $delete === true){
             # 执行删除
             $_obj->delete();

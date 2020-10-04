@@ -5,7 +5,7 @@
  * @copyright 2015-2017
  * @context: Origin公共控制器
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use Exception;
 
@@ -56,7 +56,7 @@ abstract class Unit
     {
         $_page = Load::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-        $_dir = str_replace(config('APPLICATION_CONTROLLER')."/", '',
+        $_dir = str_replace(config('APPLICATION_CLASSES')."/", '',
                 str_replace(config('DEFAULT_APPLICATION')."/", '',
                     str_replace('application/', '',
                         str_replace('\\', '/', strtolower(Load::$_Class)))));

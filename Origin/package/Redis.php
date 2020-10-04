@@ -5,14 +5,14 @@
  * @copyright 2015-2019
  * @context: Origin框架Redis封装类
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
-use Origin\Kernel\Redis\Key;
-use Origin\Kernel\Redis\Str;
-use Origin\Kernel\Redis\Set;
-use Origin\Kernel\Redis\Hash;
-use Origin\Kernel\Redis\Lists;
-use Origin\Kernel\Redis\Sequence;
+use Origin\Package\Redis\Key;
+use Origin\Package\Redis\Str;
+use Origin\Package\Redis\Set;
+use Origin\Package\Redis\Hash;
+use Origin\Package\Redis\Lists;
+use Origin\Package\Redis\Sequence;
 
 class Redis
 {

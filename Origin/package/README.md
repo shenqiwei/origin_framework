@@ -1,5 +1,5 @@
-<span id='origin_kernel'></span>
-## Kernel 内核目录 [<a href="https://github.com/shenqiwei/origin_framework/tree/master/origin">返回</a>]
+<span id='origin_package'></span>
+## Package 内核目录 [<a href="https://github.com/shenqiwei/origin_framework/tree/master/origin">返回</a>]
 该目录用于存放Origin主要功能封装类
 
 #### 快速入口
@@ -7,9 +7,9 @@
 <span id='unit'></span>
 ## Unit.php调用
 >主控制器的调用方式与其他PHP文件的调用方式一致，省略include与require引用操作，直接使用命名空间调用，使用继承方式来实现应用控制器对Origin核心功能的调用： 
->>`use Origin\Kernel\Unit;`
+>>`use Origin\Package\Unit;`
 
->继承controller主控器方法与父类继承语法一致，假定现在继承的应用控制器文件为index.class.php,即控制器名称Index（class name）
+>继承classes主控类方法与父类继承语法一致，假定现在继承的应用控制器文件为index.php,即控制器名称Index（class name）
 >>`class Index extends Unit`  
 >>`{`  
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`省略构造函数等功能函数...`   
@@ -82,12 +82,12 @@ __html()__：
 
 
 <span id='file'></span>
-## File 文件操作封装类 [[返回TOP](#origin_kernel)]
+## File 文件操作封装类 [[返回TOP](#origin_package)]
 
 File封装类中提供了三个操作函数（resource | manage | write），主要用于文件（夹）路径查询，文件（夹）创建、修改、移动、复制、删除、文件写入功能的实现
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\File;`   
+>> `use Origin\Package\File;`   
 >
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的File实例化时，不再需要预设目录地址，File默认从项目根目录位置开始进行内容调用   
 >> `$_file = new File()`
@@ -154,12 +154,12 @@ write():
 >> 函数在返回操作回执时，一般会返回true or false，但在读取操作时，回返回读取内容 or false，这里在调用函数时需注意
 
 <span id='upload'></span>
-## Upload文件上传封装类 [[返回TOP](#origin_kernel)]
+## Upload文件上传封装类 [[返回TOP](#origin_package)]
 
 Upload封装类用于实现Origin文件上传功能
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Upload;`   
+>> `use Origin\Package\Upload;`   
 >
 > 类的使用需要进行实例化，构造器函数取消了参数设置，故现有版本的实例化不需要标注表单名称
 >> `$_upload = new Upload()`
@@ -192,12 +192,12 @@ Upload封装类用于实现Origin文件上传功能
 > 上传多文件时，仅需要设置file表单名称既可以支持多文件上传,`<input type="file" name="file">`单一上传，`<input type="file" name="file[]">`多文件上传，Upload表单名设置时，仅标注名称（按照单一上传名称设置表单名）   
 
 <span id='view'></span>
-## View显示模板封装类 [[返回TOP](#origin_kernel)]
+## View显示模板封装类 [[返回TOP](#origin_package)]
 
-View主要用于Origin应用功能模板方法 `Origin\Application\Controller->view(__view__)` 的调取实现,不参与主要开发功能实现，故不进行功能说明
+View主要用于Origin应用功能模板方法 `Origin\Application\CLASS->view(__view__)` 的调取实现,不参与主要开发功能实现，故不进行功能说明
 
 <span id='label'></span>
-## Label模板语法解析封装类 [[返回TOP](#origin_kernel)]
+## Label模板语法解析封装类 [[返回TOP](#origin_package)]
 
 Label主要用于Origin应用功能模板中功能语法标签的解析
 
@@ -228,12 +228,12 @@ Label 还提供了一种引用标签，一种条件表达式标签，两种循�
 >> for 结束标签 `</for>`   
    
 <span id='request'></span>
-## Request请求器封装类 [[返回TOP](#origin_kernel)]
+## Request请求器封装类 [[返回TOP](#origin_package)]
 
 Request现阶段版本仅支持get/post请求
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Request;`
+>> `use Origin\Package\Request;`
 >
 > Request声明对象时注入三个基本参数：请求对象名称、默认值、请求类型   
 > `$_request = new Request(__variable__,__default__,__method__)`   
@@ -246,20 +246,20 @@ Request现阶段版本仅支持get/post请求
 > Request类还有一个移除函数`$_request->delete()`，当使用该函数时，请求器会直接注销当前表单名下所有内容
 
 <span id='db'></span>
-## DB数据库访问封装类 [[返回TOP](#origin_kernel)]
+## DB数据库访问封装类 [[返回TOP](#origin_package)]
 ## Origin 框架数据功能目录
 
 当前版本Origin支持Mysql，Redis，Mongodb（试验开发阶段），配置内容调用根据Config文件中的`DATA_TYPE`选项内容表述类型(mysql,redis,mongo)限定
 
-当前版本数据库的引入不再使用对应方法调用，改用类静态方法`Origin\Kernel\DB::DB_Func()`的方式进行调用
+当前版本数据库的引入不再使用对应方法调用，改用类静态方法`Origin\Package\DB::DB_Func()`的方式进行调用
 
 > Mysql说明
->> 当前版本的Origin框架Mysql封装结构使用PDO::Mysql进行开发，并取消mysqld内容支持，调用mysql对象时直接使用`Origin\Kernel\Data\DB::Mysql(__Resource_name__)`获取实例，`__resource_name__`为数据源名称，既Config中`DATA_NAME`选项内容
+>> 当前版本的Origin框架Mysql封装结构使用PDO::Mysql进行开发，并取消mysqld内容支持，调用mysql对象时直接使用`Origin\Package\Data\DB::Mysql(__Resource_name__)`获取实例，`__resource_name__`为数据源名称，既Config中`DATA_NAME`选项内容
 >
 > Mysql语法说明
 >> Mysql数据库使用串联结构语法，方法引用后默认返回对象，在调用执行语法钱，可以一直通过函数返回值状态实现函数调用：   
 >> `function origin(){`    
->> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$_mysql = Origin\Kernel\DB::Mysql("origin_mysql");` # 获取mysql实例   
+>> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$_mysql = Origin\Package\DB::Mysql("origin_mysql");` # 获取mysql实例   
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$_list = $_mysql->table("origin")->where("id <> 0")->select()` # 串联语法查询    
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->param("list",$_list);`   
 >> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`$this->view();`   
@@ -353,12 +353,12 @@ Request现阶段版本仅支持get/post请求
 >>> `$_mysql->delete()` # sql语句表述结构 delete from *table* where *condition*    
 
 <span id='validate'></span>
-## Validate验证封装类 [[返回TOP](#origin_kernel)]
+## Validate验证封装类 [[返回TOP](#origin_package)]
 
 Validate主要服务于Origin基础验证结构，Validate提供了内容空状态验证（not null），值域范围验证（min < strlen(variable) or number < max），格式验证 (preg_match).
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Validate;`
+>> `use Origin\Package\Validate;`
 >
 > Validate声明对象时需注入验证对象变量内容,验证结构提供是三个基本函数（_empty,_size,_type），两个独立功能验证函数(_ipv4,_ipv6),一个错误信息返回函数（getError）
 >> `$_validate = new Validate(__variable);`
@@ -392,12 +392,12 @@ Validate主要服务于Origin基础验证结构，Validate提供了内容空状�
 >> 用户名验证：`is_username`, 轻密码验证：`weak_password`，一般密码验证：`strong_password`，安全密码验证：`safe_password`   
 
 <span id='output'></span>
-## Output输出封装类 [[返回TOP](#origin_kernel)]
+## Output输出封装类 [[返回TOP](#origin_package)]
 
 Output封装类负责基本内容的输出和展示，其中包括Json格式输出，提示信息的展示，异常错误的提醒
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Output;`
+>> `use Origin\Package\Output;`
 >
 > Output实例化
 >> `$_output = new Output();`
@@ -406,7 +406,7 @@ Output封装类负责基本内容的输出和展示，其中包括Json格式输�
 >> `$_output->json(__array__);`：该函数主要是讲数组类型数据转化为Json字符串输出，其参数类型必须为数组，若使用非数组参数，则直接字符串类型进行输出
 >
 > 提示信息展示函数：   
->> `$_output->output(__time__,__message__,__redirect__,__setting__);`：该函数主要用于用户操作提示内容的展示，模板和参数一一对应，该函数主要是为Origin/Application/Controller内函数`$this->success()`和`$this->error()`提供功能支持，暂不对开发者和一般用开发实际功能   
+>> `$_output->output(__time__,__message__,__redirect__,__setting__);`：该函数主要用于用户操作提示内容的展示，模板和参数一一对应，该函数主要是为Origin/Package/Unit内函数`$this->success()`和`$this->error()`提供功能支持，暂不对开发者和一般用开发实际功能   
 >
 > PHP层异常提示函数(已取消类方法内容)：   
 >> `$_output->base()`: 用于支持php底层异常捕捉函数`error_get_last()`返回的信息内容输出，该函数不对开发者和一般用户开放    
@@ -415,12 +415,12 @@ Output封装类负责基本内容的输出和展示，其中包括Json格式输�
 >> `$_output->exception()`：该函数与`$_output->error()`函数在功能和实现上完全一致，不同在于该函数中假如异常日志记录的功能，该函数暂不对开发者和一般用户开发   
 
 <span id='curl'></span>
-## Curl在线访问封装类 [[返回TOP](#origin_kernel)]
+## Curl在线访问封装类 [[返回TOP](#origin_package)]
 
 Curl用于访问在线资源模拟GET/POST请求的功能封装，该封装提供两个基本功能函数，既GET、POST，封装类功能特别表达与curl模块完全，语法与相应规则沿用curl
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Protocol\Curl;`
+>> `use Origin\Package\Curl;`
 >
 > Curl实例化
 >> `$_curl = new Curl();`声明函数对象时，可以设置UTF-8编码形态，构造器参数类型为boolean，默认是值false 不开启UTF-8编码
@@ -443,12 +443,12 @@ Curl用于访问在线资源模拟GET/POST请求的功能封装，该封装提�
 > curl访问后方法会返回访问内容信息，在这curl封装提供了`$_curl->get_curl_receipt()`函数用于在访问异常时，提供curl异常信息内容    
 
 <span id='verify'></span>
-## Verify验证码功能封装类 [[返回TOP](#origin_kernel)]
+## Verify验证码功能封装类 [[返回TOP](#origin_package)]
 
 Verify封装是基于GD模块开发的一组验证码功能封装结构，实际使用中仅需要设置画布大小，然后调用对应函数方式既可完成功能调用
 
 > 类的调用，省略include和require函数，直接使用命名空间调用   
->> `use Origin\Kernel\Export\Verify;`
+>> `use Origin\Package\Verify;`
 >
 > Verify实例化
 >> `$_v = new Verify(__width__,__height__); # 画布的大小设置在声明对象时进行，然后根据开发需要调用对应验证码函数，当前版本提供了五种基本验证码

@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context Origin自动加载封装类
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use Exception;
 
@@ -45,9 +45,9 @@ class Load
             # 设置基础控制器参数变量
             $_catalogue = config('DEFAULT_APPLICATION')."/";
             # 默认控制器文件名
-            $_files = config('DEFAULT_CONTROLLER');
+            $_files = config('DEFAULT_CLASSES');
             # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = configuration('DEFAULT_CONTROLLER');
+            # $_class = configuration('DEFAULT_CLASSES');
             # 默认控制器方法名
             $_method = config('DEFAULT_METHOD');
             # 转换信息
@@ -116,7 +116,7 @@ class Load
                 # 使用加载函数引入应用公共方法文件
                 import("application/{$_catalogue}common/public");
                 # 根据配置信息拼接控制器路径
-                $_path = $_catalogue.config('APPLICATION_CONTROLLER')."/".ucfirst($_files);
+                $_path = $_catalogue.config('APPLICATION_CLASSES')."/".ucfirst($_files);
                 # 初始化重启位置
                 load:
                 # 验证文件地址是否可以访问

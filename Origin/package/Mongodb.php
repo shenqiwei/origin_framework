@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin框架MongoDB封装类（新版本支持包）
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use MongoDB\Driver\Command;
 use MongoDB\Driver\Manager;

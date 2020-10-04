@@ -5,7 +5,7 @@
  * @copyright 2015-2017
  * @context: Origin在线请求器
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use CURLFile;
 

@@ -5,7 +5,7 @@
  * @copyright 2015-2017
  * @context: Origin框架验证码封装结构
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 /**
  * 验证码主封装类
 */

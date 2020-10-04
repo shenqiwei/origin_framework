@@ -2,7 +2,7 @@
 ## Origin 框架内核目录
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
-[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#origin_font)|[`Kernel说明`](#origin_kernel)|[`Method说明`](#origin_method)|[`Template说明`](#origin_template)
+[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#origin_font)|[`Package说明`](#origin_package)|[`Method说明`](#origin_method)|[`Template说明`](#origin_template)
 
 ## 入口文件
 Origin入口文件功能设计十分简单，起主要功能是用来对框架的应用开发提供基础设置支持：
@@ -20,8 +20,8 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 
 <span id='application'></span>
 ## Application 应用主控制器目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin/application">[查看详情]</a> [[返回TOP](#origin_top)]
-在该目录中，有两个控制文件:Controller.php和Initialization.php(初始化模块改为使用函数直接实现，其功能主体也作出相应弱化)
-- Controller.php: 应用主控制器文件  
+在该目录中，有两个控制文件:Unit.php和Initialization.php(初始化模块改为使用函数直接实现，其功能主体也作出相应弱化)
+- Unit.php: 应用主控制器文件  
 主控制器文件主要负责框架12个基本功能和功能包的预加载封装  
 - Initialization.php 框架初始化系统组件模块文件
 该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）     
@@ -36,8 +36,8 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 ## Font 字体目录 [[返回TOP](#origin_top)]
 这里主要是放置框架中使用的字体，字体主要用于Origin内部功能封装的字体设置支持    
 
-<span id='origin_kernel'></span>
-## Kernel 内核目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin/kernel">[查看详情]</a> [[返回TOP](#origin_top)]
+<span id='origin_package'></span>
+## Package 内核目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin/package">[查看详情]</a> [[返回TOP](#origin_top)]
 这里主要是放置origin框架主体功能函数封装，其中包含了数据库访问，模板解码，变量请求监听，http的远程访问   
 
 <span id='origin_method'></span>

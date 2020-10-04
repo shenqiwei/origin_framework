@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin框架文件操作封装
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use Exception;
 
@@ -13,6 +13,7 @@ class File
 {
     /**
      * 错误信息
+     * @var string $_Error
     */
     private $_Error = null;
     /**

@@ -1,10 +1,10 @@
 <?php
 /**
- * @context （Default Visit） Application controller file
+ * @context （Default Visit） Application class file
  */
-namespace Apply\Home\Controller;
+namespace Application\Home\Classes;
 
-use Origin\Kernel\Unit;
+use Origin\Package\Unit;
 
 class Index extends Unit
 {

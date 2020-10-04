@@ -5,7 +5,7 @@
  * @copyright 2015-2017
  * @context: Origin请求结构封装
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 /**
  * 参数请求基类，公共类
  */

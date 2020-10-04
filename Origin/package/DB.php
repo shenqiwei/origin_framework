@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin框架Mysql封装类
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 class DB
 {

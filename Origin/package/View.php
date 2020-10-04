@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin框架变量过滤封装类
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use Exception;
 

@@ -124,7 +124,7 @@ function number($page,$cols=5){
  */
 function verify($width = 120, $height = 50)
 {
-    return new Origin\Kernel\Verify($width, $height);
+    return new Origin\Package\Verify($width, $height);
 }
 # 设置异常捕捉回调函数
 register_shutdown_function("danger");

@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin上传模块封装 (重构)
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 class Upload
 {

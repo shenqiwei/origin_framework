@@ -5,7 +5,7 @@
  * @copyright 2015-2019
  * @context: Origin模板管理
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 # 文件内容输出
 class Output
 {

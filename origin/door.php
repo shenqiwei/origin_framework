@@ -52,6 +52,6 @@ else error_reporting(0);
 # 引入主方法文件
 include('library/function.php');
 # 调用加载
-include('kernel/Load.php');
+include('package/Load.php');
 # 启动加载函数
-Origin\Kernel\Load::initialize();
+Origin\Package\Load::initialize();

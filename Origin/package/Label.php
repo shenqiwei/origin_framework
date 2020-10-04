@@ -8,7 +8,7 @@
  * 所以当数据维度超过一维结构时结构解释将返回null字节，同结构标签将无法完成维度解析
  * 该结构设计限制值针对企业定制框架模型及开源社区框架结构
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 /**
  * 标签解析主函数类
  */

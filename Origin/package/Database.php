@@ -5,7 +5,7 @@
  * @copyright 2015-2020
  * @context: Origin框架SQL执行语句封装类
  */
-namespace Origin\Kernel;
+namespace Origin\Package;
 
 use PDOException;
 use PDO;
