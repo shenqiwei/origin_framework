@@ -2,7 +2,7 @@
 ## Origin 框架内核目录
 在这里存放着Origin所有功能的基础封装文件，所有功能的调用和基本功能实现，都在这里进行
 #### 快速入口
-[`Application说明`](#application)|[`Config说明`](#config)|[`Font说明`](#origin_font)|[`Package说明`](#origin_package)|[`Method说明`](#origin_method)|[`Template说明`](#origin_template)
+[`Config说明`](#config)|[`Font说明`](#origin_font)|[`Package说明`](#origin_package)|[`Method说明`](#origin_method)|[`Template说明`](#origin_template)
 
 ## 入口文件
 Origin入口文件功能设计十分简单，起主要功能是用来对框架的应用开发提供基础设置支持：
@@ -17,14 +17,6 @@ Origin入口文件功能设计十分简单，起主要功能是用来对框架�
 - E_ALL& ~E_NOTICE = 3 不报NOTICE错误, 常量参数 TRUE
 
 入口文件常量使用则是在index.php应用入口文件中进行设置了，在框架默认状态下，常量保持初始状态
-
-<span id='application'></span>
-## Application 应用主控制器目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin/application">[查看详情]</a> [[返回TOP](#origin_top)]
-在该目录中，有两个控制文件:Unit.php和Initialization.php(初始化模块改为使用函数直接实现，其功能主体也作出相应弱化)
-- Unit.php: 应用主控制器文件  
-主控制器文件主要负责框架12个基本功能和功能包的预加载封装  
-- Initialization.php 框架初始化系统组件模块文件
-该模块主要使用来为框架提供应用文件结构初始化搭建支持的封装模块（由于生成结构的效率问题，暂时停用，并清空程序代码）     
 
 <span id='config'></span>
 ## Config 框架主配置目录 <a href="https://github.com/shenqiwei/origin_framework/tree/master/origin/config">[查看详情]</a> [[返回TOP](#origin_top)]
