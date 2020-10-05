@@ -47,7 +47,7 @@ class Load
             # 默认控制器文件名
             $_files = config('DEFAULT_CLASS');
             # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = configuration('DEFAULT_CLASS');
+            # $_class = config('DEFAULT_CLASS');
             # 默认控制器方法名
             $_method = config('DEFAULT_METHOD');
             # 转换信息
