@@ -30,6 +30,9 @@ class Load
      */
     static function initialize()
     {
+        # 应用结构包调用
+        if(is_file($_common = ROOT . "application/common/public.php"))
+            include($_common);
         # 运行起始时间
         self::$_LoadTime = explode(" ",microtime());
         self::$_LoadTime = floatval(self::$_LoadTime[0])+floatval(self::$_LoadTime[1]);

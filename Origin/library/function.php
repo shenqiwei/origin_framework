@@ -17,14 +17,3 @@ include("cookie.php");
 # 应用公共函数文件
 include("log.php"); # 引用日志函数包
 include("public.php"); # 文件操作函数包
-# 应用结构包调用
-include(ROOT . "application/common/public.php");
-# 框架柱目录文件路径
-if(!defined("RING")) define("RING", "origin".DS);
-# 创建基础常量
-# 默认应用访问目录，默认为空，当进行web开发时，区分前后台时，填入并在Apply下建立同名文件夹
-if(!defined("__APPLICATION__")) define("__APPLICATION__", config("DEFAULT_APPLICATION"));
-# 插件应用常量
-if(!defined("__PLUGIN__")) define("__PLUGIN__", config("ROOT_PLUGIN"));
-# 资源应用常量
-if(!defined("__RESOURCE__")) define("__RESOURCE__", config("ROOT_RESOURCE"));
