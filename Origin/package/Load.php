@@ -30,7 +30,6 @@ class Load
      */
     static function initialize()
     {
-
         # 运行起始时间
         self::$_LoadTime = explode(" ",microtime());
         self::$_LoadTime = floatval(self::$_LoadTime[0])+floatval(self::$_LoadTime[1]);

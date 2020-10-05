@@ -23,6 +23,7 @@ function initialize()
                 ROOT."application/".config("DEFAULT_APPLICATION")."/classes", # 默认应用控制器目录
                 ROOT."application/".config("DEFAULT_APPLICATION")."/template", # 默认应用模板目录
                 ROOT."application/".config("DEFAULT_APPLICATION")."/template/index", # 默认应用模板目录
+                ROOT.config("ROOT_RESOURCE"),
                 ROOT.config("ROOT_RESOURCE")."/public", # 公共文件目录
                 ROOT.config("ROOT_RESOURCE")."/public/temp", # 500,404自定义模板位置
                 ROOT.config("ROOT_RESOURCE")."/upload", # 上传文件目录
