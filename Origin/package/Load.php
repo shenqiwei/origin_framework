@@ -120,7 +120,7 @@ class Load
                 if(is_file($_public))
                     include($_public);
                 # 根据配置信息拼接控制器路径
-                $_path = $_catalogue.config('APPLICATION_CLASSES')."/".ucfirst($_files);
+                $_path = $_catalogue."classes/".ucfirst($_files);
                 # 初始化重启位置
                 load:
                 # 验证文件地址是否可以访问

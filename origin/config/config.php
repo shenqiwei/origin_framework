@@ -8,9 +8,6 @@
 return array(
     // 默认访问文件根目录
     'DEFAULT_APPLICATION' => 'home',
-    // 应用目录 (1.0版本后逐步消除配置文件夹对框架内容的影响)
-    'APPLICATION_CLASSES' => 'classes', // 执行程序文件目录
-    'APPLICATION_VIEW' => 'template', // 模板（Template）文件目录
     // 资源目录
     'ROOT_RESOURCE' => 'resource', // 资源主目录
     //资源结构下目录(1.0版本后，配置内容不再影响框架使用)

@@ -42,7 +42,7 @@ class View
         # 判断应用目录是否有效
         if(is_dir($_url)){
             # 获得前台模板目录
-            $_url_view = str_replace('/', DS, $_url.config('APPLICATION_VIEW')."/");
+            $_url_view = str_replace('/', DS, $_url."template/");
             # 判断前台模板目录是否有效
             if(is_dir($_url_view)){
                 # 判断应用控制器对应前台模板目录是否有效
