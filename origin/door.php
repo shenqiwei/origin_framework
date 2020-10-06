@@ -17,6 +17,8 @@ define("OS",PHP_OS);
 define("RE_DS",(strpos(OS,"WIN") === false)?"\\":"/");
 # 主程序文件目录常量
 if(!defined('ROOT')) define('ROOT',dirname(__DIR__).DS);
+# 封装目录
+if(!defined('ORIGIN')) define('ORIGIN',ROOT.'origin'.DS);
 # 引述文件根地址
 if(!defined("ROOT_ADDRESS")) define("ROOT_ADDRESS",dirname(__FILE__));
 # 是否启用编码混成
@@ -31,6 +33,36 @@ if(!defined('DEBUG')) define('DEBUG',false);
 if(!defined('ERROR')) define('ERROR',false);
 # 请求器类型
 if(!defined('REQUEST_METHOD')) define('REQUEST_METHOD',strtolower($_SERVER["REQUEST_METHOD"]));
+# 默认应用访问地址
+if(!defined('DEFAULT_APPLICATION')) define('DEFAULT_APPLICATION','home');
+# 资源目录名
+if(!defined('DIR_RESOURCE')) define('DIR_RESOURCE','resource');
+# 资源目录访问地址
+if(!defined('ROOT_RESOURCE')) define('ROOT_RESOURCE',ROOT.DIR_RESOURCE);
+# 在线地址
+if(!defined('WEB_RESOURCE')) define('WEB_RESOURCE',__HOST__.DIR_RESOURCE);
+# 资源公共文件夹
+if(!defined('RESOURCE_PUBLIC')) define('RESOURCE_PUBLIC',ROOT_RESOURCE.DS.'public');
+# 资源上传文件夹
+if(!defined('RESOURCE_UPLOAD')) define('RESOURCE_UPLOAD',ROOT_RESOURCE.DS.'upload');
+# 资源缓存文件夹
+if(!defined('RESOURCE_BUFFER')) define('RESOURCE_BUFFER',ROOT_RESOURCE.DS.'buffer');
+# 日志主目录
+if(!defined('ROOT_LOG')) define('ROOT_LOG','logs'.DS);
+# 服务请求链接日志
+if(!defined('LOG_ACCESS')) define('LOG_ACCESS',ROOT_LOG.'access'.DS);
+# 数据库连接日志
+if(!defined('LOG_CONNECT')) define('LOG_CONNECT',ROOT_LOG.'connect'.DS);
+# 系统异常信息日志
+if(!defined('LOG_EXCEPTION')) define('LOG_EXCEPTION',ROOT_LOG.'error'.DS);
+# 系统操作日志
+if(!defined('LOG_OPERATE')) define('LOG_OPERATE',ROOT_LOG.'action'.DS);
+# 框架初始化日志
+if(!defined('LOG_INITIALIZE')) define('LOG_INITIALIZE',ROOT_LOG.'initialize'.DS);
+# 默认访问应用类
+if(!defined('DEFAULT_CLASS')) define('DEFAULT_CLASS','index');
+# 默认访问应用方法
+if(!defined('DEFAULT_FUNCTION')) define('DEFAULT_FUNCTION','index');
 # 错误信息显示
 # E_ALL = 11 所有的错误信息
 # E_ERROR = 1 报致命错误

@@ -9,14 +9,14 @@
 #### Config配置项说明
 <span id='config_dir'></span>
 __目录配置：[[返回](#config)]__  
->`DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home`   
+>`DEFAULT_APPLICATION` 默认访问文件根目录 默认值：`Home`(1.0后配置改为使用常量设置)       
 `APPLICATION_METHOD` 公共方法文件目录，系统公共方法公共调用文件存储位置，内建应用 默认值：`Common`(1.0后配置不再影响框架内容)    
 `APPLICATION_FUNCTION` 公共方法文件目录，系统公共方法公共调用文件存储位置 默认值：`Common`(1.0后配置不再影响框架内容)    
 `APPLICATION_CONFIG` 开发者或用户自定义或改写系统配置文件存储位置 默认值：`Config`(1.0后配置不再影响框架内容)    
 `APPLICATION_CLASSES` 执行程序文件目录 默认值：`Classes`(1.0后配置不再影响框架内容)    
 `APPLICATION_MODEL` 数据操作语句文件目录 默认值：`Model`(1.0后配置不再影响框架内容)  
 `APPLICATION_VIEW` 模板（Template）文件目录 默认值：`Template`(1.0后配置不再影响框架内容)    
-`ROOT_RESOURCE` 资源主目录 默认值：`Resource`   
+`ROOT_RESOURCE` 资源主目录 默认值：`Resource`(1.0后配置改为使用常量设置)   
 `ROOT_RESOURCE_PUBLIC` 公共文件目录 默认值：`Public`(1.0后配置不再影响框架内容)  
 `ROOT_RESOURCE_UPLOAD` 上传目录 默认值：`Upload`(1.0后配置不再影响框架内容)  
 `ROOT_RESOURCE_BUFFER` 缓存目录 默认值：`Buffer`(1.0后配置不再影响框架内容)   
@@ -25,18 +25,18 @@ __缓存状态配置：[[返回](#config)]__
 >`ROOT_USE_BUFFER` 缓存状态设置 默认值：`true` true：缓存文件机制启动，false：缓存文件机制关闭，不再生成新的缓存文件内容    
 
 __日志目录配置：[[返回](#config)]__  
->`ROOT_LOG` 日志主目录 默认值：`Logs/`  
-`LOG_ACCESS` 服务请求链接日志 默认值：`Access/`  
-`LOG_CONNECT` 数据库连接日志 默认值：`Connect/`   
-`LOG_EXCEPTION` 系统异常信息日志 默认值：`Error/`  
-`LOG_INITIALIZE` 框架初始化日志 默认值：`Initialize/`  
-`LOG_OPERATE` 系统操作日志 默认值：`Action/`  
+>`ROOT_LOG` 日志主目录 默认值：`Logs/`(1.0后配置改为使用常量设置)  
+`LOG_ACCESS` 服务请求链接日志 默认值：`Access/`(1.0后配置改为使用常量设置)  
+`LOG_CONNECT` 数据库连接日志 默认值：`Connect/`(1.0后配置改为使用常量设置)   
+`LOG_EXCEPTION` 系统异常信息日志 默认值：`Error/`(1.0后配置改为使用常量设置)  
+`LOG_INITIALIZE` 框架初始化日志 默认值：`Initialize/`(1.0后配置改为使用常量设置)  
+`LOG_OPERATE` 系统操作日志 默认值：`Action/`(1.0后配置改为使用常量设置,已取消)  
 
 <span id='config_file'></span>
 __文件访问配置：[[返回](#config)]__
->`DEFAULT_CLASS` 默认访问控制器对象 默认值：`index`  
-`DEFAULT_METHOD` 默认访问函数方法 默认值：`index`  
-`DEFAULT_VIEW`  默认访问视图模板 默认值：`index` 
+>`DEFAULT_CLASS` 默认访问控制器对象 默认值：`index`(1.0后配置改为使用常量设置)  
+`DEFAULT_METHOD` 默认访问函数方法 默认值：`index`(1.0后配置改为使用常量设置)  
+`DEFAULT_VIEW`  默认访问视图模板 默认值：`index`(1.0后配置改为使用常量设置) 
 
 <span id='config_session'></span>
 __会话配置：[[返回](#config)]__   

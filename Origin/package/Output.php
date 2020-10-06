@@ -35,14 +35,14 @@ class Output
         $_url = htmlspecialchars(trim($url));
         $_setting = $setting;
         if(strtolower($setting["title"]) == "success"){
-            $_model = str_replace("/",DS,ROOT.config("ROOT_RESOURCE")."/public/temp/200.html");
+            $_model = str_replace("/",DS,ROOT_RESOURCE."/public/temp/200.html");
         }elseif(strtolower($setting["title"]) == "error"){
-            $_model = str_replace("/",DS,ROOT.config("ROOT_RESOURCE")."/public/temp/400.html");
+            $_model = str_replace("/",DS,ROOT_RESOURCE."/public/temp/400.html");
         }
         if(isset($_model) and is_file($_model))
             include($_model);
         else
-            include(str_replace('/',DS,ROOT.RING.'template/message.html'));
+            include(str_replace('/',DS,ORIGIN.'template/message.html'));
         exit(0);
     }
 }

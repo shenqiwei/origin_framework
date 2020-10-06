@@ -97,7 +97,7 @@ class Label
         $_obj = preg_replace($this->_Judge_El, '', $_obj);
         $_obj = preg_replace($this->_Judge_Ie, '', $_obj);
         # 遍历资源目录，替换资源信息
-        $_obj = str_replace('__RESOURCE__',__HOST__.config("ROOT_RESOURCE"), $_obj);
+        $_obj = str_replace('__RESOURCE__',WEB_RESOURCE, $_obj);
         if(MARK_RELOAD){
             $_obj = preg_replace('/\s+/', ' ', $_obj);
         }
@@ -116,7 +116,7 @@ class Label
         # 遍历include对象内容
         for($_i = 0;$_i < $_count; $_i++){
             # 拼接引入文件地址信息
-            $_files = config("ROOT_RESOURCE").'/public/'.str_replace('"','',$_include[$_i][1]);
+            $_files = DIR_RESOURCE.'/public/'.str_replace('"','',$_include[$_i][1]);
             # 判断文件完整度
             if(is_file($_files)){
                 # 读取引入对象内容

@@ -45,13 +45,13 @@ class Load
         # 判断自动加载方法
         if(function_exists('spl_autoload_register')){
             # 设置基础控制器参数变量
-            $_catalogue = config('DEFAULT_APPLICATION')."/";
+            $_catalogue = DEFAULT_APPLICATION."/";
             # 默认控制器文件名
-            $_files = config('DEFAULT_CLASS');
+            $_files = DEFAULT_CLASS;
             # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = config('DEFAULT_CLASS');
+            # $_class = DEFAULT_CLASS;
             # 默认控制器方法名
-            $_method = config('DEFAULT_METHOD');
+            $_method = DEFAULT_FUNCTION;
             # 转换信息
             $_path_array = array();
             # 获取的路径信息
@@ -95,8 +95,8 @@ class Load
                     $_path_array = explode('/',$_path);
                     # 判断首元素结构是否与默认应用目录相同
                     if(empty($_path_array) and $_path_array[0] != '0' or
-                        strtolower($_path_array[$_i]) == config('DEFAULT_APPLICATION')  or
-                        (strtolower($_path_array[$_i]) != config('DEFAULT_APPLICATION') and
+                        strtolower($_path_array[$_i]) == DEFAULT_APPLICATION  or
+                        (strtolower($_path_array[$_i]) != DEFAULT_APPLICATION and
                             is_dir(str_replace('/', DS, ROOT."application/".strtolower($_path_array[0]))))) {
                         # 变更应用文件夹位置
                         $_catalogue = $_path_array[$_i] . "/";
@@ -136,7 +136,7 @@ class Load
                             exit(0);
                         }
                     }else{
-                        $_404 = str_replace("/",DS,ROOT.config("ROOT_RESOURCE")."/public/temp/404.html");
+                        $_404 = str_replace("/",DS,ROOT_RESOURCE."/public/temp/404.html");
                         if(!is_file($_404)){
                             echo("ERROR:404");
                             exit();
@@ -170,7 +170,7 @@ class Load
                     }
                 }
                 # 链接记录日志
-                $_uri = config('ROOT_LOG').config('LOG_ACCESS').date('Ymd').'.log';
+                $_uri = LOG_ACCESS.date('Ymd').'.log';
                 $_msg = "[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use;
                 $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$_msg.PHP_EOL;
                 write($_uri,$_model_msg);
@@ -269,6 +269,6 @@ class Load
     static function error($obj,$error,$type)
     {
         if(DEBUG or ERROR)
-            include(str_replace('/',DS,ROOT.RING.'template/load.html'));
+            include(str_replace('/',DS,ORIGIN.'template/load.html'));
     }
 }

@@ -17,7 +17,7 @@ function exception($error_title,$error_msg,$error_file)
     );
     if(is_array($error_msg))
         $_error_msg["msg"] = "{$error_title} [Error Code:{$error_msg[0]}] {$error_msg[2]}";
-    include(str_replace('/',DS,ROOT.RING.'template/error.html'));
+    include(str_replace('/',DS,ORIGIN.'template/error.html'));
     eLog($_error_msg["msg"]);
     eLog("in:{$_error_msg["file"]}");
     eLog("line:{$_error_msg["line"]}");
@@ -40,6 +40,6 @@ function base($error_arr)
     $_error_zero[1] = $_error_zero[1][0];
     $_error_zero[1] = "In : ".$_error_zero[1];
     array_splice($_error_msg,0,1,$_error_zero);
-    include(str_replace('/',DS,ROOT.RING.'template/debug.html'));
+    include(str_replace('/',DS,ORIGIN.'template/debug.html'));
     exit(0);
 }

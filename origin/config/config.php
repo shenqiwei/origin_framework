@@ -6,28 +6,8 @@
  * @context Origin框架主配置文件
  */
 return array(
-    // 默认访问文件根目录
-    'DEFAULT_APPLICATION' => 'home',
-    // 资源目录
-    'ROOT_RESOURCE' => 'resource', // 资源主目录
-    //资源结构下目录(1.0版本后，配置内容不再影响框架使用)
-    'ROOT_RESOURCE_PUBLIC' => 'public', // 公共文件目录
-    'ROOT_RESOURCE_UPLOAD' => 'upload', // 上传目录
-    'ROOT_RESOURCE_BUFFER' => 'buffer', // 缓存文件目录
     //缓存设置
     'ROOT_USE_BUFFER' => false, // 缓存文件使用状态
-    // 日志主目录
-    'ROOT_LOG' => 'logs/',
-    // 日志目录
-    'LOG_ACCESS' => 'access/', // 服务请求链接日志
-    'LOG_CONNECT' => 'connect/', // 数据库连接日志
-    'LOG_EXCEPTION' => 'error/', // 系统异常信息日志
-    'LOG_INITIALIZE' => 'initialize/', // 框架初始化日志
-    'LOG_OPERATE' => 'action/', // 系统操作日志
-    // 引导信息
-    'DEFAULT_CLASS' => 'index', // 默认访问控制器对象
-    'DEFAULT_METHOD' => 'index', // 默认访问函数方法
-    'DEFAULT_VIEW' => 'index', // 默认访问模板
     // 会话session设置, 当前版本只对会话进行基础支持，所以部分设置暂时不使用
     'SESSION_SAVE_PATH'=> '', // session存储位置，一般php.ini设置,如果需要修改存储位置,再填写
     'SESSION_NAME'=> 'PHPSESSID', // 指定会话名以用做 cookie 的名字.只能由字母数字组成，默认为 PHPSESSID

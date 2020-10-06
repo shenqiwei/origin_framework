@@ -50,18 +50,18 @@ abstract class Unit
     /**
      * 调用模板方法
      * @access protected
-     * @param string $view
+     * @param string $template 视图模板
      */
-    protected function view($view=null)
+    protected function template($template=null)
     {
         $_page = Load::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
         $_dir = str_replace("classes/", '',
-                str_replace(config('DEFAULT_APPLICATION')."/", '',
+                str_replace(DEFAULT_APPLICATION."/", '',
                     str_replace('application/', '',
                         str_replace('\\', '/', strtolower(Load::$_Class)))));
-        if($view !== null and is_true($_regular, $view)){
-            $_page = $view;
+        if($template !== null and is_true($_regular, $template)){
+            $_page = $template;
         }
         View::view($_dir, $_page,$this->_Param[Load::$_Class],Load::$_LoadTime);
     }

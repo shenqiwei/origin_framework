@@ -6,7 +6,7 @@
  */
 function initialize()
 {
-    $_log = config('ROOT_LOG').config('LOG_INITIALIZE').'initialize.log';
+    $_log = LOG_INITIALIZE.'initialize.log';
     # 判断日志文件
     if(!is_file(str_replace("/",DS,ROOT.$_log))){
         $_date = date("Y-m-d");
@@ -18,25 +18,25 @@ function initialize()
                 ROOT."application", # 应用目录
                 ROOT."application/common", # 应用公共函数目录
                 ROOT."application/config", # 应用公共配置目录
-                ROOT."application/".config("DEFAULT_APPLICATION"), # 默认应用主目录
-                ROOT."application/".config("DEFAULT_APPLICATION")."/common", # 默认应用公共函数目录
-                ROOT."application/".config("DEFAULT_APPLICATION")."/classes", # 默认应用控制器目录
-                ROOT."application/".config("DEFAULT_APPLICATION")."/template", # 默认应用模板目录
-                ROOT."application/".config("DEFAULT_APPLICATION")."/template/index", # 默认应用模板目录
-                ROOT.config("ROOT_RESOURCE"),
-                ROOT.config("ROOT_RESOURCE")."/public", # 公共文件目录
-                ROOT.config("ROOT_RESOURCE")."/public/temp", # 500,404自定义模板位置
-                ROOT.config("ROOT_RESOURCE")."/upload", # 上传文件目录
-                ROOT.config("ROOT_RESOURCE")."/buffer", # 缓存文件目录
+                ROOT."application/".DEFAULT_APPLICATION, # 默认应用主目录
+                ROOT."application/".DEFAULT_APPLICATION."/common", # 默认应用公共函数目录
+                ROOT."application/".DEFAULT_APPLICATION."/classes", # 默认应用控制器目录
+                ROOT."application/".DEFAULT_APPLICATION."/template", # 默认应用模板目录
+                ROOT."application/".DEFAULT_APPLICATION."/template/index", # 默认应用模板目录
+                ROOT_RESOURCE,
+                RESOURCE_PUBLIC, # 公共文件目录
+                RESOURCE_PUBLIC."/temp", # 500,404自定义模板位置
+                RESOURCE_UPLOAD, # 上传文件目录
+                RESOURCE_BUFFER, # 缓存文件目录
             ),
             "folder" => array(
                 ROOT."application" => array(
                     "common/public.php",
                     "config/config.php",
                     "config/route.php",
-                    config("DEFAULT_APPLICATION")."/common/public.php",
-                    config("DEFAULT_APPLICATION")."/classes/Index.php",
-                    config("DEFAULT_APPLICATION")."/template/index/index.html",
+                    DEFAULT_APPLICATION."/common/public.php",
+                    DEFAULT_APPLICATION."/classes/Index.php",
+                    DEFAULT_APPLICATION."/template/index/index.html",
                 ),
             )
         );
@@ -116,7 +116,7 @@ function note($folder,$context)
     }
     $_receipt = false;
     # 使用写入方式进行日志创建创建和写入
-    $_handle = fopen(ROOT.DS.$folder,"a");
+    $_handle = fopen(ROOT.$folder,"a");
     if($_handle){
         # 执行写入操作，并返回操作回执
         $_receipt = fwrite($_handle,$context.PHP_EOL);

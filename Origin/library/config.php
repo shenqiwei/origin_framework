@@ -27,7 +27,7 @@ function config($item)
     if(!is_null($_receipt))
         goto re;
     def:
-    $_configuration = include(str_replace(RE_DS,DS,ROOT."origin/config/config.php"));
+    $_configuration = include(str_replace(RE_DS,DS,ORIGIN."config/config.php"));
     $_receipt = configuration($item,$_configuration);
     re:
     return $_receipt;

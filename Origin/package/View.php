@@ -27,7 +27,7 @@ class View
         # 转化文件路径
         $_guide = explode('/',$dir);
         # 判断结构模型
-        $_dir = config('DEFAULT_APPLICATION')."/";
+        $_dir = DEFAULT_APPLICATION."/";
         # 判断引导路径中是否存在多级文件
         if(count($_guide) > 1){
             for($i=0; $i<count($_guide);$i++){
@@ -53,7 +53,7 @@ class View
                         # 创建运行时间模板
                         $_temp = null;
                         if(DEBUG){
-                            $_temp = ROOT."origin/template/time.html";
+                            $_temp = ORIGIN."template/time.html";
                             if(is_file(str_replace("/",DS,$_temp))){
                                 $_load_end = explode(" ",microtime());
                                 $_load_end = floatval($_load_end[0])+floatval($_load_end[1]);

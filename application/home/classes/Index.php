@@ -33,6 +33,6 @@ class Index extends Unit
         $this->param('welcome', $welcomes);
         $this->param('author', 'ShenQiwei');
         $this->param('time', '2019/11/23');
-        $this->view();
+        $this->template();
     }
 }

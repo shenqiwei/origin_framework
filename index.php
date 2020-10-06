@@ -12,5 +12,11 @@ define('DEBUG',true);
 define('ERROR',false);
 # 代码重加载
 define('MARK_RELOAD',false);
+# 默认访问应用目录
+define('DEFAULT_APPLICATION','home');
+# 默认访问类名称
+define('DEFAULT_CLASS','index');
+# 默认访问方法名称
+define('DEFAULT_FUNCTION','index');
 # 调用通道入口文件
 include('origin/door.php');

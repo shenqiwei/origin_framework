@@ -46,7 +46,7 @@ function write($folder,$context)
  */
 function sLog($msg)
 {
-    $_uri = config('ROOT_LOG').config('LOG_CONNECT').date('Ymd').'.log';
+    $_uri = LOG_CONNECT.date('Ymd').'.log';
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg);
 }
@@ -58,7 +58,7 @@ function sLog($msg)
  */
 function eLog($msg)
 {
-    $_uri = config('ROOT_LOG').config('LOG_EXCEPTION').date('Ymd').'.log';
+    $_uri = LOG_EXCEPTION.date('Ymd').'.log';
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
     return write($_uri,$_model_msg);
 }
