@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Origin Message Receipt</title>
     <script type="text/javascript">
-        var time = <?php echo($_time);?>; // 倒计时时间
-        var status = 'true';
+        let time = parseInt("<?php echo($_time);?>"); // 倒计时时间
+        let status = 'true';
         function cd() {
             if(time <= 1){
                 if(status === 'true') redirect();
@@ -13,12 +13,12 @@
             document.getElementById('time').innerHTML = time;
         }
         function redirect(){
-            var url = '<?php echo($_url);?>';
+            let url = '<?php echo($_url);?>';
             if(url === '#') window.history.back();
             else location.href = url;
         }
         function pause(){
-            var act = document.getElementById('pause').innerHTML;
+            let act = document.getElementById('pause').innerHTML;
             if (act === '[Pause]'){
                 document.getElementById('pause').innerHTML = '[Execute]';
                 status = 'false';
