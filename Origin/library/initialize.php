@@ -17,7 +17,9 @@ function initialize()
             "catalog" => array( # 根目录
                 ROOT."application", # 应用目录
                 ROOT."application/common", # 应用公共函数目录
-                ROOT."application/config", # 应用公共配置目录
+                ROOT."common", # 公共文件目录
+                ROOT."common/config", # 配置文件目录
+                ROOT."common/log", # 日志文件目录
                 ROOT."application/".DEFAULT_APPLICATION, # 默认应用主目录
                 ROOT."application/".DEFAULT_APPLICATION."/common", # 默认应用公共函数目录
                 ROOT."application/".DEFAULT_APPLICATION."/classes", # 默认应用控制器目录
@@ -32,11 +34,13 @@ function initialize()
             "folder" => array(
                 ROOT."application" => array(
                     "common/public.php",
-                    "config/config.php",
-                    "config/route.php",
                     DEFAULT_APPLICATION."/common/public.php",
                     DEFAULT_APPLICATION."/classes/Index.php",
                     DEFAULT_APPLICATION."/template/index/index.html",
+                ),
+                ROOT."common"=> array(
+                    "config/config.php",
+                    "config/route.php",
                 ),
             )
         );

@@ -7,17 +7,6 @@
  */
 function import($guide)
 {
-    /**
-     * @var mixed $_hook 指引结构数组
-     * @var mixed $_type 预设文件类型正则表达式
-     * @var mixed $_array 文件类型描述结构数组
-     * @var string $_regular 文件扩展名结构正则表达式
-     * @var string $_folder 文件夹物理路径
-     * @var string $_danger
-     * @var string $_file 文件名变量
-     * @var string $_suffix 扩展名
-     * @var int $i
-     */
     $_receipt = null;
     # 判断指引信息是否为空
     if($guide){

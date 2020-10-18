@@ -10,31 +10,17 @@
  * @param string $key 请求对象键
  * @param mixed $default 请求器返回默认值
  * @param boolean $delete 执行删除操作
+ * @param string $type 请求类型
  * @return mixed
  */
-function request($key, $default=null, $delete=false)
+function request($key, $default=null, $delete=false,$type="request")
 {
-    /**
-     * @var string $_receipt
-     * @var string $_regular
-     * @var string $_type
-     * @var string $_request
-     * @var string $_object
-     */
     # 创建返回值变量
     $_receipt = null;
     # 创建请求范围变量
-    $_regular = '/^((post|get|request|put|delete)\.)?[\w]+(\-[\w]+)*$/';
-    # 创建请求类型变量
-    $_method = 'request';
+    $_regular = '/^[\w]+(\-[\w]+)*$/';
     # 判断请求参数是否合规
     if($key and is_true($_regular, trim(strtolower($key)))){
-        # 将请求参数根据要求转为数组
-        if(strpos($key, '.')){
-            $_request = explode('.', trim($key));
-        }else{
-            $_request = $key;
-        }
         # 判断默认值信息状态,并根据特例进行转换
         if($default){
             if(is_int($default)){
@@ -47,13 +33,8 @@ function request($key, $default=null, $delete=false)
                 $default = strval($default);
             }
         }
-        # 判断请求信息是否为数组，如果是进行数组信息重载
-        if(is_array($_request)){
-            $_method = strtolower($_request[0]);
-            $_request = $_request[1];
-        }
         # 声明请求控制器对象
-        $_obj= new Origin\Package\Request($_request,$default,$_method);
+        $_obj= new Origin\Package\Request($key,$default,$type);
         if(is_bool($delete) and $delete === true){
             # 执行删除
             $_obj->delete();
@@ -63,4 +44,28 @@ function request($key, $default=null, $delete=false)
         }
     }
     return $_receipt;
+}
+/**
+ * 请求器(GET)函数
+ * @access public
+ * @param string $key 请求对象键
+ * @param mixed $default 请求器返回默认值
+ * @param boolean $delete 执行删除操作
+ * @return mixed
+ */
+function get($key, $default=null, $delete=false)
+{
+    return request($key, $default, $delete,"get");
+}
+/**
+ * 请求器(POST)函数
+ * @access public
+ * @param string $key 请求对象键
+ * @param mixed $default 请求器返回默认值
+ * @param boolean $delete 执行删除操作
+ * @return mixed
+ */
+function post($key, $default=null, $delete=false)
+{
+    return request($key, $default, $delete,"post");
 }

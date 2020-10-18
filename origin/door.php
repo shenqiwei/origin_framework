@@ -48,7 +48,7 @@ if(!defined('RESOURCE_UPLOAD')) define('RESOURCE_UPLOAD',ROOT_RESOURCE.DS.'uploa
 # 资源缓存文件夹
 if(!defined('RESOURCE_BUFFER')) define('RESOURCE_BUFFER',ROOT_RESOURCE.DS.'buffer');
 # 日志主目录
-if(!defined('ROOT_LOG')) define('ROOT_LOG','logs'.DS);
+if(!defined('ROOT_LOG')) define('ROOT_LOG','common/log'.DS);
 # 服务请求链接日志
 if(!defined('LOG_ACCESS')) define('LOG_ACCESS',ROOT_LOG.'access'.DS);
 # 数据库连接日志
@@ -82,7 +82,7 @@ elseif(ERROR == 8)
     error_reporting(E_NOTICE);
 else error_reporting(0);
 # 引入主方法文件
-include('library/function.php');
+include('library/common.php');
 # 调用加载
 include('package/Load.php');
 # 启动加载函数

@@ -42,7 +42,7 @@ class Output
         if(isset($_model) and is_file($_model))
             include($_model);
         else
-            include(str_replace('/',DS,ORIGIN.'template/message.html'));
+            include(str_replace('/',DS,ORIGIN.'template/alert.html'));
         exit(0);
     }
 }

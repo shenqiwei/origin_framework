@@ -43,3 +43,22 @@ function base($error_arr)
     include(str_replace('/',DS,ORIGIN.'template/debug.html'));
     exit(0);
 }
+# 设置异常捕捉回调函数
+register_shutdown_function("danger");
+/**
+ * @access public
+ * @return array
+ * @context 危险异常捕捉函数
+ */
+function danger()
+{
+    $_error = error_get_last();
+    define("E_FATAL",  E_ERROR | E_USER_ERROR |  E_CORE_ERROR |
+        E_COMPILE_ERROR | E_RECOVERABLE_ERROR| E_PARSE );
+    if($_error && ($_error["type"]===($_error["type"] & E_FATAL))) {
+        if(DEBUG){
+            base($_error);
+        }
+    }
+    return null;
+}

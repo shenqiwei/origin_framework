@@ -14,39 +14,7 @@ function config($item)
 {
     # 创建返回值变量
     $_receipt = null;
-    # 创建配置信息初始变量
-    $_configuration = null;
-    # 引入应用配置文件
-    $_config_file = str_replace(RE_DS,DS,ROOT."application/config/config.php");
-    if(is_file($_config_file))
-        $_configuration = include($_config_file);
-    else
-        goto def;
-    if(!is_null($_configuration))
-        $_receipt = configuration($item,$_configuration);
-    if(!is_null($_receipt))
-        goto re;
-    def:
-    $_configuration = include(str_replace(RE_DS,DS,ORIGIN."config/config.php"));
-    $_receipt = configuration($item,$_configuration);
-    re:
-    return $_receipt;
-}
-/**
- * 公共配置信息引导函数
- * @access public
- * @param string $item 配置项，不区分大小写
- * @param array $configuration 配置列表
- * @return string
- */
-function configuration($item,$configuration)
-{
-    # 创建结果集变量
-    $_receipt = null;
-    # 创建配置结构变量
-    $_config = null;
-    # 创建配置寄存变量
-    $_array = $configuration;
+    $_configuration = include(str_replace(RE_DS,DS,ROOT."common/config/config.php"));
     # 判断引导参数是否有效
     if(preg_match('/^[^_\W\s]+((\\\:|_)?[^_\W\s]+)*$/u', $item)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中
@@ -60,8 +28,8 @@ function configuration($item,$configuration)
             # 遍历引导信息
             for($i=0;$i<count($_config);$i++){
                 # 判断数组元素信息是否为数组中的键名，如果是将对应元素值信息存入数组变量中，
-                if(array_key_exists(strtoupper($_config[$i]), $_array)){
-                    $_array = $_array[strtoupper($_config[$i])];
+                if(array_key_exists(strtoupper($_config[$i]), $_configuration)){
+                    $_array = $_configuration[strtoupper($_config[$i])];
                     # 判断元素值是否为数组，如果是继续进行查找和验证，反之赋入返回变量中
                     if(is_array($_array)){
                         continue;
@@ -73,8 +41,8 @@ function configuration($item,$configuration)
             }
         }else{
             # 判断当前配置名称是否存在于配置中，如果存在赋入返回变量中
-            if(array_key_exists(strtoupper($_config), $_array)){
-                $_receipt = $_array[strtoupper($_config)];
+            if(array_key_exists(strtoupper($_config), $_configuration)){
+                $_receipt = $_configuration[strtoupper($_config)];
             }
         }
     }
