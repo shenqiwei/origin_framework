@@ -9,19 +9,18 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
 
 <table>
     <tr>
-        <td>.</td>
+        <th>目录</th>
+    </tr>
+    <tr>
         <td>欢迎页</td>
     </tr>
     <tr>
-        <td>.</td>
         <td>文件结构说明</td>
     </tr>
     <tr>
-        <td>.</td>
         <td>功能使用说明</td>
     </tr>
     <tr>
-        <td>.</td>
         <td>历史版本说明</td>
     </tr>
 </table>
