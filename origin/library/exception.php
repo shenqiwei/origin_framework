@@ -17,10 +17,11 @@ function exception($error_title,$error_msg,$error_file)
     );
     if(is_array($error_msg))
         $_error_msg["msg"] = "{$error_title} [Error Code:{$error_msg[0]}] {$error_msg[2]}";
-    include(replace(ORIGIN.'template/500.html'));
-    eLog($_error_msg["msg"]);
-    eLog("in:{$_error_msg["file"]}");
-    eLog("line:{$_error_msg["line"]}");
+    $_500 = replace(ORIGIN.'template/500.html');
+    include("{$_500}");
+    errorLog($_error_msg["msg"]);
+    errorLog("in:{$_error_msg["file"]}");
+    errorLog("line:{$_error_msg["line"]}");
     exit(0);
 }
 /**
@@ -40,7 +41,8 @@ function base($error_arr)
     $_error_zero[1] = $_error_zero[1][0];
     $_error_zero[1] = "In : ".$_error_zero[1];
     array_splice($_error_msg,0,1,$_error_zero);
-    include(replace(ORIGIN.'template/501.html'));
+    $_501 = replace(ORIGIN.'template/501.html');
+    include("{$_501}");
     exit(0);
 }
 # 设置异常捕捉回调函数

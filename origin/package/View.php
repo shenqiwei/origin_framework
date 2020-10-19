@@ -88,7 +88,7 @@ class View
                             $_cache_uri = stream_get_meta_data($_cache_file)["uri"];
                         }
                         # 调用缓存文件
-                        include($_cache_uri);
+                        include("{$_cache_uri}");
                         # 关闭缓存文件，系统自动释放缓存空间
                         if(isset($_cache_file))
                             fclose($_cache_file);

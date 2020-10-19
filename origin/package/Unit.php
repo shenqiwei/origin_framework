@@ -35,13 +35,13 @@ abstract class Unit
     {
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key)){
-            $this->_Param[Load::$_Class][$key] = $value;
+            $this->_Param[Junctor::$_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
                 throw new Exception('Variable name contains non legal symbols');
             }catch(Exception $e){
-                eLog($e->getMessage());
+                errorLog($e->getMessage());
                 exception("Param Error",$e->getMessage(),debug_backtrace(0,1));
                 exit();
             }
@@ -54,16 +54,16 @@ abstract class Unit
      */
     protected function template($template=null)
     {
-        $_page = Load::$_Function;
+        $_page = Junctor::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
         $_dir = str_replace("classes/", '',
                 str_replace(DEFAULT_APPLICATION."/", '',
                     str_replace('application/', '',
-                        str_replace('\\', '/', strtolower(Load::$_Class)))));
+                        str_replace('\\', '/', strtolower(Junctor::$_Class)))));
         if(is_null($template) and is_true($_regular, $template)){
             $_page = $template;
         }
-        View::view($_dir, $_page,$this->_Param[Load::$_Class],Load::$_LoadTime);
+        View::view($_dir, $_page,$this->_Param[Junctor::$_Class],Junctor::$_LoadTime);
     }
     /**
      * 返回执行对象类名
@@ -72,7 +72,7 @@ abstract class Unit
      */
     protected function get_class()
     {
-        return Load::$_Class;
+        return Junctor::$_Class;
     }
     /**
      * 返回执行对象方法名
@@ -81,7 +81,7 @@ abstract class Unit
      */
     protected function get_function()
     {
-        return Load::$_Function;
+        return Junctor::$_Function;
     }
     /**
      * 执行成功提示信息

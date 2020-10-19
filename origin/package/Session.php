@@ -62,7 +62,7 @@ class Session
                 try{
                     throw new \Exception('Origin Support Error: Session can support more than three dimensional array structure');
                 }catch(\Exception $e){
-                    eLog($e->getMessage());
+                    errorLog($e->getMessage());
                     exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }
@@ -101,7 +101,7 @@ class Session
                 try{
                     throw new \Exception('Origin Support Error: Session can support more than three dimensional array structure');
                 }catch(\Exception $e){
-                    eLog($e->getMessage());
+                    errorLog($e->getMessage());
                     exception("Session Error",$e->getMessage(),debug_backtrace(0,1));
                     exit();
                 }

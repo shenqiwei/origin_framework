@@ -11,7 +11,7 @@
  * @return  boolean
  * @content 日志写入
  */
-function write($folder,$context)
+function _log($folder,$context)
 {
     $_receipt = false;
     logWrite:
@@ -24,10 +24,9 @@ function write($folder,$context)
         fclose($_handle);
     }else{
         if(!file_exists($folder)){
-            $_dir = substr($folder,0,strrpos($folder,"/"));
-            $_dir = explode("/",$_dir);
+            $_dir = explode(DS,$folder);
             $_new = null;
-            for($_i = 0;$_i < count($_dir);$_i++){
+            for($_i = 0;$_i < count($_dir)-1;$_i++){
                 $_new .= DS.$_dir[$_i];
                 if(!is_dir(ROOT.$_new)){
                     mkdir(ROOT.$_new,0777);
@@ -39,26 +38,14 @@ function write($folder,$context)
     return $_receipt;
 }
 /**
- * 数据库操作日志 statement log
- * @access public
- * @param string $msg 日志模板信息
- * @return mixed
- */
-function sLog($msg)
-{
-    $_uri = LOG_CONNECT.date('Ymd').'.log';
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg);
-}
-/**
  * 异常记录日志 error log
  * @access public
  * @param string $msg 日志模板信息
  * @return mixed
  */
-function eLog($msg)
+function errorLog($msg)
 {
     $_uri = LOG_EXCEPTION.date('Ymd').'.log';
     $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return write($_uri,$_model_msg);
+    return _log($_uri,$_model_msg);
 }

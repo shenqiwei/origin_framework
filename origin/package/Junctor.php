@@ -9,7 +9,7 @@ namespace Origin\Package;
 
 use Exception;
 
-class Load
+class Junctor
 {
 //    const ROUTE_ITEM_NAME = "name";
     const ROUTE_ITEM_URI = "route";
@@ -31,8 +31,8 @@ class Load
     static function initialize()
     {
         # 应用结构包调用
-        if(is_file($_common = ROOT . "application/common/public.php"))
-            include($_common);
+        if(is_file($_common = replace(ROOT . "application/common/public.php")))
+            include("{$_common}");
         # 运行起始时间
         self::$_LoadTime = explode(" ",microtime());
         self::$_LoadTime = floatval(self::$_LoadTime[0])+floatval(self::$_LoadTime[1]);
@@ -118,7 +118,7 @@ class Load
                 # 使用加载函数引入应用公共方法文件
                 $_public = replace(ROOT."application/{$_catalogue}common/public.php");
                 if(is_file($_public))
-                    include($_public);
+                    include("{$_public}");
                 # 根据配置信息拼接控制器路径
                 $_path = $_catalogue."classes/".ucfirst($_files);
                 # 初始化重启位置
@@ -141,7 +141,7 @@ class Load
                             echo("ERROR:404");
                             exit();
                         }else{
-                            include($_404);
+                            include("{$_404}");
                         }
                     }
                 }
@@ -160,7 +160,7 @@ class Load
                     }
                     # 重组加载信息内容
                     $file = implode(DS,$_file);
-                    require_once($file.'.php');
+                    require_once("{$file}.php");
                 })){
                     try {
                         throw new Exception('Origin Loading Error: Registration load failed');
@@ -173,7 +173,7 @@ class Load
                 $_uri = LOG_ACCESS.date('Ymd').'.log';
                 $_msg = "[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use;
                 $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$_msg.PHP_EOL;
-                write($_uri,$_model_msg);
+                _log($_uri,$_model_msg);
                 # 创建class完整信息变量
                 $_class = $_class_path = explode("/","Application".DS.$_path);
                 for($_u = 0;$_u < count($_class_path);$_u++){
@@ -235,7 +235,7 @@ class Load
         # 判断路由文件是否存在
         if(is_file($_files)){
             # 获取路由配置信息
-            $_config = require_once($_files);
+            $_config = require_once("{$_files}");
             # 判断路由信息是否有效
             if (is_array($_config) and !empty($_config)){
                 # 遍历路由信息，用于比对路由信息
@@ -268,7 +268,10 @@ class Load
      */
     static function error($obj,$error,$type)
     {
-        if(DEBUG or ERROR)
-            include(replace(ORIGIN.'template/404.html'));
+        if(DEBUG or ERROR){
+            $_404 = replace(ORIGIN.'template/404.html');
+            include("{$_404}");
+        }
+
     }
 }

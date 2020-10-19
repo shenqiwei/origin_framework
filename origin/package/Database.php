@@ -260,7 +260,9 @@ class Database extends Query
             $query = preg_replace($key, $value, $query);
         }
         # 接入执行日志
-        sLog(trim($query));
+        $_uri = LOG_EXCEPTION.date('Ymd').'.log';
+        $_model_msg = date("Y/m/d H:i:s")." [Note]: ".trim($query).PHP_EOL;
+        log($_uri,$_model_msg);
         try{
             # 执行查询搜索
             $_statement = $this->_Connect->query(trim($query));
@@ -285,7 +287,7 @@ class Database extends Query
             # 释放连接
             $_statement->closeCursor();
         }catch(PDOException $e){
-            eLog($e->getMessage());
+            errorLog($e->getMessage());
             exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }

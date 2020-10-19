@@ -39,10 +39,9 @@ class Output
         }elseif(strtolower($setting["title"]) == "error"){
             $_model = replace(ROOT_RESOURCE."/public/temp/400.html");
         }
-        if(isset($_model) and is_file($_model))
-            include($_model);
-        else
-            include(replace(ORIGIN.'template/201.html'));
+        if(!isset($_model) or !is_file($_model))
+            $_model = replace(ORIGIN.'template/201.html');
+        include("{$_model}");
         exit(0);
     }
 }
