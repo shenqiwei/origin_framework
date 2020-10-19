@@ -1,7 +1,7 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.3
+ * @version 1.0
  * @copyright 2015-2019
  * @context: Origin框架标签二维解析器
  * 根据二维解释器程序结构特性，解释器会将一维结构中所有的应用逻辑进行数组降维展开，

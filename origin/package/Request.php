@@ -1,8 +1,8 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
- * @copyright 2015-2017
+ * @version 1.0
+ * @copyright 2015-2020
  * @context: Origin请求结构封装
  */
 namespace Origin\Package;

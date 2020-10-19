@@ -1,8 +1,8 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.5
- * @copyright 2015-2017
+ * @version 1.0
+ * @copyright 2015-2020
  * @context: Origin框架验证码封装结构
  */
 namespace Origin\Package;

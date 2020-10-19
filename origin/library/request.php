@@ -1,7 +1,7 @@
 <?php
 /**
  * @author 沈起葳 <cheerup.shen@foxmail.com>
- * @version 0.1
+ * @version 1.0
  * @copyright 2015-2017
  */
 /**
