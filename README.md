@@ -287,11 +287,9 @@ origin ver 1.0支持4种独立标签
 <span id='validate'></span>
 ##### 对比函数   
 origin功能结构中封装了3个基本比对条件(是否为空，大小，正则结构)函数，
-并且将三个基本功能统一到一个基本函数(`is_true($param, $min, $max, $regular)` )中:    
-> $param (string)对象参数    
-> $min (int)最小界定值，默认值0    
-> $max (int)最大界定值，默认值0    
+并且将三个基本功能统一到一个基本函数(`is_true($regular,$param)` )中:    
 > $regular (string)正则表达式    
+> $param (string)对象参数      
 
 origin在初期版本中预设了15个基本比对函数，由于新版本计划所以删除原有函数内容支持（但是保留了正则表达式，以帮助使用者会更好的完成开发工作）：     
 > '/^[^\s\w\!\@\#\%\^\&\*\(\)\-\+\=\/\'\\"\$\:\;\,\.\<\>\`\~]+$/' 验证中文姓名方法，支持中文英文混写，也可以用来支持名字中出现单字母的名字    
@@ -308,10 +306,10 @@ origin在初期版本中预设了15个基本比对函数，由于新版本计划
 > '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]*)+$/' 强密码验证方法    
 > '/^([A-Z]+[a-z]+[0-9]+[\.\_\-\@\+\$\#\*\~\%\^\&]+)+$/' 调用验证结构包，并声明验证对象   
 
-    function weak_password($password)
+    function is_true($regular,$param)
     {
-        $_validate = new Origin\Package\Validate($password);
-        return $_validate->_type('/^([^\_\W]+([\_\.\-\@\+\$\#\*\~\%\^\&]*))+$/');
+        $_validate = new Origin\Package\Validate($param);
+        return $_validate->_type($regular);
     } 
 上述方法为简单验证实例，如果使用相同功能，可以参照代码格式
 
