@@ -180,7 +180,34 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
 
 <span id='basic'></span>
 ##### 基础功能    
+使用origin非常简单,将origin所有文件放入项目目录后，直接访问地址，origin会自动在第一次访问自动创建应用文件结构。
+初始化完成后在应用文件夹（application）会出现默认访问文件目录（home），参照classes/Index.php文件中的格式，就可以调用origin的基础功能     
 
+    namespace Application\Home\Classes;
+    
+    use Origin\Package\Unit;
+    
+    class Index extends Unit
+    {
+        function __construct()
+        {
+            parent::__construct();
+            $this->param('title','Origin架构开发版');
+            $Origin = array('title' => 'Origin', 'version' => 'Ver.1.0');
+            $this->param('o', $Origin);
+        }
+        function index()
+        {
+            $welcomes = array(
+                '0'=>array('statement' => '你好！欢迎使用Origin框架'),
+                '1'=>array('statement' => 'Hello! Welcome to use Origin framework'),
+            );
+            $this->param('welcome', $welcomes);
+            $this->param('author', 'ShenQiwei');
+            $this->param('time', '2019/11/23');
+            $this->template();
+        }
+    }
 <span id='config'></span>
 ##### 基础配置    
 
