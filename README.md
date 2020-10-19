@@ -181,7 +181,10 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
 <span id='basic'></span>
 ##### 基础功能    
 使用origin非常简单,将origin所有文件放入项目目录后，直接访问地址，origin会自动在第一次访问自动创建应用文件结构。
-初始化完成后在应用文件夹（application）会出现默认访问文件目录（home），参照classes/Index.php文件中的格式，就可以调用origin的基础功能     
+初始化完成后在应用文件夹（application）会出现默认访问文件目录（home），应用类对象存储格式（application/应用名/classes/类名.php）
+类对象需标明命名空间，命名与文件地址名相同，但首字母大写参照classes/Index.php文件中的格式，就可以调用origin的基础功能     
+
+Index.php文件    
 
     namespace Application\Home\Classes;
     
@@ -209,9 +212,37 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         }
     }
     
+index.html文件
+    
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{$title}</title>
+        <style>
+            body{background-color:green; font-family:微软雅黑; font-size:16px; color:floralwhite; top:0; left:0;}
+        </style>
+    </head>
+    <body style="top:0px; left:0px;">
+    <div style="margin: 0px auto; width:380px;">
+        <h1 style="font-size:60px; margin: 0px;">{$o.title}</h1>
+        <div style="font-size:10px; text-align: right;">{$o.version}</div>
+        <br />
+        <div style="padding-bottom:8px;">{$welcome.[0].statement}</div>
+        <div style="padding-bottom:8px;text-align: right;">{$welcome.[1].statement}</div>
+        <br />
+        <div style="text-align: center; ">\author\:
+            <spac style="font-family: 'Arial Black'; font-size:13px; text-decoration: underline;">{$author}</spac>
+            \time\:
+            <spac style="font-family: 'Arial Black'; font-size:13px; text-decoration: underline;">{$time}</spac>
+        </div>
+    </div>
+    </body>
+    </html>
+    
 `use Origin\Package\Unit`用于引用origin内部封装出口文件，使用父类集成方式      
 `$this->param()`用于调用前端变量数据交换方法,方法参数（$key:变量名，$value:变量值）    
-`$this->template()`用于调用前端模板视图模板文件方法，结构视图模板地址(application/home/template/index/index.html)    
+`$this->template()`用于调用前端模板视图模板文件方法，结构视图模板地址(application/应用名/template/类名/方法名.html)    
 使用上述，就可以简单设计一个web主页
 
 
