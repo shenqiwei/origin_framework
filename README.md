@@ -266,6 +266,23 @@ index.html文件
 
 <span id='iif'></span>
 ##### web标签    
+origin ver 1.0支持4种独立标签     
+>include：引用     
+ `<include href="src/html/page.html"/>`用于引用（resource/public）中公共模板文件,该标签内容仅用html文件引用    
+ 
+> if：判断，功能与if逻辑结构功能一直    
+ `<if condition = 'variable eq conditions_variable'>`   
+ `<elseif condition = 'variable eq conditions_variable'/>`    
+ `<else/>`    
+ `</if>`    
+ 
+> for：循环    
+ `<for operation = 'variable to circulation_count'>`    
+ `</for>`    
+ 
+> foreach：迭代循环     
+ `<foreach operation = 'variable (as mark_variable)'>`    
+ `</foreach>`    
 
 <span id='validate'></span>
 ##### 对比函数    
