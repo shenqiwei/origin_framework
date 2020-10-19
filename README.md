@@ -248,6 +248,21 @@ index.html文件
 
 <span id='config'></span>
 ##### 基础配置    
+编写无数据交互的web服务时，配置结构完全可以忽略，而配置主要达成功能是对数据库，缓存单元，session，cookie功能使用的基本控制条件进行设定。
+文件存储地址（common/config/config.php）    
+数据库（mysql）配置：    
+>`DATA_NAME`  数据源名称，用于数据库封装调用指定配置内容
+`DATA_TYPE` 选择数据库类型,当前版本支持Mysql,MariaDB,SQL server(mssql),PostgreSQL(pgsql),sqlite,Oracle,
+`DATA_HOST`  服务访问地址  
+`DATA_USER`  登录用户  
+`DATA_PWD` 登录密码  
+`DATA_PORT`  默认访问端口 mysql:3306,mariadb:3306,PostgreSQL:5432,Redis:6379,MongoDB:27017    
+`DATA_DB` 访问数据库  
+`DATA_P_CONNECT` 启用长连接  
+`DATA_ATUO` 自动提交，默认设置为启用  
+`DATA_TIMEOUT` 请求超时时间
+`DATA_USE_TRANSACTION` 数据驱动类型为innodb时，事务操作设置才会生效(暂不支持)   
+`DATA_USE_BUFFER` mysql是否使用memcache进行数据缓冲,默认值是0（不启用）,启用memcache需要在部署服务器上搭建memcache环境(暂时取消该功能支持)  
 
 <span id='iif'></span>
 ##### web标签    
