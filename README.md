@@ -51,40 +51,40 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
     <tr>
         <td>#</td>
         <td colspan="4">application</td>
-        <td></td>
+        <td>应用主目录，该目录由系统初始加载时生成</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗common</td>
-        <td></td>
+        <td>功能函数目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗home</td>
-        <td></td>
+        <td>默认访问地址目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td></td>
         <td colspan="2">┗classes</td>
-        <td></td>
+        <td>控制器目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td></td>
         <td colspan="2">┗common</td>
-        <td></td>
+        <td>默认访问应用功能函数目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td></td>
         <td colspan="2">┗template</td>
-        <td></td>
+        <td>应用视图模板目录</td>
     </tr>
     <tr>
         <td></td>
@@ -92,64 +92,64 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         <td></td>
         <td></td>
         <td>┗home</td>
-        <td></td>
+        <td>默认访问视图模板目录</td>
     </tr>
     <tr>
         <td>#</td>
         <td colspan="4">common</td>
-        <td></td>
+        <td>功能文件目录，该目录由系统初始加载时生成</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗config</td>
-        <td></td>
+        <td>系统配置文件目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗log</td>
-        <td></td>
+        <td>系统日志目录</td>
     </tr>
     <tr>
         <td>#</td>
         <td colspan="4">origin</td>
-        <td></td>
+        <td>origin framework功能封装目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗library</td>
-        <td></td>
+        <td>实例函数目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗package</td>
-        <td></td>
+        <td>功能类封装目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗template</td>
-        <td></td>
+        <td>内核信息视图模板目录</td>
     </tr>
     <tr>
         <td>#</td>
         <td colspan="4">resource</td>
-        <td></td>
+        <td>web文件资源目录，该目录由系统初始加载时生成</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗buffer</td>
-        <td></td>
+        <td>缓存文件目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗public</td>
-        <td></td>
+        <td>功能文件目录</td>
     </tr>
     <tr>
         <td></td>
@@ -157,7 +157,7 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         <td></td>
         <td></td>
         <td>┗font</td>
-        <td></td>
+        <td>字体目录，内核封装的验证码字体初始化位置</td>
     </tr>
     <tr>
         <td></td>
@@ -165,13 +165,13 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         <td></td>
         <td></td>
         <td>┗temp</td>
-        <td></td>
+        <td>自定义模板目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td colspan="3">┗upload</td>
-        <td></td>
+        <td>上传文件目录</td>
     </tr>
 </table>
 
