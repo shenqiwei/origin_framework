@@ -47,111 +47,132 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
 
 <span id='tree'></span>
 ##### 文件目录    
-<table border="0">
-<tr>
-<td>#</td>
-<td>application</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>┗common</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>┗home</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td>┗classes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td>┗common</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td>┗template</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>┗home</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>┗</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>#</td>
-<td>application</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>#</td>
-<td>application</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>#</td>
-<td>common</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>#</td>
-<td>origin</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>#</td>
-<td>resource</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
+<table style="border:0;">
+    <tr>
+        <td>#</td>
+        <td colspan="4">application</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗common</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗home</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="2">┗classes</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="2">┗common</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td colspan="2">┗template</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>┗home</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>#</td>
+        <td colspan="4">common</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗config</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗log</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>#</td>
+        <td colspan="4">origin</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗library</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗package</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗template</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>#</td>
+        <td colspan="4">resource</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗buffer</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗public</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>┗font</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>┗temp</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="3">┗upload</td>
+        <td></td>
+    </tr>
 </table>
 
 <span id='basic'></span>
