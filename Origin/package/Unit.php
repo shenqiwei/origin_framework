@@ -60,7 +60,7 @@ abstract class Unit
                 str_replace(DEFAULT_APPLICATION."/", '',
                     str_replace('application/', '',
                         str_replace('\\', '/', strtolower(Load::$_Class)))));
-        if($template !== null and is_true($_regular, $template)){
+        if(is_null($template) and is_true($_regular, $template)){
             $_page = $template;
         }
         View::view($_dir, $_page,$this->_Param[Load::$_Class],Load::$_LoadTime);
