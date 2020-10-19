@@ -49,7 +49,7 @@ class Session
      * @param mixed $value 值
      * @context 创建会话值内容
     */
-    function set($key,$value)
+    static function set($key,$value)
     {
         if(!ini_get('session.auto_start')) session_start();
         # 判断session传入参数是否有名称分割符号

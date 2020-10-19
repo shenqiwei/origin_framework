@@ -38,11 +38,11 @@ class View
             }
         }
         # 获取应用目录
-        $_url = str_replace('/', DS, "application/{$_dir}");
+        $_url = replace("application/{$_dir}");
         # 判断应用目录是否有效
         if(is_dir($_url)){
             # 获得前台模板目录
-            $_url_view = str_replace('/', DS, $_url."template/");
+            $_url_view = replace($_url."template/");
             # 判断前台模板目录是否有效
             if(is_dir($_url_view)){
                 # 判断应用控制器对应前台模板目录是否有效
@@ -53,8 +53,8 @@ class View
                         # 创建运行时间模板
                         $_temp = null;
                         if(DEBUG){
-                            $_temp = ORIGIN."template/time.html";
-                            if(is_file(str_replace("/",DS,$_temp))){
+                            $_temp = ORIGIN."template/200.html";
+                            if(is_file(replace($_temp))){
                                 $_load_end = explode(" ",microtime());
                                 $_load_end = floatval($_load_end[0])+floatval($_load_end[1]);
                                 $_time= round(($_load_end-$time)*1000,2);
@@ -75,7 +75,7 @@ class View
                         if(config("ROOT_USE_BUFFER")){
                             $_debug_tmp = "resource/buffer/".sha1($_page).".tmp";
                             $_file = new File();
-                            $_cache_uri = str_replace("/",DS,ROOT.$_debug_tmp);
+                            $_cache_uri = replace(ROOT.$_debug_tmp);
                             if(!is_file($_cache_uri) or time() > strtotime("+30 minutes",filemtime($_cache_uri))){
                                 $_file->write($_debug_tmp,"cw",$_cache_code.$_temp);
                             }

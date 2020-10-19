@@ -31,7 +31,7 @@ class Cookie
      * @param mixed $value 值
      * @context 创建会话值内容
      */
-    function set($key,$value)
+    static function set($key,$value)
     {
         setcookie($key, $value, config('COOKIE_LIFETIME'),  config('COOKIE_PATH'),  config('COOKIE_DOMAIN'));
     }
@@ -40,7 +40,7 @@ class Cookie
      * @return mixed
      * @context 获取会话值内容
      */
-    function get()
+    static function get()
     {
         return session_get_cookie_params();
     }

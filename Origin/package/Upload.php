@@ -77,7 +77,7 @@ class Upload
     function store($guide=null)
     {
         if(!is_null($guide))
-            $this->_Store = str_replace("/",DS,$guide);
+            $this->_Store = replace($guide);
     }
     /**
      * @access public
@@ -92,9 +92,9 @@ class Upload
         if(is_null($this->_Store)){
             # 设置存储子目录，使用年月日拆分存储内容
             $_dir = date("Ymd",time());
-            $this->_Store = str_replace("/",DS,"resource/upload/".$_dir);
+            $this->_Store = replace("resource/upload/".$_dir);
         }
-        if(!is_dir(str_replace("/",DS,ROOT.$this->_Store))){
+        if(!is_dir(replace(ROOT.$this->_Store))){
             $_file = new File();
             $_file->manage(str_replace(DS,"/",$this->_Store),"full");
         }
@@ -125,7 +125,7 @@ class Upload
                     if(is_null($this->_Error)){
                         $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
                         if(move_uploaded_file($_file['tmp_name'][$_i],
-                            str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
+                            replace(ROOT.$this->_Store).DS.$_upload_file)){
                             array_push($_folder,$_dir."/".$_upload_file);
                         }else{
                             $this->_Error = "Files upload failed";
@@ -155,7 +155,7 @@ class Upload
                 if(is_null($this->_Error)){
                     $_upload_file = sha1($_file["tmp_name"]).time().".".$_suffix;
                     if(move_uploaded_file($_file['tmp_name'],
-                        str_replace("/",DS,ROOT.$this->_Store).DS.$_upload_file)){
+                        replace(ROOT.$this->_Store).DS.$_upload_file)){
                         $_receipt = $_dir."/".$_upload_file;
                     }else{
                         $this->_Error = "Files upload failed";

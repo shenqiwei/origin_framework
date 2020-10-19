@@ -16,7 +16,7 @@ function write($folder,$context)
     $_receipt = false;
     logWrite:
     # 使用写入方式进行日志创建创建和写入
-    $_handle = fopen(ROOT.str_replace(RE_DS,DS,$folder),"a");
+    $_handle = fopen(ROOT.replace($folder),"a");
     if($_handle){
         # 执行写入操作，并返回操作回执
         $_receipt = fwrite($_handle,$context);

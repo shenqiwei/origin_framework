@@ -8,7 +8,7 @@ function initialize()
 {
     $_log = LOG_INITIALIZE.'initialize.log';
     # 判断日志文件
-    if(!is_file(str_replace("/",DS,ROOT.$_log))){
+    if(!is_file(replace(ROOT.$_log))){
         $_date = date("Y-m-d");
         # 调用日志
         note($_log,"Origin framework initialization on {$_date} ");
@@ -27,6 +27,7 @@ function initialize()
                 ROOT."application/".DEFAULT_APPLICATION."/template/index", # 默认应用模板目录
                 ROOT_RESOURCE,
                 RESOURCE_PUBLIC, # 公共文件目录
+                RESOURCE_PUBLIC."/font",
                 RESOURCE_PUBLIC."/temp", # 500,404自定义模板位置
                 RESOURCE_UPLOAD, # 上传文件目录
                 RESOURCE_BUFFER, # 缓存文件目录
@@ -41,6 +42,9 @@ function initialize()
                 ROOT."common"=> array(
                     "config/config.php",
                     "config/route.php",
+                ),
+                RESOURCE_PUBLIC => array(
+                    "font/origin001.ttf"
                 ),
             )
         );
@@ -57,7 +61,7 @@ function initialize()
                         note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...");
                     }else{
                         # 创建目录
-                        if(mkdir(str_replace("/",DS,$_array[$_i]),0777)){
+                        if(mkdir(replace($_array[$_i]),0777)){
                             note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[complete]");
                         }else{
                             note($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[failed]");
@@ -72,17 +76,17 @@ function initialize()
                         # 写入日志
                         $_datetime = date("Y-m-d H:i:s",time());
                         # 判断文件目录是否创建
-                        if(is_file(ROOT."application".str_replace("/",DS,"/{$_dir[$_i]}"))){
+                        if(is_file(ROOT."application".replace("/{$_dir[$_i]}"))){
                             note($_log,"[{$_datetime}] file：{$_dir[$_i]}, created...");
                         }else{
                             # 拷贝应用预设文件
-                            if(copy(ROOT.str_replace("/",DS,"origin/library/storage/{$_dir[$_i]}"),ROOT."application".str_replace("/",DS,"/{$_dir[$_i]}"))){
+                            if(copy(ROOT.replace("origin/library/storage/{$_dir[$_i]}"),ROOT."application".replace("/{$_dir[$_i]}"))){
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]");
                             }else{
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]");
                             }
                             # 修改权限
-                            if(chmod(ROOT."application".str_replace("/",DS,"/{$_dir[$_i]}"),0777)){
+                            if(chmod(ROOT."application".replace("/{$_dir[$_i]}"),0777)){
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit ...[complete]");
                             }else{
                                 note($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit...[failed]");

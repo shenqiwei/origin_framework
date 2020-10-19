@@ -51,7 +51,7 @@ class File
                 exit();
             }
         }
-        if(!is_file(str_replace("/",DS,ROOT.$_uri))){
+        if(!is_file(replace(ROOT.$_uri))){
             # 判断错误编号是否为初始状态
             $_guide = explode('/',$_uri);
             # 地址目录变量
@@ -118,7 +118,7 @@ class File
         switch (strtolower($operate)) {
             case 'full':
             case 'create':
-                $_fold = str_replace("/",DS,ROOT.$guide);
+                $_fold = replace(ROOT.$guide);
                 # 创建文件
                 if (strpos($_fold, '.')) {
                     if ($_file = fopen($_fold, 'w')) {
@@ -206,7 +206,7 @@ class File
                     }
                 }
                 # 装载整体结构
-                $_change = str_replace($_object, $name, str_replace("/",DS,ROOT.DS.$guide));
+                $_change = str_replace($_object, $name, replace(ROOT.DS.$guide));
                 if (!rename(ROOT.$guide, $_change)) {
                     if($throw){
                         $this->_Error = "Files[' . $guide . '] rename failed";
@@ -224,7 +224,7 @@ class File
             case 'remove':
                 # 执行删除
                 if (strpos($guide, '.')) {
-                    if (!unlink(str_replace("/",DS,ROOT.DS.$guide))) {
+                    if (!unlink(replace(ROOT.DS.$guide))) {
                         if($throw){
                             $this->_Error = 'Remove file[' . $guide . '] failed';
                         }else {
@@ -238,7 +238,7 @@ class File
                     }else
                         $_receipt= true;
                 } else {
-                    if (!rmdir(str_replace("/",DS,ROOT.DS.$guide))) {
+                    if (!rmdir(replace(ROOT.DS.$guide))) {
                         if($throw){
                             $this->_Error = 'Remove folder[' . $guide . '] failed';
                         }else {
@@ -305,7 +305,7 @@ class File
         }
         # 判断错误编号是否为初始状态
         # 调用路径文件验证
-        if(!is_file(str_replace("/",DS,ROOT.$_uri))){
+        if(!is_file(replace(ROOT.$_uri))){
             $_resource = $this->resource($_uri);
             # 判断返回值基本类型
             if (!$_resource) {
@@ -324,13 +324,13 @@ class File
         # 未发生错误执行
         switch ($operate) {
             case 'sr': # 序列化读取
-                $_receipt = file(str_replace("/",DS,ROOT.$guide));
+                $_receipt = file(replace(ROOT.$guide));
                 break;
             case 'rw': # 读写
-                $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r+');
+                $_receipt = fopen(replace(ROOT.$guide), 'r+');
                 break;
             case 'w': # 写入
-                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w');
+                $_write = fopen(replace(ROOT.$guide), 'w');
                 if ($_write) {
                     $_receipt = fwrite($_write, strval($msg));
                     fclose($_write);
@@ -338,35 +338,35 @@ class File
                 break;
             case 'lw': # 写入
             case 'cw': # 写入
-                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'w+');
+                $_write = fopen(replace(ROOT.$guide), 'w+');
                 if ($_write) {
                     $_receipt = fwrite($_write, strval($msg));
                     fclose($_write);
                 }
                 break;
             case 'bw': # 写入
-                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a');
+                $_write = fopen(replace(ROOT.$guide), 'a');
                 if ($_write) {
                     $_receipt = fwrite($_write, strval($msg));
                     fclose($_write);
                 }
                 break;
             case 'fw': # 写入
-                $_write = fopen(str_replace("/",DS,ROOT.$guide), 'a+');
+                $_write = fopen(replace(ROOT.$guide), 'a+');
                 if ($_write) {
                     $_receipt = fwrite($_write, strval($msg));
                     fclose($_write);
                 }
                 break;
             case 'rr': # 写入
-                $_receipt = file_get_contents(str_replace("/",DS,ROOT.$guide), false);
+                $_receipt = file_get_contents(replace(ROOT.$guide), false);
                 break;
             case 're': # 写入
-                $_receipt = file_put_contents(str_replace("/",DS,ROOT.$guide), strval($msg));
+                $_receipt = file_put_contents(replace(ROOT.$guide), strval($msg));
                 break;
             case 'r': # 读取
             default: # 默认状态与读取状态一致
-                $_receipt = fopen(str_replace("/",DS,ROOT.$guide), 'r');
+                $_receipt = fopen(replace(ROOT.$guide), 'r');
                 break;
         }
         return $_receipt;

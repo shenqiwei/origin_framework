@@ -11,7 +11,8 @@
     "ext-mongodb": "*",
     "ext-json": "*",
     "ext-curl": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "ext-gd": "*"
   },
   "repositories": {
     "packagist": {

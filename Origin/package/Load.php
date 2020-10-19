@@ -97,7 +97,7 @@ class Load
                     if(empty($_path_array) and $_path_array[0] != '0' or
                         strtolower($_path_array[$_i]) == DEFAULT_APPLICATION  or
                         (strtolower($_path_array[$_i]) != DEFAULT_APPLICATION and
-                            is_dir(str_replace('/', DS, ROOT."application/".strtolower($_path_array[0]))))) {
+                            is_dir(replace(ROOT."application/".strtolower($_path_array[0]))))) {
                         # 变更应用文件夹位置
                         $_catalogue = $_path_array[$_i] . "/";
                         # 指针下移
@@ -116,7 +116,7 @@ class Load
                     }
                 }
                 # 使用加载函数引入应用公共方法文件
-                $_public = str_replace(RE_DS,DS,ROOT."application/{$_catalogue}common/public.php");
+                $_public = replace(ROOT."application/{$_catalogue}common/public.php");
                 if(is_file($_public))
                     include($_public);
                 # 根据配置信息拼接控制器路径
@@ -124,7 +124,7 @@ class Load
                 # 初始化重启位置
                 load:
                 # 验证文件地址是否可以访问
-                if(!is_file(str_replace('/', DS, "application/{$_path}.php"))){
+                if(!is_file(replace("application/{$_path}.php"))){
                     if(DEBUG){
                         if(initialize()){
                             goto load;
@@ -132,11 +132,11 @@ class Load
                         try {
                             throw new Exception('Origin Loading Error: Not Fount Classes Document');
                         } catch (Exception $e) {
-                            self::error(str_replace('/', DS, "application/{$_path}.php"), $e->getMessage(), "File");
+                            self::error(replace("application/{$_path}.php"), $e->getMessage(), "File");
                             exit(0);
                         }
                     }else{
-                        $_404 = str_replace("/",DS,ROOT_RESOURCE."/public/temp/404.html");
+                        $_404 = replace(ROOT_RESOURCE."/public/temp/404.html");
                         if(!is_file($_404)){
                             echo("ERROR:404");
                             exit();
@@ -165,7 +165,7 @@ class Load
                     try {
                         throw new Exception('Origin Loading Error: Registration load failed');
                     } catch (Exception $e) {
-                        self::error(str_replace('/', DS, "application/{$_path}.php"), $e->getMessage(), "File");
+                        self::error(replace("application/{$_path}.php"), $e->getMessage(), "File");
                         exit(0);
                     }
                 }
@@ -231,7 +231,7 @@ class Load
             $_path = substr($route, $_start);
         $_receipt = $_path;
         # 创建路由文件目录变量
-        $_files = str_replace('/', DS, ROOT."application/config/route.php");
+        $_files = replace(ROOT."application/config/route.php");
         # 判断路由文件是否存在
         if(is_file($_files)){
             # 获取路由配置信息
@@ -269,6 +269,6 @@ class Load
     static function error($obj,$error,$type)
     {
         if(DEBUG or ERROR)
-            include(str_replace('/',DS,ORIGIN.'template/load.html'));
+            include(replace(ORIGIN.'template/404.html'));
     }
 }

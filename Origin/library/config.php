@@ -14,7 +14,7 @@ function config($item)
 {
     # 创建返回值变量
     $_receipt = null;
-    $_configuration = include(str_replace(RE_DS,DS,ROOT."common/config/config.php"));
+    $_configuration = include(replace(ROOT."common/config/config.php"));
     # 判断引导参数是否有效
     if(preg_match('/^[^_\W\s]+((\\\:|_)?[^_\W\s]+)*$/u', $item)){
         # 判断参数中是否存在引导连接符，当存在引导连接符，则将参数转为数组并赋入配置变量中，反之则直接赋入配置变量中
