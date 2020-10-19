@@ -204,10 +204,17 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
             );
             $this->param('welcome', $welcomes);
             $this->param('author', 'ShenQiwei');
-            $this->param('time', '2019/11/23');
+            $this->param('time', '2020/10/19');
             $this->template();
         }
     }
+    
+`use Origin\Package\Unit`用于引用origin内部封装出口文件，使用父类集成方式      
+`$this->param()`用于调用前端变量数据交换方法,方法参数（$key:变量名，$value:变量值）    
+`$this->template()`用于调用前端模板视图模板文件方法，结构视图模板地址(application/home/template/index/index.html)    
+使用上述，就可以简单设计一个web主页
+
+
 <span id='config'></span>
 ##### 基础配置    
 
