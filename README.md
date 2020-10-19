@@ -158,17 +158,15 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
         <td>┗font</td>
-        <td colspan="2">字体目录，内核封装的验证码字体初始化位置</td>
+        <td colspan="3">字体目录，内核封装的验证码字体初始化位置</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
         <td>┗temp</td>
-        <td colspan="2">自定义模板目录</td>
+        <td colspan="3">自定义模板目录</td>
     </tr>
     <tr>
         <td></td>
