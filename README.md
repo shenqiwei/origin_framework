@@ -317,6 +317,15 @@ origin在初期版本中预设了15个基本比对函数，由于新版本计划
 
 <span id='dao'></span>
 ##### 数据库    
+origin ver 1.0后数据支持Mysql，MariaDB，SQL server，PostgreSQL，Sqlite，Oracle，Mongodb（基础功能支持），Redis（部分结构支持）。
+功能实现封装在DB类中，使用时需预先在配置文件（common/config/config.php）中设置数据参数    
+
+    $_mysql = DB::mysql("origin");
+    $_select = $_mysql->table("member")->where(array("member_mobile"=>$mobile))->select();    
+这是一个简单的mysql select 实例，也可以用更简单的写法
+
+    $_select = $_mysql->query("select * from member where member_mobile = '{$mobile}'");
 
 <span id='history'></span>
 ##### 历史版本    
+2020 origin framework ver 1.0 bate online
