@@ -9,46 +9,54 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
     
 <table>
     <tr>
-        <th align="left">快速访问</th>
+        <th align="left">快速访问 -- menu</th>
     </tr>
     <tr>
-        <td>欢迎页</td>
+        <td><a href="#welcome">欢迎</a> -- welcome</td>
     </tr>
     <tr>
-        <td>文件目录</td>
+        <td><a href="#basic">文件目录</a> -- tree</td>
     </tr>
     <tr>
-        <td>基础功能</td>
+        <td><a href="#basic">基础功能</a> -- basic function</td>
     </tr>
     <tr>
-        <td>基础配置</td>
+        <td><a href="#config">基础配置</a> -- configuration</td>
     </tr>
     <tr>
-        <td>web标签</td>
+        <td><a href="#iif">web标签</a> -- include & if & for</td>
     </tr>
     <tr>
-        <td>对比函数</td>
+        <td><a href="#validate">对比函数</a> -- validate package</td>
     </tr>
     <tr>
-        <td>数据库</td>
+        <td><a href="#dao">数据库</a> -- DAO</td>
     </tr>
     <tr>
-        <td>历史版本</td>
+        <td><a href="#history">历史版本</a> -- history</td>
     </tr>
 </table>
     
-#####欢迎页    
+<span id='welcome'></span>
+##### 欢迎页    
 
-#####文件目录    
+<span id='tree'></span>
+##### 文件目录    
 
-#####基础功能    
+<span id='basic'></span>
+##### 基础功能    
 
-#####基础配置    
+<span id='config'></span>
+##### 基础配置    
 
-#####web标签    
+<span id='iif'></span>
+##### web标签    
 
-#####对比函数    
+<span id='validate'></span>
+##### 对比函数    
 
-#####数据库    
+<span id='dao'></span>
+##### 数据库    
 
-#####历史版本    
+<span id='history'></span>
+##### 历史版本    
