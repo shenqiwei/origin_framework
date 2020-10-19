@@ -22,20 +22,14 @@ function replace($uri)
 /**
  * 自定义验证方法
  * @access public
- * @param string $param 对象参数
- * @param int $min 最小界定值
- * @param int $max 最大界定值
  * @param string $regular 正则表达式
+ * @param string $param 对象参数
  * @return mixed
  */
-function is_true($param, $min=0, $max=0,$regular=null)
+function is_true($regular,$param)
 {
     $_validate = new Origin\Package\Validate($param);
-    if($_receipt = $_validate->_empty()){
-        if($_receipt = $_validate->_size($min,$max))
-            $_receipt = $_validate->_type($regular);
-    }
-    return $_receipt;
+    return $_validate->_type($regular);
 }
 /**
  * 请求器函数，通过调用内核控制器，实现请求结构功能，现有版本不支持put，delete请求支持
