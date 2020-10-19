@@ -5,20 +5,32 @@ Origin PHP framework 单一入口方式实现各应用功能访问，并利用MV
 
 Origin PHP framework 使用内封装结构创建一套简单的web标签工具包，以方便开发者在不使用PHP程序结构的前提下简单实现对数据内容的展示；
 
-Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿写（函数命名，封装逻辑表述）结构舍弃，完全新的定义结构和功能标记规则；
-
+Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿写（函数命名，封装逻辑表述）结构舍弃，完全新的定义结构和功能标记规则；    
+    
 <table>
     <tr>
-        <th>目录</th>
+        <th align="left">快速访问</th>
     </tr>
     <tr>
         <td>欢迎页</td>
     </tr>
     <tr>
-        <td>文件结构说明</td>
+        <td>文件目录</td>
     </tr>
     <tr>
-        <td>功能使用说明</td>
+        <td>基础功能</td>
+    </tr>
+    <tr>
+        <td>基础配置</td>
+    </tr>
+    <tr>
+        <td>web标签</td>
+    </tr>
+    <tr>
+        <td>对比函数</td>
+    </tr>
+    <tr>
+        <td>数据库</td>
     </tr>
     <tr>
         <td>历史版本说明</td>
