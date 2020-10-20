@@ -8,6 +8,8 @@
 */
 # 设置调试状态
 define('DEBUG',true);
+# 设置加载时间显示状态
+define('TIME',false);
 # 设置错误提示
 define('ERROR',false);
 # 代码重加载

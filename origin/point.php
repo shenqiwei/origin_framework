@@ -29,6 +29,8 @@ if(!defined("__PROTOCOL__")) define("__PROTOCOL__", isset($_SERVER["HTTPS"])? "h
 if(!defined("__HOST__")) define("__HOST__",__PROTOCOL__.$_SERVER["HTTP_HOST"]."/");
 # 调试状态常量
 if(!defined('DEBUG')) define('DEBUG',false);
+# 加载时间常量
+if(!defined('TIME')) define('TIME',false);
 # 错误信息常量
 if(!defined('ERROR')) define('ERROR',false);
 # 请求器类型

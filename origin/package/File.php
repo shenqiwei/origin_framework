@@ -32,6 +32,14 @@ class File
     }
     /**
      * @access public
+     * @return string
+     * @context 获取错误信息
+    */
+    function getError(){
+        return $this->_Error;
+    }
+    /**
+     * @access public
      * @param string $guide 文件路径
      * @return boolean
      * @content 检测文件路径索引结构完整度

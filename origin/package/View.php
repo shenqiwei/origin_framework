@@ -52,7 +52,7 @@ class View
                     if(is_file($_page)){
                         # 创建运行时间模板
                         $_temp = null;
-                        if(DEBUG){
+                        if(DEBUG and TIME){
                             $_temp = ORIGIN."template/200.html";
                             if(is_file(replace($_temp))){
                                 $_load_end = explode(" ",microtime());
