@@ -193,19 +193,21 @@ Index.php文件
         function __construct()
         {
             parent::__construct();
-            $this->param('title','Origin架构开发版');
-            $Origin = array('title' => 'Origin', 'version' => 'Ver.1.0');
-            $this->param('o', $Origin);
+            $this->param('title','origin framework');
         }
+    
         function index()
         {
             $welcomes = array(
-                '0'=>array('statement' => '你好！欢迎使用Origin框架'),
-                '1'=>array('statement' => 'Hello! Welcome to use Origin framework'),
+                array('statement' => '感谢使用Origin ver 1.0'),
+                array('statement' => 'Origin已经完成结构初始化，日志地址（common/log/initialize/initialize.log）'),
+                array('statement' => '若需要重新初始化，请删除application、common、resource文件夹并刷新浏览器'),
+                array('statement' => 'Origin的部分功能需要独立安装插件，请在使用前根据跟人需要进行匹配安装'),
+                array('statement' => 'Github地址：https://github.com/shenqiwei/origin_framework'),
+                array('statement' => '说明文档地址：https://github.com/shenqiwei/origin_readme'),
             );
-            $this->param('welcome', $welcomes);
-            $this->param('author', 'ShenQiwei');
-            $this->param('time', '2020/10/19');
+            $this->param("welcome",$welcomes);
+            $this->param("year",date("Y"));
             $this->template();
         }
     }
@@ -218,22 +220,25 @@ index.html文件
         <meta charset="UTF-8">
         <title>{$title}</title>
         <style>
-            body{background-color:green; font-family:微软雅黑; font-size:16px; color:floralwhite; top:0; left:0;}
+            html,body{ background-color: #115990; height: 100%; top:0; left: 0; padding: 0; margin: 0; color: #ffffff; }
+            .main{ width:40rem; }
+            .orange{ width: 4rem; font-size:4rem; padding:1rem 0 0 1rem; }
+            .o{ background-color: #009999; border-radius: 0.5rem; filter:alpha(opacity=94); -moz-opacity:0.94; opacity:0.94; }
+            .list ul li{ line-height: 1.5rem; }
+            .mark{ clear:both; list-style: none; line-height: 4rem; font-size:1rem; text-align: right; }
         </style>
     </head>
-    <body style="top:0px; left:0px;">
-    <div style="margin: 0px auto; width:380px;">
-        <h1 style="font-size:60px; margin: 0px;">{$o.title}</h1>
-        <div style="font-size:10px; text-align: right;">{$o.version}</div>
-        <br />
-        <div style="padding-bottom:8px;">{$welcome.[0].statement}</div>
-        <div style="padding-bottom:8px;text-align: right;">{$welcome.[1].statement}</div>
-        <br />
-        <div style="text-align: center; ">\author\:
-            <spac style="font-family: 'Arial Black'; font-size:13px; text-decoration: underline;">{$author}</spac>
-            \time\:
-            <spac style="font-family: 'Arial Black'; font-size:13px; text-decoration: underline;">{$time}</spac>
+    <body>
+    <div class="main">
+        <div class="orange"><span class="o">O</span>rigin.</div>
+        <div class="list">
+            <ul>
+                <for operation="$welcome">
+                <li>{$welcome.statement}</li>
+                </for>
+            </ul>
         </div>
+        <div class="mark">origin framework {$year}.</div>
     </div>
     </body>
     </html>
