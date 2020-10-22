@@ -35,7 +35,7 @@ abstract class Unit
     {
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key)){
-            $this->_Param[Junctor::$_Class][$key] = $value;
+            $this->_Param[Junction::$_Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
@@ -54,16 +54,16 @@ abstract class Unit
      */
     protected function template($template=null)
     {
-        $_page = Junctor::$_Function;
+        $_page = Junction::$_Function;
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
         $_dir = str_replace("classes/", '',
                 str_replace(DEFAULT_APPLICATION."/", '',
                     str_replace('application/', '',
-                        str_replace('\\', '/', strtolower(Junctor::$_Class)))));
+                        str_replace('\\', '/', strtolower(Junction::$_Class)))));
         if(is_null($template) and is_true($_regular, $template)){
             $_page = $template;
         }
-        View::view($_dir, $_page,$this->_Param[Junctor::$_Class],Junctor::$_LoadTime);
+        View::view($_dir, $_page,$this->_Param[Junction::$_Class],Junction::$_LoadTime);
     }
     /**
      * 返回执行对象类名
@@ -72,7 +72,7 @@ abstract class Unit
      */
     protected function get_class()
     {
-        return Junctor::$_Class;
+        return Junction::$_Class;
     }
     /**
      * 返回执行对象方法名
@@ -81,7 +81,7 @@ abstract class Unit
      */
     protected function get_function()
     {
-        return Junctor::$_Function;
+        return Junction::$_Function;
     }
     /**
      * 执行成功提示信息

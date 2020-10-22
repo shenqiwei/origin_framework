@@ -86,6 +86,6 @@ else error_reporting(0);
 # 引入主方法文件
 include('library/common.php');
 # 调用加载
-include('package/Junctor.php');
+include('package/Junction.php');
 # 启动加载函数
-Origin\Package\Junctor::initialize();
+Origin\Package\Junction::initialize();

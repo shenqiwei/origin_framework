@@ -96,3 +96,19 @@ function post($key, $default=null, $delete=false)
 {
     return request($key, $default, $delete,"post");
 }
+/**
+ * 会话
+ * @access public
+ * @param string $key 会话键名
+ * @param mixed $value 会话值
+ * @return mixed
+*/
+function session($key,$value=null)
+{
+    $_session = new \Origin\Package\Session();
+    if(is_null($value)){
+        return $_session->get($key);
+    }else{
+        return $_session->set($key,$value);
+    }
+}

@@ -44,29 +44,16 @@ class Upload
         'image/jpeg' => 'jpg',
         'image/gif' => 'gif',
     );
-     /**
-      * @access public
-      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
-     */
-     function input($input)
-     {
-         $this->_Input = $input;
-     }
     /**
      * @access public
+     * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @param array $type 上传文件类型
-     */
-    function type($type=null)
+     * @param int $size 上传文件大小，默认值 0
+    */
+    function condition($input, $type, $size=0)
     {
-        if(!is_null($type))
-            $this->_Type = $type;
-    }
-    /**
-     * @access public
-     * @param int $size 上传文件大小
-     */
-    function size($size=0)
-    {
+        $this->_Input = $input;
+        $this->_Type = $type;
         if(!empty(intval($size)))
             $this->_Size = $size;
     }

@@ -11,15 +11,22 @@ class Session
 {
     /**
      * @access public
+     * @context 构造函数
+    */
+    function __construct()
+    {
+        if(!ini_get('session.auto_start')) session_start();
+    }
+    /**
+     * @access public
      * @param string $option 设置项
      * @param string $key 会话键名
      * @return mixed
      * @context session会话设置
     */
-    static function edit($option,$key=null)
+    function edit($option,$key=null)
     {
         $_receipt = null;
-        if(!ini_get('session.auto_start')) session_start();
         # 获取session_id
         if($option == 'id') $_receipt = session_id();
         # 注销session会话
@@ -31,27 +38,25 @@ class Session
         # 重置session内值
         if($option == 'reset') session_reset();
         # 删除session的值
-        if($option == 'delete'){
+        if($option == 'delete')
             if(isset($_SESSION[$key])) unset($_SESSION[$key]);
-        }
         # 编码session信息
         if($option == 'encode') session_encode();
         # 解码session信息
         if($option == 'decode'){
             if(isset($_SESSION[$key])) session_decode($key);
         }
-        if(!ini_get('session.auto_start')) session_commit();
         return $_receipt;
     }
     /**
      * @access public
      * @param string $key 会话键名
      * @param mixed $value 值
+     * @return null
      * @context 创建会话值内容
     */
-    static function set($key,$value)
+    function set($key,$value)
     {
-        if(!ini_get('session.auto_start')) session_start();
         # 判断session传入参数是否有名称分割符号
         if(strpos($key, '.'))
             $key = array_filter(explode('.', $key));
@@ -84,7 +89,7 @@ class Session
             # 当值参数不等于null时，则修改当前session会话内容，并对内容进行转码
             $_SESSION[$key] = stripslashes($value);
         }
-        if(!ini_get('session.auto_start')) session_commit();
+        return null;
     }
     /**
      * @access public
@@ -94,7 +99,6 @@ class Session
     */
     function get($key)
     {
-        if(!ini_get('session.auto_start')) session_start();
         if(is_array($key)){
             if(count($key) > 3){
                 # 异常提示：session无法支持超过3个维度的数组结构
@@ -131,7 +135,12 @@ class Session
         }else{
             $_receipt = $_SESSION[$key] = null;
         }
-        if(!ini_get('session.auto_start')) session_commit();
         return $_receipt;
+    }
+
+    function __destruct()
+    {
+        // TODO: Implement __destruct() method.
+        if(!ini_get('session.auto_start')) session_commit();
     }
 }

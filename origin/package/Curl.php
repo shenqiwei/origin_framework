@@ -33,14 +33,14 @@ class Curl
     /**
      * @access public
      * @param string $url 访问地址
-     * @param string/array 访问参数，可以使用get参数结构或者（k/v）数组结构
+     * @param string|array $param 访问参数，可以使用get参数结构或者（k/v）数组结构
      * @param array $header 报文
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
      * @return mixed
      * @content get请求函数
      */
-    function get($url = null, $param = null, $header=array(), $ssl_peer = false, $ssl_host = false)
+    function get($url = null, $param = array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
         if (!is_null($url)) {
@@ -48,8 +48,6 @@ class Curl
             if(!empty($header)){
                 # 设置请求头
                 curl_setopt($_curl, CURLOPT_HTTPHEADER, $header);
-                # 返回response头部信息
-                curl_setopt($_curl, CURLOPT_HEADER, false);
             }
             curl_setopt($_curl, CURLOPT_URL, $url);
             curl_setopt($_curl, CURLOPT_POST, false);
@@ -72,14 +70,14 @@ class Curl
     /**
      * @access public
      * @param string $url 访问地址
-     * @param string/array 访问参数，（k/v）数组结构
+     * @param string|array $param 访问参数，（k/v）数组结构
      * @param array $header 报文
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
      * @return mixed
      * @content get请求函数
      */
-    function post($url, $param, $header=array(), $ssl_peer = false, $ssl_host = false)
+    function post($url=null, $param=array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
         if (!is_null($url)) {
@@ -87,8 +85,6 @@ class Curl
             if(!empty($header)){
                 # 设置请求头
                 curl_setopt($_curl, CURLOPT_HTTPHEADER, $header);
-                # 返回response头部信息
-                curl_setopt($_curl, CURLOPT_HEADER, false);
             }
             curl_setopt($_curl, CURLOPT_URL, $url);
             curl_setopt($_curl, CURLOPT_RETURNTRANSFER, true);

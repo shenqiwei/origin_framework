@@ -9,7 +9,7 @@ namespace Origin\Package;
 
 use Exception;
 
-class Junctor
+class Junction
 {
 //    const ROUTE_ITEM_NAME = "name";
     const ROUTE_ITEM_URI = "route";
@@ -269,7 +269,9 @@ class Junctor
     static function error($obj,$error,$type)
     {
         if(DEBUG or ERROR){
-            $_404 = replace(ORIGIN.'template/404.html');
+            if(!is_file($_404 = replace(RESOURCE_PUBLIC."/temp/404.html"))){
+                $_404 = replace(ORIGIN.'template/404.html');
+            }
             include("{$_404}");
         }
 

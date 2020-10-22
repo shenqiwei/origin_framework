@@ -94,7 +94,8 @@ class Verify
                 rand(5 * $this->_Width_Fold,115 * $this->_Width_Fold), rand(5 * $this->_Height_Fold, 45 * $this->_Height_Fold), $_line_color);
         }
         # 将对想信息存入session会话中
-        Session::set('Verify', $_var);
+        $_session = new Session();
+        $_session->set('Verify', $_var);
         # 设置页面输出格式
         header('Content-Type: image/png');
         # 以png形式输出图形信息
@@ -206,7 +207,8 @@ class Verify
                 rand(5 * $this->_Width_Fold,115 * $this->_Width_Fold), rand(5 * $this->_Height_Fold, 45 * $this->_Height_Fold), $_line_color);
         }
         # 将对想信息存入session会话中
-        Session::set('Verify', $_var);
+        $_session = new Session();
+        $_session->set('Verify', $_var);
         # 设置页面输出格式
         header('Content-Type: image/png');
         # 以png形式输出图形信息
@@ -249,7 +251,8 @@ class Verify
             $_result = ($_first_symbol+$_second_number) > 0 ? strval($_first_symbol+$_second_number) : '0';
             break;
         }
-        Session::set('Verify', $_result);
+        $_session = new Session();
+        $_session->set('Verify', $_var);
         # 创建比对数组
         $_han_lower = array('0'=>'零','1'=>'一','2'=>'二','3'=>'三','4'=>'四','5'=>'五','6'=>'六','7'=>'七','8'=>'八','9'=>'九');
         $_han_upper = array('0'=>'零','1'=>'壹','2'=>'贰','3'=>'叁','4'=>'肆','5'=>'伍','6'=>'陆','7'=>'七','8'=>'捌','9'=>'玖');

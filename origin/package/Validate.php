@@ -80,8 +80,8 @@ class Validate
      * 如果最小范围值等于小于0，最大范围值大于等于0，值进行小于等于值的验证、
      * 如果最小范围值和最小范围值小于等于0，则不限制大小，参数值全部默认等于0
      * @access public
-     * @param int|float|double $min
-     * @param int|float|double $max
+     * @param int|float $min
+     * @param int|float $max
      * @return boolean
     */
     public function _size($min=0,$max=0)
