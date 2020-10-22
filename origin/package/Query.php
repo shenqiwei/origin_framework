@@ -500,24 +500,24 @@ abstract class Query
      * 3.数组关系结构中，同级条件结构放在同一个上级数组内容
      * 3.当为字符串，要求条件信息符合SQL语句规则
      * @access public
-     * @param mixed $field
+     * @param mixed $condition
      * @return object
      */
-    function where($field=null)
+    function where($condition)
     {
         /**
          * 区别数据类型使用SQL命名规则对输入的字段名进行验证
          */
-        if(is_array($field)){# 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            $this->_Where = " where ".$this->multiWhere($field);
+        if(is_array($condition)){# 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
+            $this->_Where = " where ".$this->multiWhere($condition);
         }else{
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
-            if(!empty($field)){
+            if(!empty($condition)){
                 foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=','/\s+in\s+/'=>'in','/\s+nin\s+/'=>"not in") as $key => $value){
-                    $field = preg_replace($key, $value, $field);
+                    $field = preg_replace($key, $value, $condition);
                 }
-                $this->_Where = " where {$field}";
+                $this->_Where = " where {$condition}";
             }
         }
         return $this->__getSQL();
@@ -682,7 +682,7 @@ abstract class Query
     */
     protected $_Abs = null;
     /**
-     * 求正WW数值
+     * 求正整数值
      * @access public
      * @param mixed $field
      * @return object
@@ -833,7 +833,7 @@ abstract class Query
      * @param int second
      * @return object
     */
-    protected function mod($field,$second=0)
+    function mod($field,$second=0)
     {
         switch($this->_Data_Type){
             case "sqlite":
@@ -870,7 +870,7 @@ abstract class Query
      * @access public
      * @return object
     */
-    protected function random()
+    function random()
     {
         switch ($this->_Data_Type){
             case "pgsql":
@@ -900,7 +900,7 @@ abstract class Query
      * @param string $str
      * @return object
     */
-    protected function lTrim($field,$str=null)
+    function lTrim($field,$str=null)
     {
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
@@ -956,7 +956,7 @@ abstract class Query
      * @param string $str
      * @return object
      */
-    protected function trim($field,$str=null)
+    function trim($field,$str=null)
     {
         if($this->_Data_Type != "mssql"){
             if(is_array($field)){
@@ -1012,7 +1012,7 @@ abstract class Query
      * @param string $str
      * @return object
      */
-    protected function rTrim($field,$str=null)
+    function rTrim($field,$str=null)
     {
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
