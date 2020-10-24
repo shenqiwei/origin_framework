@@ -14,7 +14,7 @@ function config($item)
 {
     # 创建返回值变量
     $_receipt = null;
-    $_file = replace(ROOT."common/config/config.php");
+    $_file = replace(ROOT."/common/config/config.php");
     # 引入主配置文件
     $_configuration = include("{$_file}");
     # 判断引导参数是否有效

@@ -10,16 +10,16 @@ namespace Origin\Package\Redis;
 class Str
 {
     /**
-    * @var object $_Connect 数据库链接对象
+    * @var object $Connect 数据库链接对象
     */
-    private $_Connect = null;
+    private $Connect = null;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 创建元素对象值内容
@@ -30,7 +30,7 @@ class Str
      */
     function create($key,$value)
     {
-        $_receipt = $this->_Connect->set($key,$value);
+        $_receipt = $this->Connect->set($key,$value);
         if(strtolower($_receipt) === "ok")
             $_receipt = true;
         else
@@ -47,7 +47,7 @@ class Str
      */
     function createSec($key,$value,$second=0)
     {
-        $_receipt = $this->_Connect->setex($key,$value,intval($second));
+        $_receipt = $this->Connect->setex($key,$value,intval($second));
         if(strtolower($_receipt) === "ok")
             $_receipt = true;
         else
@@ -63,7 +63,7 @@ class Str
      */
     function createOnly($key,$value)
     {
-        return $this->_Connect->setnx($key,$value);
+        return $this->Connect->setnx($key,$value);
     }
     /**
      * 创建元素对象并，设置生命周期
@@ -75,7 +75,7 @@ class Str
      */
     function createMil($key,$value,$milli=0)
     {
-        $_receipt = $this->_Connect->psetex($key,$value,intval($milli));
+        $_receipt = $this->Connect->psetex($key,$value,intval($milli));
         if(strtolower($_receipt) === "ok")
             $_receipt = true;
         else
@@ -89,7 +89,7 @@ class Str
      */
     function get($key)
     {
-        $_receipt = $this->_Connect->get($key);
+        $_receipt = $this->Connect->get($key);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -103,7 +103,7 @@ class Str
      */
     function append($key,$value)
     {
-        return $this->_Connect->append($key,$value);
+        return $this->Connect->append($key,$value);
     }
     /**
      * 设置元素对象偏移值
@@ -115,7 +115,7 @@ class Str
      */
     function cBit($key,$offset,$value)
     {
-        return $this->_Connect->setBit($key,$offset,$value);
+        return $this->Connect->setBit($key,$offset,$value);
     }
     /**
      * 获取元素对象偏移值
@@ -126,7 +126,7 @@ class Str
      */
     function gBit($key,$offset)
     {
-        return $this->_Connect->getBit($key,$offset);
+        return $this->Connect->getBit($key,$offset);
     }
     /**
      * 检索元素对象值内容长度
@@ -136,7 +136,7 @@ class Str
      */
     function getLen($key)
     {
-        return $this->_Connect->strlen($key);
+        return $this->Connect->strlen($key);
     }
     /**
      * 检索元素对象值（区间截取）内容，（大于0的整数从左开始执行，小于0的整数从右开始执行）
@@ -148,7 +148,7 @@ class Str
      */
     function getRange($key,$start=1,$end=-1)
     {
-        $_receipt = $this->_Connect->getRange($key,$start,$end);
+        $_receipt = $this->Connect->getRange($key,$start,$end);
         if($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -162,7 +162,7 @@ class Str
      */
     function getRollback($key,$value)
     {
-        $_receipt = $this->_Connect->getSet($key,$value);
+        $_receipt = $this->Connect->getSet($key,$value);
         if($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -175,7 +175,7 @@ class Str
      */
     function createList($columns)
     {
-        $_receipt = $this->_Connect->mset($columns);
+        $_receipt = $this->Connect->mset($columns);
         if(strtolower($_receipt) === "ok")
             $_receipt = true;
         else
@@ -190,7 +190,7 @@ class Str
      */
     function createListOnly($columns)
     {
-        return $this->_Connect->msetnx($columns);
+        return $this->Connect->msetnx($columns);
     }
     /**
      * 检索元素列表
@@ -200,7 +200,7 @@ class Str
      */
     function getList($keys)
     {
-        $_receipt = $this->_Connect->mget($keys);
+        $_receipt = $this->Connect->mget($keys);
         if($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -218,13 +218,13 @@ class Str
         if(intval($increment) > 1){
             if(is_int($increment))
                 # 执行自定义递增操作
-                $_receipt = $this->_Connect->incrBy($key,intval($increment));
+                $_receipt = $this->Connect->incrBy($key,intval($increment));
             else
                 # 执行自定义递增(float,double)操作
-                $_receipt = $this->_Connect->incrByFloat($key,floatval($increment));
+                $_receipt = $this->Connect->incrByFloat($key,floatval($increment));
         }else
             # 执行递增1操作
-            $_receipt = $this->_Connect->incr($key);
+            $_receipt = $this->Connect->incr($key);
         return $_receipt;
     }
     /**
@@ -239,10 +239,10 @@ class Str
         # 判断系数条件是否为大于的参数值
         if(intval($decrement) > 1)
             # 执行自定义递减操作
-            $_receipt = $this->_Connect->decrBy($key,intval($decrement));
+            $_receipt = $this->Connect->decrBy($key,intval($decrement));
         else
             # 执行递减1操作
-            $_receipt = $this->_Connect->decr($key);
+            $_receipt = $this->Connect->decr($key);
         return $_receipt;
     }
 }

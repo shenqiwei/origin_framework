@@ -10,16 +10,16 @@ namespace Origin\Package\Redis;
 class Sequence
 {
     /**
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect = null;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 序列增加元素对象内容值
@@ -31,7 +31,7 @@ class Sequence
      */
     function add($key,$param,$value)
     {
-        return $this->_Connect->zAdd($key,$param,$value);
+        return $this->Connect->zAdd($key,$param,$value);
     }
     /**
      * 返回序列中元素对象内容数
@@ -41,7 +41,7 @@ class Sequence
      */
     function count($key)
     {
-        return $this->_Connect->zCard($key);
+        return $this->Connect->zCard($key);
     }
     /**
      * 序列元素对象中区间值数量
@@ -53,7 +53,7 @@ class Sequence
      */
     function mMCount($key,$min,$max)
     {
-        return $this->_Connect->zCount($key,$min,$max);
+        return $this->Connect->zCount($key,$min,$max);
     }
     /**
      * 序列中元素对象值增加自增系数
@@ -65,7 +65,7 @@ class Sequence
      */
     function ai($key,$increment,$value)
     {
-        $_receipt = $this->_Connect->zIncrBy($key,$increment,$value);
+        $_receipt = $this->Connect->zIncrBy($key,$increment,$value);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -81,7 +81,7 @@ class Sequence
      */
     function different($new,$key,$param,$second)
     {
-        return $this->_Connect->zInterStore($new,$key,$param,$second);
+        return $this->Connect->zInterStore($new,$key,$param,$second);
     }
     /**
      * 序列中字典区间值数量
@@ -93,7 +93,7 @@ class Sequence
      */
     function dictCount($key,$min,$max)
     {
-        return $this->_Connect->zLexCount($key,$min,$max);
+        return $this->Connect->zLexCount($key,$min,$max);
     }
     /**
      * 序列元素对象指定区间内容对象内容
@@ -105,7 +105,7 @@ class Sequence
      */
     function range($key,$min,$max)
     {
-        return $this->_Connect->zRange($key,$min,$max);
+        return $this->Connect->zRange($key,$min,$max);
     }
     /**
      * 序列元素对象指定字典区间内容
@@ -117,7 +117,7 @@ class Sequence
      */
     function dictRange($key,$min,$max)
     {
-        return $this->_Connect->zRangeByLex($key,$min,$max);
+        return $this->Connect->zRangeByLex($key,$min,$max);
     }
     /**
      * 序列元素对象指定分数区间内容
@@ -129,7 +129,7 @@ class Sequence
      */
     function limitRange($key,$min,$max)
     {
-        return $this->_Connect->zRangeByScore($key,$min,$max);
+        return $this->Connect->zRangeByScore($key,$min,$max);
     }
     /**
      * 返回有序集合中指定成员的索引
@@ -140,7 +140,7 @@ class Sequence
      */
     function index($key,$value)
     {
-        $_receipt = $this->_Connect->zRank($key,$value);
+        $_receipt = $this->Connect->zRank($key,$value);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -154,7 +154,7 @@ class Sequence
      */
     function remove($key,$value)
     {
-        return $this->_Connect->zRem($key,$value);
+        return $this->Connect->zRem($key,$value);
     }
     /**
      * 移除有序集合中给定的字典区间的所有成员
@@ -166,7 +166,7 @@ class Sequence
      */
     function dictRemove($key,$start,$end)
     {
-        return $this->_Connect->zRemRangeByLex($key,$start,$end);
+        return $this->Connect->zRemRangeByLex($key,$start,$end);
     }
     /**
      * 移除有序集中，指定排名(rank)区间内的所有成员
@@ -178,7 +178,7 @@ class Sequence
      */
     function dictRank($key,$start,$end)
     {
-        return $this->_Connect->zRemRangeByRank($key,$start,$end);
+        return $this->Connect->zRemRangeByRank($key,$start,$end);
     }
     /**
      * 移除有序集中，指定分数（score）区间内的所有成员
@@ -190,7 +190,7 @@ class Sequence
      */
     function dictScore($key,$min,$max)
     {
-        return $this->_Connect->zRemRangeByScore($key,$min,$max);
+        return $this->Connect->zRemRangeByScore($key,$min,$max);
     }
     /**
      * 返回有序集中，指定区间内的成员
@@ -202,7 +202,7 @@ class Sequence
      */
     function descRange($key,$start,$end)
     {
-        $_receipt = $this->_Connect->zRevRange($key,$start,$end);
+        $_receipt = $this->Connect->zRevRange($key,$start,$end);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -216,7 +216,7 @@ class Sequence
      */
     function score($key,$value)
     {
-        $_receipt = $this->_Connect->zScore($key,$value);
+        $_receipt = $this->Connect->zScore($key,$value);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;

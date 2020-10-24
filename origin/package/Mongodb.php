@@ -25,20 +25,20 @@ class Mongodb
 {
     /**
      * SQL基础验证正则表达式变量
-     * @var string $_Regular_Name_Confine
-     * @var string $_Regular_Comma_Confine_Confine
+     * @var string $NameConfine
+     * @var string $CommaConfineConfine
      */
-    protected $_Regular_Name_Confine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
-    protected $_Regular_Comma_Confine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
+    protected $NameConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
+    protected $CommaConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
 
     /**
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect = null;
     /**
-     * @var string $_DB 数据库对象
+     * @var string $DB 数据库对象
      */
-    protected $_DB = null;
+    protected $DB = null;
     /**
      * @access public
      * @param string $connect_name 配置源名称
@@ -75,8 +75,8 @@ class Mongodb
             $_mongo_user_pwd = null;
             if (isset($_mongo_user) and isset($_mongo_pwd))
                 $_mongo_user_pwd = $_mongo_user . ":" . $_mongo_pwd . "@";
-            $this->_Connect = new Manager("mongodb://" . $_mongo_user_pwd . $_mongo_host . ":" . $_mongo_port);
-            $this->_DB = $_connect_config['DATA_DB'];
+            $this->Connect = new Manager("mongodb://" . $_mongo_user_pwd . $_mongo_host . ":" . $_mongo_port);
+            $this->DB = $_connect_config['DATA_DB'];
         }
     }
     /**
@@ -126,7 +126,7 @@ class Mongodb
     {
         $this->_Set = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
-        if(is_true($this->_Regular_Comma_Confine, $set)){
+        if(is_true($this->CommaConfine, $set)){
             $this->_Set = strtolower($set);
         }else{
             try{
@@ -160,7 +160,7 @@ class Mongodb
         if(is_array($data)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             foreach($data as $_key => $_value){
-                if(is_true($this->_Regular_Name_Confine, $_key)){
+                if(is_true($this->NameConfine, $_key)){
                     $this->_Data[$_key] = $_value;
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
@@ -201,7 +201,7 @@ class Mongodb
         if(is_array($field)){
             $this->_Where = $field;
         }else{
-            if(is_true($this->_Regular_Name_Confine, $field)){
+            if(is_true($this->NameConfine, $field)){
                 switch(strtolower(trim($symbol))){
                     case "lt":
                         $this->_Where = array($field=>array("\$lt"=>$value));
@@ -301,7 +301,7 @@ class Mongodb
         if(is_array($field)){
             $_i = 0;
             foreach($field as $_key => $_type){
-                if(is_true($this->_Regular_Name_Confine, $field)){
+                if(is_true($this->NameConfine, $field)){
                     if(is_true($_regular_order_confine, $type)){
                         if($type == "asc")
                             $_type = 1;
@@ -314,7 +314,7 @@ class Mongodb
                 }
             }
         }else{
-            if(is_true($this->_Regular_Name_Confine, $field)){
+            if(is_true($this->NameConfine, $field)){
                 if(is_true($_regular_order_confine, $type)){
                     if($type == "asc")
                         $_type = 1;
@@ -437,7 +437,7 @@ class Mongodb
             # 调用Mongo命令函数count运算标明对象集合
             $_command = new Command(array("count"=>$this->_Set,"query"=>$_query));
             # 执行select操作并赋值到返回值变量中
-            $_cursor = $this->_Connect->executeCommand($this->_DB,$_command);
+            $_cursor = $this->Connect->executeCommand($this->DB,$_command);
             $_receipt = $_cursor->toArray()[0]->n;
         }catch(ConnectionTimeoutException $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
@@ -484,7 +484,7 @@ class Mongodb
             if($this->_ReadPreference)
                 $_readPreference = new ReadPreference(ReadPreference::RP_PRIMARY);
             # 执行select操作并赋值到返回值变量中
-            $_cursor = $this->_Connect->executeQuery($this->_DB.".".$this->_Set,$_query,$_readPreference);
+            $_cursor = $this->Connect->executeQuery($this->DB.".".$this->_Set,$_query,$_readPreference);
             # 执行列表转化
             foreach($_cursor as $_document)
             {
@@ -525,7 +525,7 @@ class Mongodb
             # 调用写入关系类，并设置超时时间
             $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->_Connect->executeBulkWrite($this->_DB.".".$this->_Set,$_insert,$_write);
+            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_insert,$_write);
             # 返回执行参数
             $_receipt = $_result->getInsertedCount();
         }catch (BulkWriteException $e){
@@ -558,7 +558,7 @@ class Mongodb
             # 调用写入关系类，并设置超时时间
             $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->_Connect->executeBulkWrite($this->_DB.".".$this->_Set,$_update,$_write);
+            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
             # 返回执行参数
             $_receipt = $_result->getModifiedCount();
         }catch (BulkWriteException $e){
@@ -591,7 +591,7 @@ class Mongodb
             # 调用写入关系类，并设置超时时间
             $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->_Connect->executeBulkWrite($this->_DB.".".$this->_Set,$_update,$_write);
+            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
             # 返回执行参数
             $_receipt = $_result->getDeletedCount();
         }catch (BulkWriteException $e){

@@ -10,16 +10,16 @@ namespace Origin\Package\Redis;
 class Lists
 {
     /**
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect = null;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 移出并获取列表的第一个元素
@@ -30,7 +30,7 @@ class Lists
      */
     function removeFirst($keys,$time)
     {
-        $_receipt = $this->_Connect->blPop($keys,$time);
+        $_receipt = $this->Connect->blPop($keys,$time);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -44,7 +44,7 @@ class Lists
      */
     function removeLast($keys,$time)
     {
-        $_receipt = $this->_Connect->brPop($keys,$time);
+        $_receipt = $this->Connect->brPop($keys,$time);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -59,7 +59,7 @@ class Lists
      */
     function reIn($key,$write,$time)
     {
-        $_receipt = $this->_Connect->brpoplpush($key,$write,$time);
+        $_receipt = $this->Connect->brpoplpush($key,$write,$time);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -72,7 +72,7 @@ class Lists
      * @return mixed
      */
     function index($key,$index){
-        $_receipt = $this->_Connect->lIndex($key,$index);
+        $_receipt = $this->Connect->lIndex($key,$index);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -93,7 +93,7 @@ class Lists
         }else{
             $_location = 1;
         }
-        return $this->_Connect->lInsert($key,$_location,$value,$write);
+        return $this->Connect->lInsert($key,$_location,$value,$write);
     }
     /**
      * 返回列表的长度
@@ -103,7 +103,7 @@ class Lists
      */
     function count($key)
     {
-        return $this->_Connect->lLen($key);
+        return $this->Connect->lLen($key);
     }
     /**
      * 移除并返回列表的第一个元素
@@ -113,7 +113,7 @@ class Lists
      */
     function popFirst($key)
     {
-        $_receipt = $this->_Connect->lPop($key);
+        $_receipt = $this->Connect->lPop($key);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -126,7 +126,7 @@ class Lists
      */
     function popLast($key)
     {
-        $_receipt = $this->_Connect->rPop($key);
+        $_receipt = $this->Connect->rPop($key);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -140,7 +140,7 @@ class Lists
      */
     function popWrite($key,$write)
     {
-        $_receipt = $this->_Connect->rpoplpush($key,$write);
+        $_receipt = $this->Connect->rpoplpush($key,$write);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -154,7 +154,7 @@ class Lists
      */
     function inFirst($key,$value)
     {
-        return $this->_Connect->lPush($key,$value);
+        return $this->Connect->lPush($key,$value);
     }
     /**
      * 在列表尾部插入一个或多个值
@@ -165,7 +165,7 @@ class Lists
      */
     function inLast($key,$value)
     {
-        return $this->_Connect->rPush($key,$value);
+        return $this->Connect->rPush($key,$value);
     }
     /**
      * 在已存在的列表头部插入一个值
@@ -176,7 +176,7 @@ class Lists
      */
     function inFFirst($key,$value)
     {
-        return $this->_Connect->lPushx($key,$value);
+        return $this->Connect->lPushx($key,$value);
     }
     /**
      * 在已存在的列表尾部插入一个值
@@ -187,7 +187,7 @@ class Lists
      */
     function inFLast($key,$value)
     {
-        return $this->_Connect->rPushx($key,$value);
+        return $this->Connect->rPushx($key,$value);
     }
     /**
      * 返回列表中指定区间内的元素
@@ -199,7 +199,7 @@ class Lists
      */
     function range($key,$start,$end)
     {
-        return $this->_Connect->lRange($key,$start,$end);
+        return $this->Connect->lRange($key,$start,$end);
     }
     /**
      * 根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素
@@ -211,7 +211,7 @@ class Lists
      */
     function rem($key,$count,$value)
     {
-        return $this->_Connect->lRem($key,$count,$value);
+        return $this->Connect->lRem($key,$count,$value);
     }
     /**
      * 设置索引元素对象
@@ -223,7 +223,7 @@ class Lists
      */
     function indexSet($key,$index,$value)
     {
-        return $this->_Connect->lSet($key,$index,$value);
+        return $this->Connect->lSet($key,$index,$value);
     }
     /**
      * 保留指定区间内的元素
@@ -235,6 +235,6 @@ class Lists
      */
     function trim($key,$start,$end)
     {
-        return $this->_Connect->lTrim($key,$start,$end);
+        return $this->Connect->lTrim($key,$start,$end);
     }
 }

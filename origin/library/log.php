@@ -16,7 +16,7 @@ function _log($folder,$context)
     $_receipt = false;
     logWrite:
     # 使用写入方式进行日志创建创建和写入
-    $_handle = fopen(ROOT.replace($folder),"a");
+    $_handle = fopen(ROOT.DS.replace($folder),"a");
     if($_handle){
         # 执行写入操作，并返回操作回执
         $_receipt = fwrite($_handle,$context);
@@ -28,8 +28,8 @@ function _log($folder,$context)
             $_new = null;
             for($_i = 0;$_i < count($_dir)-1;$_i++){
                 $_new .= DS.$_dir[$_i];
-                if(!is_dir(ROOT.$_new)){
-                    mkdir(ROOT.$_new,0777);
+                if(!is_dir(ROOT.DS.$_new)){
+                    mkdir(ROOT.DS.$_new,0777);
                 }
             }
             goto logWrite;

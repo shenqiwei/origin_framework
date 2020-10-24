@@ -13,26 +13,26 @@ use PDO;
 class Database extends Query
 {
     # 数据库连接
-    private $_Connect = null;
+    private $Connect = null;
     # select 为起始词
-    private $_Regular_Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
+    private $Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
     # 带count关键字段
-    private $_Regular_Select_Count = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
+    private $SelectCount = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
     # from 为起始词
-    private $_Regular_from = '/^(from)\s.*/';
+    private $From = '/^(from)\s.*/';
     # 获取select查询响应条数信息
-    private $_Row_Count = 0;
+    private $RowCount = 0;
     # 只有table
     # 构造函数
     function __construct($connect_name=null,$type="mysql")
     {
         if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql","sqlite","oracle","mariadb"))){
-            $this->_Data_Type = strtolower(trim($type));
+            $this->DataType = strtolower(trim($type));
         }
         $_connect_config = config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
-                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->_Data_Type
+                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->DataType
                     and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
                     $_connect_conf = $_connect_config[$_i];
                     break;
@@ -40,7 +40,7 @@ class Database extends Query
             }
             if(!isset($_connect_conf)){
                 for($_i = 0; $_i < count($_connect_config); $_i++){
-                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->_Data_Type)
+                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->DataType)
                         or !key_exists("DATA_TYPE",$_connect_config[$_i])){
                         $_connect_config = $_connect_config[$_i];
                         break;
@@ -48,7 +48,7 @@ class Database extends Query
                 }
             }else
                 $_connect_config = $_connect_conf;
-            switch($this->_Data_Type){
+            switch($this->DataType){
                 case "pgsql":
                     $_DSN = "pgsql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
@@ -69,7 +69,7 @@ class Database extends Query
                     $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
             }
-            if(!in_array($this->_Data_Type,array("sqlite"))){
+            if(!in_array($this->DataType,array("sqlite"))){
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_username = $_connect_config['DATA_USER']; # 数据库登录用户
                 $_password = $_connect_config['DATA_PWD']; # 登录密码
@@ -78,24 +78,24 @@ class Database extends Query
                     PDO::ATTR_PERSISTENT => true,
                 );
                 # 创建数据库连接对象
-                $this->_Connect = new PDO($_DSN, $_username, $_password, $_option);
+                $this->Connect = new PDO($_DSN, $_username, $_password, $_option);
             }else{
-                $this->_Connect = new PDO($_DSN);
+                $this->Connect = new PDO($_DSN);
             }
             # 设置数据库参数信息
-            $this->_Connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->Connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             # 是否使用持久链接
-            $this->_Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
+            $this->Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
             # SQL自动提交单语句
-            if(in_array($this->_Data_Type,array("oracle","mysql","mariadb")))
-                $this->_Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
+            if(in_array($this->DataType,array("oracle","mysql","mariadb")))
+                $this->Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
             # SQL请求超时时间
             if(intval(config('DATA_TIMEOUT')))
-                $this->_Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
+                $this->Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
             # SQL是否使用缓冲查询
             if(boolval(config('DATA_USE_BUFFER'))){
-                if(in_array($this->_Data_Type,array("mysql","mariadb")))
-                    $this->_Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
+                if(in_array($this->DataType,array("mysql","mariadb")))
+                    $this->Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
             }
         }
     }
@@ -107,9 +107,9 @@ class Database extends Query
      */
     function count()
     {
-        $_field = (!is_null($this->_Field))?"count({$this->_Field})":"count(*)";
+        $_field = (!is_null($this->Field))?"count({$this->Field})":"count(*)";
         # 起始结构
-        $_sql = "select {$_field} from {$this->_Table} {$this->_JoinOn} {$this->_Union} {$this->_Where}";
+        $_sql = "select {$_field} from {$this->Table} {$this->JoinOn} {$this->Union} {$this->Where}";
         # 返回数据
         return $this->query($_sql);
     }
@@ -121,38 +121,38 @@ class Database extends Query
     function select()
     {
         # 求总和
-        if(!is_null($this->_Total)){
-            if(!is_null($this->_Field))
-                $this->_Total = ','.$this->_Total;
+        if(!is_null($this->Total)){
+            if(!is_null($this->Field))
+                $this->Total = ','.$this->Total;
         }
         # 平均数信息 与field冲突，需要group by配合使用
-        if(!is_null($this->_Avg)){
-            if(!is_null($this->_Total))
-                $this->_Avg = ','.$this->_Avg;
+        if(!is_null($this->Avg)){
+            if(!is_null($this->Total))
+                $this->Avg = ','.$this->Avg;
         }
         # 最大值 与field冲突，需要group by配合使用
-        if(!is_null($this->_Max)){
-            if(!is_null($this->_Total) or !is_null($this->_Avg))
-                $this->_Max = ','.$this->_Max;
+        if(!is_null($this->Max)){
+            if(!is_null($this->Total) or !is_null($this->Avg))
+                $this->Max = ','.$this->Max;
 
         }
         # 最小值 与field冲突，需要group by配合使用
-        if(!is_null($this->_Min)){
-            if(!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max))
-                $this->_Min = ','.$this->_Min;
+        if(!is_null($this->Min)){
+            if(!is_null($this->Total) or !is_null($this->Avg) or !is_null($this->Max))
+                $this->Min = ','.$this->Min;
         }
         # 求和 与field冲突，需要group by配合使用
-        if(!is_null($this->_Sum)){
-            if(!is_null($this->_Total) or !is_null($this->_Avg) or !is_null($this->_Max) or !is_null($this->_Min))
-                $this->_Sum = ','.$this->_Sum;
+        if(!is_null($this->Sum)){
+            if(!is_null($this->Total) or !is_null($this->Avg) or !is_null($this->Max) or !is_null($this->Min))
+                $this->Sum = ','.$this->Sum;
         }
         # 添加查询头
         # 添加查询头
-        $_sql = "select {$this->_Field}{$this->_Top}{$this->_Total}{$this->_Avg}{$this->_Max}{$this->_Min}{$this->_Sum}{$this->_Abs}{$this->_Mod}".
-                "{$this->_Random}{$this->_L_Trim}{$this->_Trim}{$this->_R_Trim}{$this->_Replace}{$this->_UpperCase}{$this->_LowerCase}".
-                "{$this->_Mid}{$this->_Length}{$this->_Round}{$this->_Now}{$this->_Format}{$this->_Distinct}".
-                " from {$this->_Table} {$this->_JoinOn} {$this->_AsTable} {$this->_Union} {$this->_Where} {$this->_Group}".
-                " {$this->_Order} {$this->_Having} {$this->_Limit}";
+        $_sql = "select {$this->Field}{$this->Top}{$this->Total}{$this->Avg}{$this->Max}{$this->Min}{$this->Sum}{$this->Abs}{$this->Mod}".
+                "{$this->Random}{$this->LTrim}{$this->Trim}{$this->RTrim}{$this->Replace}{$this->UpperCase}{$this->LowerCase}".
+                "{$this->Mid}{$this->Length}{$this->Round}{$this->Now}{$this->Format}{$this->Distinct}".
+                " from {$this->Table} {$this->JoinOn} {$this->AsTable} {$this->Union} {$this->Where} {$this->Group}".
+                " {$this->Order} {$this->Having} {$this->Limit}";
         # 返回数据
         return $this->query($_sql);
     }
@@ -165,8 +165,8 @@ class Database extends Query
     {
         $_columns = null;
         $_values = null;
-        for($_i = 0; $_i < count($this->_Data); $_i++){
-            foreach($this->_Data[$_i] as $_key => $_value){
+        for($_i = 0; $_i < count($this->Data); $_i++){
+            foreach($this->Data[$_i] as $_key => $_value){
                 if($_i == 0){
                     $_columns = $_key;
                     if(is_integer($_value) or is_float($_value) or is_double($_value))
@@ -183,7 +183,7 @@ class Database extends Query
             }
         }
         # 执行主函数
-        $_sql = "insert into {$this->_Table} ({$_columns})value({$_values})";
+        $_sql = "insert into {$this->Table} ({$_columns})value({$_values})";
         # 返回数据
         return $this->query($_sql);
     }
@@ -195,8 +195,8 @@ class Database extends Query
     function update()
     {
         $_columns = null;
-        for($_i = 0; $_i < count($this->_Data); $_i++){
-            foreach($this->_Data[$_i] as $_key => $_value){
+        for($_i = 0; $_i < count($this->Data); $_i++){
+            foreach($this->Data[$_i] as $_key => $_value){
                 if($_i == 0){
                     if(is_integer($_value) or is_float($_value) or is_double($_value))
                         $_columns = $_key.'='.$_value;
@@ -211,7 +211,7 @@ class Database extends Query
             }
         }
         # 执行主函数
-        $_sql = "update {$this->_Table} set {$_columns} {$this->_Where}";
+        $_sql = "update {$this->Table} set {$_columns} {$this->Where}";
         # 返回数据
         return $this->query($_sql);
     }
@@ -223,7 +223,7 @@ class Database extends Query
     function delete()
     {
         # 执行主函数
-        $_sql = "delete from {$this->_Table} {$this->_Where}";
+        $_sql = "delete from {$this->Table} {$this->Where}";
         # 返回数据
         return $this->query($_sql);
     }
@@ -237,12 +237,12 @@ class Database extends Query
     {
         # 创建返回信息变量
         $_receipt = null;
-        if(is_true($this->_Regular_Select_Count, strtolower($query))){
+        if(is_true($this->SelectCount, strtolower($query))){
             $_select_count = null;
-        }elseif(is_true($this->_Regular_Select, strtolower($query))){
+        }elseif(is_true($this->Select, strtolower($query))){
             // 表示为完整的查询语句
             null;
-        }elseif(is_true($this->_Regular_from, strtolower($query))){
+        }elseif(is_true($this->From, strtolower($query))){
             $query = 'select * '.strtolower($query);
         }
         if(strpos(strtolower($query),"select ") === 0){
@@ -254,7 +254,7 @@ class Database extends Query
         }
         # 事务状态
         if(boolval(config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
-            $this->_Connect->beginTransaction();
+            $this->Connect->beginTransaction();
         # 条件运算结构转义
         foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
             $query = preg_replace($key, $value, $query);
@@ -265,14 +265,14 @@ class Database extends Query
         log($_uri,$_model_msg);
         try{
             # 执行查询搜索
-            $_statement = $this->_Connect->query(trim($query));
+            $_statement = $this->Connect->query(trim($query));
             # 返回查询结构
             if($_query_type === "select"){
                 # 回写select查询条数
-                $this->_Row_Count = $_statement->rowCount();
-                if($this->_Fetch_Type === 'nv')
+                $this->RowCount = $_statement->rowCount();
+                if($this->FetchType === 'nv')
                     $_receipt = $_statement->fetchAll(PDO::FETCH_NUM);
-                elseif($this->_Fetch_Type === 'kv')
+                elseif($this->FetchType === 'kv')
                     $_receipt = $_statement->fetchAll(PDO::FETCH_ASSOC);
                 else
                     if(isset($_select_count)){
@@ -281,14 +281,14 @@ class Database extends Query
                         $_receipt = $_statement->fetchAll();
                     }
             }elseif($_query_type === "insert")
-                $_receipt = $this->_Connect->lastInsertId($this->_Primary);
+                $_receipt = $this->Connect->lastInsertId($this->Primary);
             else
                 $_receipt = $_statement->rowCount();
             # 释放连接
             $_statement->closeCursor();
         }catch(PDOException $e){
             errorLog($e->getMessage());
-            exception("SQL Error",$this->_Connect->errorInfo(),debug_backtrace(0,1));
+            exception("SQL Error",$this->Connect->errorInfo(),debug_backtrace(0,1));
             exit();
         }
         return $_receipt;
@@ -298,14 +298,14 @@ class Database extends Query
      */
     function getCommit()
     {
-        $this->_Connect->commit();
+        $this->Connect->commit();
     }
     /**
      * 执行事务回滚
      */
     function getRollBack()
     {
-        $this->_Connect->rollBack();
+        $this->Connect->rollBack();
     }
     /**
      * @access public
@@ -313,7 +313,7 @@ class Database extends Query
      */
     function getRowCount()
     {
-        return $this->_Row_Count;
+        return $this->RowCount;
     }
     /**
      * @access public
@@ -421,6 +421,6 @@ class Database extends Query
      */
     function __destruct()
     {
-        $this->_Connect = null;
+        $this->Connect = null;
     }
 }

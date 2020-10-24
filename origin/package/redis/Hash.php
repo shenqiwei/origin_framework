@@ -12,14 +12,14 @@ class Hash
     /**
      * @var object $_Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 创建hash元素对象内容
@@ -31,7 +31,7 @@ class Hash
      */
     function create($key,$field,$value)
     {
-        return $this->_Connect->hSet($key, $field, $value);
+        return $this->Connect->hSet($key, $field, $value);
     }
     /**
      * @access public
@@ -41,7 +41,7 @@ class Hash
      */
     function createList($key,$array)
     {
-        return $this->_Connect->hMset($key,$array);
+        return $this->Connect->hMset($key,$array);
     }
     /**
      * 非替换创建hash元素对象内容
@@ -53,7 +53,7 @@ class Hash
      */
     function createNE($key,$field,$value)
     {
-        return $this->_Connect->hSetNx($key,$field,$value);
+        return $this->Connect->hSetNx($key,$field,$value);
     }
     /**
      * 获取hash元素对象内容
@@ -64,9 +64,9 @@ class Hash
      */
     function get($key,$field)
     {
-        if($this->_Connect->exists($key)) {
-            if ($this->_Connect->hExists($key, $field)) {
-                $_receipt = $this->_Connect->hGet($key, $field);
+        if($this->Connect->exists($key)) {
+            if ($this->Connect->hExists($key, $field)) {
+                $_receipt = $this->Connect->hGet($key, $field);
                 if ($_receipt === "nil")
                     $_receipt = null;
             }else{
@@ -85,8 +85,8 @@ class Hash
      */
     function lists($key)
     {
-        if($this->_Connect->exists($key)) {
-            $_receipt = $this->_Connect->hGetAll($key);
+        if($this->Connect->exists($key)) {
+            $_receipt = $this->Connect->hGetAll($key);
             if ($_receipt === "nil")
                 $_receipt = null;
         }else{
@@ -103,8 +103,8 @@ class Hash
      */
     function getList($key,$array)
     {
-        if($this->_Connect->exists($key)) {
-            $_receipt = $this->_Connect->hMGet($key,$array);
+        if($this->Connect->exists($key)) {
+            $_receipt = $this->Connect->hMGet($key,$array);
             if ($_receipt === "nil")
                 $_receipt = null;
         }else{
@@ -123,7 +123,7 @@ class Hash
      */
     function limit($key,$start,$pattern,$count)
     {
-        $_receipt = $this->_Connect->hScan($key,$start,$pattern,$count);
+        $_receipt = $this->Connect->hScan($key,$start,$pattern,$count);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -136,7 +136,7 @@ class Hash
      */
     function values($key)
     {
-        return $this->_Connect->hVals($key);
+        return $this->Connect->hVals($key);
     }
     /**
      * 删除元素对象内容
@@ -147,7 +147,7 @@ class Hash
      */
     function del($key,$field)
     {
-        return $this->_Connect->hDel($key,$field);
+        return $this->Connect->hDel($key,$field);
     }
     /**
      * 设置hash元素对象增量值
@@ -160,9 +160,9 @@ class Hash
     function plus($key,$field,$value)
     {
         if (is_float($value)) {
-            $_receipt = $this->_Connect->hIncrByFloat($key, $field, $value);
+            $_receipt = $this->Connect->hIncrByFloat($key, $field, $value);
         } else {
-            $_receipt = $this->_Connect->hIncrBy($key, $field, intval($value));
+            $_receipt = $this->Connect->hIncrBy($key, $field, intval($value));
         }
         return $_receipt;
     }
@@ -174,7 +174,7 @@ class Hash
      */
     function fields($key)
     {
-        return $this->_Connect->hKeys($key);
+        return $this->Connect->hKeys($key);
     }
     /**
      * 获取hash元素对象字段内容（域）长度
@@ -184,6 +184,6 @@ class Hash
      */
     function len($key)
     {
-        return $this->_Connect->hLen($key);
+        return $this->Connect->hLen($key);
     }
 }

@@ -17,13 +17,13 @@ class Junction
     /**
      * @access public
      * @static
-     * @var string $_Class
-     * @var string $_Function
-     * @var float $_LoadTime
+     * @var string $Class
+     * @var string $Function
+     * @var float $LoadTime
     */
-    public static $_Class = null;
-    public static $_Function = null;
-    public static $_LoadTime = 0.0;
+    public static $Class = null;
+    public static $Function = null;
+    public static $LoadTime = 0.0;
     /**
      * 默认模式，自动加载入口
      * @access public
@@ -31,11 +31,11 @@ class Junction
     static function initialize()
     {
         # 应用结构包调用
-        if(is_file($_common = replace(ROOT . "application/common/public.php")))
+        if(is_file($_common = replace(ROOT . "/application/common/public.php")))
             include("{$_common}");
         # 运行起始时间
-        self::$_LoadTime = explode(" ",microtime());
-        self::$_LoadTime = floatval(self::$_LoadTime[0])+floatval(self::$_LoadTime[1]);
+        self::$LoadTime = explode(" ",microtime());
+        self::$LoadTime = floatval(self::$LoadTime[0])+floatval(self::$LoadTime[1]);
         /**
          * 使用请求器和验证结构进行入口保护
          * @var string $_class 带命名空间信息的类信息
@@ -97,7 +97,7 @@ class Junction
                     if(empty($_path_array) and $_path_array[0] != '0' or
                         strtolower($_path_array[$_i]) == DEFAULT_APPLICATION  or
                         (strtolower($_path_array[$_i]) != DEFAULT_APPLICATION and
-                            is_dir(replace(ROOT."application/".strtolower($_path_array[0]))))) {
+                            is_dir(replace(ROOT."/application/".strtolower($_path_array[0]))))) {
                         # 变更应用文件夹位置
                         $_catalogue = $_path_array[$_i] . "/";
                         # 指针下移
@@ -116,7 +116,7 @@ class Junction
                     }
                 }
                 # 使用加载函数引入应用公共方法文件
-                $_public = replace(ROOT."application/{$_catalogue}common/public.php");
+                $_public = replace(ROOT."/application/{$_catalogue}common/public.php");
                 if(is_file($_public))
                     include("{$_public}");
                 # 根据配置信息拼接控制器路径
@@ -184,7 +184,7 @@ class Junction
                 }
                 # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
                 if(class_exists($_class)){
-                    self::$_Class = $_class;
+                    self::$Class = $_class;
                     # 声明类对象
                     $_object = new $_class();
                 }else{
@@ -204,7 +204,7 @@ class Junction
                 }
                 # 判断方法信息是否可以被调用
                 if(method_exists($_object, $_method) and is_callable(array($_object, $_method))){
-                    self::$_Function = $_method;
+                    self::$Function = $_method;
                     # 执行方法调用
                     $_object->$_method();
                 }else{
@@ -231,7 +231,7 @@ class Junction
             $_path = substr($route, $_start);
         $_receipt = $_path;
         # 创建路由文件目录变量
-        $_files = replace(ROOT."application/config/route.php");
+        $_files = replace(ROOT."/application/config/route.php");
         # 判断路由文件是否存在
         if(is_file($_files)){
             # 获取路由配置信息

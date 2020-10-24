@@ -12,7 +12,8 @@
     "ext-json": "*",
     "ext-curl": "*",
     "ext-mbstring": "*",
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "ext-redis": "*"
   },
   "repositories": {
     "packagist": {

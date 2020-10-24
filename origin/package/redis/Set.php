@@ -10,16 +10,16 @@ namespace Origin\Package\Redis;
 class Set
 {
     /**
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect = null;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 集合：向集合添加一个或多个成员
@@ -30,7 +30,7 @@ class Set
      */
     function add($key,$value)
     {
-        return $this->_Connect->sAdd($key,$value);
+        return $this->Connect->sAdd($key,$value);
     }
     /**
      * 获取集合内元素数量
@@ -40,7 +40,7 @@ class Set
      */
     function count($key)
     {
-        return $this->_Connect->sCard($key);
+        return $this->Connect->sCard($key);
     }
     /**
      * 获取两集合差值
@@ -51,7 +51,7 @@ class Set
      */
     function diff($key,$second)
     {
-        $_receipt = $this->_Connect->sDiff($key,$second);
+        $_receipt = $this->Connect->sDiff($key,$second);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -66,7 +66,7 @@ class Set
      */
     function different($key,$second,$new=null)
     {
-        return $this->_Connect->sDiffStore($new,$key,$second);
+        return $this->Connect->sDiffStore($new,$key,$second);
     }
     /**
      * 判断集合元素对象值是否存在元素对象中
@@ -77,7 +77,7 @@ class Set
      */
     function member($key,$value)
     {
-        return $this->_Connect->sIsMember($key,$value);
+        return $this->Connect->sIsMember($key,$value);
     }
     /**
      * 返回元素对象集合内容
@@ -87,7 +87,7 @@ class Set
      */
     function reSet($key)
     {
-        $_receipt = $this->_Connect->sMembers($key);
+        $_receipt = $this->Connect->sMembers($key);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -101,7 +101,7 @@ class Set
      */
     function move($key,$second,$value)
     {
-        return $this->_Connect->sMove($key,$second,$value);
+        return $this->Connect->sMove($key,$second,$value);
     }
     /**
      * 移除元素对象随机内容值
@@ -111,7 +111,7 @@ class Set
      */
     function pop($key)
     {
-        $_receipt = $this->_Connect->sPop($key);
+        $_receipt = $this->Connect->sPop($key);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -126,9 +126,9 @@ class Set
     function randMember($key,$count=1)
     {
         if($count > 1)
-            $_receipt = $this->_Connect->sRandMember($key);
+            $_receipt = $this->Connect->sRandMember($key);
         else
-            $_receipt = $this->_Connect->sRandMember($key,$count);
+            $_receipt = $this->Connect->sRandMember($key,$count);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -142,7 +142,7 @@ class Set
      */
     function remove($key,$value)
     {
-        return $this->_Connect->sRem($key,$value);
+        return $this->Connect->sRem($key,$value);
     }
     /**
      * 返回指定两个集合对象的并集
@@ -153,7 +153,7 @@ class Set
      */
     function merge($key,$second)
     {
-        $_receipt = $this->_Connect->sUnion($key,$second);
+        $_receipt = $this->Connect->sUnion($key,$second);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -168,7 +168,7 @@ class Set
      */
     function mergeTo($new,$key,$second)
     {
-        return $this->_Connect->sUnionStore($new,$key,$second);
+        return $this->Connect->sUnionStore($new,$key,$second);
     }
     /**
      * 迭代元素对象指定结构内容
@@ -181,7 +181,7 @@ class Set
      */
     function tree($key,$value,$cursor=0,$pattern="match")
     {
-        $_receipt = $this->_Connect->sScan($key,$cursor,$pattern,$value);
+        $_receipt = $this->Connect->sScan($key,$cursor,$pattern,$value);
         if ($_receipt === "nil")
             $_receipt = null;
         return $_receipt;

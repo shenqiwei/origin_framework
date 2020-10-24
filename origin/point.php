@@ -16,9 +16,9 @@ define("OS",PHP_OS);
 # 反路径连接符号
 define("RE_DS",(strpos(OS,"WIN") === false)?"\\":"/");
 # 主程序文件目录常量
-if(!defined('ROOT')) define('ROOT',dirname(__DIR__).DS);
+if(!defined('ROOT')) define('ROOT',dirname(__DIR__));
 # 封装目录
-if(!defined('ORIGIN')) define('ORIGIN',ROOT.'origin'.DS);
+if(!defined('ORIGIN')) define('ORIGIN',ROOT.DS.'origin'.DS);
 # 引述文件根地址
 if(!defined("ROOT_ADDRESS")) define("ROOT_ADDRESS",dirname(__FILE__));
 # 是否启用编码混成
@@ -40,7 +40,7 @@ if(!defined('DEFAULT_APPLICATION')) define('DEFAULT_APPLICATION','home');
 # 资源目录名
 if(!defined('DIR_RESOURCE')) define('DIR_RESOURCE','resource');
 # 资源目录访问地址
-if(!defined('ROOT_RESOURCE')) define('ROOT_RESOURCE',ROOT.DIR_RESOURCE);
+if(!defined('ROOT_RESOURCE')) define('ROOT_RESOURCE',ROOT.DS.DIR_RESOURCE);
 # 在线地址
 if(!defined('WEB_RESOURCE')) define('WEB_RESOURCE',__HOST__.DIR_RESOURCE);
 # 资源公共文件夹

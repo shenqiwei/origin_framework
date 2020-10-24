@@ -8,23 +8,23 @@ function initialize()
 {
     $_log = LOG_INITIALIZE.'initialize.log';
     # 判断日志文件
-    if(!is_file(replace(ROOT.$_log))){
+    if(!is_file(replace(ROOT.DS.$_log))){
         $_date = date("Y-m-d");
         # 调用日志
        _log($_log,"Origin framework initialization on {$_date} ".PHP_EOL);
         # 创建初始化列表
         $_ini = array(
             "catalog" => array( # 根目录
-                ROOT."application", # 应用目录
-                ROOT."application/common", # 应用公共函数目录
-                ROOT."common", # 公共文件目录
-                ROOT."common/config", # 配置文件目录
-                ROOT."common/log", # 日志文件目录
-                ROOT."application/".DEFAULT_APPLICATION, # 默认应用主目录
-                ROOT."application/".DEFAULT_APPLICATION."/common", # 默认应用公共函数目录
-                ROOT."application/".DEFAULT_APPLICATION."/classes", # 默认应用控制器目录
-                ROOT."application/".DEFAULT_APPLICATION."/template", # 默认应用模板目录
-                ROOT."application/".DEFAULT_APPLICATION."/template/index", # 默认应用模板目录
+                ROOT."/application", # 应用目录
+                ROOT."/application/common", # 应用公共函数目录
+                ROOT."/common", # 公共文件目录
+                ROOT."/common/config", # 配置文件目录
+                ROOT."/common/log", # 日志文件目录
+                ROOT."/application/".DEFAULT_APPLICATION, # 默认应用主目录
+                ROOT."/application/".DEFAULT_APPLICATION."/common", # 默认应用公共函数目录
+                ROOT."/application/".DEFAULT_APPLICATION."/classes", # 默认应用控制器目录
+                ROOT."/application/".DEFAULT_APPLICATION."/template", # 默认应用模板目录
+                ROOT."/application/".DEFAULT_APPLICATION."/template/index", # 默认应用模板目录
                 ROOT_RESOURCE,
                 RESOURCE_PUBLIC, # 公共文件目录
                 RESOURCE_PUBLIC."/font",
@@ -33,13 +33,13 @@ function initialize()
                 RESOURCE_BUFFER, # 缓存文件目录
             ),
             "folder" => array(
-                ROOT."application" => array(
+                ROOT."/application" => array(
                     "common/public.php",
                     DEFAULT_APPLICATION."/common/public.php",
                     DEFAULT_APPLICATION."/classes/Index.php",
                     DEFAULT_APPLICATION."/template/index/index.html",
                 ),
-                ROOT."common"=> array(
+                ROOT."/common"=> array(
                     "config/config.php",
                     "config/route.php",
                 ),
@@ -80,13 +80,13 @@ function initialize()
                            _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, created...".PHP_EOL);
                         }else{
                             # 拷贝应用预设文件
-                            if(copy(ROOT.replace("origin/library/storage/{$_dir[$_i]}"),$_directory.replace("/{$_dir[$_i]}"))){
+                            if(copy(ROOT.replace("/origin/library/storage/{$_dir[$_i]}"),$_directory.replace("/{$_dir[$_i]}"))){
                                _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]".PHP_EOL);
                             }else{
                                _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]".PHP_EOL);
                             }
                             # 修改权限
-                            if(chmod(ROOT."application".replace("/{$_dir[$_i]}"),0777)){
+                            if(chmod(ROOT."/application".replace("/{$_dir[$_i]}"),0777)){
                                _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit ...[complete]".PHP_EOL);
                             }else{
                                _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit...[failed]".PHP_EOL);

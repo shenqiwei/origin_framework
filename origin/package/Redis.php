@@ -19,7 +19,7 @@ class Redis
     /**
      * @var object $_Connect 数据库链接对象
     */
-    private $_Connect = null;
+    private $Connect = null;
     # 构造函数
     /**
      * @access public
@@ -50,39 +50,39 @@ class Redis
             # 创建数据库链接地址，端口，应用数据库信息变量
             $_redis_host = strtolower(trim($_connect_config['DATA_HOST']));
             $_redis_port = intval(strtolower(trim($_connect_config['DATA_PORT'])))?intval(strtolower(trim($_connect_config['DATA_PORT']))):6379;
-            $this->_Connect = new \Redis();
+            $this->Connect = new \Redis();
             if($_connect_config['DATA_P_CONNECT'])
-                $this->_Connect->pconnect($_redis_host,$_redis_port);
+                $this->Connect->pconnect($_redis_host,$_redis_port);
             else
-                $this->_Connect->connect($_redis_host,$_redis_port);
+                $this->Connect->connect($_redis_host,$_redis_port);
             if(!is_null($_connect_config['DATA_PWD']) and !empty($_connect_conf['DATA_PWD']))
-                $this->_Connect->auth($_connect_conf['DATA_PWD']);
+                $this->Connect->auth($_connect_conf['DATA_PWD']);
         }
     }
 
     function key()
     {
-        return new Key($this->_Connect);
+        return new Key($this->Connect);
     }
     function string()
     {
-        return new Str($this->_Connect);
+        return new Str($this->Connect);
     }
     function set()
     {
-        return new Set($this->_Connect);
+        return new Set($this->Connect);
     }
     function hash()
     {
-        return new Hash($this->_Connect);
+        return new Hash($this->Connect);
     }
     function lists()
     {
-        return new Lists($this->_Connect);
+        return new Lists($this->Connect);
     }
     function seq()
     {
-        return new Sequence($this->_Connect);
+        return new Sequence($this->Connect);
     }
     /**
      * 执行Redis刷新
@@ -93,9 +93,9 @@ class Redis
     function flush($obj="all")
     {
         if($obj == "db" or $obj == 1){
-            $_receipt = $this->_Connect->flushDB();
+            $_receipt = $this->Connect->flushDB();
         }else{
-            $_receipt = $this->_Connect->flushAll();
+            $_receipt = $this->Connect->flushAll();
         }
         return $_receipt;
     }
@@ -107,7 +107,7 @@ class Redis
     */
     function selectDB($db)
     {
-        return $this->_Connect->select($db);
+        return $this->Connect->select($db);
     }
     /**
      * 最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示
@@ -116,7 +116,7 @@ class Redis
     */
     function saveTime()
     {
-        return $this->_Connect->lastSave();
+        return $this->Connect->lastSave();
     }
 
     /**
@@ -126,7 +126,7 @@ class Redis
     */
     function time()
     {
-        return $this->_Connect->time();
+        return $this->Connect->time();
     }
     /**
      * 返回数据库容量使用信息
@@ -135,7 +135,7 @@ class Redis
     */
     function dbSize()
     {
-        return $this->_Connect->dbSize();
+        return $this->Connect->dbSize();
     }
     /**
      * 异步执行一个 AOF（AppendOnly File） 文件重写操作
@@ -144,7 +144,7 @@ class Redis
     */
     function bgAOF()
     {
-        return $this->_Connect->bgrewriteaof();
+        return $this->Connect->bgrewriteaof();
     }
     /**
      * 异步保存当前数据库的数据到磁盘
@@ -153,7 +153,7 @@ class Redis
     */
     function bgSave()
     {
-        return $this->_Connect->bgsave();
+        return $this->Connect->bgsave();
     }
     /**
      * 保存当前数据库的数据到磁盘
@@ -162,7 +162,7 @@ class Redis
      */
     function save()
     {
-        return $this->_Connect->save();
+        return $this->Connect->save();
     }
     /**
      * 析构函数
@@ -170,7 +170,7 @@ class Redis
     function __destruct()
     {
         // TODO: Implement __destruct() method.
-        if(!is_null($this->_Connect))
-            $this->_Connect = null;
+        if(!is_null($this->Connect))
+            $this->Connect = null;
     }
 }

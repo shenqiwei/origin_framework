@@ -16,52 +16,52 @@ class Label
 {
     /**
      * 变量标记标签规则
-     * @var string $_Var_Regular
+     * @var string $_Variable
     */
-    private $_Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
-    private $_Variable_I = '/\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?/';
+    private $Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
+    private $VariableI = '/\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?/';
     /**
      * 页面引入标签规则
-     * @var string $_Include_Regular <include href="src/html/page.html"/>
+     * @var string $IncludeRegular <include href="src/html/page.html"/>
      */
-    private $_Include_Regular = '/\<include\s+href\s*=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/';
+    private $Include = '/\<include\s+href\s*=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/';
     /**
      * 逻辑判断标记规则
-     * @var string $_Judge_Ci condition_information : 'variable eq conditions_variable'
-     * @var string $_Judge_Si Symbol
-     * @var string $_Judge_If if <if condition = 'variable eq conditions_variable'>
-     * @var string $_Judge_EF elseif <elseif condition = 'variable eq conditions_variable'/>
-     * @var string $_Judge_El else <else/>
-     * @var string $_Judge_El end </if>
+     * @var string $JudgeCi condition_information : 'variable eq conditions_variable'
+     * @var string $JudgeSi Symbol
+     * @var string $JudgeIf if <if condition = 'variable eq conditions_variable'>
+     * @var string $JudgeEF elseif <elseif condition = 'variable eq conditions_variable'/>
+     * @var string $JudgeEl else <else/>
+     * @var string $JudgeEl end </if>
      */
-//    private $_Judge_Si ='/\s(eq|gt|ge|lt|le|neq|heq|nheq|in)\s/';
-    private $_Judge_If = '/\<if\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Judge_EF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
-    private $_Judge_El = '/\<else[\/]?\>/';
-    private $_Judge_Ie = '/\<[\/]if\s*\>/';
+//    private $JudgeSi ='/\s(eq|gt|ge|lt|le|neq|heq|nheq|in)\s/';
+    private $JudgeIf = '/\<if\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $JudgeEF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
+    private $JudgeEl = '/\<else[\/]?\>/';
+    private $JudgeIe = '/\<[\/]if\s*\>/';
     /**
      * 循环执行标签规则
-     * @var string $_For_Operation 'variable to circulation_count'
-     * @var string $_For_Begin <for operation = 'variable to circulation_count'>
-     * @var string $_For_End </for>
+     * @var string $ForOperation 'variable to circulation_count'
+     * @var string $ForBegin <for operation = 'variable to circulation_count'>
+     * @var string $ForEnd </for>
      */
-//    private $_For_Operate = '/^.+(\s(to)\s.+(\s(by)\s.+)?)?$/';
-    private $_For_Begin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_For_End = '/<\/for\s*>/';
+//    private $ForOperate = '/^.+(\s(to)\s.+(\s(by)\s.+)?)?$/';
+    private $ForBegin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $ForEnd = '/<\/for\s*>/';
     /**
      * foreach循环标签规则
-     * @var string $_Foreach_Operation 'variable (as mark_variable)'
-     * @var string $_Foreach_Begin <foreach operation = 'variable (as mark_variable)'>
-     * @var string $_Foreach_End </foreach>
+     * @var string $ForeachOperation 'variable (as mark_variable)'
+     * @var string $ForeachBegin <foreach operation = 'variable (as mark_variable)'>
+     * @var string $ForeachEnd </foreach>
      */
-//    private $_Foreach_Operate= '/^.+\s(as)\s.+$/';
-    private $_Foreach_Begin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
-    private $_Foreach_End = '/\<[\/]foreach\s*\>/';
+//    private $ForeachOperate= '/^.+\s(as)\s.+$/';
+    private $ForeachBegin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
+    private $ForeachEnd = '/\<[\/]foreach\s*\>/';
     /**
      * 解析代码
-     * @var string $_Obj
+     * @var string $Obj
     */
-    private $_Obj;
+    private $Obj;
     /**
      * 构造方法 获取引用页面地址信息
      * @access public
@@ -69,7 +69,7 @@ class Label
      */
     function __construct($page)
     {
-        $this->_Obj = $page;
+        $this->Obj = $page;
     }
     /**
      * 默认函数，用于对模板中标签进行转化和结构重组
@@ -79,7 +79,7 @@ class Label
     function execute()
     {
         # 创建初始标签标记变量
-        $_obj = file_get_contents($this->_Obj);
+        $_obj = file_get_contents($this->Obj);
         # 去标签差异化
         $_obj = preg_replace('/\s*\\\:\s*(end)\s*\\\>/', ':end>',$_obj);
         # 转义引入结构
@@ -91,11 +91,11 @@ class Label
         # 去除空白注释
         $_obj = preg_replace('/\\\<\\\!\\\-\\\-\s*\\\-\\\-\\\>/',"\r\n",str_replace('<!---->','',$_obj));
         # 去多余标签结构
-        $_obj = preg_replace($this->_For_End, '', $_obj);
-        $_obj = preg_replace($this->_Foreach_End, '', $_obj);
-        $_obj = preg_replace($this->_Judge_EF, '', $_obj);
-        $_obj = preg_replace($this->_Judge_El, '', $_obj);
-        $_obj = preg_replace($this->_Judge_Ie, '', $_obj);
+        $_obj = preg_replace($this->ForEnd, '', $_obj);
+        $_obj = preg_replace($this->ForeachEnd, '', $_obj);
+        $_obj = preg_replace($this->JudgeEF, '', $_obj);
+        $_obj = preg_replace($this->JudgeEl, '', $_obj);
+        $_obj = preg_replace($this->JudgeIe, '', $_obj);
         # 遍历资源目录，替换资源信息
         $_obj = str_replace('__RESOURCE__',WEB_RESOURCE, $_obj);
         if(MARK_RELOAD){
@@ -112,7 +112,7 @@ class Label
     function __include($obj)
     {
         # 获取include标签信息
-        $_count = preg_match_all($this->_Include_Regular, $obj, $_include, PREG_SET_ORDER);
+        $_count = preg_match_all($this->Include, $obj, $_include, PREG_SET_ORDER);
         # 遍历include对象内容
         for($_i = 0;$_i < $_count; $_i++){
             # 拼接引入文件地址信息
@@ -120,7 +120,7 @@ class Label
             # 判断文件完整度
             if(is_file($_files)){
                 # 读取引入对象内容
-                $_mark = file_get_contents(ROOT.replace($_files));
+                $_mark = file_get_contents(ROOT.DS.replace($_files));
                 # 执行结构内容替换
                 $obj = str_replace($_include[$_i][0],$_mark,$obj);
             }
@@ -136,7 +136,7 @@ class Label
     function variable($obj)
     {
         # 传入参数为初始化状态，对代码段进行筛选过滤
-        preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+        preg_match_all($this->Variable, $obj, $_label, PREG_SET_ORDER);
         # 迭代标记信息
         for($i=0; $i<count($_label);$i++) {
             # 存在连接符号,拆分标记
@@ -177,7 +177,7 @@ class Label
             }
         }
         # 传入参数为初始化状态，对代码段进行筛选过滤
-        preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+        preg_match_all($this->VariableI, $obj, $_label, PREG_SET_ORDER);
         # 迭代标记信息
         for($i=0; $i<count($_label);$i++) {
             # 存在连接符号,拆分标记
@@ -229,7 +229,7 @@ class Label
     function __if($obj, $dr=true)
     {
         # 获取if标签
-        $_count = preg_match_all($this->_Judge_If,$obj , $_IF, PREG_SET_ORDER);
+        $_count = preg_match_all($this->JudgeIf,$obj , $_IF, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             # 获取条件内容
             $_condition =  preg_replace('/[\'\"]*/', '', $_IF[$_i][1]);
@@ -249,7 +249,7 @@ class Label
                 $obj = str_replace($_IF[$_i][0],"<?php if({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 获取elseif标签
-        $_count = preg_match_all($this->_Judge_EF, $obj, $_EF, PREG_SET_ORDER);
+        $_count = preg_match_all($this->JudgeEF, $obj, $_EF, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             # 获取条件内容
             $_condition =  preg_replace('/[\'\"]*/', '', $_EF[$_i][1]);
@@ -269,10 +269,10 @@ class Label
                 $obj = str_replace($_EF[$_i][0],"<?php }elseif({$_condition[0]} {$_symbol} {$_comparison}){?>",$obj);
         }
         # 转义else逻辑语法
-        if(preg_match_all($this->_Judge_El, $obj, $_ELSE, PREG_SET_ORDER))
+        if(preg_match_all($this->JudgeEl, $obj, $_ELSE, PREG_SET_ORDER))
             $obj = str_replace($_ELSE[0][0], "<?php }else{ ?>", $obj);
         # 转义if逻辑结尾标签
-        if(preg_match_all($this->_Judge_Ie, $obj, $_EIF, PREG_SET_ORDER))
+        if(preg_match_all($this->JudgeIe, $obj, $_EIF, PREG_SET_ORDER))
             $obj = str_replace($_EIF[0][0],"<?php } ?>",$obj);
         return $obj;
     }
@@ -304,13 +304,13 @@ class Label
     function __for($obj)
     {
         # 获取当前代码段中是否存在foreach标签
-        $_count = preg_match_all($this->_For_Begin, $obj, $_begin, PREG_SET_ORDER);
+        $_count = preg_match_all($this->ForBegin, $obj, $_begin, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
             $_operate_i = "\$i_".str_replace("\$",null,$_operate);
             $obj = str_replace($_begin[$_i][0],"<?php for({$_operate_i}=0;$_operate_i < count({$_operate});{$_operate_i}++){ ?>",$obj);
             # 传入参数为初始化状态，对代码段进行筛选过滤
-            preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+            preg_match_all($this->Variable, $obj, $_label, PREG_SET_ORDER);
             # 迭代标记信息
             for($i=0; $i<count($_label);$i++) {
                 # 存在连接符号,拆分标记
@@ -342,7 +342,7 @@ class Label
                 }
             }
             # 传入参数为初始化状态，对代码段进行筛选过滤
-            preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+            preg_match_all($this->VariableI, $obj, $_label, PREG_SET_ORDER);
             # 迭代标记信息
             for($i=0; $i<count($_label);$i++) {
                 # 存在连接符号,拆分标记
@@ -375,7 +375,7 @@ class Label
             }
         }
         # 转义foreach逻辑结尾标签
-        if(preg_match_all($this->_For_End, $obj, $_end, PREG_SET_ORDER))
+        if(preg_match_all($this->ForEnd, $obj, $_end, PREG_SET_ORDER))
             $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
         return $obj;
     }
@@ -387,7 +387,7 @@ class Label
     */
     function __foreach($obj)
     {
-        $_count = preg_match_all($this->_Foreach_Begin, $obj, $_begin, PREG_SET_ORDER);
+        $_count = preg_match_all($this->ForeachBegin, $obj, $_begin, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             $_operate = preg_replace('/[\'\"]*/', '', $_begin[$_i][1]);
             if(strpos($_operate," as ")){
@@ -396,7 +396,7 @@ class Label
                 $_operate = $_operate[0];
                 $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as \${$_as_name}){ ?>",$obj);
                 # 传入参数为初始化状态，对代码段进行筛选过滤
-                preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+                preg_match_all($this->Variable, $obj, $_label, PREG_SET_ORDER);
                 # 迭代标记信息
                 for($i=0; $i<count($_label);$i++) {
                     # 存在连接符号,拆分标记
@@ -428,7 +428,7 @@ class Label
                     }
                 }
                 # 传入参数为初始化状态，对代码段进行筛选过滤
-                preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+                preg_match_all($this->VariableI, $obj, $_label, PREG_SET_ORDER);
                 # 迭代标记信息
                 for($i=0; $i<count($_label);$i++) {
                     # 存在连接符号,拆分标记
@@ -463,7 +463,7 @@ class Label
                 $_as = "{$_operate}_i";
                 $obj = str_replace($_begin[$_i][0],"<?php foreach({$_operate} as {$_as}){ ?>",$obj);
                 # 传入参数为初始化状态，对代码段进行筛选过滤
-                preg_match_all($this->_Variable, $obj, $_label, PREG_SET_ORDER);
+                preg_match_all($this->Variable, $obj, $_label, PREG_SET_ORDER);
                 # 迭代标记信息
                 for($i=0; $i<count($_label);$i++) {
                     # 存在连接符号,拆分标记
@@ -495,7 +495,7 @@ class Label
                     }
                 }
                 # 传入参数为初始化状态，对代码段进行筛选过滤
-                preg_match_all($this->_Variable_I, $obj, $_label, PREG_SET_ORDER);
+                preg_match_all($this->VariableI, $obj, $_label, PREG_SET_ORDER);
                 # 迭代标记信息
                 for($i=0; $i<count($_label);$i++) {
                     # 存在连接符号,拆分标记
@@ -529,7 +529,7 @@ class Label
             }
         }
         # 转义foreach逻辑结尾标签
-        if(preg_match_all($this->_Foreach_End, $obj, $_end, PREG_SET_ORDER))
+        if(preg_match_all($this->ForeachEnd, $obj, $_end, PREG_SET_ORDER))
             $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
         return $obj;
     }

@@ -10,16 +10,16 @@ namespace Origin\Package\Redis;
 class Key
 {
     /**
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
-    private $_Connect = null;
+    private $Connect = null;
     /**
      * @access public
      * @param object $connect redis主类链接信息
      */
     function __construct($connect)
     {
-        $this->_Connect = $connect;
+        $this->Connect = $connect;
     }
     /**
      * 删除元素对象内容
@@ -29,8 +29,8 @@ class Key
      */
     function del($key)
     {
-        if($this->_Connect->exists($key)){
-            $_receipt = $this->_Connect->del($key);
+        if($this->Connect->exists($key)){
+            $_receipt = $this->Connect->del($key);
         }else{
             $_receipt = false;
         }
@@ -44,8 +44,8 @@ class Key
      */
     function dump($key)
     {
-        if($this->_Connect->exists($key)){
-            $_receipt = $this->_Connect->dump($key);
+        if($this->Connect->exists($key)){
+            $_receipt = $this->Connect->dump($key);
             if($_receipt === "nil")
                 $_receipt = null;
         }else{
@@ -62,7 +62,7 @@ class Key
      */
     function setTSC($key,$timestamp)
     {
-        return $this->_Connect->expireAt($key,$timestamp);
+        return $this->Connect->expireAt($key,$timestamp);
     }
     /**
      * 使用秒计时单位设置元素对象生命周期
@@ -73,7 +73,7 @@ class Key
      */
     function setSec($key,$second)
     {
-        return $this->_Connect->expire($key,$second);
+        return $this->Connect->expire($key,$second);
     }
     /**
      * 使用毫秒时间戳设置元素对象生命周期
@@ -84,7 +84,7 @@ class Key
      */
     function setTSM($key,$timestamp)
     {
-        return $this->_Connect->pExpireAt($key,$timestamp);
+        return $this->Connect->pExpireAt($key,$timestamp);
     }
     /**
      * 使用毫秒计时单位设置元素对象生命周期
@@ -95,7 +95,7 @@ class Key
      */
     function setMil($key,$millisecond)
     {
-        return $this->_Connect->pExpire($key,$millisecond);
+        return $this->Connect->pExpire($key,$millisecond);
     }
     /**
      * 移除元素目标生命周期限制
@@ -105,7 +105,7 @@ class Key
      */
     function rmCycle($key)
     {
-        return $this->_Connect->persist($key);
+        return $this->Connect->persist($key);
     }
     /**
      * 获取元素对象剩余周期时间(毫秒)
@@ -115,7 +115,7 @@ class Key
      */
     function pTTL($key)
     {
-        return $this->_Connect->pttl($key);
+        return $this->Connect->pttl($key);
     }
     /**
      * 获取元素对象剩余周期时间(秒)
@@ -125,7 +125,7 @@ class Key
      */
     function TTL($key)
     {
-        return $this->_Connect->ttl($key);
+        return $this->Connect->ttl($key);
     }
     /**
      * 获取搜索相近元素对象键
@@ -135,7 +135,7 @@ class Key
      */
     function keys($closeKey)
     {
-        $_receipt = $this->_Connect->keys($closeKey);
+        $_receipt = $this->Connect->keys($closeKey);
         if($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -147,7 +147,7 @@ class Key
      */
     function randKey()
     {
-        $_receipt = $this->_Connect->randomKey();
+        $_receipt = $this->Connect->randomKey();
         if($_receipt === "nil")
             $_receipt = null;
         return $_receipt;
@@ -161,8 +161,8 @@ class Key
      */
     function rnKey($key,$newKey)
     {
-        if($this->_Connect->exists($key)){
-            $_receipt = $this->_Connect->rename($key, $newKey);
+        if($this->Connect->exists($key)){
+            $_receipt = $this->Connect->rename($key, $newKey);
         }else{
             $_receipt = false;
         }
@@ -177,7 +177,7 @@ class Key
      */
     function irnKey($key,$newKey)
     {
-        return $this->_Connect->renameNx($key, $newKey);
+        return $this->Connect->renameNx($key, $newKey);
     }
     /**
      * 获取元素对象内容数据类型
@@ -187,7 +187,7 @@ class Key
      */
     function type($key)
     {
-        return $this->_Connect->type($key);
+        return $this->Connect->type($key);
     }
     /**
      * 将元素对象存入数据库
@@ -198,6 +198,6 @@ class Key
      */
     function inDB($key,$database)
     {
-        return $this->_Connect->move($key, $database);
+        return $this->Connect->move($key, $database);
     }
 }
