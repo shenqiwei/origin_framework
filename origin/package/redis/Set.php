@@ -47,7 +47,7 @@ class Set
      * @access public
      * @param string $key 索引元素对象键
      * @param string $second 比对元素对象键
-     * @return object
+     * @return mixed
      */
     function diff($key,$second)
     {
@@ -149,7 +149,7 @@ class Set
      * @access public
      * @param string $key 索引元素对象键
      * @param string $second 索引元素对象键
-     * @return object
+     * @return mixed
      */
     function merge($key,$second)
     {
@@ -177,7 +177,7 @@ class Set
      * @param string $value 索引值
      * @param int $cursor 执行标尺
      * @param string $pattern 操作参数
-     * @return object
+     * @return mixed
      */
     function tree($key,$value,$cursor=0,$pattern="match")
     {

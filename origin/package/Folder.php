@@ -168,4 +168,40 @@ class Folder
         }
         return $_receipt;
     }
+    /**
+     * @access public
+     * @param string $folder 文件夹地址
+     * @return mixed
+     * @context 获取文件夹信息
+    */
+    function get($folder)
+    {
+        $_receipt = null;
+        if(file_exists($_directory = replace(ROOT.DS.$folder))){
+            if($_dir = opendir($_directory)){
+                # 执行列表遍历
+                while($_folder = readdir($_dir) !== false){
+                    $_info = array(
+                        "folder_name" => $_folder,
+                        "folder_size" => filesize($_folder),
+                        "folder_type" => filetype($_folder),
+                        "folder_change_time" => filectime($_folder),
+                        "folder_access_time" => fileatime($_folder),
+                        "folder_move_time" => filemtime($_folder),
+                        "folder_owner" => fileowner($_folder),
+                        "folder_limit" => fileperms($_folder),
+                        "folder_read" => is_readable($_folder),
+                        "folder_write" => is_writable($_folder),
+                        "folder_execute" => is_executable($_folder),
+                        "folder_create_type" => is_uploaded_file($_folder)?"online":"location",
+                        "folder_uri" => $_directory.DS.$_folder,
+                    );
+                    array_push($_receipt,$_info);
+                }
+                # 释放
+                closedir($_dir);
+            }
+        }
+        return $_receipt;
+    }
 }

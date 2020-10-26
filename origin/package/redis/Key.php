@@ -113,7 +113,7 @@ class Key
      * @param string $key 被检索对象键名
      * @return int
      */
-    function pTTL($key)
+    function remaining($key)
     {
         return $this->Connect->pttl($key);
     }
@@ -121,9 +121,9 @@ class Key
      * 获取元素对象剩余周期时间(秒)
      * @access public
      * @param string $key 被检索对象键名
-     * @return object
+     * @return int
      */
-    function TTL($key)
+    function remain($key)
     {
         return $this->Connect->ttl($key);
     }
@@ -131,7 +131,7 @@ class Key
      * 获取搜索相近元素对象键
      * @access public
      * @param string $closeKey 相近元素对象（key*）
-     * @return object
+     * @return mixed
      */
     function keys($closeKey)
     {
@@ -143,7 +143,7 @@ class Key
     /**
      * 随机返回元素键
      * @access public
-     * @return object
+     * @return mixed
      */
     function randKey()
     {

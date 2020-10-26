@@ -66,7 +66,7 @@ class Str
         return $this->Connect->setnx($key,$value);
     }
     /**
-     * 创建元素对象并，设置生命周期
+     * 创建元素对象，并设置生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param mixed $value 被创建元素对象内容值
@@ -109,24 +109,24 @@ class Str
      * 设置元素对象偏移值
      * @access public
      * @param string $key 被创建对象键名
-     * @param int $offset 被创建元素对象内容值
-     * @param int $value 偏移系数
+     * @param int $value 被创建元素对象内容值
+     * @param int $offset 偏移系数
      * @return int
      */
-    function cBit($key,$offset,$value)
+    function cBit($key,$value,$offset)
     {
-        return $this->Connect->setBit($key,$offset,$value);
+        return $this->Connect->setBit($key,$value,$offset);
     }
     /**
      * 获取元素对象偏移值
      * @access public
      * @param string $key 被检索对象键名
-     * @param int $offset 被创建元素对象内容值
+     * @param int $value 被创建元素对象内容值
      * @return int
      */
-    function gBit($key,$offset)
+    function gBit($key,$value)
     {
-        return $this->Connect->getBit($key,$offset);
+        return $this->Connect->getBit($key,$value);
     }
     /**
      * 检索元素对象值内容长度
@@ -210,7 +210,7 @@ class Str
      * @access public
      * @param string $key 被检索对象键名
      * @param int $increment 自增系数值
-     * @return object
+     * @return mixed
      */
     function plus($key,$increment=1)
     {
@@ -232,7 +232,7 @@ class Str
      * @access public
      * @param string $key 被检索对象键名
      * @param int $decrement 自减系数值
-     * @return object
+     * @return mixed
      */
     function minus($key,$decrement=1)
     {

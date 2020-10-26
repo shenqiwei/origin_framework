@@ -71,7 +71,8 @@ class Lists
      * @param int $index 索引位置参数
      * @return mixed
      */
-    function index($key,$index){
+    function index($key,$index)
+    {
         $_receipt = $this->Connect->lIndex($key,$index);
         if ($_receipt === "nil")
             $_receipt = null;

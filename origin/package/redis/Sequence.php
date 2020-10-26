@@ -53,6 +53,7 @@ class Sequence
      */
     function mMCount($key,$min,$max)
     {
+        if($min > $max)
         return $this->Connect->zCount($key,$min,$max);
     }
     /**
@@ -61,7 +62,7 @@ class Sequence
      * @param string $key 索引元素对象键
      * @param mixed $increment 自增系数
      * @param mixed $value 值
-     * @return string
+     * @return mixed
      */
     function ai($key,$increment,$value)
     {

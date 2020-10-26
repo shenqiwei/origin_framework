@@ -98,13 +98,13 @@ class Hash
      * 获取hash元素对象内容
      * @access public
      * @param string $key 索引对象元素键
-     * @param array $array 字段数组列表
+     * @param array $fields 字段数组列表
      * @return mixed
      */
-    function getList($key,$array)
+    function getList($key,$fields)
     {
         if($this->Connect->exists($key)) {
-            $_receipt = $this->Connect->hMGet($key,$array);
+            $_receipt = $this->Connect->hMGet($key,$fields);
             if ($_receipt === "nil")
                 $_receipt = null;
         }else{

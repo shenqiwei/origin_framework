@@ -242,4 +242,31 @@ class File extends Folder
         }
         return $_receipt;
     }
+    /**
+     * @access public
+     * @param string $file 文件夹地址
+     * @return mixed
+     * @context 获取文件夹信息
+     */
+    function get($file)
+    {
+        $_receipt = null;
+        if(file_exists($_file = replace(ROOT.DS.$file))){
+            $_receipt = array(
+                "file_name" => $file,
+                "file_size" => filesize($_file),
+                "file_type" => filetype($_file),
+                "file_change_time" => filectime($_file),
+                "file_access_time" => fileatime($_file),
+                "file_move_time" => filemtime($_file),
+                "file_owner" => fileowner($_file),
+                "file_limit" => fileperms($_file),
+                "file_read" => is_readable($_file),
+                "file_write" => is_writable($_file),
+                "file_execute" => is_executable($_file),
+                "file_create_type" => is_uploaded_file($_file)?"online":"location",
+            );
+        }
+        return $_receipt;
+    }
 }
