@@ -47,8 +47,6 @@ if(!defined('WEB_RESOURCE')) define('WEB_RESOURCE',__HOST__.DIR_RESOURCE);
 if(!defined('RESOURCE_PUBLIC')) define('RESOURCE_PUBLIC',ROOT_RESOURCE.DS.'public');
 # 资源上传文件夹
 if(!defined('RESOURCE_UPLOAD')) define('RESOURCE_UPLOAD',ROOT_RESOURCE.DS.'upload');
-# 资源缓存文件夹
-if(!defined('RESOURCE_BUFFER')) define('RESOURCE_BUFFER',ROOT_RESOURCE.DS.'buffer');
 # 日志主目录
 if(!defined('ROOT_LOG')) define('ROOT_LOG','common'.DS.'log'.DS);
 # 服务请求链接日志

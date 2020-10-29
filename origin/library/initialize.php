@@ -27,10 +27,11 @@ function initialize()
                 ROOT."/application/".DEFAULT_APPLICATION."/template/index", # 默认应用模板目录
                 ROOT_RESOURCE,
                 RESOURCE_PUBLIC, # 公共文件目录
+                RESOURCE_PUBLIC."/cache",
                 RESOURCE_PUBLIC."/font",
-                RESOURCE_PUBLIC."/temp", # 500,404自定义模板位置
+                RESOURCE_PUBLIC."/queue",
+                RESOURCE_PUBLIC."/template", # 500,404自定义模板位置
                 RESOURCE_UPLOAD, # 上传文件目录
-                RESOURCE_BUFFER, # 缓存文件目录
             ),
             "folder" => array(
                 ROOT."/application" => array(

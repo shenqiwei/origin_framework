@@ -136,7 +136,7 @@ class Junction
                             exit(0);
                         }
                     }else{
-                        $_404 = replace(ROOT_RESOURCE."/public/temp/404.html");
+                        $_404 = replace(ROOT_RESOURCE."/public/template/404.html");
                         if(!is_file($_404)){
                             echo("ERROR:404");
                             exit();
@@ -269,7 +269,7 @@ class Junction
     static function error($obj,$error,$type)
     {
         if(DEBUG or ERROR){
-            if(!is_file($_404 = replace(RESOURCE_PUBLIC."/temp/404.html"))){
+            if(!is_file($_404 = replace(RESOURCE_PUBLIC."/template/404.html"))){
                 $_404 = replace(ORIGIN.'template/404.html');
             }
             include("{$_404}");

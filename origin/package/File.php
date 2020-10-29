@@ -128,6 +128,7 @@ class File extends Folder
      * @access public
      * @param string $file 文件路径
      * @param string $operate 操作类型
+     * @param int $size 限定读取大小
      * @param boolean $throw 捕捉异常
      * @return mixed
      * @contact 内容信息读取
@@ -137,7 +138,7 @@ class File extends Folder
      * sr: 数据结构读取操作 操作对应函数file
      * rr: 读取全文 调用对应函数 file_get_contents
      */
-    function read($file,$operate='r',$throw=false)
+    function read($file,$operate='r',$size=0,$throw=false)
     {
         # 设置返回对象
         $_receipt = false;
@@ -149,14 +150,16 @@ class File extends Folder
                     $_receipt = file($_folder);
                     break;
                 case 'rw': # 读写
-                    $_receipt = fopen($_folder, 'r+');
+                    $_handle = fopen($_folder, 'r+');
+                    $_receipt = fread($_handle,($size > 0)?$size:filesize($_folder));
                     break;
                 case 'rr': # 写入
                     $_receipt = file_get_contents($_folder, false);
                     break;
                 case 'r': # 读取
                 default: # 默认状态与读取状态一致
-                    $_receipt = fopen($_folder, 'r');
+                    $_handle = fopen($_folder, 'r');
+                    $_receipt = fread($_handle,($size > 0)?$size:filesize($_folder));
                     break;
             }
         }else{
@@ -187,7 +190,7 @@ class File extends Folder
      * fw：补充写入 操作方式：a+
      * re：重写 调用对应函数 file_put_contents
      */
-    function write($file,$operate='r',$msg=null,$throw=false)
+    function write($file,$operate='w',$msg=null,$throw=false)
     {
         # 设置返回对象
         $_receipt = false;

@@ -92,11 +92,13 @@ class Folder
             if(!$_receipt){
                 # 错误代码：00101，错误信息：文件创建失败
                 $this->Error = "Create folder [{$_folder}] failed";
-                try {
-                    throw new Exception($this->Error);
-                } catch (Exception $e) {
-                    exception("Folder Error", $e->getMessage(), debug_backtrace(0, 1));
-                    exit();
+                if(!$throw){
+                    try {
+                        throw new Exception($this->Error);
+                    } catch (Exception $e) {
+                        exception("Folder Error", $e->getMessage(), debug_backtrace(0, 1));
+                        exit();
+                    }
                 }
             }
         }

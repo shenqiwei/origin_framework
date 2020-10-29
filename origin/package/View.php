@@ -73,7 +73,7 @@ class View
                         # 获取解析后文件内容
                         $_cache_code = $_label->execute();
                         if(config("ROOT_USE_BUFFER")){
-                            $_debug_tmp = "resource/buffer/".sha1($_page).".tmp";
+                            $_debug_tmp = "resource/public/cache/".sha1($_page).".tmp";
                             $_file = new File();
                             $_cache_uri = replace(ROOT.DS.$_debug_tmp);
                             if(!is_file($_cache_uri) or time() > strtotime("+30 minutes",filemtime($_cache_uri))){
