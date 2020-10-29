@@ -143,14 +143,15 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
     <tr>
         <td></td>
         <td></td>
-        <td colspan="3">┗buffer</td>
-        <td colspan="2">缓存文件目录</td>
+        <td colspan="3">┗public</td>
+        <td colspan="2">功能文件目录</td>
     </tr>
     <tr>
         <td></td>
         <td></td>
-        <td colspan="3">┗public</td>
-        <td colspan="2">功能文件目录</td>
+        <td></td>
+        <td>┗cache</td>
+        <td colspan="3">缓存文件目录</td>
     </tr>
     <tr>
         <td></td>
@@ -163,7 +164,14 @@ Origin PHP framework 2020.9.16 至2020.10.18更新后版本以将部分原有仿
         <td></td>
         <td></td>
         <td></td>
-        <td>┗temp</td>
+        <td>┗queue</td>
+        <td colspan="3">队列缓冲文件目录</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>┗template</td>
         <td colspan="3">自定义模板目录</td>
     </tr>
     <tr>
