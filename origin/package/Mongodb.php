@@ -24,24 +24,22 @@ use MongoDB\Driver\Exception\WriteConcernException;
 class Mongodb
 {
     /**
-     * SQL基础验证正则表达式变量
-     * @var string $NameConfine
-     * @var string $CommaConfineConfine
+     * @access protected
+     * @var object $Connect 数据库链接对象
+     * @var string $DB 数据库对象
+     * @var object $_Object 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
+     * @var string $NameConfine SQL基础验证正则表达式变量
+     * @var string $CommaConfineConfine SQL基础验证正则表达式变量
      */
+    protected $Connect = null;
+    protected $DB = null;
+    protected $_Object = null;
     protected $NameConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
     protected $CommaConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
-
-    /**
-     * @var object $Connect 数据库链接对象
-     */
-    private $Connect = null;
-    /**
-     * @var string $DB 数据库对象
-     */
-    protected $DB = null;
     /**
      * @access public
      * @param string $connect_name 配置源名称
+     * @context 构造函数，预加载数据源配置信息
      */
     function __construct($connect_name=null)
     {
@@ -80,47 +78,43 @@ class Mongodb
         }
     }
     /**
-     * @var object $_Object
-     * 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
-     */
-    protected $_Object = null;
-    /**
-     * 回传类对象信息
      * @access public
      * @param object $object
+     * @context 回传类对象信息
      */
     function __setSQL($object)
     {
         $this->_Object = $object;
     }
     /**
-     * 获取类对象信息,仅类及其子类能够使用
      * @access public
      * @return object
+     * @context 获取类对象信息,仅类及其子类能够使用
      */
     protected function __getSQL()
     {
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var string $_Set 集合名称
      */
     protected $_Set = null;
     /**
-     * 集合（表）别名语法
-     * @access pblic
-     * @param string $table
+     * @access public
+     * @param string $table 表信息
      * @return object
+     * @context 集合（表）别名语法
     */
     function table($table)
     {
         return $this->set($table);
     }
     /**
-     * 集合对象约束函数
      * @access public
      * @param string $set
      * @return object
+     * @context 集合对象约束函数
      */
     function set($set)
     {
@@ -139,14 +133,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var array $_Data 数据数组变量
      */
     protected $_Data = null;
     /**
-     * 数据数组方法
      * @access public
      * @param array $data 数据数组
      * @return object
+     * @context 数据数组方法
      */
     function data($data)
     {
@@ -184,17 +179,17 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var array $_Where 条件数组约束变量
      */
     protected $_Where = null;
-
     /**
-     * 条件约束方法
      * @access public
      * @param string|array $field 条件对象键（条件数组）
      * @param mixed $value 条件值
      * @param string $symbol 运算符号
      * @return object
+     * @context 条件约束方法
      */
     function where($field,$value=null,$symbol="eq")
     {
@@ -246,14 +241,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var array $_Projection 映射数组约束变量
      */
     protected $_Projection = null;
     /**
-     * 映射约束方法
      * @access public
      * @param array $projection 投射参数
      * @return object
+     * @context 映射约束方法
      */
     function projection($projection)
     {
@@ -275,22 +271,22 @@ class Mongodb
      */
     protected $_Sort = null;
     /**
-     * 排序别名语法
-     * @access pblic
+     * @access public
      * @param string $field 排序键
      * @param string $type 排序方式
      * @return object
+     * @context 排序别名语法
      */
     function order($field,$type)
     {
         return $this->sort($field,$type);
     }
     /**
-     * 排序约束方法
      * @access public
      * @param string $field 排序键
      * @param string $type 排序方式
      * @return object
+     * @context 排序约束方法
      */
     function sort($field,$type="asc")
     {
@@ -327,15 +323,16 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var array $_Limit 显示数量数组约束变量
      */
     protected $_Limit = null;
     /**
-     * 显示数量方法
      * @access public
      * @param int $start 标尺起始位置，当不设置length内容时，该参数与length等同
      * @param int $length 显示数量
      * @return object
+     * @context 显示数量方法
      */
     function limit($start, $length=0)
     {
@@ -350,14 +347,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var array $_Skip 跳出数量数组约束变量
      */
     protected $_Skip = null;
     /**
-     * 跳过数量方法
      * @access public
      * @param array $skip
      * @return object
+     * @context 跳过数量方法
      */
     function skip($skip)
     {
@@ -365,14 +363,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var boolean $_Multi 执行符合要求更新
      */
     protected $_Multi = false;
     /**
-     * 执行同步更新设置函数
      * @access public
      * @param boolean $set
      * @return object
+     * @context 执行同步更新设置函数
      */
     function multi($set=false)
     {
@@ -382,14 +381,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var boolean $_Upset 执行无效对象新建
      */
     protected $_Upsert = false;
     /**
-     * 执行无效对象新建设置函数
      * @access public
      * @param boolean $set
      * @return object
+     * @context 执行无效对象新建设置函数
      */
     function upsert($set=false)
     {
@@ -399,14 +399,15 @@ class Mongodb
         return $this->_Object;
     }
     /**
+     * @access protected
      * @var boolean $_ReadPreference 执行读写分离
      */
     protected  $_ReadPreference = false;
     /**
-     * 执行读取分离设置函数
      * @access public
      * @param boolean $set
      * @return object
+     * @context 执行读取分离设置函数
      */
     function readPreference($set=false)
     {
@@ -416,10 +417,10 @@ class Mongodb
         return $this->_Object;
     }
     /**
-     * 查询总数
      * @access public
      * @return mixed
      * @throws
+     * @context 查询总数
      */
     function count()
     {
@@ -455,10 +456,10 @@ class Mongodb
         return $_receipt;
     }
     /**
-     * 查询
      * @access public
      * @return mixed
      * @throws
+     * @context 查询
      */
     function select()
     {
@@ -506,9 +507,9 @@ class Mongodb
         return $_receipt;
     }
     /**
-     * 插入
      * @access public
      * @return mixed
+     * @context 插入
      */
     function insert()
     {
@@ -544,9 +545,9 @@ class Mongodb
         return $_receipt;
     }
     /**
-     * 修改
      * @access public
      * @return mixed
+     * @context 修改
      */
     function update()
     {
@@ -577,9 +578,9 @@ class Mongodb
         return $_receipt;
     }
     /**
-     * 删除
      * @access public
      * @return mixed
+     * @context 删除
      */
     function delete()
     {

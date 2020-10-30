@@ -15,27 +15,27 @@ use Exception;
 abstract class Unit
 {
     /**
-     * 装载参数信息数组
-     * @var array $_Param_Array
+     * @access private
+     * @var array $Param 装载参数信息数组
     */
-    private $_Param = array();
+    private $Param = array();
     /**
-     * 构造方法，获取当前操作类信息
      * @access public
+     * @context 构造方法，获取当前操作类信息
     */
     function __construct()
     {}
     /**
-     * 向模板加载数据信息
      * @access protected
      * @param string $key
      * @param mixed $value
+     * @context 向模板加载数据信息
     */
     protected function param($key, $value)
     {
         $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
         if(is_true($_regular, $key)){
-            $this->_Param[Junction::$Class][$key] = $value;
+            $this->Param[Junction::$Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
@@ -48,9 +48,9 @@ abstract class Unit
         }
     }
     /**
-     * 调用模板方法
      * @access protected
      * @param string $template 视图模板
+     * @context 调用模板方法
      */
     protected function template($template=null)
     {
@@ -63,32 +63,32 @@ abstract class Unit
         if(is_null($template) and is_true($_regular, $template)){
             $_page = $template;
         }
-        View::view($_dir, $_page,$this->_Param[Junction::$Class],Junction::$LoadTime);
+        View::view($_dir, $_page,$this->Param[Junction::$Class],Junction::$LoadTime);
     }
     /**
-     * 返回执行对象类名
      * @access protected
      * @return string
+     * @context 返回执行对象类名
      */
     protected function get_class()
     {
         return Junction::$Class;
     }
     /**
-     * 返回执行对象方法名
      * @access protected
      * @return string
+     * @context 返回执行对象方法名
      */
     protected function get_function()
     {
         return Junction::$Function;
     }
     /**
-     * 执行成功提示信息
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
+     * @context 执行成功提示信息
     */
     protected function success($message='success',$url='#',$time=3)
     {
@@ -96,11 +96,11 @@ abstract class Unit
         Output::output($time, $message, $url, $_setting);
     }
     /**
-     * 错误提示
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
+     * @context 错误提示
     */
     protected function error($message='error',$url='#',$time=3)
     {
@@ -110,6 +110,7 @@ abstract class Unit
     /**
      * @access public
      * @param array $array
+     * @context json格式输出
     */
     protected function json($array=null)
     {

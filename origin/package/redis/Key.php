@@ -10,6 +10,7 @@ namespace Origin\Package\Redis;
 class Key
 {
     /**
+     * @access private
      * @var object $Connect 数据库链接对象
      */
     private $Connect = null;
@@ -22,10 +23,10 @@ class Key
         $this->Connect = $connect;
     }
     /**
-     * 删除元素对象内容
      * @access public
      * @param string $key 被检索对象键名
      * @return bool
+     * @context 删除元素对象内容
      */
     function del($key)
     {
@@ -37,10 +38,10 @@ class Key
         return $_receipt;
     }
     /**
-     * 序列化元素对象内容
      * @access public
      * @param string $key 被检索对象键名
      * @return mixed
+     * @context 序列化元素对象内容
      */
     function dump($key)
     {
@@ -54,84 +55,84 @@ class Key
         return $_receipt;
     }
     /**
-     * 使用时间戳设置元素对象生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param int $timestamp 时间戳
      * @return bool
+     * @context 使用时间戳设置元素对象生命周期
      */
     function setTSC($key,$timestamp)
     {
         return $this->Connect->expireAt($key,$timestamp);
     }
     /**
-     * 使用秒计时单位设置元素对象生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param int $second 时间戳
      * @return bool
+     * @context 使用秒计时单位设置元素对象生命周期
      */
     function setSec($key,$second)
     {
         return $this->Connect->expire($key,$second);
     }
     /**
-     * 使用毫秒时间戳设置元素对象生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param int $timestamp 时间戳
      * @return bool
+     * @context 使用毫秒时间戳设置元素对象生命周期
      */
     function setTSM($key,$timestamp)
     {
         return $this->Connect->pExpireAt($key,$timestamp);
     }
     /**
-     * 使用毫秒计时单位设置元素对象生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param int $millisecond 时间戳
      * @return bool
+     * @context 使用毫秒计时单位设置元素对象生命周期
      */
     function setMil($key,$millisecond)
     {
         return $this->Connect->pExpire($key,$millisecond);
     }
     /**
-     * 移除元素目标生命周期限制
      * @access public
      * @param string $key 被检索对象键名
      * @return bool
+     * @context 移除元素目标生命周期限制
      */
     function rmCycle($key)
     {
         return $this->Connect->persist($key);
     }
     /**
-     * 获取元素对象剩余周期时间(毫秒)
      * @access public
      * @param string $key 被检索对象键名
      * @return int
+     * @context 获取元素对象剩余周期时间(毫秒)
      */
     function remaining($key)
     {
         return $this->Connect->pttl($key);
     }
     /**
-     * 获取元素对象剩余周期时间(秒)
      * @access public
      * @param string $key 被检索对象键名
      * @return int
+     * @context 获取元素对象剩余周期时间(秒)
      */
     function remain($key)
     {
         return $this->Connect->ttl($key);
     }
     /**
-     * 获取搜索相近元素对象键
      * @access public
      * @param string $closeKey 相近元素对象（key*）
      * @return mixed
+     * @context 获取搜索相近元素对象键
      */
     function keys($closeKey)
     {
@@ -141,9 +142,9 @@ class Key
         return $_receipt;
     }
     /**
-     * 随机返回元素键
      * @access public
      * @return mixed
+     * @context 随机返回元素键
      */
     function randKey()
     {
@@ -153,11 +154,11 @@ class Key
         return $_receipt;
     }
     /**
-     * 重命名元素对象
      * @access public
      * @param string $key 被检索对象键名
      * @param string $newKey 新命名
      * @return bool
+     * @context 重命名元素对象
      */
     function rnKey($key,$newKey)
     {
@@ -169,32 +170,32 @@ class Key
         return $_receipt;
     }
     /**
-     * 非重名元素对象重命名
      * @access public
      * @param string $key 被检索对象键名
      * @param string $newKey 新命名
      * @return int
+     * @context 非重名元素对象重命名
      */
     function irnKey($key,$newKey)
     {
         return $this->Connect->renameNx($key, $newKey);
     }
     /**
-     * 获取元素对象内容数据类型
      * @access public
      * @param string $key 被检索对象键名
      * @return string
+     * @context 获取元素对象内容数据类型
      */
     function type($key)
     {
         return $this->Connect->type($key);
     }
     /**
-     * 将元素对象存入数据库
      * @access public
      * @param string $key 被检索对象键名
      * @param string $database 对象数据库名
      * @return int
+     * @context 将元素对象存入数据库
      */
     function inDB($key,$database)
     {

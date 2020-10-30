@@ -13,23 +13,20 @@ class Curl
 {
     /**
      * @access protected
-     * @var array $CurlReceipt
-     * @contact 请求返回信息
+     * @var array $CurlReceipt 请求返回信息
+     * @var boolean $CurUtf8 是否执行utf-8转码
      */
     protected $CurlReceipt = array();
-    /**
-     * @access protected
-     * @var boolean $CurUtf8
-     * @context 是否执行utf-8转码
-     */
     protected $CurUtf8 = false;
-
-    # 构造方法
+    /**
+     * @access public
+     * @param boolean $bool 设置强制utf-8编码转换
+     * @context 构造器
+    */
     function __construct($bool = false)
     {
         $this->CurUtf8 = boolval($bool);
     }
-
     /**
      * @access public
      * @param string $url 访问地址
@@ -136,7 +133,11 @@ class Curl
         curl_close($_curl);
         return $_receipt;
     }
-
+    /**
+     * @access public
+     * @return mixed
+     * @context 获取请求后返回值内容
+    */
     function get_curl_receipt()
     {
         return $this->CurlReceipt;

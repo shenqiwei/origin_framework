@@ -17,13 +17,14 @@ use Origin\Package\Redis\Sequence;
 class Redis
 {
     /**
+     * @access protected
      * @var object $_Connect 数据库链接对象
     */
-    private $Connect = null;
-    # 构造函数
+    protected $Connect = null;
     /**
      * @access public
      * @param string $connect_name 配置源名称
+     * @context 构造函数，预加载数据源配置信息
     */
     function __construct($connect_name=null)
     {
@@ -59,36 +60,65 @@ class Redis
                 $this->Connect->auth($_connect_conf['DATA_PWD']);
         }
     }
-
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用键位功能封装
+    */
     function key()
     {
         return new Key($this->Connect);
     }
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用字符串功能封装
+     */
     function string()
     {
         return new Str($this->Connect);
     }
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用集合包功能封装
+     */
     function set()
     {
         return new Set($this->Connect);
     }
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用哈希表功能封装
+     */
     function hash()
     {
         return new Hash($this->Connect);
     }
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用列表功能包封装
+     */
     function lists()
     {
         return new Lists($this->Connect);
     }
+    /**
+     * @access public
+     * @return mixed
+     * @context 调用队列表功能函数封装
+     */
     function seq()
     {
         return new Sequence($this->Connect);
     }
     /**
-     * 执行Redis刷新
      * @access public
      * @param string $obj 刷新对象 all or db
      * @return bool
+     * @context 执行Redis刷新
     */
     function flush($obj="all")
     {
@@ -100,72 +130,72 @@ class Redis
         return $_receipt;
     }
     /**
-     * Select 切换到指定的数据库，数据库索引号 index 用数字值指定，以 0 作为起始索引值
      * @access public
      * @param int $db 指定数据库标尺
      * @return bool
+     * @context Select 切换到指定的数据库，数据库索引号 index 用数字值指定，以 0 作为起始索引值
     */
     function selectDB($db)
     {
         return $this->Connect->select($db);
     }
     /**
-     * 最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示
      * @access public
      * @return int
+     * @context 最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示
     */
     function saveTime()
     {
         return $this->Connect->lastSave();
     }
-
     /**
-     * 返回redis服务器时间
      * @access public
      * @return array
+     * @context 返回redis服务器时间
     */
     function time()
     {
         return $this->Connect->time();
     }
     /**
-     * 返回数据库容量使用信息
      * @access public
      * @return int
+     * @context 返回数据库容量使用信息
     */
     function dbSize()
     {
         return $this->Connect->dbSize();
     }
     /**
-     * 异步执行一个 AOF（AppendOnly File） 文件重写操作
      * @access public
      * @return bool
+     * @context 异步执行一个 AOF（AppendOnly File） 文件重写操作
     */
     function bgAOF()
     {
         return $this->Connect->bgrewriteaof();
     }
     /**
-     * 异步保存当前数据库的数据到磁盘
      * @access public
      * @return bool
+     * @context 异步保存当前数据库的数据到磁盘
     */
     function bgSave()
     {
         return $this->Connect->bgsave();
     }
     /**
-     * 保存当前数据库的数据到磁盘
      * @access public
      * @return bool
+     * @context 保存当前数据库的数据到磁盘
      */
     function save()
     {
         return $this->Connect->save();
     }
     /**
-     * 析构函数
+     * @access public
+     * @context 析构函数，释放连接
     */
     function __destruct()
     {

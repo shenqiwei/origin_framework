@@ -12,29 +12,21 @@ namespace Origin\Package;
 class Verify
 {
     /**
-     * 画布宽度
-     * @var int $Width
+     * @access private
+     * @var int $Width 画布宽度
+     * @var int $Height 画布高度
+     * @var int $WidthFold 初始宽度差值
+     * @var int $HeightFold 初始高度差值
     */
     private $Width = 120;
-    /**
-     * 画布高度
-     * @var int $Height
-    */
     private $Height = 50;
-    /**
-     * 初始宽度差值
-     * @var int $WidthFold
-    */
     private $WidthFold = 1;
-    /**
-     * 初始高度差值
-     * @var int $HeightFold
-    */
     private $HeightFold = 1;
     /**
-     * 构造方法，对参数结构进行预设
-     * @param int $width
-     * @param int $height
+     * @access public
+     * @param int $width 画布宽度
+     * @param int $height 画布高度
+     * @context 构造方法，对参数结构进行预设
     */
     function __construct($width=120,$height=50)
     {
@@ -44,9 +36,9 @@ class Verify
         $this->Height = $height;
     }
     /**
-     * 字母混合验证码主执行方法
      * @access public
-     * @param string $data
+     * @param string $data 传入值
+     * @context 字母混合验证码主执行方法
     */
     private function execute($data)
     {
@@ -102,21 +94,34 @@ class Verify
         imagepng($_image);
         imagedestroy($_image);
     }
+    /**
+     * @access public
+     * @context 字母数字混合验证码主执行方法
+     */
     function main()
     {
         $this->execute('abcdefghijklmnopqrstuvwxdyz123456789');
     }
+    /**
+     * @access public
+     * @context 数字验证码主执行方法
+     */
     function number()
     {
         $this->execute('0123456789');
     }
+    /**
+     * @access public
+     * @context 字母验证码主执行方法
+     */
     function letter()
     {
         $this->execute('abcdefghijklmnopqrstuvwxdyz');
     }
     /**
-     * 汉字验证码主执行方法
+     *
      * @access public
+     * @context 汉字验证码主执行方法
     */
     function han()
     {
@@ -216,7 +221,8 @@ class Verify
         imagedestroy($_image);
     }
     /**
-     * 数学一元运算验证码
+     * @access public
+     * @context 数学一元运算验证码
     */
     function math()
     {

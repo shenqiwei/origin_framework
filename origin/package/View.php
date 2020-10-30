@@ -9,18 +9,15 @@ namespace Origin\Package;
 
 use Exception;
 
-/**
- * 模板调度类
- */
 class View
 {
     /**
-     * 模板页加载方法
      * @access public
-     * @param string $dir
-     * @param string $page
-     * @param array $param
-     * @param float $time
+     * @param string $dir 地址目录
+     * @param string $page 模板信息
+     * @param array $param 参数值内容
+     * @param float $time 起始加载时间
+     * @context 模板页加载方法
     */
     static function view($dir,$page,$param,$time)
     {

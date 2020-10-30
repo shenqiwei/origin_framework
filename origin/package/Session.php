@@ -137,7 +137,10 @@ class Session
         }
         return $_receipt;
     }
-
+    /**
+     * @access public
+     * @context 析构函数
+     */
     function __destruct()
     {
         // TODO: Implement __destruct() method.

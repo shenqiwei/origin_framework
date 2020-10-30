@@ -15,22 +15,14 @@ class Upload
      * @var int $Size 上传大小限制
      * @var array $Type 上传类型限制
      * @var string $Store 存储位置
+     * @var string $_Error 错误信息
+     * @var array $TypeArray 文件扩展名比对数组
      */
     private $Input = null;
     private $Size = 0;
     private $Type = array();
     private $Store = null;
-    /**
-     * @access private
-     * @var string $_Error
-     * @contact 错误信息
-     */
     private $Error = null;
-    /**
-     * @access private
-     * @var array $TypeArray
-     * @contact 文件扩展名比对数组
-     */
     private $TypeArray = array(
         'text/plain' => 'txt',
         'application/vnd.ms-excel' =>  'xls',
@@ -49,6 +41,7 @@ class Upload
      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @param array $type 上传文件类型
      * @param int $size 上传文件大小，默认值 0
+     * @context 上传条件设置函数
     */
     function condition($input, $type, $size=0)
     {
@@ -60,6 +53,7 @@ class Upload
     /**
      * @access public
      * @param string $guide 上传文件存储路径
+     * @context 主目录设置函数
      */
     function store($guide=null)
     {
@@ -69,6 +63,7 @@ class Upload
     /**
      * @access public
      * @return boolean|string
+     * @context 执行上传，上传成功后返回上传文件相对路径信息
      */
     function update()
     {
@@ -155,6 +150,7 @@ class Upload
     /**
      * @access public
      * @return mixed
+     * @context 获取错误信息
      */
     function getError()
     {

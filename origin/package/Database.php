@@ -12,18 +12,25 @@ use PDO;
 
 class Database extends Query
 {
-    # 数据库连接
-    private $Connect = null;
-    # select 为起始词
+    /**
+     * @access private
+     * @var mixed $Connect 数据库连接
+     * @var string $Select select 为起始词
+     * @var string $SelectCount 带count关键字段
+     * @var string $From from 为起始词
+     * @var int $RowCount 获取select查询响应条数信息
+    */
+    private $Connect= null;
     private $Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
-    # 带count关键字段
     private $SelectCount = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
-    # from 为起始词
     private $From = '/^(from)\s.*/';
-    # 获取select查询响应条数信息
     private $RowCount = 0;
-    # 只有table
-    # 构造函数
+    /**
+     * @access public
+     * @param string $connect_name 数据源配置名称
+     * @param string $type 数据库类型
+     * @context 构造函数，用于预加载数据源配置信息
+    */
     function __construct($connect_name=null,$type="mysql")
     {
         if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql","sqlite","oracle","mariadb"))){
@@ -101,9 +108,9 @@ class Database extends Query
     }
 
     /**
-     * 返回查询信息的总数
      * @access public
      * @return int
+     * @context 返回查询信息的总数
      */
     function count()
     {
@@ -114,9 +121,9 @@ class Database extends Query
         return $this->query($_sql);
     }
     /**
-     * 查询信息函数
      * @access public
      * @return mixed
+     * @context 查询信息函数
      */
     function select()
     {
@@ -157,9 +164,9 @@ class Database extends Query
         return $this->query($_sql);
     }
     /**
-     * 插入信息函数
      * @access public
      * @return mixed
+     * @context 插入信息函数
      */
     function insert()
     {
@@ -188,9 +195,9 @@ class Database extends Query
         return $this->query($_sql);
     }
     /**
-     * 修改信息函数
      * @access public
      * @return mixed
+     * @context 修改信息函数
      */
     function update()
     {
@@ -216,9 +223,9 @@ class Database extends Query
         return $this->query($_sql);
     }
     /**
-     * 删除信息函数
      * @access public
      * @return mixed
+     * @context 删除信息函数
      */
     function delete()
     {
@@ -228,10 +235,10 @@ class Database extends Query
         return $this->query($_sql);
     }
     /**
-     * 自定义语句执行函数
      * @access public
-     * @param string $query
+     * @param string $query sql语句
      * @return mixed
+     * @context 自定义语句执行函数
      */
     function query($query)
     {
@@ -294,14 +301,16 @@ class Database extends Query
         return $_receipt;
     }
     /**
-     * 执行事务提交
+     * @access public
+     * @context 执行事务提交
      */
     function getCommit()
     {
         $this->Connect->commit();
     }
     /**
-     * 执行事务回滚
+     * @access public
+     * @context 执行事务回滚
      */
     function getRollBack()
     {
@@ -309,6 +318,7 @@ class Database extends Query
     }
     /**
      * @access public
+     * @return int
      * @contact 返回select查询条数信息
      */
     function getRowCount()

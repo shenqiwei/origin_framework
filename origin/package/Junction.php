@@ -11,7 +11,6 @@ use Exception;
 
 class Junction
 {
-//    const ROUTE_ITEM_NAME = "name";
     const ROUTE_ITEM_URI = "route";
     const ROUTE_ITEM_MAPPING = "mapping";
     /**
@@ -21,12 +20,12 @@ class Junction
      * @var string $Function
      * @var float $LoadTime
     */
-    public static $Class = null;
-    public static $Function = null;
-    public static $LoadTime = 0.0;
+    static $Class = null;
+    static $Function = null;
+    static $LoadTime = 0.0;
     /**
-     * 默认模式，自动加载入口
      * @access public
+     * @context 默认模式，自动加载入口
      */
     static function initialize()
     {
@@ -218,20 +217,25 @@ class Junction
             }
         }
     }
-
-    static function route($route){
+    /**
+     * @access protected
+     * @param string $uri 路由对象地址
+     * @return string
+     * @context 路由解析函数
+    */
+    protected static function route($uri){
         # 创建对象变量
         $_config = null;
         $_start = 0;
-        if(strpos("/",$route) == 0)
+        if(strpos("/",$uri) == 0)
             $_start = 1;
-        if(strpos($route,'.'))
-            $_path = substr($route, $_start, strpos($route,'.')-1);
+        if(strpos($uri,'.'))
+            $_path = substr($uri, $_start, strpos($uri,'.')-1);
         else
-            $_path = substr($route, $_start);
+            $_path = substr($uri, $_start);
         $_receipt = $_path;
         # 创建路由文件目录变量
-        $_files = replace(ROOT."/application/config/route.php");
+        $_files = replace(ROOT."/common/config/route.php");
         # 判断路由文件是否存在
         if(is_file($_files)){
             # 获取路由配置信息
@@ -258,7 +262,6 @@ class Junction
         }
         return $_receipt;
     }
-
     /**
      * @access public
      * @param string $obj 未加载对象（class|function）

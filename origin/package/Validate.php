@@ -15,44 +15,35 @@ namespace Origin\Package;
 class Validate
 {
     /**
-     * 全局变量 用户方法间值得传递
-     * 传递验证值
      * @access private
-     * @var mixed $Variable
+     * @var mixed $Variable 全局变量 用户方法间值得传递，传递验证值
+     * @var string $Error 错误信息返回
      */
     private $Variable;
-    /**
-     * 错误信息返回
-     * @access private
-     * @var string $Error
-    */
     private $Error = null;
     /**
-     * 构造函数 对验证值及参数条件进行装载
      * @access public
      * @param mixed $variable 参数值
+     * @context 构造函数 对验证值及参数条件进行装载
      */
     function __construct($variable)
     {
-        $this->Variable = strval(trim($variable));
+        $this->Variable = $variable;
     }
     /**
-     * 执行空值验证
      * @access public
      * @return boolean
+     * @context 执行空值验证
     */
     public function _empty()
     {
-        /**
-         * @var mixed $_return
-        */
         $_return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($this->Variable) and !empty($this->_Variable)){
             $_return = true;
         }else{
             # 使用empty函数判断参数值是否为空
-            if(empty(trim($this->Variable))){
+            if(empty($this->Variable)){
                 # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                 if(is_int($this->Variable) and $this->Variable == 0)
                     $_return = true;
@@ -66,7 +57,7 @@ class Validate
                     # error: Verify the value is null
                     $this->Error = 'Verify the value is null';
             }else{
-                if(!is_null(trim($this->Variable)))
+                if(!is_null($this->Variable))
                     $_return = true;
             }
         }

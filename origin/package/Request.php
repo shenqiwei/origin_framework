@@ -12,42 +12,24 @@ namespace Origin\Package;
 class Request
 {
     /**
-     * 全局变量，用于方法间值的传递
-     * 请求器，请求类型
      * @access private
-     * @var string $Method
+     * @var string $Method 全局变量，用于方法间值的传递，请求器，请求类型
+     * @var string $ValidateName 全局变量，用于方法间值的传递，请求器，需调用的参数对象
+     * @var mixed $Default 全局变量，用于方法间值的传递，请求其，当请求内容为空或不存在时，系统会放回默认值信息
     */
     private $Method = 'request';
-    /**
-     * 全局变量，用于方法间值的传递
-     * 请求器，需调用的参数对象
-     * @access private
-     * @var string $ValidateName
-    */
     private $ValidateName = null;
-    /**
-     * 全局变量，用于方法间值的传递
-     * 请求其，当请求内容为空或不存在时，系统会放回默认值信息
-     * @access private
-     * @var mixed $Default
-    */
     private $Default = null;
     /**
-     * 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断
-     * 对象参数
      * @access public
-     * @param $method
-     * @param $validate_name
-     * @param $default
+     * @param string  $validate_name 请求对象名称
+     * @param mixed $default 默认值
+     * @param string $method 请求方法
+     * @context 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断，对象参数
     */
     function __construct($validate_name, $default=null, $method='request')
     {
-        /**
-         * 正则变量,method 用于验证请求方式，type用于转化数据类型
-         * @var string $_method_regular
-         * @var string $_type_regular
-         */
-        # 请求方式正则，涵盖基本的5中表单请求
+        # 请求方式正则，涵盖基本的5中表单请求，正则变量,method 用于验证请求方式，type用于转化数据类型
         $_method_regular = '/^(request|post|get|delete|put){1}$/';
         if(is_true($_method_regular, $method)){
             $this->Method = $method;
@@ -56,20 +38,14 @@ class Request
         $this->Default = $default;
     }
     /**
-     * 请求器主方法，通过对请求方式的判断，获取请求对象的值信息
-     * 根据查询变量的名称，进行数组判断及数组变量，返回相应值
-     * 当查询值不存在或者为空时，系统将默认值赋入，当默认值为空或者null时，直接返回null值
      * @access public
      * @return mixed
+     * @context 请求器主方法，通过对请求方式的判断，获取请求对象的值信息
+     * 根据查询变量的名称，进行数组判断及数组变量，返回相应值
+     * 当查询值不存在或者为空时，系统将默认值赋入，当默认值为空或者null时，直接返回null值
     */
     public function main()
     {
-        /**
-         * @var string $_receipt
-         * @var array $_array
-         * @var string $k
-         * @var string $v
-         */
         # 创建返回变量，设置值为 null
         $_receipt = null;
         # 设置请求组数组对象变量， 设置值为 null
@@ -114,9 +90,9 @@ class Request
         return $_receipt;
     }
     /**
-     * 请求器删除方法，用于删除指定元素
      * @access public
      * @return null
+     * @context 请求器删除方法，用于删除指定元素
     */
     function delete(){
         $_array = null;

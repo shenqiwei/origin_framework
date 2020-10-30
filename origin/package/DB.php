@@ -10,11 +10,11 @@ namespace Origin\Package;
 class DB
 {
     /**
- * Mysql数据库操作方法
- * @access public
- * @param string $connect_name 链接名
- * @return object
- */
+     * @access public
+     * @param string $connect_name 链接名
+     * @return object
+     * @context Mysql数据库操作方法
+     */
     static function mysql($connect_name=null)
     {
         $_dao = new Database($connect_name,"mysql");
@@ -22,10 +22,10 @@ class DB
         return $_dao;
     }
     /**
-     * PostgreSQL数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context PostgreSQL数据库操作方法
      */
     static function pgsql($connect_name=null)
     {
@@ -34,10 +34,10 @@ class DB
         return $_dao;
     }
     /**
-     * SQL server数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context SQL server数据库操作方法
      */
     static function mssql($connect_name=null)
     {
@@ -46,10 +46,10 @@ class DB
         return $_dao;
     }
     /**
-     * sqlite数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context sqlite数据库操作方法
      */
     static function sqlite($connect_name=null)
     {
@@ -58,10 +58,10 @@ class DB
         return $_dao;
     }
     /**
-     * SQL server数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context SQL server数据库操作方法
      */
     static function oracle($connect_name=null)
     {
@@ -70,23 +70,21 @@ class DB
         return $_dao;
     }
     /**
-     * Redis数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context Redis数据库操作方法
      */
     static function redis($connect_name=null)
     {
-        /**
-         * 调用Redis数据库核心包
-         */
+        # 调用Redis数据库核心包
         return new Redis($connect_name);
     }
     /**
-     * MongoDB数据库操作方法
      * @access public
      * @param string $connect_name 链接名
      * @return object
+     * @context MongoDB数据库操作方法
      */
     static function mongodb($connect_name=null)
     {
