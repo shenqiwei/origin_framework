@@ -23,12 +23,12 @@ class Output
     /**
      * @access public
      * @param int $time 倒计时时间
-     * @param string $message 提示信息
+     * @param string|null $message 提示信息
      * @param string $url 跳转地址
      * @param array $setting 模板显示内容设置
      * @context 输出预设模板内容
     */
-    static function output($time=5,$message=null,$url="#",$setting=null)
+    static function output($time=5,$message=null,$url="#",$setting=array())
     {
         $_time = htmlspecialchars(trim($time));
         $_message =  htmlspecialchars(trim($message));
