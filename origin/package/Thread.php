@@ -3,7 +3,7 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 1.0
  * @copyright 2015-2020
- * @context Origin单一化事务线程处理功能封装
+ * @context Origin单一化事务线程处理功能封装 (该功能尽在控制台条件下生效，php ver 7.2+)
  */
 namespace Origin\Package;
 
