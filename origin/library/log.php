@@ -23,7 +23,7 @@ function _log($folder,$context)
         # 关闭文件源
         fclose($_handle);
     }else{
-        if(!file_exists($folder)){
+        if(!file_exists(ROOT.DS.replace($folder))){
             $_dir = explode(DS,$folder);
             $_new = null;
             for($_i = 0;$_i < count($_dir)-1;$_i++){
