@@ -99,6 +99,11 @@ class Session
     */
     function get($key)
     {
+        $_receipt = null;
+        # 判断session传入参数是否有名称分割符号
+        if(strpos($key, '.'))
+            $key = array_filter(explode('.', $key));
+        # 判断当前参数是否为数组，如果不是直接执行session操作
         if(is_array($key)){
             if(count($key) > 3){
                 # 异常提示：session无法支持超过3个维度的数组结构
@@ -116,24 +121,19 @@ class Session
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                     if(isset($_SESSION[$key[0]][$key[1]][$key[2]]))
                         $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]][$key[$_array_key[2]]];
-                    else
-                        $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]][$key[$_array_key[2]]] = null;
                 }elseif(count($key) == 2){
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                     if(isset($_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]]))
                         $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]];
-                    else
-                        $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]] = null;
                 }else{
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                     if(isset($_SESSION[$key[$_array_key[0]]]))
                         $_receipt = $_SESSION[$key[$_array_key[0]]];
-                    else
-                        $_receipt = $_SESSION[$key[$_array_key[0]]] = null;
                 }
             }
         }else{
-            $_receipt = $_SESSION[$key] = null;
+            if(isset($_SESSION[$key]))
+                $_receipt = $_SESSION[$key];
         }
         return $_receipt;
     }
