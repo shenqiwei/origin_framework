@@ -33,7 +33,9 @@ class Validate
             $_return = true;
         }else{
             # 使用empty函数判断参数值是否为空
-            if(empty($variable) and !is_null($variable)){
+            if(!empty($variable))
+                $_return = true;
+            elseif(empty($variable) and !is_null($variable)){
                 # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                 if(is_int($variable) and $variable == 0)
                     $_return = true;
