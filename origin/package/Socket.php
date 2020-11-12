@@ -35,11 +35,11 @@ class Socket
     function __construct($ip,$port=0)
     {
         $this->IP = $ip;
-        $_validate = new Validate($ip);
-        if($_validate->_ipv4()){
+        $_validate = new Validate();
+        if($_validate->_ipv4($ip)){
             $this->IPType = AF_INET;
             $this->IPDomain = 1;
-        }elseif($_validate->_ipv6()){
+        }elseif($_validate->_ipv6($ip)){
             $this->IPType = AF_INET6;
             $this->IPDomain = 2;
         }else{

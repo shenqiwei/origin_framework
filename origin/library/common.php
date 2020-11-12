@@ -28,8 +28,8 @@ function replace($uri)
  */
 function is_true($regular,$param)
 {
-    $_validate = new Origin\Package\Validate($param);
-    return $_validate->_type($regular);
+    $_validate = new Origin\Package\Validate();
+    return $_validate->_type($param,$regular);
 }
 /**
  * 请求器函数，通过调用内核控制器，实现请求结构功能，现有版本不支持put，delete请求支持
