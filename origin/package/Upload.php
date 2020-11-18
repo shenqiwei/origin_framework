@@ -52,7 +52,7 @@ class Upload
     }
     /**
      * @access public
-     * @param string $guide 上传文件存储路径
+     * @param string|null $guide 上传文件存储路径
      * @context 主目录设置函数
      */
     function store($guide=null)

@@ -22,6 +22,10 @@ function exception($error_title,$error_msg,$error_file)
     errorLog($_error_msg["msg"]);
     errorLog("in:{$_error_msg["file"]}");
     errorLog("line:{$_error_msg["line"]}");
+    if($_error_msg) unset($_error_msg);
+    if($error_title) unset($error_title);
+    if($error_msg) unset($error_msg);
+    if($error_file) unset($error_file);
     exit(0);
 }
 /**
@@ -43,6 +47,10 @@ function base($error_arr)
     array_splice($_error_msg,0,1,$_error_zero);
     $_501 = replace(ORIGIN.'template/501.html');
     include("{$_501}");
+    if($_error_msg) unset($_error_msg);
+    if($_error_zero) unset($_error_zero);
+    if($_error_zero_line) unset($_error_zero_line);
+    if($error_arr) unset($error_arr);
     exit(0);
 }
 # 设置异常捕捉回调函数

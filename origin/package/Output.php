@@ -14,7 +14,7 @@ class Output
      * @param array $array 数据
      * @context Json字符串界面内容输出
     */
-    static function json($array=null)
+    static function json($array)
     {
         if(is_array($array)) $array = json_encode($array);
         header("Content-Type:application/json;charset=utf-8");
@@ -42,6 +42,10 @@ class Output
         if(!isset($_model) or !is_file($_model))
             $_model = replace(ORIGIN.'template/201.html');
         include("{$_model}");
+        if($_time) unset($_time);
+        if($_message) unset($_message);
+        if($_url) unset($_url);
+        if($_setting) unset($_setting);
         exit(0);
     }
 }

@@ -11,7 +11,7 @@ class DB
 {
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context Mysql数据库操作方法
      */
@@ -23,7 +23,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context PostgreSQL数据库操作方法
      */
@@ -35,7 +35,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context SQL server数据库操作方法
      */
@@ -47,7 +47,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context sqlite数据库操作方法
      */
@@ -59,7 +59,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context SQL server数据库操作方法
      */
@@ -71,7 +71,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context Redis数据库操作方法
      */
@@ -82,7 +82,7 @@ class DB
     }
     /**
      * @access public
-     * @param string $connect_name 链接名
+     * @param string|null $connect_name 链接名
      * @return object
      * @context MongoDB数据库操作方法
      */

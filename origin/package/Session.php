@@ -11,6 +11,18 @@ class Session
 {
     /**
      * @access public
+     * @context 操作常量
+     */
+    const SESSION_ID = "id"; # 获取session_id
+    const SESSION_CLOSE = "unset"; # 注销session会话
+    const SESSION_CLEAR = "destroy"; # 清空session会话
+    const SESSION_RELOAD = "regenerate"; # 重置session_id并保留原id
+    const SESSION_RST = "rest"; # 重置session内值
+    const SESSION_DEL = "delete"; # 删除session的值
+    const SESSION_ENC = "encode"; # 编码session信息
+    const SESSION_DEC = "decode"; # 解码session信息
+    /**
+     * @access public
      * @context 构造函数
     */
     function __construct()
@@ -20,32 +32,23 @@ class Session
     /**
      * @access public
      * @param string $option 设置项
-     * @param string $key 会话键名
+     * @param string|null $key 会话键名
      * @return mixed
      * @context session会话设置
     */
     function edit($option,$key=null)
     {
         $_receipt = null;
-        # 获取session_id
-        if($option == 'id') $_receipt = session_id();
-        # 注销session会话
-        if($option == 'unset') session_unset();
-        # 清空session会话
-        if($option == 'destroy') session_destroy();
-        # 重置session_id并保留原id
-        if($option == 'regenerate') session_regenerate_id(false);
-        # 重置session内值
-        if($option == 'reset') session_reset();
-        # 删除session的值
-        if($option == 'delete')
+        if($option == self::SESSION_ID) $_receipt = session_id();
+        if($option == self::SESSION_CLOSE) session_unset();
+        if($option == self::SESSION_CLEAR) session_destroy();
+        if($option == self::SESSION_RELOAD) session_regenerate_id(false);
+        if($option == self::SESSION_RST) session_reset();
+        if($option == self::SESSION_DEL)
             if(isset($_SESSION[$key])) unset($_SESSION[$key]);
-        # 编码session信息
-        if($option == 'encode') session_encode();
-        # 解码session信息
-        if($option == 'decode'){
+        if($option == self::SESSION_ENC) session_encode();
+        if($option == self::SESSION_DEC)
             if(isset($_SESSION[$key])) session_decode($key);
-        }
         return $_receipt;
     }
     /**

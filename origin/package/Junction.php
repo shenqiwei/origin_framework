@@ -276,7 +276,10 @@ class Junction
                 $_404 = replace(ORIGIN.'template/404.html');
             }
             include("{$_404}");
+            if($obj) unset($obj);
+            if($error) unset($error);
+            if($type) unset($type);
+            exit(0);
         }
-
     }
 }

@@ -13,6 +13,19 @@ class File extends Folder
 {
     /**
      * @access public
+     * @context 操作常量
+    */
+    const FILE_READ = "r";
+    const FILE_READ_WRITE = "rw";
+    const FILE_SEQ_READ = "sr";
+    const FILE_CONTENT_READ = "cr";
+    const FILE_WRITE = "w";
+    const FILE_LEFT_WRITE = "lw";
+    const FILE_BEHIND_WRITE = "bw";
+    const FILE_FULL_WRITE = "fw";
+    const FILE_CONTENT_WRITE = "cw";
+    /**
+     * @access public
      * @param string $file 文件地址
      * @param boolean $autocomplete 自动补全完整路径，默认值 false
      * @param boolean $throw 捕捉异常
@@ -136,9 +149,9 @@ class File extends Folder
      * r:读取操作 操作方式：r
      * rw:读写操作 操作方式：r+
      * sr: 数据结构读取操作 操作对应函数file
-     * rr: 读取全文 调用对应函数 file_get_contents
+     * cr: 读取全文 调用对应函数 file_get_contents
      */
-    function read($file,$operate='r',$size=0,$throw=false)
+    function read($file,$operate=self::FILE_READ,$size=0,$throw=false)
     {
         # 设置返回对象
         $_receipt = false;
@@ -146,17 +159,17 @@ class File extends Folder
         # 调用路径文件验证
         if(!is_file($_folder = replace(ROOT.DS.$file))){
             switch ($operate) {
-                case 'sr': # 序列化读取
+                case self::FILE_SEQ_READ: # 序列化读取
                     $_receipt = file($_folder);
                     break;
-                case 'rw': # 读写
+                case self::FILE_READ_WRITE: # 读写
                     $_handle = fopen($_folder, 'r+');
                     $_receipt = fread($_handle,($size > 0)?$size:filesize($_folder));
                     break;
-                case 'rr': # 写入
+                case self::FILE_CONTENT_READ: # 写入
                     $_receipt = file_get_contents($_folder, false);
                     break;
-                case 'r': # 读取
+                case self::FILE_READ: # 读取
                 default: # 默认状态与读取状态一致
                     $_handle = fopen($_folder, 'r');
                     $_receipt = fread($_handle,($size > 0)?$size:filesize($_folder));
@@ -179,7 +192,7 @@ class File extends Folder
      * @access public
      * @param string $file 文件路径
      * @param string $operate 操作类型
-     * @param string $msg 写入值
+     * @param string|null $msg 写入值
      * @param boolean $throw 捕捉异常
      * @return mixed
      * @contact 内容信息更新
@@ -188,9 +201,9 @@ class File extends Folder
      * lw：前写入 操作方式：w+
      * bw：后写入 操作方式：a
      * fw：补充写入 操作方式：a+
-     * re：重写 调用对应函数 file_put_contents
+     * cw：重写 调用对应函数 file_put_contents
      */
-    function write($file,$operate='w',$msg=null,$throw=false)
+    function write($file,$operate=self::FILE_WRITE,$msg=null,$throw=false)
     {
         # 设置返回对象
         $_receipt = false;
@@ -199,35 +212,35 @@ class File extends Folder
         if(is_file($_folder = replace(ROOT.DS.$file))){
             # 未发生错误执行
             switch ($operate) {
-                case 'w': # 写入
+                case self::FILE_WRITE: # 写入
                     $_write = fopen($_folder, 'w');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
-                case 'lw': # 写入
+                case self::FILE_LEFT_WRITE: # 写入
                     $_write = fopen($_folder, 'w+');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
-                case 'bw': # 写入
+                case self::FILE_BEHIND_WRITE: # 写入
                     $_write = fopen($_folder, 'a');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
-                case 'fw': # 写入
+                case self::FILE_FULL_WRITE: # 写入
                     $_write = fopen($_folder, 'a+');
                     if ($_write) {
                         $_receipt = fwrite($_write, strval($msg));
                         fclose($_write);
                     }
                     break;
-                case 're': # 写入
+                case self::FILE_CONTENT_WRITE: # 写入
                 default: # 默认状态与读取状态一致
                     $_receipt = file_put_contents($_folder, strval($msg));
                     break;

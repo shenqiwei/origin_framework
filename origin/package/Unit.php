@@ -49,7 +49,7 @@ abstract class Unit
     }
     /**
      * @access protected
-     * @param string $template 视图模板
+     * @param string|null $template 视图模板
      * @context 调用模板方法
      */
     protected function template($template=null)
@@ -112,7 +112,7 @@ abstract class Unit
      * @param array $array
      * @context json格式输出
     */
-    protected function json($array=null)
+    protected function json($array)
     {
         Output::json($array);
     }

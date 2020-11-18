@@ -18,7 +18,7 @@ class Folder
     protected $Root = ROOT;
     /**
      * @access public
-     * @param string $root 根目录地址
+     * @param string|null $root 根目录地址
      * @context 构造方法
     */
     function __construct($root=null)

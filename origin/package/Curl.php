@@ -37,7 +37,7 @@ class Curl
      * @return mixed
      * @content get请求函数
      */
-    function get($url = null, $param = array(), $header=array(), $ssl_peer = false, $ssl_host = false)
+    function get($url, $param = array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
         if (!is_null($url)) {
@@ -74,7 +74,7 @@ class Curl
      * @return mixed
      * @content get请求函数
      */
-    function post($url=null, $param=array(), $header=array(), $ssl_peer = false, $ssl_host = false)
+    function post($url, $param=array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
         $_receipt = null;
         if (!is_null($url)) {
@@ -115,7 +115,7 @@ class Curl
      * @return mixed
      * @context 文件上传
      */
-    function upload($url, $folder, $type, $header=null, $input = "pic", $ssl_peer = false, $ssl_host = false)
+    function upload($url, $folder, $type, $header=array(), $input = "pic", $ssl_peer = false, $ssl_host = false)
     {
         $_curl = curl_init();
         if(!empty($header)){
