@@ -15,18 +15,31 @@ use Exception;
 abstract class Query
 {
     /**
+     * @access public
+     * @context 操作常量
+     */
+    const FETCH_NORMAL = "normal";
+    const FETCH_KEY_VALUE = "key_value";
+    const FETCH_NUMBER_VALUE = "integer_value";
+    const RESOURCE_TYPE_MYSQL = 0;
+    const RESOURCE_TYPE_PGSQL = 1;
+    const RESOURCE_TYPE_MSSQL = 2;
+    const RESOURCE_TYPE_SQLITE = 3;
+    const RESOURCE_TYPE_ORACLE = 4;
+    const RESOURCE_TYPE_MARIADB = 5;
+    /**
      * @access protected
      * @var string $NameConfine SQL基础验证正则表达式变量
      * @var string $CommaConfine SQL基础验证正则表达式变量
      * @var object $Object 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
      * @var string $ErrMsg 数据库错误信息变量
-     * @var string $DataType 数据源类型
+     * @var int $DataType 数据源类型
      */
     protected $NameConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
     protected $CommaConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
     protected $Object = null;
     protected $ErrMsg = null;
-    protected $DataType = "mysql";
+    protected $DataType = 0;
     /**
      * @access public
      * @param object $object
@@ -73,7 +86,7 @@ abstract class Query
     /**
      * @access public
      * @param string $table 表名
-     * @param string $table_as 表别名
+     * @param string|null $table_as 表别名
      * @return object
      * @context 表名获取方法
      */
@@ -139,8 +152,8 @@ abstract class Query
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
-     * @param string $join_table_as 关联表别名
-     * @param string $join_type 关联类型
+     * @param string|null $join_table_as 关联表别名
+     * @param string|null $join_type 关联类型
      * @return object
      * @context 多表关系匹配 join 语句，支持多表联查，根据join特性join后接表名为单表
      * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
@@ -200,7 +213,7 @@ abstract class Query
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
-     * @param string $join_table_as 关联表别名
+     * @param string|null $join_table_as 关联表别名
      * @return object
      * @context 多表关系匹配 inner join 语句，利用join语法演化方法
      */
@@ -215,7 +228,7 @@ abstract class Query
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
-     * @param string $join_table_as 关联表别名
+     * @param string|null $join_table_as 关联表别名
      * @return object
      * @context 多表关系匹配 left join 语句，利用join语法演化方法
      */
@@ -230,7 +243,7 @@ abstract class Query
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
-     * @param string $join_table_as 关联表别名
+     * @param string|null $join_table_as 关联表别名
      * @return object
      * @context 多表关系匹配 right join 语句，利用join语法演化方法
      */
@@ -255,7 +268,7 @@ abstract class Query
     function top($number, $percent=false)
     {
         switch($this->DataType){
-            case "mssql":
+            case self::RESOURCE_TYPE_MSSQL:
                 # top 关键字后边只能接数组，所以在拼接语句时，要对number进行类型转化
                 $this->Top .=' top '.intval($number);
                 # 判断是否使用百分比进行查询
@@ -793,13 +806,13 @@ abstract class Query
     function mod($field,$second=0)
     {
         switch($this->DataType){
-            case "sqlite":
+            case self::RESOURCE_TYPE_SQLITE:
                 null;
                 break;
-            case "mssql":
-            case "mariadb":
-            case "oracle":
-            case "pgsql":
+            case self::RESOURCE_TYPE_MSSQL:
+            case self::RESOURCE_TYPE_MARIADB:
+            case self::RESOURCE_TYPE_ORACLE:
+            case self::RESOURCE_TYPE_PGSQL:
             default:
                 if(is_array($field)){
                     for($_i=0;$_i<count($field);$_i++){
@@ -830,15 +843,15 @@ abstract class Query
     function random()
     {
         switch ($this->DataType){
-            case "pgsql":
-            case "sqlite":
+            case self::RESOURCE_TYPE_PGSQL:
+            case self::RESOURCE_TYPE_SQLITE:
                 $this->Random = ",random()";
                 break;
-            case "oracle":
+            case self::RESOURCE_TYPE_ORACLE:
                 $this->Random = ",dbms_random.value";
                 break;
-            case "mssql":
-            case "mariadb":
+            case self::RESOURCE_TYPE_MSSQL:
+            case self::RESOURCE_TYPE_MARIADB:
             default:
                 $this->Random = ",rand()";
                 break;
@@ -853,7 +866,7 @@ abstract class Query
     /**
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @param string $str 消除符号
+     * @param string|null $str 消除符号
      * @return object
      * @context 去除左边指定字符（空格）
     */
@@ -863,14 +876,14 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_str = null;
                 switch ($this->DataType){
-                    case "pgsql":
-                    case "sqlite":
-                    case "oracle":
+                    case self::RESOURCE_TYPE_PGSQL:
+                    case self::RESOURCE_TYPE_SQLITE:
+                    case self::RESOURCE_TYPE_ORACLE:
                         if(!is_null($field[$_i]["str"]))
                             $_str = ",{$field[$_i]["str"]}";
                         break;
-                    case "mssql":
-                    case "mariadb":
+                    case self::RESOURCE_TYPE_MSSQL:
+                    case self::RESOURCE_TYPE_MARIADB:
                     default:
                         null;
                         break;
@@ -884,14 +897,14 @@ abstract class Query
         }else{
             $_str = null;
             switch ($this->DataType){
-                case "pgsql":
-                case "sqlite":
-                case "oracle":
+                case self::RESOURCE_TYPE_PGSQL:
+                case self::RESOURCE_TYPE_SQLITE:
+                case self::RESOURCE_TYPE_ORACLE:
                     if(!is_null($str))
                         $_str = ",{$str}";
                     break;
-                case "mssql":
-                case "mariadb":
+                case self::RESOURCE_TYPE_MSSQL:
+                case self::RESOURCE_TYPE_MARIADB:
                 default:
                     null;
                     break;
@@ -909,24 +922,24 @@ abstract class Query
     /**
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @param string $str 消除符号
+     * @param string|null $str 消除符号
      * @return object
      * @context 去除指定字符（空格）
      */
     function trim($field,$str=null)
     {
-        if($this->DataType != "mssql"){
+        if($this->DataType != self::RESOURCE_TYPE_MSSQL){
             if(is_array($field)){
                 for($_i=0;$_i<count($field);$_i++){
                     $_str = null;
                     switch ($this->DataType){
-                        case "pgsql":
-                        case "sqlite":
-                        case "oracle":
+                        case self::RESOURCE_TYPE_PGSQL:
+                        case self::RESOURCE_TYPE_SQLITE:
+                        case self::RESOURCE_TYPE_ORACLE:
                             if(!is_null($field[$_i]["str"]))
                                 $_str = ",{$field[$_i]["str"]}";
                             break;
-                        case "mariadb":
+                        case self::RESOURCE_TYPE_MARIADB:
                         default:
                             null;
                             break;
@@ -940,13 +953,13 @@ abstract class Query
             }else{
                 $_str = null;
                 switch ($this->DataType){
-                    case "pgsql":
-                    case "sqlite":
-                    case "oracle":
+                    case self::RESOURCE_TYPE_PGSQL:
+                    case self::RESOURCE_TYPE_SQLITE:
+                    case self::RESOURCE_TYPE_ORACLE:
                         if(!is_null($str))
                             $_str = ",{$str}";
                         break;
-                    case "mariadb":
+                    case self::RESOURCE_TYPE_MARIADB:
                     default:
                         null;
                         break;
@@ -965,7 +978,7 @@ abstract class Query
     /**
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @param string $str 消除符号
+     * @param string|null $str 消除符号
      * @return object
      * @context 去除右边指定字符（空格）
      */
@@ -975,14 +988,14 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_str = null;
                 switch ($this->DataType){
-                    case "pgsql":
-                    case "sqlite":
-                    case "oracle":
+                    case self::RESOURCE_TYPE_PGSQL:
+                    case self::RESOURCE_TYPE_SQLITE:
+                    case self::RESOURCE_TYPE_ORACLE:
                         if(!is_null($field[$_i]["str"]))
                             $_str = ",{$field[$_i]["str"]}";
                         break;
-                    case "mssql":
-                    case "mariadb":
+                    case self::RESOURCE_TYPE_MSSQL:
+                    case self::RESOURCE_TYPE_MARIADB:
                     default:
                         null;
                         break;
@@ -996,14 +1009,14 @@ abstract class Query
         }else{
             $_str = null;
             switch ($this->DataType){
-                case "pgsql":
-                case "sqlite":
-                case "oracle":
+                case self::RESOURCE_TYPE_PGSQL:
+                case self::RESOURCE_TYPE_SQLITE:
+                case self::RESOURCE_TYPE_ORACLE:
                     if(!is_null($str))
                         $_str = ",{$str}";
                     break;
-                case "mssql":
-                case "mariadb":
+                case self::RESOURCE_TYPE_MSSQL:
+                case self::RESOURCE_TYPE_MARIADB:
                 default:
                     null;
                     break;
@@ -1021,8 +1034,8 @@ abstract class Query
     /**
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @param string $pattern 检索内容
-     * @param string $replace 替换内容
+     * @param string|null $pattern 检索内容
+     * @param string|null $replace 替换内容
      * @return object
      * @context 指定字符替换
     */
@@ -1117,8 +1130,8 @@ abstract class Query
     function mid($field, $start=0, $length=0)
     {
         switch($this->DataType){
-            case "mysql":
-            case "mariadb":
+            case self::RESOURCE_TYPE_MYSQL:
+            case self::RESOURCE_TYPE_MARIADB:
                 # 判断数据类型
                 if(is_array($field)){
                     # 变量数组信息
@@ -1169,7 +1182,7 @@ abstract class Query
     function length($field)
     {
         switch($this->DataType){
-            case "mssql":
+            case self::RESOURCE_TYPE_MSSQL:
                 $_func = "len";
                 break;
             default:
@@ -1218,7 +1231,7 @@ abstract class Query
                     if(is_true($this->NameConfine, $_key)){
                         $_decimals = ",".intval($_value['field']);
                         $_accuracy = null;
-                        if($this->DataType == "mssql")
+                        if($this->DataType == self::RESOURCE_TYPE_MSSQL)
                             $_accuracy = ",".intval($_value['decimals']);
                         $this->Round .= ",round({$_key}{$_decimals}{$_accuracy})".$_as;
                     }
@@ -1229,7 +1242,7 @@ abstract class Query
             if (is_true($this->NameConfine, $field)){
                 $_decimals = ",".intval($decimals);
                 $_accuracy = null;
-                if($this->DataType == "mssql")
+                if($this->DataType == self::RESOURCE_TYPE_MSSQL)
                     $_accuracy = ",".intval($accuracy);
                 $this->Round = ",round({$field}{$_decimals}{$_accuracy})";
             }
@@ -1260,14 +1273,14 @@ abstract class Query
      * 对指定字段记录进行格式化处理
      * @access public
      * @param mixed $field
-     * @param string $format
+     * @param string|null $format
      * @return object
     */
     function format($field, $format = null)
     {
         switch ($this->DataType){
-            case "mysql":
-            case "mariadb":
+            case self::RESOURCE_TYPE_MYSQL:
+            case self::RESOURCE_TYPE_MARIADB:
                 # 创建验证正则
                 $_regular = '/^[^\<\>]+$/';
                 # 判断数据类型
@@ -1279,9 +1292,8 @@ abstract class Query
                             $_as = null;
                             if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
                             # 判断字段名是否符合命名规则
-                            if(is_true($this->NameConfine, $_key)){
+                            if(is_true($this->NameConfine, $_key))
                                 $this->Format .= ",format({$_key},{$_value["format"]}){$_as}";
-                            }
                         }
                     }
                 }else {
@@ -1371,9 +1383,8 @@ abstract class Query
                 $this->Order = ' order by '.$field;
             else{
                 if(is_true($this->NameConfine, $field)){
-                    if(is_true($_regular_order_confine, $type)){
+                    if(is_true($_regular_order_confine, $type))
                         $this->Order = " order by {$field} {$type}";
-                    }
                 }
             }
         }
@@ -1396,32 +1407,30 @@ abstract class Query
         if(is_int($start) and $start >= 0){
             if(is_int($length) and $length > 0){
                 switch($this->DataType){
-                    case "pgsql":
-                    case "sqlite":
+                    case self::RESOURCE_TYPE_PGSQL:
+                    case self::RESOURCE_TYPE_SQLITE:
                         $this->Limit = " limit {$length} offset {$start}";
                         break;
-                    case "mssql": # mssql不支持limit语法
+                    case self::RESOURCE_TYPE_MSSQL: # mssql不支持limit语法
                         null;
                         break;
-                    case "oracle":
+                    case self::RESOURCE_TYPE_ORACLE:
                         $this->Limit = " rownum <= {$start}";
                         break;
-                    case "mariadb":
+                    case self::RESOURCE_TYPE_MARIADB:
                     default:
                         $this->Limit = " limit {$start},{$length}";
                         break;
                 }
             }else{
                 switch($this->DataType){
-                    case "oracle":
-                        if($start > 0)
-                            $this->Limit = " rownum <= {$start}";
+                    case self::RESOURCE_TYPE_ORACLE:
+                        if($start > 0) $this->Limit = " rownum <= {$start}";
                         break;
-                    case "mssql": # mssql不支持limit语法
+                    case self::RESOURCE_TYPE_MSSQL: # mssql不支持limit语法
                         break;
                     default:
-                        if($start > 0)
-                            $this->Limit = " limit {$start}";
+                        if($start > 0) $this->Limit = " limit {$start}";
                 }
             }
         }
@@ -1431,21 +1440,24 @@ abstract class Query
      * @access protected
      * @var string $FetchType 查询输出类型，包含3种基本参数，all：完整结构模式，nv：自然数结构模式，kv：字典结构模式
      */
-    protected $FetchType = 'all';
+    protected $FetchType = self::FETCH_NORMAL;
     /**
      * @access public
-     * @param mixed $fetch_type 查询结果显示方式
+     * @param mixed $fetch_type 查询结果显示方式，默认值：FETCH_NORMAL<0>
+     * 默认读取数据结构类型 <0>: FETCH_NORMAL
+     * 整数与值数据结构类型 <1>: FETCH_NUMBER_VALUE
+     * 键名与值数据结构类型 <2>: FETCH_KEY_VALUE
      * @return object
      * @context 加载列表显示结构限制
     */
-    function fetch($fetch_type)
+    function fetch($fetch_type=self::FETCH_NORMAL)
     {
-        if(in_array(strtolower(trim($fetch_type)),array('all','nv','kv'))){
+        $_types = array(self::FETCH_NORMAL,self::FETCH_NUMBER_VALUE,self::FETCH_KEY_VALUE);
+        if(in_array(strtolower(trim($fetch_type)),$_types))
             $this->FetchType = strtolower(trim($fetch_type));
-        }else{
-            if(intval($fetch_type) < 3){
-                $this->FetchType = array('all','nv','kv')[intval($fetch_type)];
-            }
+        else {
+            if (intval($fetch_type) < 3)
+                $this->FetchType = $_types[intval($fetch_type)];
         }
         return $this->__getSQL();
     }

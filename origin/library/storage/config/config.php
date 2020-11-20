@@ -10,7 +10,6 @@ return array(
     'DATA_MATRIX_CONFIG' => array(
         array(
             "DATA_NAME" =>"redis_test", # 当前数据源名称
-            "DATA_TYPE"=>"redis",
             "DATA_CONN" => "normal",# 连接类型 redis下设置生效
             'DATA_HOST' => '127.0.0.1', # redis服务访问地址,不推荐localhost，该配置内容影响访问速度
             'DATA_PWD' => '', # redis登录密码
@@ -19,7 +18,6 @@ return array(
         ),
         array(
             "DATA_NAME" =>"mongo_test", # 当前数据源名称
-            "DATA_TYPE"=>"mongoDB",
             'DATA_HOST' => 'localhost', #  mongodb服务访问地址
             'DATA_USER' => 'root', #登录用户
             'DATA_PWD' => '', # mongodb登录密码
@@ -28,7 +26,6 @@ return array(
         ),
         array(
             "DATA_NAME" =>"mysql_test", # 当前数据源名称
-            "DATA_TYPE"=>"mysql",# 连接类型 redis下设置生效
             'DATA_HOST' => 'localhost', # mysql服务访问地址
             'DATA_USER' => 'root', # mysql登录用户
             'DATA_PWD' => '', # mysql登录密码

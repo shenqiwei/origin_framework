@@ -17,7 +17,7 @@ class DB
      */
     static function mysql($connect_name=null)
     {
-        $_dao = new Database($connect_name,"mysql");
+        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_MYSQL);
         $_dao->__setSQL($_dao);
         return $_dao;
     }
@@ -29,7 +29,7 @@ class DB
      */
     static function pgsql($connect_name=null)
     {
-        $_dao = new Database($connect_name,"pgsql");
+        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_PGSQL);
         $_dao->__setSQL($_dao);
         return $_dao;
     }
@@ -41,7 +41,7 @@ class DB
      */
     static function mssql($connect_name=null)
     {
-        $_dao = new Database($connect_name,"mssql");
+        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_MSSQL);
         $_dao->__setSQL($_dao);
         return $_dao;
     }
@@ -53,7 +53,7 @@ class DB
      */
     static function sqlite($connect_name=null)
     {
-        $_dao = new Database($connect_name,"sqlite");
+        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_SQLITE);
         $_dao->__setSQL($_dao);
         return $_dao;
     }
@@ -65,7 +65,7 @@ class DB
      */
     static function oracle($connect_name=null)
     {
-        $_dao = new Database($connect_name,"oracle");
+        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_ORACLE);
         $_dao->__setSQL($_dao);
         return $_dao;
     }

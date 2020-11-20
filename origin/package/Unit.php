@@ -109,6 +109,15 @@ abstract class Unit
     }
     /**
      * @access public
+     * @param string $url
+     * @context 地址跳转（重定向）
+     */
+    protected function redirect($url)
+    {
+        header("Location:{$url}");
+    }
+    /**
+     * @access public
      * @param array $array
      * @context json格式输出
     */

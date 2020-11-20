@@ -13,6 +13,13 @@ use PDO;
 class Database extends Query
 {
     /**
+     * @access public
+     * @context 操作常量
+     */
+    const QUERY_SELECT = "select";
+    const QUERY_INSERT = "insert";
+    const QUERY_UPDATE = "update";
+    /**
      * @access private
      * @var mixed $Connect 数据库连接
      * @var string $Select select 为起始词
@@ -27,56 +34,51 @@ class Database extends Query
     private $RowCount = 0;
     /**
      * @access public
-     * @param string $connect_name 数据源配置名称
-     * @param string $type 数据库类型
+     * @param string|null $connect_name 数据源配置名称
+     * @param int $type 数据库类型，默认值 0 <mysql|mariadb>
      * @context 构造函数，用于预加载数据源配置信息
     */
-    function __construct($connect_name=null,$type="mysql")
+    function __construct($connect_name=null,$type=0)
     {
-        if(in_array(strtolower(trim($type)),array("mysql","pgsql","mssql","sqlite","oracle","mariadb"))){
-            $this->DataType = strtolower(trim($type));
-        }
+        # 保存数据源类型
+        $this->DataType = intval($type);
+        # 获取配置信息
         $_connect_config = config('DATA_MATRIX_CONFIG');
         if(is_array($_connect_config)){
             for($_i = 0;$_i < count($_connect_config);$_i++){
-                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->DataType
-                    and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
+                if(key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
                     $_connect_conf = $_connect_config[$_i];
                     break;
                 }
             }
+            # 判断配置加载情况，如果失效则自动调用第一个配置信息数组
             if(!isset($_connect_conf)){
-                for($_i = 0; $_i < count($_connect_config); $_i++){
-                    if((key_exists("DATA_TYPE",$_connect_config[$_i]) and  strtolower($_connect_config[$_i]['DATA_TYPE']) === $this->DataType)
-                        or !key_exists("DATA_TYPE",$_connect_config[$_i])){
-                        $_connect_config = $_connect_config[$_i];
-                        break;
-                    }
-                }
+                $_connect_config = $_connect_config[0];
             }else
                 $_connect_config = $_connect_conf;
             switch($this->DataType){
-                case "pgsql":
+                case self::RESOURCE_TYPE_PGSQL:
                     $_DSN = "pgsql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
-                case "mssql":
+                case self::RESOURCE_TYPE_MSSQL:
                     $_DSN = "dblib:host={$_connect_config["DATA_HOST"]}:{$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
-                case "sqlite":
+                case self::RESOURCE_TYPE_SQLITE:
                     $_DSN = "sqlite:{$_connect_config["DATA_DB"]}";
                     break;
-                case "oracle":
+                case self::RESOURCE_TYPE_ORACLE:
                     $_oci = "(DESCRIPTION =
                             (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = {$_connect_config["DATA_HOST"]})(PORT = {$_connect_config["DATA_PORT"]})))
                             (CONNECT_DATA = (SERVICE_NAME = {$_connect_config["DATA_DB"]}))";
                     $_DSN = "oci:dbname={$_oci}";
                     break;
-                case "mariadb":
+                case self::RESOURCE_TYPE_MYSQL:
+                case self::RESOURCE_TYPE_MARIADB:
                 default:
                     $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
             }
-            if(!in_array($this->DataType,array("sqlite"))){
+            if(!in_array($this->DataType,array(self::RESOURCE_TYPE_SQLITE))){
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_username = $_connect_config['DATA_USER']; # 数据库登录用户
                 $_password = $_connect_config['DATA_PWD']; # 登录密码
@@ -94,14 +96,14 @@ class Database extends Query
             # 是否使用持久链接
             $this->Connect->setAttribute(PDO::ATTR_PERSISTENT,boolval($_connect_config['DATA_P_CONNECT']));
             # SQL自动提交单语句
-            if(in_array($this->DataType,array("oracle","mysql","mariadb")))
+            if(in_array($this->DataType,array(self::RESOURCE_TYPE_ORACLE,self::RESOURCE_TYPE_MYSQL,self::RESOURCE_TYPE_MARIADB)))
                 $this->Connect->setAttribute(PDO::ATTR_AUTOCOMMIT,boolval($_connect_config['DATA_AUTO']));
             # SQL请求超时时间
             if(intval(config('DATA_TIMEOUT')))
                 $this->Connect->setAttribute(PDO::ATTR_TIMEOUT,intval($_connect_config['DATA_TIMEOUT']));
             # SQL是否使用缓冲查询
             if(boolval(config('DATA_USE_BUFFER'))){
-                if(in_array($this->DataType,array("mysql","mariadb")))
+                if(in_array($this->DataType,array(self::RESOURCE_TYPE_MYSQL,self::RESOURCE_TYPE_MARIADB)))
                     $this->Connect->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,boolval($_connect_config['DATA_USE_BUFFER']));
             }
         }
@@ -118,7 +120,7 @@ class Database extends Query
         # 起始结构
         $_sql = "select {$_field} from {$this->Table} {$this->JoinOn} {$this->Union} {$this->Where}";
         # 返回数据
-        return $this->query($_sql);
+        return intval($this->query($_sql)[0][0]);
     }
     /**
      * @access public
@@ -244,28 +246,22 @@ class Database extends Query
     {
         # 创建返回信息变量
         $_receipt = null;
-        if(is_true($this->SelectCount, strtolower($query))){
+        if(is_true($this->SelectCount, strtolower($query)))
             $_select_count = null;
-        }elseif(is_true($this->Select, strtolower($query))){
-            // 表示为完整的查询语句
-            null;
-        }elseif(is_true($this->From, strtolower($query))){
+        elseif(is_true($this->From, strtolower($query)))
             $query = 'select * '.strtolower($query);
-        }
-        if(strpos(strtolower($query),"select ") === 0){
-            $_query_type = "select";
-        }elseif(strpos(strtolower($query),"insert ") === 0){
-            $_query_type = "insert";
-        }else{
-            $_query_type = "change";
-        }
+        if(strpos(strtolower($query),"select ") === 0)
+            $_query_type = self::QUERY_SELECT;
+        elseif(strpos(strtolower($query),"insert ") === 0)
+            $_query_type = self::QUERY_INSERT;
+        else
+            $_query_type = self::QUERY_UPDATE;
         # 事务状态
         if(boolval(config("DATA_USE_TRANSACTION")) and $_query_type != 'select')
             $this->Connect->beginTransaction();
         # 条件运算结构转义
-        foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value){
+        foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value)
             $query = preg_replace($key, $value, $query);
-        }
         # 接入执行日志
         $_uri = LOG_EXCEPTION.date('Ymd').'.log';
         $_model_msg = date("Y/m/d H:i:s")." [Note]: ".trim($query).PHP_EOL;
@@ -274,20 +270,19 @@ class Database extends Query
             # 执行查询搜索
             $_statement = $this->Connect->query(trim($query));
             # 返回查询结构
-            if($_query_type === "select"){
+            if($_query_type === self::QUERY_SELECT){
                 # 回写select查询条数
                 $this->RowCount = $_statement->rowCount();
-                if($this->FetchType === 'nv')
+                if($this->FetchType === self::FETCH_NUMBER_VALUE)
                     $_receipt = $_statement->fetchAll(PDO::FETCH_NUM);
-                elseif($this->FetchType === 'kv')
+                elseif($this->FetchType === self::FETCH_KEY_VALUE)
                     $_receipt = $_statement->fetchAll(PDO::FETCH_ASSOC);
                 else
-                    if(isset($_select_count)){
+                    if(isset($_select_count))
                         $_receipt = $_statement->fetchAll(PDO::FETCH_COLUMN)[0];
-                    }else{
+                    else
                         $_receipt = $_statement->fetchAll();
-                    }
-            }elseif($_query_type === "insert")
+            }elseif($_query_type === self::QUERY_INSERT)
                 $_receipt = $this->Connect->lastInsertId($this->Primary);
             else
                 $_receipt = $_statement->rowCount();
@@ -331,7 +326,7 @@ class Database extends Query
      * @param int $count 总数
      * @param int $current 当前页
      * @param int $row 分页大小
-     * @param string $search 搜索条件
+     * @param string|null $search 搜索条件
      * @return array
      * @contact 分页
      */
@@ -357,26 +352,23 @@ class Database extends Query
         );
         $page['current']=intval($current);
         $page['count']=$count%$page['limit']!=0?intval(($count/$page['limit'])+1):intval($count/$page['limit']);
-        //判断页标状态
+        # 判断页标状态
         if($page['current']<=0) $page['current']=1;
         if($page['current']>$page['count']) $page['current']=$page['count'];
         if($page['count']<=0) $page['current']=$page['count']=1;
         $page['begin']=$page['limit']*($page['current']-1);//其实点运算
         $page['page_one']=$page['limit']+1;
         $page['page_end']=($page['limit']+$page['size'])>$count?$count:$page['limit']+$page['size'];
-        //判断翻页状态1
-        if($page['current']>1){
+        # 判断翻页状态1
+        if($page['current']>1)
             $page['last']=$page['current']-1;
-        }else{
+        else
             $page['last']=1;
-        }
-
-        //判断翻页状态2
-        if($page['current']>=$page['count']){
+        # 判断翻页状态2
+        if($page['current']>=$page['count'])
             $page['next']=$page['count'];
-        }else{
+        else
             $page['next']=$page['current']+1;
-        }
         $page['first_url']=$page['url'].'?page=1'.$page["search"];//第一页
         $page['last_url']=$page['url'].'?page='.$page['last'].$page["search"];//上一页
         $page['next_url']=$page['url'].'?page='.$page['next'].$page["search"];//下一页
@@ -407,21 +399,11 @@ class Database extends Query
                     $page['num_end']=$cols;
                 }
             }
-            for($i=$page['num_begin'];$i<=$page['num_end'];$i++){
-                if($i==$page['current']){
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
-                }else{
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
-                }
-            }
+            for($i=$page['num_begin'];$i<=$page['num_end'];$i++)
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
         }else{
-            for($i=1;$i<=$page['count'];$i++){
-                if($i==$page['current']){
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
-                }else{
-                    array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
-                }
-            }
+            for($i=1;$i<=$page['count'];$i++)
+                array_push($n,array('page'=>$i,'url'=>$page['url'].'?page='.$i.$page["search"]));
         }
         return $n;
     }
