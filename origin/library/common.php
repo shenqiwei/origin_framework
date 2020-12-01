@@ -20,6 +20,25 @@ function replace($uri)
     return str_replace(RE_DS,DS,$uri);
 }
 /**
+ * @access public
+ * @param array $array $对象数组
+ * @param int $case 改变类型
+ * @return array
+ * @context 改变数组内容值全大写或全小写
+ */
+function array_change_value_case($array,$case=CASE_LOWER)
+{
+    foreach($array as $_key => $_value){
+        if(!is_array($_value)){
+            if($case === CASE_UPPER)
+                $array[$_key] = strtoupper($_value);
+            else
+                $array[$_key] = strtolower($_value);
+        }
+    }
+    return $array;
+}
+/**
  * 自定义验证方法
  * @access public
  * @param string $regular 正则表达式

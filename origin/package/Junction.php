@@ -11,8 +11,6 @@ use Exception;
 
 class Junction
 {
-    const ROUTE_ITEM_URI = "route";
-    const ROUTE_ITEM_MAPPING = "mapping";
     /**
      * @access public
      * @static
@@ -44,20 +42,19 @@ class Junction
         # 判断自动加载方法
         if(function_exists('spl_autoload_register')){
             # 设置基础控制器参数变量
-            $_catalogue = DEFAULT_APPLICATION."/";
-            # 默认控制器文件名
-            $_files = DEFAULT_CLASS;
-            # 默认控制器类名，由于规则规定类名与文件一致，所以该结构暂时只作为平行结构来使用
-            # $_class = DEFAULT_CLASS;
+            $_catalogue = DEFAULT_APPLICATION;
             # 默认控制器方法名
             $_method = DEFAULT_FUNCTION;
-            # 转换信息
-            $_path_array = array();
             # 获取的路径信息
             if(is_null($_SERVER['PATH_INFO']) or empty($_SERVER['PATH_INFO']))
                 $_path = self::route($_SERVER["REQUEST_URI"]);
             else
                 $_path = self::route($_SERVER['PATH_INFO']); // nginx条件下PATH_INFO返回值为空
+            # 路由返回值为数组
+            if(is_array($_path)){
+                $_function = $_path[1];
+                $_path = $_path[0];
+            }
             # 获取协议信息
             $_protocol = $_SERVER["SERVER_PROTOCOL"];
             # 获取服务软件信息
@@ -70,6 +67,9 @@ class Junction
             $_type = $_SERVER["REQUEST_METHOD"];
             # 获取用户ip
             $_use = $_SERVER["REMOTE_ADDR"];
+            # 初始化对象及路径变量
+            $_class_path = null;
+            $_class_namespace = null;
             # 对请求对象地址请求内容进行截取
             if(strpos($_request,'?'))
                 $_request = substr($_request,0,strpos($_request,'?'));
@@ -88,42 +88,72 @@ class Junction
                 if(strpos($_request,".") === false) $_bool = true;
             if($_bool){
                 # 重定义指针， 起始位置0
-                $_i = 0;
-                if(!empty($_path)){
+                if(!empty($_path) and $_path != "/"){
                     # 转化路径为数组结构
-                    $_path_array = explode('/',$_path);
-                    # 判断首元素结构是否与默认应用目录相同
-                    if(empty($_path_array) and $_path_array[0] != '0' or
-                        strtolower($_path_array[$_i]) == DEFAULT_APPLICATION  or
-                        (strtolower($_path_array[$_i]) != DEFAULT_APPLICATION and
-                            is_dir(replace(ROOT."/application/".strtolower($_path_array[0]))))) {
-                        # 变更应用文件夹位置
-                        $_catalogue = $_path_array[$_i] . "/";
-                        # 指针下移
-                        $_i += 1;
-                        if ($_i < count($_path_array)) {
-                            # 变更控制文件信息
-                            $_files = ucfirst($_path_array[$_i]);
-                            # 指针下移
-                            $_i += 1;
+                    $_path_array = explode('/',strtolower($_path));
+                    $_i = 0;
+                    # 循环路径数组
+                    for(;$_i < count($_path_array);$_i++){
+                        $_symbol = null;
+                        $_namespace_symbol = null;
+                        if(!is_null($_class_path)){
+                            $_symbol = DS;
+                            $_namespace_symbol = "\\";
                         }
-                    }else{
-                        # 变更控制文件信息
-                        $_files = ucfirst($_path_array[$_i]);
-                        # 指针下移
-                        $_i += 1;
+                        # 拼接地址内容
+                        if(is_dir(ROOT.$_class_path.$_symbol.$_path_array[$_i])){
+                            $_class_path .= $_symbol.$_path_array[$_i];
+                            $_class_namespace .= $_namespace_symbol.ucfirst($_path_array[$_i]);
+                            if($_path_array[$_i] === "application")
+                                $_catalogue = $_path_array[$_i + 1];
+                            continue;
+                        }
+                        if(is_dir(ROOT.DS."application".DS.$_path_array[$_i])){
+                            $_class_path .= DS."application".DS.$_path_array[$_i];
+                            $_class_namespace .= $_namespace_symbol."Application\\".ucfirst($_path_array[$_i]);
+                            $_catalogue = $_path_array[$_i];
+                            continue;
+                        }
+                        if(is_file(ROOT.$_class_path.$_symbol."classes".DS.ucfirst($_path_array[$_i]).".php")){
+                            $_class_path .= $_symbol.ucfirst($_path_array[$_i]).".php";
+                            $_class_namespace .= $_namespace_symbol.ucfirst($_path_array[$_i]);
+                            $_class = ucfirst($_path_array[$_i]);
+                            break;
+                        }
+                        if(isset($_function) and $_i === (count($_path_array) - 1)
+                            and is_file(ROOT.$_class_path.$_symbol.ucfirst($_path_array[$_i]).".php")){
+                            $_class_path .= $_symbol.ucfirst($_path_array[$_i]).".php";
+                            $_class_namespace .= $_namespace_symbol.ucfirst($_path_array[$_i]);
+                            $_class = ucfirst($_path_array[$_i]);
+                            break;
+                        }
+                        if(is_file(ROOT.DS."application".DS.DEFAULT_APPLICATION.DS."classes".DS.ucfirst($_class_path[$_i]).".php")){
+                            $_class_path = replace("application/{$_catalogue}/classes/".ucfirst($_class_path[$_i]).".php");
+                            $_class_namespace = "Application\\".ucfirst(DEFAULT_APPLICATION)."\\Classes\\".ucfirst($_class_path[$_i]);
+                            $_class = ucfirst(ucfirst($_class_path[$_i]));
+                            break;
+                        }
                     }
+                    if(!isset($_class)){
+                        $_class_path .= replace("/classes/".ucfirst(DEFAULT_CLASS).".php");
+                        $_class_namespace .= "\\Classes\\".ucfirst(DEFAULT_CLASS);
+                    }
+                    if(!isset($_function)){
+                        if($_i < (count( $_path_array) -1))
+                            $_method = $_path_array[$_i+1];
+                    }else
+                        $_method = $_function;
+                }else{
+                    $_class_path = replace("application/{$_catalogue}/classes/".ucfirst(DEFAULT_CLASS).".php");
+                    $_class_namespace = "Application\\".ucfirst(DEFAULT_APPLICATION)."\\Classes\\".ucfirst(DEFAULT_CLASS);
                 }
                 # 使用加载函数引入应用公共方法文件
-                $_public = replace(ROOT."/application/{$_catalogue}common/public.php");
-                if(is_file($_public))
+                if(is_file($_public = replace(ROOT."/application/{$_catalogue}/common/public.php")))
                     include("{$_public}");
-                # 根据配置信息拼接控制器路径
-                $_path = $_catalogue."classes/".ucfirst($_files);
                 # 初始化重启位置
                 load:
                 # 验证文件地址是否可以访问
-                if(!is_file(replace("application/{$_path}.php"))){
+                if(!isset($_class_path) or !is_file(ROOT.DS.$_class_path)){
                     if(DEBUG){
                         if(initialize()){
                             goto load;
@@ -131,7 +161,7 @@ class Junction
                         try {
                             throw new Exception('Origin Loading Error: Not Fount Classes Document');
                         } catch (Exception $e) {
-                            self::error(replace("application/{$_path}.php"), $e->getMessage(), "File");
+                            self::error(replace("{$_class_path}.php"), $e->getMessage(), "File");
                             exit(0);
                         }
                     }else{
@@ -144,61 +174,24 @@ class Junction
                         }
                     }
                 }
-                # 设置引导地址
-                set_include_path(ROOT);
-                # 判断文件是否存在
-                if(!spl_autoload_register(function($_path){
-                    # 转化命名空间内容，拆分结构
-                    $_file = explode("\\",$_path);
-                    # 循环修改命名空间元素首字母
-                    for($_i = 0;$_i < count($_file);$_i++){
-                        # 修改文件名,类文件名跳过
-                        if($_i === (count($_file) - 1))
-                            continue;
-                        $_file[$_i] = strtolower($_file[$_i]);
-                    }
-                    # 重组加载信息内容
-                    $file = implode(DS,$_file);
-                    require_once("{$file}.php");
-                })){
-                    try {
-                        throw new Exception('Origin Loading Error: Registration load failed');
-                    } catch (Exception $e) {
-                        self::error(replace("application/{$_path}.php"), $e->getMessage(), "File");
-                        exit(0);
-                    }
-                }
+                # 调用自动加载函数
+                self::autoload($_class_path);
                 # 链接记录日志
                 $_uri = LOG_ACCESS.date('Ymd').'.log';
                 $_msg = "[".$_protocol."] [".$_server."] [Request:".$_type."] to ".$_http.$_request.", by user IP:".$_use;
                 $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$_msg.PHP_EOL;
                 _log($_uri,$_model_msg);
-                # 创建class完整信息变量
-                $_class = $_class_path = explode("/","Application".DS.$_path);
-                for($_u = 0;$_u < count($_class_path);$_u++){
-                    if(empty($_u))
-                        $_class = ucfirst($_class_path[$_u]);
-                    else
-                        $_class .= "\\".ucfirst($_class_path[$_u]);
-                }
                 # 判断类是否存在,当自定义控制与默认控制器都不存在时，系统抛出异常
-                if(class_exists($_class)){
-                    self::$Class = $_class;
+                if(class_exists($_class_namespace)){
+                    self::$Class = $_class_namespace;
                     # 声明类对象
-                    $_object = new $_class();
+                    $_object = new $_class_namespace();
                 }else{
                     try {
                         throw new Exception('Origin Loading Error: Not Fount Control Class');
                     }catch(Exception $e){
-                        self::error("{$_class}",$e->getMessage(),"Class");
+                        self::error("{$_class_namespace}",$e->getMessage(),"Class");
                         exit(0);
-                    }
-                }
-                # 判断是否有方法标记信息
-                if($_path_array[$_i]){
-                    # 如果判断标记信息，是否为控制中方法名
-                    if(method_exists($_object, $_path_array[$_i])){
-                        $_method = $_path_array[$_i];
                     }
                 }
                 # 判断方法信息是否可以被调用
@@ -217,51 +210,87 @@ class Junction
             }
         }
     }
+
     /**
      * @access protected
      * @param string $uri 路由对象地址
-     * @return string
+     * @return array|string
      * @context 路由解析函数
     */
     protected static function route($uri){
-        # 创建对象变量
-        $_config = null;
-        $_start = 0;
-        if(strpos("/",$uri) == 0)
-            $_start = 1;
-        if(strpos($uri,'.'))
-            $_path = substr($uri, $_start, strpos($uri,'.')-1);
-        else
-            $_path = substr($uri, $_start);
-        $_receipt = $_path;
-        # 创建路由文件目录变量
-        $_files = replace(ROOT."/common/config/route.php");
-        # 判断路由文件是否存在
-        if(is_file($_files)){
-            # 获取路由配置信息
-            $_config = require_once("{$_files}");
-            # 判断路由信息是否有效
-            if (is_array($_config) and !empty($_config)){
-                # 遍历路由信息，用于比对路由信息
-                for ($i = 0; $i < count($_config); $i++){
-                    # 判断路由
-                    if(!is_array($_config[$i]))
-                        continue;
-                    if(!key_exists(self::ROUTE_ITEM_MAPPING,$_config[$i]))
-                        continue;
-                    if(!key_exists(self::ROUTE_ITEM_URI,$_config[$i]))
-                        continue;
-                    if($_config[$i]["route"] != $_path)
-                        continue;
-                    # 获取映射信息
-                    $_receipt = $_config[$i]['mapping'];
-                    # 跳出循环结束验证
-                    break;
+        # 创建回执变量
+        $_receipt = null;
+        # 配置文件地址
+        $_config = replace(ROOT."/common/config/route.php");
+        # 获取路由列表信息
+        $_configure = include("{$_config}");
+        # 循环比对路由信息
+        for($_i = 0;$_i < count($_configure);$_i++){
+            # 判断路由内容数据类型(string|array)
+            if(key_exists("mapping",$_configure[$_i])){
+                $_config= array_change_key_case($_configure[$_i]);
+                if(is_array($_config["mapping"])){
+                    $_config["mapping"] = array_change_value_case($_config["mapping"]);
+                    if(!in_array($uri,$_config["mapping"])) continue;
+                }elseif(strtolower($_config["mapping"]) != strtolower($uri)) continue;
+                if(key_exists("method",$_config) and $_config["method"] != "normal"){
+                    if(strtoupper($_config["method"]) != $_SERVER["REQUEST_METHOD"]) break;
                 }
-            }
+                if(key_exists("classes",$_config) and key_exists("functions",$_config)){
+                    $_receipt = array($_config["classes"],$_config["functions"]);
+                    break;
+                }else break;
+            }else
+                continue;
         }
+        End:
+        if(is_null($_receipt)){
+            $_start = 0;
+            if(strpos("/",$uri) == 0)
+                $_start = 1;
+            if(strpos($uri,'.'))
+                $_path = substr($uri, $_start, strpos($uri,'.')-1);
+            else
+                $_path = substr($uri, $_start);
+            $_receipt = $_path;
+        }
+        # 返回回执内容
         return $_receipt;
     }
+
+    /**
+     * @access protected
+     * @param string $file 文件地址
+     * @context 自动加载模块
+    */
+    protected static function autoload($file)
+    {
+        # 设置引导地址
+        set_include_path(ROOT);
+        # 判断文件是否存在
+        if(!spl_autoload_register(function($file){
+            # 转化命名空间内容，拆分结构
+            $_file = explode("\\",$file);
+            # 循环修改命名空间元素首字母
+            for($_i = 0;$_i < count($_file);$_i++){
+                # 修改文件名,类文件名跳过
+                if($_i === (count($_file) - 1))
+                    continue;
+                $_file[$_i] = strtolower($_file[$_i]);
+            }
+            # 重组加载信息内容
+            $file = implode(DS,$_file);
+            require_once("{$file}.php");
+        })){
+            try {
+                throw new Exception('Origin Loading Error: Registration load failed');
+            } catch (Exception $e) {
+                self::error(replace("{$file}.php"), $e->getMessage(), "File");
+                exit(0);
+            }
+        }
+    }
+
     /**
      * @access public
      * @param string $obj 未加载对象（class|function）
