@@ -4,6 +4,7 @@
  * @param string $error_title 异常标题
  * @param string|array $error_msg 异常信息数组
  * @param array $error_file 异常文件描述数组
+ * @return void
  * @context 应用异常显示模块
  */
 function exception($error_title,$error_msg,$error_file)
@@ -28,9 +29,11 @@ function exception($error_title,$error_msg,$error_file)
     if($error_file) unset($error_file);
     exit(0);
 }
+
 /**
  * @access public
  * @param array $error_arr 异常信息数组
+ * @return void
  * @context 底层异常显示模块
  */
 function base($error_arr)
@@ -53,6 +56,7 @@ function base($error_arr)
     if($error_arr) unset($error_arr);
     exit(0);
 }
+
 # 设置异常捕捉回调函数
 register_shutdown_function("danger");
 /**

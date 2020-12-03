@@ -19,16 +19,20 @@ abstract class Unit
      * @var array $Param 装载参数信息数组
     */
     private $Param = array();
+
     /**
      * @access public
+     * @return void
      * @context 构造方法，获取当前操作类信息
     */
     function __construct()
     {}
+
     /**
      * @access protected
      * @param string $key
      * @param mixed $value
+     * @return void
      * @context 向模板加载数据信息
     */
     protected function param($key, $value)
@@ -47,9 +51,11 @@ abstract class Unit
             }
         }
     }
+
     /**
      * @access protected
      * @param string|null $template 视图模板
+     * @return void
      * @context 调用模板方法
      */
     protected function template($template=null)
@@ -65,6 +71,7 @@ abstract class Unit
         }
         View::view($_dir, $_page,$this->Param[Junction::$Class],Junction::$LoadTime);
     }
+
     /**
      * @access protected
      * @return string
@@ -74,6 +81,7 @@ abstract class Unit
     {
         return Junction::$Class;
     }
+
     /**
      * @access protected
      * @return string
@@ -83,11 +91,13 @@ abstract class Unit
     {
         return Junction::$Function;
     }
+
     /**
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
+     * @return void
      * @context 执行成功提示信息
     */
     protected function success($message='success',$url='#',$time=3)
@@ -95,11 +105,13 @@ abstract class Unit
         $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
         Output::output($time, $message, $url, $_setting);
     }
+
     /**
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
+     * @return void
      * @context 错误提示
     */
     protected function error($message='error',$url='#',$time=3)
@@ -107,18 +119,22 @@ abstract class Unit
         $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
         Output::output($time, $message, $url, $_setting);
     }
+
     /**
      * @access public
      * @param string $url
+     * @return void
      * @context 地址跳转（重定向）
      */
     protected function redirect($url)
     {
         header("Location:{$url}");
     }
+
     /**
      * @access public
      * @param array $array
+     * @return void
      * @context json格式输出
     */
     protected function json($array)

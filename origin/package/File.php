@@ -24,6 +24,7 @@ class File extends Folder
     const FILE_BEHIND_WRITE = "bw";
     const FILE_FULL_WRITE = "fw";
     const FILE_CONTENT_WRITE = "cw";
+
     /**
      * @access public
      * @param string $file 文件地址
@@ -69,6 +70,7 @@ class File extends Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $file 文件夹地址
@@ -188,6 +190,7 @@ class File extends Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $file 文件路径
@@ -258,6 +261,7 @@ class File extends Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $file 文件夹地址

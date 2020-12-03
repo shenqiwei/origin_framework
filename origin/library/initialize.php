@@ -3,6 +3,8 @@
  * @author 沈起葳 <cheerup.shen@foxmail.com>
  * @version 1.0
  * @copyright 2015-2019
+ * @return bool
+ * @context 框架初始化函数
  */
 function initialize()
 {

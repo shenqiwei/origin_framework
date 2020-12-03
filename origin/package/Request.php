@@ -14,17 +14,27 @@ class Request
     /**
      * @access private
      * @var string $Method 全局变量，用于方法间值的传递，请求器，请求类型
+     */
+    private $Method = 'request';
+
+    /**
+     * @access private
      * @var string $ValidateName 全局变量，用于方法间值的传递，请求器，需调用的参数对象
+     */
+    private $ValidateName;
+
+    /**
+     * @access private
      * @var mixed $Default 全局变量，用于方法间值的传递，请求其，当请求内容为空或不存在时，系统会放回默认值信息
     */
-    private $Method = 'request';
-    private $ValidateName = null;
-    private $Default = null;
+    private $Default;
+
     /**
      * @access public
-     * @param string  $validate_name 请求对象名称
+     * @param string $validate_name 请求对象名称
      * @param mixed $default 默认值
      * @param string $method 请求方法
+     * @return void
      * @context 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断，对象参数
     */
     function __construct($validate_name, $default=null, $method='request')
@@ -37,6 +47,7 @@ class Request
         $this->ValidateName = $validate_name;
         $this->Default = $default;
     }
+
     /**
      * @access public
      * @return mixed
@@ -89,9 +100,10 @@ class Request
         }
         return $_receipt;
     }
+
     /**
      * @access public
-     * @return null
+     * @return void
      * @context 请求器删除方法，用于删除指定元素
     */
     function delete(){
@@ -111,6 +123,5 @@ class Request
                     unset($_REQUEST[$this->ValidateName]);
                 break;
         }
-        return null;
     }
 }

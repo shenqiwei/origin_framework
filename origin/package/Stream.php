@@ -12,23 +12,44 @@ class Stream
     /**
      * @access protected
      * @var resource $Stream 信息流源
-     * @var resource $Socket 套字节服务端源
-     * @var resource $Client 套字节客户端源
-     * @var resource $Accept 接受信息源
-     * @var string $ErrCode 错误信息编码
-     * @var string $Error 错误信息
      */
     protected $Stream;
+
+    /**
+     * @access protected
+     * @var resource $Socket 套字节服务端源
+     */
     protected $Socket;
+
+    /**
+     * @access protected
+     * @var resource $Client 套字节客户端源
+     */
     protected $Client;
+
+    /**
+     * @access protected
+     * @var resource $Accept 接受信息源
+     */
     protected $Accept;
+
+    /**
+     * @access protected
+     * @var string $ErrCode 错误信息编码
+     */
     protected $ErrCode;
-    protected $Error;
+
+    /**
+     * @access protected
+     * @var string $Error 错误信息
+     */
+    protected $Error = null;
 
     /**
      * @access public
      * @param array $option 操作数组，默认值 array() <空数组>
      * @param array|null $params 参数数组，默认值 null <空>
+     * @return void
      * @context 创建上下文信息流
      */
     function context($option = array(), $params = null)
@@ -41,6 +62,7 @@ class Stream
      * @param string $addr 地址信息（ipv4|unix）
      * @param int|null $flag 设置协议类型，默认值 null,（STREAM_SERVER_BIND<UDP>|STREAM_SERVER_LISTEN）
      * @param boolean $context 接入流，默认值 false<不接入>，true 接入
+     * @return void
      * @context 创建套字节信息流
      */
     function socket($addr, $flag = null, $context = false)
@@ -50,6 +72,7 @@ class Stream
         else
             $this->Socket = stream_socket_server($addr, $this->ErrCode, $this->Error, $flag);
     }
+
     /**
      * @access public
      * @param string $addr 地址信息（ipv4|unix）
@@ -59,7 +82,8 @@ class Stream
      * STREAM_CLIENT_ASYNC_CONNECT 客户端异步连接流
      * STREAM_CLIENT_PERSISTENT 客户端持续连接流
      * @param boolean $context 接入流，默认值 false<不接入>，true 接入
-     * @param
+     * @return void
+     * @context 创建客户端连接
      */
     function client($addr, $cycle=null, $flag=STREAM_CLIENT_CONNECT, $context=false)
     {
@@ -68,6 +92,7 @@ class Stream
         else
             $this->Client = stream_socket_client($addr,$this->ErrCode,$this->Error,$cycle,$flag);
     }
+
     /**
      * @access public
      * @param string $socketName 接入对象名称
@@ -112,6 +137,7 @@ class Stream
     {
         return stream_socket_sendto($this->Client,$buffer,$flag,$addr);
     }
+
     /**
      * @access public
      * @param string $name 过滤器注册名称
@@ -123,6 +149,7 @@ class Stream
     {
         return stream_filter_register($name,$class);
     }
+
     /**
      * @access public
      * @param string $name 过滤器注册名称
@@ -143,6 +170,7 @@ class Stream
             $_resource = $resource;
         return stream_filter_append($_resource,$name,$type,$param);
     }
+
     /**
      * @access public
      * @param string $name 过滤器注册名称
@@ -178,6 +206,7 @@ class Stream
             $_resource = $resource;
         return stream_filter_remove($_resource);
     }
+
     /**
      * @access public
      * @return boolean
@@ -187,6 +216,7 @@ class Stream
     {
         return fclose($this->Client);
     }
+
     /**
      * @access public
      * @return boolean
@@ -196,6 +226,7 @@ class Stream
     {
         return fclose($this->Socket);
     }
+
     /**
      * @access public
      * @param int $type 注销方式默认值 STREAM_SHUT_RDWR， STREAM_SHUT_RD(中断接受操作)，STREAM_SHUT_WR(中断发送操作)，STREAM_SHUT_RDWR(中断所有操作)
@@ -206,6 +237,7 @@ class Stream
     {
         return stream_socket_shutdown($this->Socket,$type);
     }
+
     /**
      * @access public
      * @return string

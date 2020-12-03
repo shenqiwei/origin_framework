@@ -18,12 +18,14 @@ class Redis
 {
     /**
      * @access protected
-     * @var object $_Connect 数据库链接对象
+     * @var Redis|object $_Connect 数据库链接对象
     */
-    protected $Connect = null;
+    protected $Connect;
+
     /**
      * @access public
-     * @param string $connect_name 配置源名称
+     * @param string|null $connect_name 配置源名称
+     * @return void
      * @context 构造函数，预加载数据源配置信息
     */
     function __construct($connect_name=null)
@@ -60,6 +62,7 @@ class Redis
                 $this->Connect->auth($_connect_conf['DATA_PWD']);
         }
     }
+
     /**
      * @access public
      * @return mixed
@@ -69,6 +72,7 @@ class Redis
     {
         return new Key($this->Connect);
     }
+
     /**
      * @access public
      * @return mixed
@@ -78,6 +82,7 @@ class Redis
     {
         return new Str($this->Connect);
     }
+
     /**
      * @access public
      * @return mixed
@@ -87,6 +92,7 @@ class Redis
     {
         return new Set($this->Connect);
     }
+
     /**
      * @access public
      * @return mixed
@@ -96,6 +102,7 @@ class Redis
     {
         return new Hash($this->Connect);
     }
+
     /**
      * @access public
      * @return mixed
@@ -105,6 +112,7 @@ class Redis
     {
         return new Lists($this->Connect);
     }
+
     /**
      * @access public
      * @return mixed
@@ -114,6 +122,7 @@ class Redis
     {
         return new Sequence($this->Connect);
     }
+
     /**
      * @access public
      * @param string $obj 刷新对象 all or db
@@ -129,6 +138,7 @@ class Redis
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param int $db 指定数据库标尺
@@ -139,6 +149,7 @@ class Redis
     {
         return $this->Connect->select($db);
     }
+
     /**
      * @access public
      * @return int
@@ -148,6 +159,7 @@ class Redis
     {
         return $this->Connect->lastSave();
     }
+
     /**
      * @access public
      * @return array
@@ -157,6 +169,7 @@ class Redis
     {
         return $this->Connect->time();
     }
+
     /**
      * @access public
      * @return int
@@ -166,6 +179,7 @@ class Redis
     {
         return $this->Connect->dbSize();
     }
+
     /**
      * @access public
      * @return bool
@@ -175,6 +189,7 @@ class Redis
     {
         return $this->Connect->bgrewriteaof();
     }
+
     /**
      * @access public
      * @return bool
@@ -184,6 +199,7 @@ class Redis
     {
         return $this->Connect->bgsave();
     }
+
     /**
      * @access public
      * @return bool
@@ -193,8 +209,10 @@ class Redis
     {
         return $this->Connect->save();
     }
+
     /**
      * @access public
+     * @return void
      * @context 析构函数，释放连接
     */
     function __destruct()

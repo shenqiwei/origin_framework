@@ -11,12 +11,14 @@ class Cookie
 {
     /**
      * @access public
+     * @return void
      * @context 构造函数
      */
     function __construct()
     {
         if(!ini_get('session.auto_start')) session_start();
     }
+
     /**
      * @access public
      * @param string $option 设置项
@@ -33,16 +35,19 @@ class Cookie
             $_receipt = ini_get('session.'.strtolower($option));
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 会话键名
      * @param mixed $value 值
+     * @return void
      * @context 创建会话值内容
      */
     function set($key,$value)
     {
         setcookie($key, $value, config('COOKIE_LIFETIME'),  config('COOKIE_PATH'),  config('COOKIE_DOMAIN'));
     }
+
     /**
      * @access public
      * @param string $key 会话键名
@@ -53,8 +58,10 @@ class Cookie
     {
         return $_COOKIE[$key];
     }
+
     /**
      * @access public
+     * @return void
      * @context 析构函数
      */
     function __destruct()

@@ -13,15 +13,19 @@ class Sequence
      * @access private
      * @var object $Connect 数据库链接对象
      */
-    private $Connect = null;
+    private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -34,6 +38,7 @@ class Sequence
     {
         return $this->Connect->zAdd($key,$param,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -44,6 +49,7 @@ class Sequence
     {
         return $this->Connect->zCard($key);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -54,9 +60,14 @@ class Sequence
      */
     function mMCount($key,$min,$max)
     {
-        if($min > $max)
+        if($min > $max){
+            $mi = $min;
+            $min = $max;
+            $max = $mi;
+        }
         return $this->Connect->zCount($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -72,6 +83,7 @@ class Sequence
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $new 目标序列键
@@ -85,6 +97,7 @@ class Sequence
     {
         return $this->Connect->zInterStore($new,$key,$param,$second);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -97,6 +110,7 @@ class Sequence
     {
         return $this->Connect->zLexCount($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -109,6 +123,7 @@ class Sequence
     {
         return $this->Connect->zRange($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -121,6 +136,7 @@ class Sequence
     {
         return $this->Connect->zRangeByLex($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -133,6 +149,7 @@ class Sequence
     {
         return $this->Connect->zRangeByScore($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -147,6 +164,7 @@ class Sequence
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -158,6 +176,7 @@ class Sequence
     {
         return $this->Connect->zRem($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -170,6 +189,7 @@ class Sequence
     {
         return $this->Connect->zRemRangeByLex($key,$start,$end);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -182,6 +202,7 @@ class Sequence
     {
         return $this->Connect->zRemRangeByRank($key,$start,$end);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -194,6 +215,7 @@ class Sequence
     {
         return $this->Connect->zRemRangeByScore($key,$min,$max);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -209,6 +231,7 @@ class Sequence
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键

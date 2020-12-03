@@ -25,20 +25,38 @@ class Mongodb
 {
     /**
      * @access protected
-     * @var object $Connect 数据库链接对象
+     * @var Manager|object $Connect 数据库链接对象
+     */
+    protected $Connect;
+
+    /**
+     * @access protected
      * @var string $DB 数据库对象
+     */
+    protected $DB;
+
+    /**
+     * @access protected
      * @var object $_Object 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
+     */
+    protected $_Object = null;
+
+    /**
+     * @access protected
      * @var string $NameConfine SQL基础验证正则表达式变量
+     */
+    protected $NameConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
+
+    /**
+     * @access protected
      * @var string $CommaConfineConfine SQL基础验证正则表达式变量
      */
-    protected $Connect = null;
-    protected $DB = null;
-    protected $_Object = null;
-    protected $NameConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)$/';
     protected $CommaConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
+
     /**
      * @access public
-     * @param string $connect_name 配置源名称
+     * @param string|null $connect_name 配置源名称
+     * @return void
      * @context 构造函数，预加载数据源配置信息
      */
     function __construct($connect_name=null)
@@ -77,6 +95,7 @@ class Mongodb
             $this->DB = $_connect_config['DATA_DB'];
         }
     }
+
     /**
      * @access public
      * @param object $object
@@ -86,6 +105,7 @@ class Mongodb
     {
         $this->_Object = $object;
     }
+
     /**
      * @access public
      * @return object
@@ -95,11 +115,13 @@ class Mongodb
     {
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var string $_Set 集合名称
      */
     protected $_Set = null;
+
     /**
      * @access public
      * @param string $table 表信息
@@ -110,6 +132,7 @@ class Mongodb
     {
         return $this->set($table);
     }
+
     /**
      * @access public
      * @param string $set
@@ -132,11 +155,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var array $_Data 数据数组变量
      */
     protected $_Data = null;
+
     /**
      * @access public
      * @param array $data 数据数组
@@ -178,11 +203,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var array $_Where 条件数组约束变量
      */
     protected $_Where = null;
+
     /**
      * @access public
      * @param string|array $field 条件对象键（条件数组）
@@ -240,11 +267,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var array $_Projection 映射数组约束变量
      */
     protected $_Projection = null;
+
     /**
      * @access public
      * @param array $projection 投射参数
@@ -266,10 +295,12 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @var array $_Sort 排序数组约束变量
      */
     protected $_Sort = null;
+
     /**
      * @access public
      * @param string $field 排序键
@@ -281,6 +312,7 @@ class Mongodb
     {
         return $this->sort($field,$type);
     }
+
     /**
      * @access public
      * @param string $field 排序键
@@ -322,11 +354,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var array $_Limit 显示数量数组约束变量
      */
     protected $_Limit = null;
+
     /**
      * @access public
      * @param int $start 标尺起始位置，当不设置length内容时，该参数与length等同
@@ -346,11 +380,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var array $_Skip 跳出数量数组约束变量
      */
     protected $_Skip = null;
+
     /**
      * @access public
      * @param array $skip
@@ -362,11 +398,13 @@ class Mongodb
         $this->_Skip = intval($skip);
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var boolean $_Multi 执行符合要求更新
      */
     protected $_Multi = false;
+
     /**
      * @access public
      * @param boolean $set
@@ -380,11 +418,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var boolean $_Upset 执行无效对象新建
      */
     protected $_Upsert = false;
+
     /**
      * @access public
      * @param boolean $set
@@ -398,11 +438,13 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access protected
      * @var boolean $_ReadPreference 执行读写分离
      */
     protected  $_ReadPreference = false;
+
     /**
      * @access public
      * @param boolean $set
@@ -416,6 +458,7 @@ class Mongodb
         }
         return $this->_Object;
     }
+
     /**
      * @access public
      * @return mixed
@@ -455,6 +498,7 @@ class Mongodb
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed
@@ -506,6 +550,7 @@ class Mongodb
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed
@@ -544,6 +589,7 @@ class Mongodb
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed
@@ -577,6 +623,7 @@ class Mongodb
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed

@@ -12,13 +12,15 @@ use Exception;
 class Folder
 {
     /**
-     * 根目录
-     * @var string $Root
+     * @access protected
+     * @var string $Root 根目录
     */
     protected $Root = ROOT;
+
     /**
      * @access public
      * @param string|null $root 根目录地址
+     * @return void
      * @context 构造方法
     */
     function __construct($root=null)
@@ -26,11 +28,13 @@ class Folder
         if(!is_null($root))
             $this->Root = $root;
     }
+
     /**
-     * 断点变量
-     * @var string $Breakpoint
+     * @access protected
+     * @var string $Breakpoint 断点变量
      */
     protected $Breakpoint = null;
+
     /**
      * @access public
      * @return string
@@ -40,11 +44,13 @@ class Folder
     {
         return $this->Breakpoint;
     }
+
     /**
-     * 错误信息
-     * @var string $Error
+     * @access protected
+     * @var string $Error 错误信息
      */
     protected $Error = null;
+
     /**
      * @access public
      * @return string
@@ -53,6 +59,7 @@ class Folder
     function getError(){
         return $this->Error;
     }
+
     /**
      * @access public
      * @param string $folder 文件夹地址
@@ -104,6 +111,7 @@ class Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $folder 文件夹地址
@@ -132,6 +140,7 @@ class Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $folder 文件地址
@@ -170,6 +179,7 @@ class Folder
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $folder 文件夹地址

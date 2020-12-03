@@ -9,6 +9,7 @@ include("config.php");
 include("log.php"); # 引用日志函数包
 include("initialize.php");
 include("exception.php");
+
 /**
  * @access public
  * @param string $uri 文件路径
@@ -19,6 +20,7 @@ function replace($uri)
 {
     return str_replace(RE_DS,DS,$uri);
 }
+
 /**
  * @access public
  * @param array $array $对象数组
@@ -38,26 +40,28 @@ function array_change_value_case($array,$case=CASE_LOWER)
     }
     return $array;
 }
+
 /**
- * 自定义验证方法
  * @access public
  * @param string $regular 正则表达式
  * @param string $param 对象参数
  * @return mixed
+ * @context 自定义验证方法
  */
 function is_true($regular,$param)
 {
     $_validate = new Origin\Package\Validate();
     return $_validate->_type($param,$regular);
 }
+
 /**
- * 请求器函数，通过调用内核控制器，实现请求结构功能，现有版本不支持put，delete请求支持
  * @access public
  * @param string $key 请求对象键
  * @param mixed $default 请求器返回默认值
  * @param boolean $delete 执行删除操作
  * @param string $type 请求类型
  * @return mixed
+ * @context 请求器函数，通过调用内核控制器，实现请求结构功能，现有版本不支持put，delete请求支持
  */
 function request($key, $default=null, $delete=false,$type="request")
 {
@@ -91,36 +95,39 @@ function request($key, $default=null, $delete=false,$type="request")
     }
     return $_receipt;
 }
+
 /**
- * 请求器(GET)函数
  * @access public
  * @param string $key 请求对象键
  * @param mixed $default 请求器返回默认值
  * @param boolean $delete 执行删除操作
  * @return mixed
+ * @context 请求器(GET)函数
  */
 function get($key, $default=null, $delete=false)
 {
     return request($key, $default, $delete,"get");
 }
+
 /**
- * 请求器(POST)函数
  * @access public
  * @param string $key 请求对象键
  * @param mixed $default 请求器返回默认值
  * @param boolean $delete 执行删除操作
  * @return mixed
+ * @context 请求器(POST)函数
  */
 function post($key, $default=null, $delete=false)
 {
     return request($key, $default, $delete,"post");
 }
+
 /**
- * 会话
  * @access public
  * @param string $key 会话键名
  * @param mixed $value 会话值
  * @return mixed
+ * @context 会话基础操作函数
 */
 function session($key,$value=null)
 {

@@ -31,6 +31,7 @@ class Queue
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @static
@@ -51,6 +52,7 @@ class Queue
         }else
             return false;
     }
+
     /**
      * @access public
      * @static
@@ -82,6 +84,7 @@ class Queue
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @static
@@ -107,6 +110,7 @@ class Queue
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @static

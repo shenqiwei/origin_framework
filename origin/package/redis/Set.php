@@ -13,15 +13,19 @@ class Set
      * @access private
      * @var object $Connect 数据库链接对象
      */
-    private $Connect = null;
+    private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -33,6 +37,7 @@ class Set
     {
         return $this->Connect->sAdd($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -43,6 +48,7 @@ class Set
     {
         return $this->Connect->sCard($key);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -57,6 +63,7 @@ class Set
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象
@@ -69,6 +76,7 @@ class Set
     {
         return $this->Connect->sDiffStore($new,$key,$second);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -80,6 +88,7 @@ class Set
     {
         return $this->Connect->sIsMember($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -93,6 +102,7 @@ class Set
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @param string $key 索引元素对象键
      * @param string $second 迁移集合对象
@@ -104,6 +114,7 @@ class Set
     {
         return $this->Connect->sMove($key,$second,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象
@@ -117,6 +128,7 @@ class Set
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -134,6 +146,7 @@ class Set
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -145,6 +158,7 @@ class Set
     {
         return $this->Connect->sRem($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -159,6 +173,7 @@ class Set
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $new 存储指向集合键
@@ -171,6 +186,7 @@ class Set
     {
         return $this->Connect->sUnionStore($new,$key,$second);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象

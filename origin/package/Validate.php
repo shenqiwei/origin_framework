@@ -19,6 +19,7 @@ class Validate
      * @var string $Error 错误信息返回
      */
     private $Error = null;
+
     /**
      * @access public
      * @param mixed $variable 验证对象变量
@@ -55,6 +56,7 @@ class Validate
         }
         return $_return;
     }
+
     /**
      * @access public
      * @param mixed $variable 验证对象变量
@@ -131,6 +133,7 @@ class Validate
             $_return = true;
         return $_return;
     }
+
     /**
      * @access public
      * @param mixed $variable 验证对象变量
@@ -201,6 +204,7 @@ class Validate
             $_return = true;
         return $_return;
     }
+
     /**
      * @access public
      * @param mixed $variable 验证对象变量
@@ -271,6 +275,11 @@ class Validate
         return $_return;
     }
 
+    /**
+     * @access public
+     * @return mixed
+     * @context 获取错误信息
+     */
     function getError(){
         return $this->Error;
     }

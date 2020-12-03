@@ -14,14 +14,18 @@ class Hash
      * @var object $_Connect 数据库链接对象
      */
     private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param string $key 创建对象元素键
@@ -34,6 +38,7 @@ class Hash
     {
         return $this->Connect->hSet($key, $field, $value);
     }
+
     /**
      * @access public
      * @param string $key 创建对象元素键
@@ -45,6 +50,7 @@ class Hash
     {
         return $this->Connect->hMset($key,$array);
     }
+
     /**
      * @access public
      * @param string $key 创建对象元素键
@@ -57,6 +63,7 @@ class Hash
     {
         return $this->Connect->hSetNx($key,$field,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -79,6 +86,7 @@ class Hash
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -96,6 +104,7 @@ class Hash
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -114,6 +123,7 @@ class Hash
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -130,6 +140,7 @@ class Hash
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -140,6 +151,7 @@ class Hash
     {
         return $this->Connect->hVals($key);
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -151,6 +163,7 @@ class Hash
     {
         return $this->Connect->hDel($key,$field);
     }
+
     /**
      * @access public
      * @param string $key 索引对象元素键
@@ -168,6 +181,7 @@ class Hash
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -178,6 +192,7 @@ class Hash
     {
         return $this->Connect->hKeys($key);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键s

@@ -12,17 +12,37 @@ class Upload
     /**
      * @access private
      * @var string $Input 表单名
+     */
+    private $Input;
+
+    /**
+     * @access private
      * @var int $Size 上传大小限制
+     */
+    private $Size = 0;
+
+    /**
+     * @access private
      * @var array $Type 上传类型限制
+     */
+    private $Type = array();
+
+    /**
+     * @access private
      * @var string $Store 存储位置
+     */
+    private $Store = null;
+
+    /**
+     * @access private
      * @var string $_Error 错误信息
+     */
+    private $Error = null;
+
+    /**
+     * @access private
      * @var array $TypeArray 文件扩展名比对数组
      */
-    private $Input = null;
-    private $Size = 0;
-    private $Type = array();
-    private $Store = null;
-    private $Error = null;
     private $TypeArray = array(
         'text/plain' => 'txt',
         'application/vnd.ms-excel' =>  'xls',
@@ -36,11 +56,13 @@ class Upload
         'image/jpeg' => 'jpg',
         'image/gif' => 'gif',
     );
+
     /**
      * @access public
      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @param array $type 上传文件类型
      * @param int $size 上传文件大小，默认值 0
+     * @return void
      * @context 上传条件设置函数
     */
     function condition($input, $type, $size=0)
@@ -50,6 +72,7 @@ class Upload
         if(!empty(intval($size)))
             $this->Size = $size;
     }
+
     /**
      * @access public
      * @param string|null $guide 上传文件存储路径
@@ -60,6 +83,7 @@ class Upload
         if(!is_null($guide))
             $this->Store = replace($guide);
     }
+
     /**
      * @access public
      * @return boolean|string
@@ -147,6 +171,7 @@ class Upload
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed

@@ -13,15 +13,19 @@ class Key
      * @access private
      * @var object $Connect 数据库链接对象
      */
-    private $Connect = null;
+    private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -37,6 +41,7 @@ class Key
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -54,6 +59,7 @@ class Key
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -65,6 +71,7 @@ class Key
     {
         return $this->Connect->expireAt($key,$timestamp);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -76,6 +83,7 @@ class Key
     {
         return $this->Connect->expire($key,$second);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -87,6 +95,7 @@ class Key
     {
         return $this->Connect->pExpireAt($key,$timestamp);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -98,6 +107,7 @@ class Key
     {
         return $this->Connect->pExpire($key,$millisecond);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -108,6 +118,7 @@ class Key
     {
         return $this->Connect->persist($key);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -118,6 +129,7 @@ class Key
     {
         return $this->Connect->pttl($key);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -128,6 +140,7 @@ class Key
     {
         return $this->Connect->ttl($key);
     }
+
     /**
      * @access public
      * @param string $closeKey 相近元素对象（key*）
@@ -141,6 +154,7 @@ class Key
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @return mixed
@@ -153,6 +167,7 @@ class Key
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -169,6 +184,7 @@ class Key
         }
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -180,6 +196,7 @@ class Key
     {
         return $this->Connect->renameNx($key, $newKey);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -190,6 +207,7 @@ class Key
     {
         return $this->Connect->type($key);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名

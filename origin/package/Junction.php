@@ -14,15 +14,27 @@ class Junction
     /**
      * @access public
      * @static
-     * @var string $Class
-     * @var string $Function
-     * @var float $LoadTime
-    */
+     * @var string $Class 访问对象类名称
+     */
     static $Class = null;
-    static $Function = null;
-    static $LoadTime = 0.0;
+
     /**
      * @access public
+     * @static
+     * @var string $Function 访问对象函数名称
+     */
+    static $Function = null;
+
+    /**
+     * @access public
+     * @static
+     * @var float $LoadTime 访问时间戳
+    */
+    static $LoadTime = 0.0;
+
+    /**
+     * @access public
+     * @return void
      * @context 默认模式，自动加载入口
      */
     static function initialize()
@@ -261,6 +273,7 @@ class Junction
     /**
      * @access protected
      * @param string $file 文件地址
+     * @return void
      * @context 自动加载模块
     */
     protected static function autoload($file)
@@ -296,6 +309,7 @@ class Junction
      * @param string $obj 未加载对象（class|function）
      * @param string $error 错误信息
      * @param string $type 加载类型
+     * @return void
      * @context 加载错误信息
      */
     static function error($obj,$error,$type)

@@ -8,12 +8,22 @@ use Origin\Package\Unit;
 
 class Index extends Unit
 {
+    /**
+     * @access public
+     * @return void
+     * @context 构造函数，公共参数内容编辑与公共函数功能调用
+    */
     function __construct()
     {
         parent::__construct();
         $this->param('title','origin framework');
     }
 
+    /**
+     * @access public
+     * @return void
+     * @context 首页加载函数，初始化方法内容
+    */
     function index()
     {
         $welcomes = array(

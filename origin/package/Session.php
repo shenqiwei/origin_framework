@@ -21,14 +21,17 @@ class Session
     const SESSION_DEL = "delete"; # 删除session的值
     const SESSION_ENC = "encode"; # 编码session信息
     const SESSION_DEC = "decode"; # 解码session信息
+
     /**
      * @access public
+     * @return void
      * @context 构造函数
     */
     function __construct()
     {
         if(!ini_get('session.auto_start')) session_start();
     }
+
     /**
      * @access public
      * @param string $option 设置项
@@ -51,11 +54,12 @@ class Session
             if(isset($_SESSION[$key])) session_decode($key);
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 会话键名
      * @param mixed $value 值
-     * @return null
+     * @return void
      * @context 创建会话值内容
     */
     function set($key,$value)
@@ -92,8 +96,8 @@ class Session
             # 当值参数不等于null时，则修改当前session会话内容，并对内容进行转码
             $_SESSION[$key] = stripslashes($value);
         }
-        return null;
     }
+
     /**
      * @access public
      * @param string $key 会话键名
@@ -140,8 +144,10 @@ class Session
         }
         return $_receipt;
     }
+
     /**
      * @access public
+     * @return void
      * @context 析构函数
      */
     function __destruct()

@@ -37,11 +37,12 @@ function _log($folder,$context)
     }
     return $_receipt;
 }
+
 /**
- * 异常记录日志 error log
  * @access public
  * @param string $msg 日志模板信息
  * @return mixed
+ * @context 异常记录日志 error log
  */
 function errorLog($msg)
 {

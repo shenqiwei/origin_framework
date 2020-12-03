@@ -21,21 +21,39 @@ class Database extends Query
     const QUERY_UPDATE = "update";
     /**
      * @access private
-     * @var mixed $Connect 数据库连接
+     * @var PDO|object $Connect 数据库连接
+     */
+    private $Connect;
+
+    /**
+     * @access private
      * @var string $Select select 为起始词
+     */
+    private $Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
+
+    /**
+     * @access private
      * @var string $SelectCount 带count关键字段
+     */
+    private $SelectCount = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
+
+    /**
+     * @access private
      * @var string $From from 为起始词
+     */
+    private $From = '/^(from)\s.*/';
+
+    /**
+     * @access private
      * @var int $RowCount 获取select查询响应条数信息
     */
-    private $Connect= null;
-    private $Select = '/^(select)\s(([^\s]+\s)+|\*)\s(from)\s.*/';
-    private $SelectCount = '/^(select)\s(count\(([^\s]+\s)+|\*)\)\s(from)\s.*/';
-    private $From = '/^(from)\s.*/';
     private $RowCount = 0;
+
     /**
      * @access public
      * @param string|null $connect_name 数据源配置名称
      * @param int $type 数据库类型，默认值 0 <mysql|mariadb>
+     * @return void
      * @context 构造函数，用于预加载数据源配置信息
     */
     function __construct($connect_name=null,$type=0)
@@ -122,6 +140,7 @@ class Database extends Query
         # 返回数据
         return intval($this->query($_sql)[0][0]);
     }
+
     /**
      * @access public
      * @return mixed
@@ -165,6 +184,7 @@ class Database extends Query
         # 返回数据
         return $this->query($_sql);
     }
+
     /**
      * @access public
      * @return mixed
@@ -196,6 +216,7 @@ class Database extends Query
         # 返回数据
         return $this->query($_sql);
     }
+
     /**
      * @access public
      * @return mixed
@@ -224,6 +245,7 @@ class Database extends Query
         # 返回数据
         return $this->query($_sql);
     }
+
     /**
      * @access public
      * @return mixed
@@ -236,6 +258,7 @@ class Database extends Query
         # 返回数据
         return $this->query($_sql);
     }
+
     /**
      * @access public
      * @param string $query sql语句
@@ -295,22 +318,27 @@ class Database extends Query
         }
         return $_receipt;
     }
+
     /**
      * @access public
+     * @return void
      * @context 执行事务提交
      */
     function getCommit()
     {
         $this->Connect->commit();
     }
+
     /**
      * @access public
+     * @return void
      * @context 执行事务回滚
      */
     function getRollBack()
     {
         $this->Connect->rollBack();
     }
+
     /**
      * @access public
      * @return int
@@ -320,6 +348,7 @@ class Database extends Query
     {
         return $this->RowCount;
     }
+
     /**
      * @access public
      * @param string $url 链接
@@ -375,6 +404,7 @@ class Database extends Query
         $page['end_url']=$page['url'].'?page='.$page['count'].$page["search"];//最后一页
         return $page;
     }
+
     /**
      * @access public
      * @param array $page 分页数组
@@ -407,8 +437,10 @@ class Database extends Query
         }
         return $n;
     }
+
     /**
      * @access public
+     * @return void
      * @contact 析构函数：数据库链接释放
      */
     function __destruct()

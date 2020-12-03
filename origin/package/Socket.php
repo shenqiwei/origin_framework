@@ -12,24 +12,50 @@ class Socket
     /**
      * @acceess protected
      * @var resource $Socket 套字节源
+     */
+    protected $Socket;
+
+    /**
+     * @acceess protected
      * @var string $IP IP地址信息
+     */
+    protected $IP;
+
+    /**
+     * @acceess protected
      * @var string $IPType IP类型
+     */
+    protected $IPType;
+
+    /**
+     * @acceess protected
      * @var int $IPDomain 访问域名类型
+     */
+    protected $IPDomain;
+
+    /**
+     * @acceess protected
      * @var int $Port 端口号
+     */
+    protected $Port;
+
+    /**
+     * @acceess protected
      * @var int $ErrCode 错误代码
+     */
+    protected $ErrCode;
+
+    /**
+     * @acceess protected
      * @var string|null $Error 错误信息
     */
-    protected $Socket;
-    protected $IP;
-    protected $IPType;
-    protected $IPDomain;
-    protected $Port;
-    protected $ErrCode;
     protected $Error=null;
+
     /**
      * @access public
      * @param string $ip ip地址（ipv4|ipv6）
      * @param int $port 端口号，默认值 0 <无效端口号>，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
+     * @return void
      * @context 构造函数，预创建套字节
     */
     function __construct($ip,$port=0)
@@ -49,6 +75,7 @@ class Socket
         if(intval($port) > 0)
             $this->Port = intval($port);
     }
+
     /**
      * @access public
      * @context 创建TCP连接
@@ -57,6 +84,7 @@ class Socket
     {
         $this->Socket = socket_create($this->IPType,SOCK_STREAM,SOL_TCP);
     }
+
     /**
      * @access public
      * @context 创建UDP连接
@@ -65,6 +93,7 @@ class Socket
     {
         $this->Socket = socket_create($this->IPType,SOCK_DGRAM,SOL_UDP);
     }
+
     /**
      * @access public
      * @context 创建数据包连接
@@ -73,6 +102,7 @@ class Socket
     {
         $this->Socket = socket_create($this->IPType,SOCK_SEQPACKET,0);
     }
+
     /**
      * @access public
      * @context 创建icmp连接
@@ -81,6 +111,7 @@ class Socket
     {
         $this->Socket = socket_create($this->IPType,SOCK_RAW,0);
     }
+
     /**
      * @access public
      * @context 创建远程部署管理连接
@@ -89,6 +120,7 @@ class Socket
     {
         $this->Socket = socket_create($this->IPType,SOCK_RDM,0);
     }
+
     /**
      * @access public
      * @return boolean
@@ -101,6 +133,7 @@ class Socket
         }
         return socket_connect($this->Socket,$this->IP,$this->Port);
     }
+
     /**
      * @access public
      * @return resource
@@ -110,6 +143,7 @@ class Socket
     {
         return socket_accept($this->Socket);
     }
+
     /**
      * @access public
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -120,6 +154,7 @@ class Socket
     {
         return socket_listen($this->Socket,$max);
     }
+
     /**
      * @access public
      * @param int $port 端口号，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
@@ -131,6 +166,7 @@ class Socket
     {
         return socket_create_listen($port,$max);
     }
+
     /**
      * @access public
      * @param int $status 状态默认值 0：非阻塞，1：阻塞
@@ -144,6 +180,7 @@ class Socket
         else
             return socket_set_nonblock($this->Socket);
     }
+
     /**
      * @access public
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -154,6 +191,7 @@ class Socket
     {
         return socket_read($this->Socket, $max);
     }
+
     /**
      * @access public
      * @param string $string 发送内容
@@ -165,6 +203,7 @@ class Socket
     {
         return socket_write($this->Socket,$string,$max);
     }
+
     /**
      * @access public
      * @param string $buffer 缓冲变量
@@ -181,6 +220,7 @@ class Socket
     {
         return socket_recv($this->Socket,$buffer,$max,$flag);
     }
+
     /**
      * @access public
      * @param string $buffer 缓冲变量，获取内容
@@ -199,6 +239,7 @@ class Socket
     {
         return socket_recvfrom($this->Socket,$buffer, $max, $flag,$addr,$port);
     }
+
     /**
      * @access public
      * @param array $buffer 缓冲变量，获取内容
@@ -214,6 +255,7 @@ class Socket
     {
         return socket_recvmsg($this->Socket, $buffer,$flag);
     }
+
     /**
      * @access public
      * @param string $buffer 缓冲变量，获取内容
@@ -230,6 +272,7 @@ class Socket
     {
         return socket_send($this->Socket,$buffer,$max,$flag);
     }
+
     /**
      * @access public
      * @param string $buffer 缓冲变量，获取内容
@@ -248,6 +291,7 @@ class Socket
     {
         return socket_sendto($this->Socket,$buffer,$max,$flag,$addr,$port);
     }
+
     /**
      * @access public
      * @param array $buffer 缓冲变量，获取内容
@@ -263,6 +307,7 @@ class Socket
     {
         return socket_sendmsg($this->Socket,$buffer,$flag);
     }
+
     /**
      * @access public
      * @param int $type 默认值 2，注销类型 0：注销读取行为，1：注销写入行为，2：注销全部行为
@@ -277,6 +322,7 @@ class Socket
             $_type = 2;
         return socket_shutdown($this->Socket,$_type);
     }
+
     /**
      * @access public
      * @return void
@@ -286,6 +332,7 @@ class Socket
     {
         socket_close($this->Socket);
     }
+
     /**
      * @access public
      * @return void
@@ -295,6 +342,7 @@ class Socket
     {
         socket_clear_error($this->Socket);
     }
+
     /**
      * @access public
      * @return mixed

@@ -27,12 +27,14 @@ abstract class Thread
      * @context 传入值
      */
     abstract function set($name,$value);
+
     /**
      * @access public
      * @return void
      * @context 获取值内容
      */
     abstract function get($name);
+
     /**
      * @access public
      * @param string $name 拦截器名称
@@ -42,6 +44,7 @@ abstract class Thread
      * @context 拦截器
      */
     abstract function filter($name,$function,$param);
+
     /**
      * @access public
      * @param object $channel 通道对象
@@ -49,6 +52,7 @@ abstract class Thread
      * @context 执行函数，该函数用于封装操作内容
      */
     abstract function action($channel);
+
     /**
      * @access public
      * @static

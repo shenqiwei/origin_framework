@@ -13,15 +13,19 @@ class Str
      * @access private
      * @var object $Connect 数据库链接对象
     */
-    private $Connect = null;
+    private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param string $key 被创建对象键名
@@ -38,6 +42,7 @@ class Str
             $_receipt = false;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -55,6 +60,7 @@ class Str
             $_receipt = false;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -66,6 +72,7 @@ class Str
     {
         return $this->Connect->setnx($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -83,6 +90,7 @@ class Str
             $_receipt = false;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key
@@ -96,6 +104,7 @@ class Str
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被创建对象键名
@@ -107,6 +116,7 @@ class Str
     {
         return $this->Connect->append($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 被创建对象键名
@@ -119,6 +129,7 @@ class Str
     {
         return $this->Connect->setBit($key,$value,$offset);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -130,6 +141,7 @@ class Str
     {
         return $this->Connect->getBit($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -140,6 +152,7 @@ class Str
     {
         return $this->Connect->strlen($key);
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -155,6 +168,7 @@ class Str
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -169,6 +183,7 @@ class Str
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param array $columns 对应元素列表数组
@@ -184,6 +199,7 @@ class Str
             $_receipt = false;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param array $columns 对应元素列表数组
@@ -194,6 +210,7 @@ class Str
     {
         return $this->Connect->msetnx($columns);
     }
+
     /**
      * @access public
      * @param array $keys 对应元素列表数组
@@ -207,6 +224,7 @@ class Str
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名
@@ -229,6 +247,7 @@ class Str
             $_receipt = $this->Connect->incr($key);
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 被检索对象键名

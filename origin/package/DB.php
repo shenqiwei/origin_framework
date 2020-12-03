@@ -21,6 +21,7 @@ class DB
         $_dao->__setSQL($_dao);
         return $_dao;
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名
@@ -33,6 +34,7 @@ class DB
         $_dao->__setSQL($_dao);
         return $_dao;
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名
@@ -45,6 +47,7 @@ class DB
         $_dao->__setSQL($_dao);
         return $_dao;
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名
@@ -57,6 +60,7 @@ class DB
         $_dao->__setSQL($_dao);
         return $_dao;
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名
@@ -69,6 +73,7 @@ class DB
         $_dao->__setSQL($_dao);
         return $_dao;
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名
@@ -80,6 +85,7 @@ class DB
         # 调用Redis数据库核心包
         return new Redis($connect_name);
     }
+
     /**
      * @access public
      * @param string|null $connect_name 链接名

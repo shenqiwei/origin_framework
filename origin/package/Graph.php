@@ -12,19 +12,43 @@ class Graph
     /**
      * @access protected
      * @var resource $Canvas 画布
-     * @var int $CanvasWidth 画布宽度
-     * @var int $CanvasHeight 画布高度
-     * @var false|int|resource $Color 主背景色
-     * @var string $Font 字体
-     * @var int $FontSzie 字体大小
-     * @var false|int|resource $FontColor 字体颜色
      */
     protected $Canvas;
+
+    /**
+     * @access protected
+     * @var int $CanvasWidth 画布宽度
+     */
     protected $CanvasWidth;
+
+    /**
+     * @access protected
+     * @var int $CanvasHeight 画布高度
+     */
     protected $CanvasHeight;
+
+    /**
+     * @access protected
+     * @var false|int|resource $Color 主背景色
+     */
     protected $Color;
+
+    /**
+     * @access protected
+     * @var string $Font 字体
+     */
     protected $Font;
+
+    /**
+     * @access protected
+     * @var int $FontSzie 字体大小
+     */
     protected $FontSize;
+
+    /**
+     * @access protected
+     * @var false|int|resource $FontColor 字体颜色
+     */
     protected $FontColor;
 
     /**
@@ -32,6 +56,7 @@ class Graph
      * @param int $width 画布宽度
      * @param int $height 画布高度
      * @param boolean $true 是否使用真彩创建
+     * @return void
      * @context 设置画布
      */
     function Canvas($width, $height, $true=false)
@@ -93,6 +118,7 @@ class Graph
     {
         $this->FontColor = imagecolorallocate($this->Canvas, $red, $green, $blue);
     }
+
     /**
      * @access public
      * @param string $text
@@ -324,6 +350,7 @@ class Graph
             $_color = $color;
         return imageline($this->Canvas, $start_x, $start_y, $end_x, $end_y, $_color);
     }
+
     /**
      * @access public
      * @param array $style
@@ -341,6 +368,7 @@ class Graph
         else
             return false;
     }
+
     /**
      * @access public
      * @param string $str 输入字符串
@@ -362,6 +390,7 @@ class Graph
         else
             return imagestringup($this->Canvas, $font, $point_x, $point_y, $str, $_color);
     }
+
     /**
      * @access public
      * @param string $str 输入字符串
@@ -383,6 +412,7 @@ class Graph
         else
             return imagecharup($this->Canvas, $font, $point_x, $point_y, $str, $_color);
     }
+
     /**
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
@@ -398,6 +428,7 @@ class Graph
             $_color = $color;
         return imagesetpixel($this->Canvas, $point_x, $point_y, $_color);
     }
+
     /**
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
@@ -420,6 +451,7 @@ class Graph
     {
         return imagefilter($pic,$type);
     }
+
     /**
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
@@ -436,6 +468,7 @@ class Graph
     {
         return imagecopy($this->Canvas,$pic,$start_x,$start_y,$width,$height,$canvas_x,$canvas_y);
     }
+
     /**
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
@@ -452,6 +485,7 @@ class Graph
             $_color = $color;
         return imagerotate($pic,$angle,$_color,$transparent);
     }
+
     /**
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
@@ -463,6 +497,7 @@ class Graph
     {
         return imagefill($this->Canvas, 0, 0, $this->Color);
     }
+
     /**
      * @access public
      * @param string $type 图片类型

@@ -17,17 +17,27 @@ class Label
     /**
      * @access private
      * @var string $ViewCode 解析代码
+     */
+    private $ViewCode;
+
+    /**
+     * @access private
      * @var string $Variable 变量标记标签规则(输出)
+     */
+    private $Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
+
+    /**
+     * @access private
      * @var string $VariableI 变量标记标签规则
     */
-    private $ViewCode;
-    private $Variable = '/{\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?}/';
     private $VariableI = '/\$[^_\W\s]+([_-]?[^_\W\s]+)*(\.\[\d+]|\.[^_\W\s]+([_-]?[^_\W\s]+)*)*(\|[^_\W\s]+([_-]?[^_\W\s]+)*)?/';
+
     /**
      * @access private
      * @var string $IncludeRegular <include href="src/html/page.html"/> 页面引入标签规则
      */
     private $Include = '/\<include\s+href\s*=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/';
+
     /**
      * @access private
      * @var string $JudgeCi condition_information : 'variable eq conditions_variable'
@@ -42,6 +52,7 @@ class Label
     private $JudgeEF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
     private $JudgeEl = '/\<else[\/]?\>/';
     private $JudgeIe = '/\<[\/]if\s*\>/';
+
     /**
      * @access private
      * @var string $ForOperation 'variable to circulation_count'
@@ -51,6 +62,7 @@ class Label
      */
     private $ForBegin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $ForEnd = '/<\/for\s*>/';
+
     /**
      * @access private
      * @var string $ForeachOperation 'variable (as mark_variable)'
@@ -60,15 +72,18 @@ class Label
      */
     private $ForeachBegin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $ForeachEnd = '/\<[\/]foreach\s*\>/';
+
     /**
      * @access public
      * @param string $page 视图模板内容信息
+     * @return void
      * @context 构造方法 获取引用页面地址信息
      */
     function __construct($page)
     {
         $this->ViewCode = $page;
     }
+
     /**
      * @access public
      * @return string
@@ -101,6 +116,7 @@ class Label
         }
         return $_obj;
     }
+
     /**
      * @access protected
      * @param string $obj 解析代码段
@@ -125,6 +141,7 @@ class Label
         }
         return $obj;
     }
+
     /**
      * @access protected
      * @param string $obj 解析代码段
@@ -217,6 +234,7 @@ class Label
         }
         return $obj;
     }
+
     /**
      * @access protected
      * @param string $obj 解析代码段
@@ -273,6 +291,7 @@ class Label
             $obj = str_replace($_EIF[0][0],"<?php } ?>",$obj);
         return $obj;
     }
+
     /**
      * @access protected
      * @param string $symbol 运算符号
@@ -292,6 +311,7 @@ class Label
             return "==";
 
     }
+
     /**
      * @access public
      * @param string $obj 进行解析的代码段
@@ -376,6 +396,7 @@ class Label
             $obj = str_replace($_end[0][0],"<?php } ?>",$obj);
         return $obj;
     }
+
     /**
      * @access protected
      * @param string $obj 解析代码段

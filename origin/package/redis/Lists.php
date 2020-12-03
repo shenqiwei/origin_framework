@@ -13,15 +13,19 @@ class Lists
      * @access private
      * @var object $Connect 数据库链接对象
      */
-    private $Connect = null;
+    private $Connect;
+
     /**
      * @access public
      * @param object $connect redis主类链接信息
+     * @return void
+     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
         $this->Connect = $connect;
     }
+
     /**
      * @access public
      * @param array $keys 索引元素对象列表
@@ -36,6 +40,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param array $keys 索引元素对象列表
@@ -50,6 +55,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -65,6 +71,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -79,6 +86,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -97,6 +105,7 @@ class Lists
         }
         return $this->Connect->lInsert($key,$_location,$value,$write);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -107,6 +116,7 @@ class Lists
     {
         return $this->Connect->lLen($key);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -120,6 +130,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -133,6 +144,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key
@@ -147,6 +159,7 @@ class Lists
             $_receipt = null;
         return $_receipt;
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -158,6 +171,7 @@ class Lists
     {
         return $this->Connect->lPush($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -169,6 +183,7 @@ class Lists
     {
         return $this->Connect->rPush($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -180,6 +195,7 @@ class Lists
     {
         return $this->Connect->lPushx($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -191,6 +207,7 @@ class Lists
     {
         return $this->Connect->rPushx($key,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -203,6 +220,7 @@ class Lists
     {
         return $this->Connect->lRange($key,$start,$end);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -215,6 +233,7 @@ class Lists
     {
         return $this->Connect->lRem($key,$count,$value);
     }
+
     /**
      * @access public
      * @param string $key 索引元素对象键
@@ -227,6 +246,7 @@ class Lists
     {
         return $this->Connect->lSet($key,$index,$value);
     }
+    
     /**
      * @access public
      * @param string $key 索引元素对象键
