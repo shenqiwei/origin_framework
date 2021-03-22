@@ -59,19 +59,11 @@ class Request
     {
         # 创建返回变量，设置值为 null
         $_receipt = null;
-        # 设置请求组数组对象变量， 设置值为 null
-        $_array = null;
         # 判断请求类型，并将请求对象中的值存入数组对象变量
         switch(strtolower($this->Method)){
-            case 'get':
-                $_array = $_GET;
-                break;
-            case 'post':
-                $_array = $_POST;
-                break;
-            default:
-                $_array = $_REQUEST;
-                break;
+            case 'get': $_array = $_GET; break;
+            case 'post': $_array = $_POST; break;
+            default: $_array = $_REQUEST; break;
         }
         # 判断数组是否有有效
         if($_array){# 判断php是否在捕捉请求时，对值信息进行过滤，如果没有则进行过滤
@@ -80,23 +72,19 @@ class Request
                 # 数组遍历，通过逐一比对获取查询变量信息值
                 foreach($_array as $k => $v){
                     if($k == $this->ValidateName){
-                        if(!is_array($v)){
+                        if(!is_array($v))
                             $_receipt = addslashes($v);
-                        }else{
+                        else
                             $_receipt = $v;
-                        }
                         break;
-                    }else{
-                        continue;
                     }
                 }
             }
         }
         if((empty($_receipt) and $_receipt != 0 and $_receipt != '0' )or is_null($_receipt)){
             # 当数组无效时，装载默认值
-            if(!is_null($this->Default)){
+            if(!is_null($this->Default))
                 $_receipt = addslashes($this->Default);
-            }
         }
         return $_receipt;
     }
