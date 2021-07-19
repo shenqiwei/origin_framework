@@ -277,7 +277,7 @@ class Validate
 
     /**
      * @access public
-     * @return mixed
+     * @return string|null
      * @context 获取错误信息
      */
     function getError(){

@@ -69,13 +69,13 @@ abstract class Thread
         # 声明通道对象
         $_channel = new Channel;
         # 执行线程
-        $_future = $_thread->run(function()use($object,$_channel){
+        $_future = $_thread->run(function () use ($object, $_channel) {
             $object->action($_channel);
         });
         # 获取执行后内容
         $_receipt = $_channel->recv();
         # 判断线程状态
-        if($_future->done)
+        if ($_future->done)
             $_thread->close();
         return $_receipt;
     }

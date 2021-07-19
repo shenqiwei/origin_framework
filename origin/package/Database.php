@@ -286,9 +286,9 @@ class Database extends Query
         foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=') as $key => $value)
             $query = preg_replace($key, $value, $query);
         # 接入执行日志
-        $_uri = LOG_EXCEPTION.date('Ymd').'.log';
+        $_uri = LOG_CONNECT.date('Ymd').'.log';
         $_model_msg = date("Y/m/d H:i:s")." [Note]: ".trim($query).PHP_EOL;
-        log($_uri,$_model_msg);
+        _log($_uri,$_model_msg);
         try{
             # 执行查询搜索
             $_statement = $this->Connect->query(trim($query));

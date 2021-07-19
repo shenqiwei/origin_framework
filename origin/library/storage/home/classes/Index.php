@@ -23,6 +23,7 @@ class Index extends Unit
      * @access public
      * @return void
      * @context 首页加载函数，初始化方法内容
+     * @Route("/home/index", methods={"GET"})
     */
     function index()
     {

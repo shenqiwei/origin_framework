@@ -141,4 +141,11 @@ abstract class Unit
     {
         Output::json($array);
     }
+
+    /**
+     * @access public
+     * @return void
+     * @context 控制器默认加载函数
+    */
+    public abstract function index();
 }

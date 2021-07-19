@@ -9,10 +9,10 @@
 # 版本控制
 if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 5.5');
 # DIRECTORY_SEPARATOR：PHP内建常量，用来返回当前系统文件夹连接符号LINUX（/）,WINNER（\）
+# 系统类型
+const OS = PHP_OS;
 # 路径分割符
 if(!defined('DS')) define('DS',DIRECTORY_SEPARATOR);
-# 系统类型
-define("OS",PHP_OS);
 # 反路径连接符号
 define("RE_DS",(strpos(OS,"WIN") === false)?"\\":"/");
 # 主程序文件目录常量

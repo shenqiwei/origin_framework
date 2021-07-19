@@ -69,7 +69,7 @@ class Request
         if($_array){# 判断php是否在捕捉请求时，对值信息进行过滤，如果没有则进行过滤
             # 判断数组中是否存在，需查询变量名,如果存在进行数组遍历，反之执行默认值装载
             if(array_key_exists($this->ValidateName, $_array)){
-                # 数组遍历，通过逐一比对获取查询变量信息值
+                # 数组遍历，通过逐一比对获取查询变量信息值`
                 foreach($_array as $k => $v){
                     if($k == $this->ValidateName){
                         if(!is_array($v))
@@ -95,7 +95,6 @@ class Request
      * @context 请求器删除方法，用于删除指定元素
     */
     function delete(){
-        $_array = null;
         # 判断请求类型，并将请求对象中的值存入数组对象变量
         switch(strtolower($this->Method)){
             case 'get':
