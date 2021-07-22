@@ -42,7 +42,7 @@ class Queue
     static function count($queue)
     {
         if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-           if(is_file($_tmp = replace("{$_queue}/origin_queue.tmp"))){
+           if(is_file(replace("{$_queue}/origin_queue.tmp"))){
                $_file = new File($_queue);
                $_string = $_file->read("origin_queue.tmp");
                $_array = json_decode($_string,true);
@@ -65,7 +65,7 @@ class Queue
     {
         $_receipt = false;
         if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            if(is_file($_tmp = replace("{$_queue}/origin_queue.tmp"))){
+            if(is_file(replace("{$_queue}/origin_queue.tmp"))){
                 $_file = new File($_queue);
                 $_string = $_file->read("origin_queue.tmp");
                 $_array = json_decode($_string,true);
@@ -96,7 +96,7 @@ class Queue
     {
         $_receipt = false;
         if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            if(is_file($_tmp = replace("{$_queue}/origin_queue.tmp"))){
+            if(is_file(replace("{$_queue}/origin_queue.tmp"))){
                 $_file = new File($_queue);
                 $_string = $_file->read("origin_queue.tmp");
                 $_array = json_decode($_string,true);
