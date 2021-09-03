@@ -101,7 +101,7 @@ class Upload
             $this->Store = replace("resource/upload/".$_dir);
         }
         if(!is_dir(replace(ROOT.DS.$this->Store))){
-            $_file = new File();
+            $_file = new Folder();
             $_file->create(str_replace(DS,"/",$this->Store),true);
         }
         if(!$this->Input)
