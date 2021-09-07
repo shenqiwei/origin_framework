@@ -532,7 +532,7 @@ abstract class Query
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
             if(!empty($condition)){
-                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=','/\s+in\s+/'=>'in','/\s+nin\s+/'=>"not in") as $key => $value){
+                foreach(array('/\s+gt\s+/' => '>', '/\s+lt\s+/ ' => '<','/\s+neq\s+/' => '!=', '/\s+eq\s+/'=> '=', '/\s+ge\s+/' => '>=', '/\s+le\s+/' => '<=','/\s+in\s+/'=>' in ','/\s+nin\s+/'=>" not in ") as $key => $value){
                     $condition = preg_replace($key, $value, $condition);
                 }
                 $this->Where = " where {$condition}";

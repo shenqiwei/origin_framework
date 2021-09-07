@@ -40,17 +40,11 @@ class Junction
     static function initialize()
     {
         # 应用结构包调用
-        if(is_file($_common = replace(ROOT . "/application/common/public.php")))
-            include("{$_common}");
+        if(is_file($_common = replace(ROOT . "/application/common/public.php"))) include("{$_common}");
         # 运行起始时间
         self::$LoadTime = explode(" ",microtime());
         self::$LoadTime = floatval(self::$LoadTime[0])+floatval(self::$LoadTime[1]);
-        /**
-         * 使用请求器和验证结构进行入口保护
-         * @var string $_class 带命名空间信息的类信息
-         * @var string $_object 类实例化对象
-         * @var string $_method 类对象方法
-         */
+        if(DEBUG) initialize(); # 初始化应用结构内容
         # 判断自动加载方法
         if(function_exists('spl_autoload_register')){
             # 设置基础控制器参数变量
@@ -167,9 +161,6 @@ class Junction
                 # 验证文件地址是否可以访问
                 if(!isset($_class_path) or !is_file(ROOT.DS.$_class_path)){
                     if(DEBUG){
-                        if(initialize()){
-                            goto load;
-                        }
                         try {
                             throw new Exception('Origin Loading Error: Not Fount Classes Document');
                         } catch (Exception $e) {

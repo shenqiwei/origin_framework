@@ -211,53 +211,41 @@ class File extends Folder
         # 设置返回对象
         $_receipt = false;
         # 判断错误编号是否为初始状态
-        # 调用路径文件验证
-        if(is_file($_folder = replace(ROOT.DS.$file))){
-            # 未发生错误执行
-            switch ($operate) {
-                case self::FILE_WRITE: # 写入
-                    $_write = fopen($_folder, 'w');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case self::FILE_LEFT_WRITE: # 写入
-                    $_write = fopen($_folder, 'w+');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case self::FILE_BEHIND_WRITE: # 写入
-                    $_write = fopen($_folder, 'a');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case self::FILE_FULL_WRITE: # 写入
-                    $_write = fopen($_folder, 'a+');
-                    if ($_write) {
-                        $_receipt = fwrite($_write, strval($msg));
-                        fclose($_write);
-                    }
-                    break;
-                case self::FILE_CONTENT_WRITE: # 写入
-                default: # 默认状态与读取状态一致
-                    $_receipt = file_put_contents($_folder, strval($msg));
-                    break;
-            }
-        }else{
-            $this->Error = "The file is invalid!";
-            if(!$throw){
-                try{
-                    throw new Exception($this->Error);
-                }catch(Exception $e){
-                    exception("File Error",$e->getMessage(),debug_backtrace(0,1));
-                    exit();
+        $_folder = replace(ROOT.DS.$file);
+        # 未发生错误执行
+        switch ($operate) {
+            case self::FILE_WRITE: # 写入
+                $_write = fopen($_folder, 'w');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
                 }
-            }
+                break;
+            case self::FILE_LEFT_WRITE: # 写入
+                $_write = fopen($_folder, 'w+');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case self::FILE_BEHIND_WRITE: # 写入
+                $_write = fopen($_folder, 'a');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case self::FILE_FULL_WRITE: # 写入
+                $_write = fopen($_folder, 'a+');
+                if ($_write) {
+                    $_receipt = fwrite($_write, strval($msg));
+                    fclose($_write);
+                }
+                break;
+            case self::FILE_CONTENT_WRITE: # 写入
+            default: # 默认状态与读取状态一致
+                $_receipt = file_put_contents($_folder, strval($msg));
+                break;
         }
         return $_receipt;
     }

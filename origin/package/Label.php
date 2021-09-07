@@ -247,7 +247,8 @@ class Label
         $_count = preg_match_all($this->JudgeIf,$obj , $_IF, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             # 获取条件内容
-            $_condition =  preg_replace('/[\'\"]*/', '', $_IF[$_i][1]);
+//            $_condition =  preg_replace('/[\'\"]*/', '', $_IF[$_i][1]);
+            $_condition = substr($_IF[$_i][1],1,strlen($_IF[$_i][1])-2);
             # 拆分条件内容
             $_condition = explode(" ",$_condition);
             $_symbol = $this->symbol($_condition[1]);
@@ -267,7 +268,8 @@ class Label
         $_count = preg_match_all($this->JudgeEF, $obj, $_EF, PREG_SET_ORDER);
         for($_i = 0;$_i < $_count;$_i++){
             # 获取条件内容
-            $_condition =  preg_replace('/[\'\"]*/', '', $_EF[$_i][1]);
+//            $_condition =  preg_replace('/[\'\"]*/', '', $_EF[$_i][1]);
+            $_condition = substr($_EF[$_i][1],1,strlen($_EF[$_i][1])-2);
             # 拆分条件内容
             $_condition = explode(" ",$_condition);
             $_symbol = $this->symbol($_condition[1]);
