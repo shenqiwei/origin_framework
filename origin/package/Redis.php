@@ -23,10 +23,10 @@ class Redis
     protected $Connect;
 
     /**
+     * 构造函数，预加载数据源配置信息
      * @access public
      * @param string|null $connect_name 配置源名称
      * @return void
-     * @context 构造函数，预加载数据源配置信息
     */
     function __construct($connect_name=null)
     {
@@ -64,9 +64,9 @@ class Redis
     }
 
     /**
+     * 调用键位功能封装
      * @access public
-     * @return mixed
-     * @context 调用键位功能封装
+     * @return object 数据源连接对象
     */
     function key()
     {
@@ -74,9 +74,9 @@ class Redis
     }
 
     /**
+     * 调用字符串功能封装
      * @access public
-     * @return mixed
-     * @context 调用字符串功能封装
+     * @return object 数据源连接对象
      */
     function string()
     {
@@ -84,9 +84,9 @@ class Redis
     }
 
     /**
+     * 调用集合包功能封装
      * @access public
-     * @return mixed
-     * @context 调用集合包功能封装
+     * @return object 数据源连接对象
      */
     function set()
     {
@@ -94,9 +94,9 @@ class Redis
     }
 
     /**
+     * 调用哈希表功能封装
      * @access public
-     * @return mixed
-     * @context 调用哈希表功能封装
+     * @return object 数据源连接对象
      */
     function hash()
     {
@@ -104,9 +104,9 @@ class Redis
     }
 
     /**
+     * 调用列表功能包封装
      * @access public
-     * @return mixed
-     * @context 调用列表功能包封装
+     * @return object 数据源连接对象
      */
     function lists()
     {
@@ -114,9 +114,9 @@ class Redis
     }
 
     /**
+     * 调用队列表功能函数封装
      * @access public
-     * @return mixed
-     * @context 调用队列表功能函数封装
+     * @return object 数据源连接对象
      */
     function seq()
     {
@@ -124,10 +124,10 @@ class Redis
     }
 
     /**
+     * 执行Redis刷新
      * @access public
      * @param string $obj 刷新对象 all or db
-     * @return bool
-     * @context 执行Redis刷新
+     * @return boolean 返回执行结果状态值
     */
     function flush($obj="all")
     {
@@ -140,10 +140,10 @@ class Redis
     }
 
     /**
+     * Select 切换到指定的数据库，数据库索引号 index 用数字值指定，以 0 作为起始索引值
      * @access public
      * @param int $db 指定数据库标尺
-     * @return bool
-     * @context Select 切换到指定的数据库，数据库索引号 index 用数字值指定，以 0 作为起始索引值
+     * @return bool 返回执行结果
     */
     function selectDB($db)
     {
@@ -151,9 +151,9 @@ class Redis
     }
 
     /**
+     * 最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示
      * @access public
-     * @return int
-     * @context 最近一次 Redis 成功将数据保存到磁盘上的时间，以 UNIX 时间戳格式表示
+     * @return int 返回时间戳
     */
     function saveTime()
     {
@@ -161,9 +161,9 @@ class Redis
     }
 
     /**
+     * 返回redis服务器时间
      * @access public
-     * @return array
-     * @context 返回redis服务器时间
+     * @return array 返回服务时间
     */
     function time()
     {
@@ -171,9 +171,9 @@ class Redis
     }
 
     /**
+     * 返回数据库容量使用信息
      * @access public
-     * @return int
-     * @context 返回数据库容量使用信息
+     * @return int 返回数据库可用容量
     */
     function dbSize()
     {
@@ -181,9 +181,9 @@ class Redis
     }
 
     /**
+     * 异步执行一个 AOF（AppendOnly File） 文件重写操作
      * @access public
-     * @return bool
-     * @context 异步执行一个 AOF（AppendOnly File） 文件重写操作
+     * @return bool 返回执行结果状态值
     */
     function bgAOF()
     {
@@ -191,9 +191,9 @@ class Redis
     }
 
     /**
+     * 异步保存当前数据库的数据到磁盘
      * @access public
-     * @return bool
-     * @context 异步保存当前数据库的数据到磁盘
+     * @return bool 返回执行结果状态值
     */
     function bgSave()
     {
@@ -201,9 +201,9 @@ class Redis
     }
 
     /**
+     * 保存当前数据库的数据到磁盘
      * @access public
-     * @return bool
-     * @context 保存当前数据库的数据到磁盘
+     * @return bool 返回执行结果状态值
      */
     function save()
     {
@@ -211,9 +211,9 @@ class Redis
     }
 
     /**
+     * 析构函数，释放连接
      * @access public
      * @return void
-     * @context 析构函数，释放连接
     */
     function __destruct()
     {

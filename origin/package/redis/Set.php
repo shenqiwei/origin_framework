@@ -16,10 +16,10 @@ class Set
     private $Connect;
 
     /**
+     * 构造函数，装在redis数据源连接对象
      * @access public
      * @param object $connect redis主类链接信息
      * @return void
-     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
@@ -27,11 +27,11 @@ class Set
     }
 
     /**
+     * 向集合添加一个或多个成员
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 存入值
-     * @return int
-     * @context 集合：向集合添加一个或多个成员
+     * @return int 返回执行结果
      */
     function add($key,$value)
     {
@@ -39,10 +39,10 @@ class Set
     }
 
     /**
+     * 获取集合内元素数量
      * @access public
      * @param string $key 索引元素对象键
-     * @return int
-     * @context 获取集合内元素数量
+     * @return int 返回执行结果
      */
     function count($key)
     {
@@ -50,11 +50,11 @@ class Set
     }
 
     /**
+     * 获取两集合差值
      * @access public
      * @param string $key 索引元素对象键
      * @param string $second 比对元素对象键
-     * @return mixed
-     * @context 获取两集合差值
+     * @return mixed 返回执行结果
      */
     function diff($key,$second)
     {
@@ -65,12 +65,12 @@ class Set
     }
 
     /**
+     * 获取两集合之间的差值，并存入新集合中
      * @access public
      * @param string $key 索引元素对象
      * @param string $second 比对元素对象键
      * @param string $new 新集合元素对象
-     * @return int
-     * @context 获取两集合之间的差值，并存入新集合中
+     * @return int 返回执行结果
      */
     function different($key,$second,$new=null)
     {
@@ -78,11 +78,11 @@ class Set
     }
 
     /**
+     * 判断集合元素对象值是否存在元素对象中
      * @access public
      * @param string $key 索引元素对象键
      * @param string $value 验证值
-     * @return int
-     * @context 判断集合元素对象值是否存在元素对象中
+     * @return int 返回执行结果
      */
     function member($key,$value)
     {
@@ -90,10 +90,10 @@ class Set
     }
 
     /**
+     * 返回元素对象集合内容
      * @access public
      * @param string $key 索引元素对象键
-     * @return mixed
-     * @context 返回元素对象集合内容
+     * @return mixed 返回索引存储对象内容
      */
     function reSet($key)
     {
@@ -104,11 +104,11 @@ class Set
     }
 
     /**
+     * 元素对象集合值迁移至其他集合中
      * @param string $key 索引元素对象键
      * @param string $second 迁移集合对象
      * @param mixed $value 迁移值
-     * @return int
-     * @context 元素对象集合值迁移至其他集合中
+     * @return int 返回执行结果
      */
     function move($key,$second,$value)
     {
@@ -116,10 +116,10 @@ class Set
     }
 
     /**
+     * 移除元素对象随机内容值
      * @access public
      * @param string $key 索引元素对象
-     * @return mixed
-     * @context 移除元素对象随机内容值
+     * @return mixed 返回执行结果或索引对象内容
      */
     function pop($key)
     {
@@ -130,11 +130,11 @@ class Set
     }
 
     /**
+     * 随机从元素对象中抽取指定数量元素内容值
      * @access public
      * @param string $key 索引元素对象键
      * @param int $count 随机抽调数量
-     * @return mixed
-     * @context 随机从元素对象中抽取指定数量元素内容值
+     * @return mixed 返回执行结果或索引对象内容
      */
     function randMember($key,$count=1)
     {
@@ -148,11 +148,11 @@ class Set
     }
 
     /**
+     * 移除元素对象中指定元素内容
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 移除值
-     * @return int
-     * @context 移除元素对象中指定元素内容
+     * @return int 返回执行结果
      */
     function remove($key,$value)
     {
@@ -160,11 +160,11 @@ class Set
     }
 
     /**
+     * 返回指定两个集合对象的并集
      * @access public
      * @param string $key 索引元素对象键
      * @param string $second 索引元素对象键
-     * @return mixed
-     * @context 返回指定两个集合对象的并集
+     * @return mixed 返回执行结果或集合内容
      */
     function merge($key,$second)
     {
@@ -175,12 +175,12 @@ class Set
     }
 
     /**
+     * 返回指定两个集合对象的并集
      * @access public
      * @param string $new 存储指向集合键
      * @param string $key 索引元素对象键
      * @param string $second 索引元素对象键
-     * @return int
-     * @context 返回指定两个集合对象的并集
+     * @return int 返回执行结果
      */
     function mergeTo($new,$key,$second)
     {
@@ -188,13 +188,13 @@ class Set
     }
 
     /**
+     * 迭代元素对象指定结构内容
      * @access public
      * @param string $key 索引元素对象
      * @param string $value 索引值
      * @param int $cursor 执行标尺
      * @param string $pattern 操作参数
-     * @return mixed
-     * @context 迭代元素对象指定结构内容
+     * @return mixed 返回执行结果
      */
     function tree($key,$value,$cursor=0,$pattern="match")
     {

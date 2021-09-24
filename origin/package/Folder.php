@@ -18,10 +18,10 @@ class Folder
     protected $Root = ROOT;
 
     /**
+     * 构造方法，设置根目录地址
      * @access public
      * @param string|null $root 根目录地址
      * @return void
-     * @context 构造方法
     */
     function __construct($root=null)
     {
@@ -36,9 +36,9 @@ class Folder
     protected $Breakpoint = null;
 
     /**
+     * 断点信息返回
      * @access public
-     * @return string
-     * @context 断点信息返回
+     * @return string 返回断点信息
      */
     function getBreakpoint()
     {
@@ -52,21 +52,21 @@ class Folder
     protected $Error = null;
 
     /**
+     * 获取错误信息
      * @access public
-     * @return string
-     * @context 获取错误信息
+     * @return string|null 返回异常信息
      */
     function getError(){
         return $this->Error;
     }
 
     /**
+     * 创建文件夹
      * @access public
      * @param string $folder 文件夹地址
      * @param boolean $autocomplete 自动补全完整路径，默认值 false
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 创建文件夹
+     * @return boolean 返回执行结果状态值
     */
     function create($folder, $autocomplete=false,$throw=false)
     {
@@ -113,11 +113,11 @@ class Folder
     }
 
     /**
+     * 删除文件夹
      * @access public
      * @param string $folder 文件夹地址
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 删除文件夹
+     * @return boolean 返回执行结果状态值
     */
     function remove($folder,$throw=false){
         # 设置返回对象
@@ -142,12 +142,12 @@ class Folder
     }
 
     /**
+     * 文件夹重命名
      * @access public
      * @param string $folder 文件地址
      * @param string $name 新名称
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 文件夹重命名
+     * @return boolean 返回执行结果状态值
     */
     function rename($folder, $name, $throw=false)
     {
@@ -181,14 +181,14 @@ class Folder
     }
 
     /**
+     * 获取文件夹信息
      * @access public
      * @param string $folder 文件夹地址
-     * @return mixed
-     * @context 获取文件夹信息
+     * @return array 返回执行结果状态值
     */
     function get($folder)
     {
-        $_receipt = null;
+        $_receipt = [];
         if(file_exists($_directory = replace(ROOT.DS.$folder))){
             if($_dir = opendir($_directory)){
                 # 执行列表遍历

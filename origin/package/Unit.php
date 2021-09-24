@@ -21,19 +21,19 @@ abstract class Unit
     private $Param = array();
 
     /**
+     * 构造方法，获取当前操作类信息
      * @access public
      * @return void
-     * @context 构造方法，获取当前操作类信息
     */
     function __construct()
     {}
 
     /**
+     * 向模板加载数据信息
      * @access protected
-     * @param string $key
-     * @param mixed $value
+     * @param string $key 对象键
+     * @param mixed $value 接入值
      * @return void
-     * @context 向模板加载数据信息
     */
     protected function param($key, $value)
     {
@@ -53,10 +53,10 @@ abstract class Unit
     }
 
     /**
+     * 调用模板方法
      * @access protected
      * @param string|null $template 视图模板
      * @return void
-     * @context 调用模板方法
      */
     protected function template($template=null)
     {
@@ -73,9 +73,9 @@ abstract class Unit
     }
 
     /**
+     * 返回执行对象类名
      * @access protected
-     * @return string
-     * @context 返回执行对象类名
+     * @return string 返回类名
      */
     protected function get_class()
     {
@@ -83,9 +83,9 @@ abstract class Unit
     }
 
     /**
+     * 返回执行对象方法名
      * @access protected
-     * @return string
-     * @context 返回执行对象方法名
+     * @return string 返回方法名称
      */
     protected function get_function()
     {
@@ -93,12 +93,12 @@ abstract class Unit
     }
 
     /**
+     * 执行成功提示信息
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
      * @return void
-     * @context 执行成功提示信息
     */
     protected function success($message='success',$url='#',$time=3)
     {
@@ -107,12 +107,12 @@ abstract class Unit
     }
 
     /**
+     * 错误提示
      * @access protected
      * @param string $message
      * @param string $url
      * @param int $time
      * @return void
-     * @context 错误提示
     */
     protected function error($message='error',$url='#',$time=3)
     {
@@ -121,10 +121,10 @@ abstract class Unit
     }
 
     /**
-     * @access public
+     * 地址跳转（重定向）
+     * @access protected
      * @param string $url
      * @return void
-     * @context 地址跳转（重定向）
      */
     protected function redirect($url)
     {
@@ -132,10 +132,10 @@ abstract class Unit
     }
 
     /**
-     * @access public
+     * json格式输出
+     * @access protected
      * @param array $array
      * @return void
-     * @context json格式输出
     */
     protected function json($array)
     {
@@ -143,9 +143,9 @@ abstract class Unit
     }
 
     /**
+     * 控制器默认加载函数
      * @access public
      * @return void
-     * @context 控制器默认加载函数
     */
     public abstract function index();
 }

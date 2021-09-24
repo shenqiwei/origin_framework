@@ -24,10 +24,10 @@ class Curl
     protected $CurUtf8 = false;
 
     /**
+     * 构造器，设置是否强制utf8编码
      * @access public
      * @param boolean $bool 设置强制utf-8编码转换
      * @return void
-     * @context 构造器
     */
     function __construct($bool = false)
     {
@@ -35,14 +35,14 @@ class Curl
     }
 
     /**
+     * get请求函数
      * @access public
      * @param string $url 访问地址
      * @param string|array $param 访问参数，可以使用get参数结构或者（k/v）数组结构
      * @param array $header 报文
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
-     * @return mixed
-     * @content get请求函数
+     * @return array|bool|string|null 返回远程请求结果内容
      */
     function get($url, $param = array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
@@ -72,14 +72,14 @@ class Curl
     }
 
     /**
+     * post请求函数
      * @access public
      * @param string $url 访问地址
      * @param string|array $param 访问参数，（k/v）数组结构
      * @param array $header 报文
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
-     * @return mixed
-     * @content get请求函数
+     * @return array|bool|string|null 返回远程请求结果内容
      */
     function post($url, $param=array(), $header=array(), $ssl_peer = false, $ssl_host = false)
     {
@@ -111,6 +111,7 @@ class Curl
     }
 
     /**
+     * 文件上传
      * @access public
      * @param string $url 访问地址
      * @param array $header 报文
@@ -119,8 +120,7 @@ class Curl
      * @param string $input 表单名
      * @param boolean $ssl_peer 验证证书
      * @param boolean $ssl_host 验证地址
-     * @return mixed
-     * @context 文件上传
+     * @return bool|string 返回远程请求结果内容
      */
     function upload($url, $folder, $type, $header=array(), $input = "pic", $ssl_peer = false, $ssl_host = false)
     {
@@ -142,9 +142,9 @@ class Curl
     }
 
     /**
+     * 获取请求后返回值内容
      * @access public
-     * @return mixed
-     * @context 获取请求后返回值内容
+     * @return array 返回请求结果内容
     */
     function get_curl_receipt()
     {

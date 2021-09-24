@@ -33,9 +33,9 @@ class Junction
     static $LoadTime = 0.0;
 
     /**
+     * 默认模式，自动加载入口
      * @access public
      * @return void
-     * @context 默认模式，自动加载入口
      */
     static function initialize()
     {
@@ -73,9 +73,7 @@ class Junction
             $_type = $_SERVER["REQUEST_METHOD"];
             # 获取用户ip
             $_use = $_SERVER["REMOTE_ADDR"];
-            # 初始化对象及路径变量
-            $_class_path = null;
-            $_class_namespace = null;
+
             # 对请求对象地址请求内容进行截取
             if(strpos($_request,'?'))
                 $_request = substr($_request,0,strpos($_request,'?'));
@@ -89,6 +87,9 @@ class Junction
                     break;
                 }
             }
+            # 初始化对象及路径变量
+            $_class_path = null;
+            $_class_namespace = null;
             # 忽略其他资源类型文件索引
             if(!$_bool)
                 if(strpos($_request,".") === false) $_bool = true;
@@ -106,7 +107,12 @@ class Junction
                             $_symbol = DS;
                             $_namespace_symbol = "\\";
                         }
-                        # 拼接地址内容
+                        if(is_file(ROOT.$_class_path.$_symbol."classes".DS.ucfirst($_path_array[$_i]).".php")){
+                            $_class_path .= $_symbol."classes".DS.ucfirst($_path_array[$_i]).".php";
+                            $_class_namespace .= $_namespace_symbol."Classes\\".ucfirst($_path_array[$_i]);
+                            $_class = ucfirst($_path_array[$_i]);
+                            break;
+                        }
                         if(is_dir(ROOT.$_class_path.$_symbol.$_path_array[$_i])){
                             $_class_path .= $_symbol.$_path_array[$_i];
                             $_class_namespace .= $_namespace_symbol.ucfirst($_path_array[$_i]);
@@ -119,12 +125,6 @@ class Junction
                             $_class_namespace .= $_namespace_symbol."Application\\".ucfirst($_path_array[$_i]);
                             $_catalogue = $_path_array[$_i];
                             continue;
-                        }
-                        if(is_file(ROOT.$_class_path.$_symbol."classes".DS.ucfirst($_path_array[$_i]).".php")){
-                            $_class_path .= $_symbol."classes".DS.ucfirst($_path_array[$_i]).".php";
-                            $_class_namespace .= $_namespace_symbol."Classes\\".ucfirst($_path_array[$_i]);
-                            $_class = ucfirst($_path_array[$_i]);
-                            break;
                         }
                         if(isset($_function) and $_i === (count($_path_array) - 1)
                             and is_file(ROOT.$_class_path.$_symbol.ucfirst($_path_array[$_i]).".php")){
@@ -215,10 +215,10 @@ class Junction
     }
 
     /**
+     * 路由解析函数
      * @access protected
      * @param string $uri 路由对象地址
-     * @return array|string
-     * @context 路由解析函数
+     * @return array|string 返回路由信息
     */
     protected static function route($uri){
         # 创建回执变量
@@ -236,15 +236,13 @@ class Junction
                     $_config["mapping"] = array_change_value_case($_config["mapping"]);
                     if(!in_array($uri,$_config["mapping"])) continue;
                 }elseif(strtolower($_config["mapping"]) != strtolower($uri)) continue;
-                if(key_exists("method",$_config) and $_config["method"] != "normal"){
+                if(key_exists("method",$_config) and $_config["method"] != "normal")
                     if(strtoupper($_config["method"]) != $_SERVER["REQUEST_METHOD"]) break;
-                }
                 if(key_exists("classes",$_config) and key_exists("functions",$_config)){
                     $_receipt = array($_config["classes"],$_config["functions"]);
                     break;
                 }else break;
-            }else
-                continue;
+            }
         }
         End:
         if(is_null($_receipt)){
@@ -262,10 +260,10 @@ class Junction
     }
 
     /**
+     * 自动加载模块
      * @access protected
      * @param string $file 文件地址
      * @return void
-     * @context 自动加载模块
     */
     protected static function autoload($file)
     {
@@ -296,12 +294,12 @@ class Junction
     }
 
     /**
+     * 加载错误信息
      * @access public
      * @param string $obj 未加载对象（class|function）
      * @param string $error 错误信息
      * @param string $type 加载类型
      * @return void
-     * @context 加载错误信息
      */
     static function error($obj,$error,$type)
     {

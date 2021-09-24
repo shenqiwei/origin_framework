@@ -54,10 +54,10 @@ class Mongodb
     protected $CommaConfine = '/^([^\_\W]+(\_[^\_\W]+)*(\.?[^\_\W]+(\_[^\_\W]+)*)*|\`.+[^\s]+\`)(\,\s?[^\_\W]+(\_[^\_\W]+)*|\,\`.+[^\s]+\`)*$/';
 
     /**
+     * 构造函数，预加载数据源配置信息
      * @access public
      * @param string|null $connect_name 配置源名称
      * @return void
-     * @context 构造函数，预加载数据源配置信息
      */
     function __construct($connect_name=null)
     {
@@ -97,9 +97,9 @@ class Mongodb
     }
 
     /**
+     * 回传类对象信息
      * @access public
-     * @param object $object
-     * @context 回传类对象信息
+     * @param object $object 数据库链接对象
      */
     function __setSQL($object)
     {
@@ -107,9 +107,9 @@ class Mongodb
     }
 
     /**
+     * 获取类对象信息,仅类及其子类能够使用
      * @access public
-     * @return object
-     * @context 获取类对象信息,仅类及其子类能够使用
+     * @return object 返回链接对象
      */
     protected function __getSQL()
     {
@@ -123,10 +123,10 @@ class Mongodb
     protected $_Set = null;
 
     /**
+     * 集合（表）别名语法
      * @access public
      * @param string $table 表信息
-     * @return object
-     * @context 集合（表）别名语法
+     * @return object 返回链接对象
     */
     function table($table)
     {
@@ -134,10 +134,10 @@ class Mongodb
     }
 
     /**
+     * 集合对象约束函数
      * @access public
      * @param string $set
-     * @return object
-     * @context 集合对象约束函数
+     * @return object 返回链接对象
      */
     function set($set)
     {
@@ -163,10 +163,10 @@ class Mongodb
     protected $_Data = null;
 
     /**
+     * 数据数组方法
      * @access public
      * @param array $data 数据数组
-     * @return object
-     * @context 数据数组方法
+     * @return object 返回链接对象
      */
     function data($data)
     {
@@ -211,12 +211,12 @@ class Mongodb
     protected $_Where = null;
 
     /**
+     * 条件约束方法
      * @access public
      * @param string|array $field 条件对象键（条件数组）
      * @param mixed $value 条件值
      * @param string $symbol 运算符号
-     * @return object
-     * @context 条件约束方法
+     * @return object 返回链接对象
      */
     function where($field,$value=null,$symbol="eq")
     {
@@ -275,10 +275,10 @@ class Mongodb
     protected $_Projection = null;
 
     /**
+     * 映射约束方法
      * @access public
      * @param array $projection 投射参数
-     * @return object
-     * @context 映射约束方法
+     * @return object 返回链接对象
      */
     function projection($projection)
     {
@@ -302,11 +302,11 @@ class Mongodb
     protected $_Sort = null;
 
     /**
+     * 排序别名语法
      * @access public
      * @param string $field 排序键
      * @param string $type 排序方式
-     * @return object
-     * @context 排序别名语法
+     * @return object 返回链接对象
      */
     function order($field,$type)
     {
@@ -314,11 +314,11 @@ class Mongodb
     }
 
     /**
+     * 排序约束方法
      * @access public
      * @param string $field 排序键
      * @param string $type 排序方式
-     * @return object
-     * @context 排序约束方法
+     * @return object 返回链接对象
      */
     function sort($field,$type="asc")
     {
@@ -362,11 +362,11 @@ class Mongodb
     protected $_Limit = null;
 
     /**
+     * 显示数量方法
      * @access public
      * @param int $start 标尺起始位置，当不设置length内容时，该参数与length等同
      * @param int $length 显示数量
-     * @return object
-     * @context 显示数量方法
+     * @return object 返回链接对象
      */
     function limit($start, $length=0)
     {
@@ -388,10 +388,10 @@ class Mongodb
     protected $_Skip = null;
 
     /**
+     * 跳过数量方法
      * @access public
      * @param array $skip
-     * @return object
-     * @context 跳过数量方法
+     * @return object 返回链接对象
      */
     function skip($skip)
     {
@@ -406,10 +406,10 @@ class Mongodb
     protected $_Multi = false;
 
     /**
+     * 执行同步更新设置函数
      * @access public
      * @param boolean $set
-     * @return object
-     * @context 执行同步更新设置函数
+     * @return object 返回链接对象
      */
     function multi($set=false)
     {
@@ -426,10 +426,10 @@ class Mongodb
     protected $_Upsert = false;
 
     /**
+     * 执行无效对象新建设置函数
      * @access public
      * @param boolean $set
-     * @return object
-     * @context 执行无效对象新建设置函数
+     * @return object 返回链接对象
      */
     function upsert($set=false)
     {
@@ -446,10 +446,10 @@ class Mongodb
     protected  $_ReadPreference = false;
 
     /**
+     * 执行读取分离设置函数
      * @access public
      * @param boolean $set
-     * @return object
-     * @context 执行读取分离设置函数
+     * @return object 返回链接对象
      */
     function readPreference($set=false)
     {
@@ -460,14 +460,13 @@ class Mongodb
     }
 
     /**
+     * 查询总数
      * @access public
-     * @return mixed
      * @throws
-     * @context 查询总数
+     * @return int
      */
     function count()
     {
-        $_receipt = null;
         try{
             if(is_null($this->_Where) or !is_array($this->_Where))
                 $_where = array();
@@ -483,13 +482,7 @@ class Mongodb
             # 执行select操作并赋值到返回值变量中
             $_cursor = $this->Connect->executeCommand($this->DB,$_command);
             $_receipt = $_cursor->toArray()[0]->n;
-        }catch(ConnectionTimeoutException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch (ConnectionException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(Exception $e){
+        }catch(ConnectionTimeoutException | ConnectionException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         } catch (\MongoDB\Driver\Exception\Exception $e) {
@@ -500,10 +493,10 @@ class Mongodb
     }
 
     /**
+     * 查询
      * @access public
-     * @return mixed
      * @throws
-     * @context 查询
+     * @return array
      */
     function select()
     {
@@ -538,13 +531,7 @@ class Mongodb
                 # 传入内容值
                 array_push($_receipt,(array)$_document);
             }
-        }catch(ConnectionTimeoutException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch (ConnectionException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(Exception $e){
+        }catch(ConnectionTimeoutException | ConnectionException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
@@ -552,13 +539,12 @@ class Mongodb
     }
 
     /**
+     * 插入
      * @access public
-     * @return mixed
-     * @context 插入
+     * @return int
      */
     function insert()
     {
-        $_receipt = null;
         try{
             # 调用映射id生成类
             $this->_Data["_id"] = new ObjectId();
@@ -574,16 +560,7 @@ class Mongodb
             $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_insert,$_write);
             # 返回执行参数
             $_receipt = $_result->getInsertedCount();
-        }catch (BulkWriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteConcernException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(Exception $e){
+        }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
@@ -591,13 +568,12 @@ class Mongodb
     }
 
     /**
+     * 修改
      * @access public
-     * @return mixed
-     * @context 修改
+     * @return int
      */
     function update()
     {
-        $_receipt = null;
         try{
             $_update = new BulkWrite();
             # 执行更新操作
@@ -608,16 +584,7 @@ class Mongodb
             $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
             # 返回执行参数
             $_receipt = $_result->getModifiedCount();
-        }catch (BulkWriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteConcernException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(Exception $e){
+        }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
@@ -625,13 +592,12 @@ class Mongodb
     }
 
     /**
+     * 删除
      * @access public
-     * @return mixed
-     * @context 删除
+     * @return int
      */
     function delete()
     {
-        $_receipt = null;
         try{
             $_update = new BulkWrite();
             # 执行删除操作
@@ -642,16 +608,7 @@ class Mongodb
             $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
             # 返回执行参数
             $_receipt = $_result->getDeletedCount();
-        }catch (BulkWriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(WriteConcernException $e){
-            exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
-            exit();
-        }catch(Exception $e){
+        }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }

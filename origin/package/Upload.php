@@ -31,13 +31,13 @@ class Upload
      * @access private
      * @var string $Store 存储位置
      */
-    private $Store = null;
+    private $Store;
 
     /**
      * @access private
      * @var string $_Error 错误信息
      */
-    private $Error = null;
+    private $Error;
 
     /**
      * @access private
@@ -58,12 +58,12 @@ class Upload
     );
 
     /**
+     * 上传条件设置函数
      * @access public
      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @param array $type 上传文件类型
      * @param int $size 上传文件大小，默认值 0
      * @return void
-     * @context 上传条件设置函数
     */
     function condition($input, $type, $size=0)
     {
@@ -71,12 +71,14 @@ class Upload
         $this->Type = $type;
         if(!empty(intval($size)))
             $this->Size = $size;
+        # 初始化异常信息
+        $this->Error = null;
     }
 
     /**
+     * 主目录设置函数
      * @access public
      * @param string|null $guide 上传文件存储路径
-     * @context 主目录设置函数
      */
     function store($guide=null)
     {
@@ -85,21 +87,20 @@ class Upload
     }
 
     /**
+     * 执行上传，上传成功后返回上传文件相对路径信息
      * @access public
-     * @return boolean|string
-     * @context 执行上传，上传成功后返回上传文件相对路径信息
+     * @return boolean|string 返回上传结果或失败状态
      */
     function update()
     {
         $_receipt = false;
         # 存储目录
-        $_dir = null;
+        $_dir = date("Ymd",time());
         # 验证存储主目录是否有效
-        if(is_null($this->Store)){
-            # 设置存储子目录，使用年月日拆分存储内容
-            $_dir = date("Ymd",time());
+        if(!isset($this->Store) or is_null($this->Store))
             $this->Store = replace("resource/upload/".$_dir);
-        }
+        else
+            $this->Store .= $_dir;
         if(!is_dir(replace(ROOT.DS.$this->Store))){
             $_file = new Folder();
             $_file->create(str_replace(DS,"/",$this->Store),true);
@@ -173,9 +174,9 @@ class Upload
     }
 
     /**
+     * 获取错误信息
      * @access public
-     * @return mixed
-     * @context 获取错误信息
+     * @return string|null 返回异常信息
      */
     function getError()
     {

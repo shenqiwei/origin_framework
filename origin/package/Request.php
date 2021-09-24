@@ -30,12 +30,12 @@ class Request
     private $Default;
 
     /**
+     * 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断，对象参数
      * @access public
      * @param string $validate_name 请求对象名称
      * @param mixed $default 默认值
      * @param string $method 请求方法
      * @return void
-     * @context 构造函数，用于对请求状态和请求获得值的过滤形式进行加载和判断，对象参数
     */
     function __construct($validate_name, $default=null, $method='request')
     {
@@ -49,11 +49,11 @@ class Request
     }
 
     /**
-     * @access public
-     * @return mixed
-     * @context 请求器主方法，通过对请求方式的判断，获取请求对象的值信息
+     * 请求器主方法，通过对请求方式的判断，获取请求对象的值信息
      * 根据查询变量的名称，进行数组判断及数组变量，返回相应值
      * 当查询值不存在或者为空时，系统将默认值赋入，当默认值为空或者null时，直接返回null值
+     * @access public
+     * @return string|null 返回请求对象值
     */
     public function main()
     {
@@ -90,9 +90,9 @@ class Request
     }
 
     /**
+     * 请求器删除方法，用于删除指定元素
      * @access public
      * @return void
-     * @context 请求器删除方法，用于删除指定元素
     */
     function delete(){
         # 判断请求类型，并将请求对象中的值存入数组对象变量

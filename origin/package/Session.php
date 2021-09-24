@@ -23,9 +23,9 @@ class Session
     const SESSION_DEC = "decode"; # 解码session信息
 
     /**
+     * 构造函数
      * @access public
      * @return void
-     * @context 构造函数
     */
     function __construct()
     {
@@ -33,11 +33,11 @@ class Session
     }
 
     /**
+     * session会话设置
      * @access public
      * @param string $option 设置项
      * @param string|null $key 会话键名
-     * @return mixed
-     * @context session会话设置
+     * @return false|string|null 返回会话执行结果内容或失败状态
     */
     function edit($option,$key=null)
     {
@@ -56,11 +56,11 @@ class Session
     }
 
     /**
+     * 创建会话值内容
      * @access public
      * @param string $key 会话键名
      * @param mixed $value 值
      * @return void
-     * @context 创建会话值内容
     */
     function set($key,$value)
     {
@@ -99,10 +99,10 @@ class Session
     }
 
     /**
+     * 获取会话值内容
      * @access public
      * @param string $key 会话键名
-     * @return mixed
-     * @context 获取会话值内容
+     * @return mixed 返回会话存储值
     */
     function get($key)
     {
@@ -146,9 +146,9 @@ class Session
     }
 
     /**
+     * 析构函数
      * @access public
      * @return void
-     * @context 析构函数
      */
     function __destruct()
     {

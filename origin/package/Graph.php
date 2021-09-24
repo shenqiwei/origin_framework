@@ -52,12 +52,12 @@ class Graph
     protected $FontColor;
 
     /**
+     * 设置画布
      * @access public
      * @param int $width 画布宽度
      * @param int $height 画布高度
      * @param boolean $true 是否使用真彩创建
      * @return void
-     * @context 设置画布
      */
     function Canvas($width, $height, $true=false)
     {
@@ -74,11 +74,12 @@ class Graph
     }
 
     /**
+     * 设置画布背景色
      * @access public
      * @param int $red 设置色偏值 红（0,225）默认值 225
      * @param int $green 设置色偏值 绿（0,225）默认值 225
      * @param int $blue 设置色偏值 蓝（0,225）默认值 225
-     * @context 设置画布背景色
+     * @return void
      */
     function setBgColor($red = 255, $green = 255, $blue = 255)
     {
@@ -86,9 +87,10 @@ class Graph
     }
 
     /**
+     * 设置字体
      * @access public
-     * @param string $uri
-     * @context 设置字体
+     * @param string $uri 设置字体文件路径
+     * @return void
      */
     function setFont($uri)
     {
@@ -97,9 +99,10 @@ class Graph
     }
 
     /**
+     * 设置字体大小
      * @access public
-     * @param int $size
-     * @context 设置字体大小
+     * @param int $size 设置字体显示大小
+     * @return void
      */
     function setFontSize($size)
     {
@@ -120,12 +123,13 @@ class Graph
     }
 
     /**
+     * 引入文字
      * @access public
      * @param string $text
      * @param int $point_x 坐标轴x，默认值 0
      * @param int $point_y 坐标轴y，默认值 0
      * @param int|float $angle 旋转角度（0-90度） 默认值 0
-     * @context 引入文字
+     * @return void
      */
     function imText($text, $point_x = 0, $point_y = 0, $angle = 0)
     {
@@ -133,13 +137,13 @@ class Graph
     }
 
     /**
+     * 引入图片
      * @access public
      * @param string $uri 图片地址（相对地址）
      * @param int $point_x 坐标轴x
      * @param int $point_y 坐标轴y
      * @param int $percent 缩小比例，相对于画布大小
-     * @return boolean
-     * @context 引入图片
+     * @return boolean 返回引用状态值
      */
     function imPic($uri, $point_x = 0, $point_y = 0, $percent = 100)
     {
@@ -192,12 +196,12 @@ class Graph
     }
 
     /**
+     * 设置填充颜色
      * @access public
      * @param int $red 设置色偏值 红（0,225）默认值 225
      * @param int $green 设置色偏值 绿（0,225）默认值 225
      * @param int $blue 设置色偏值 蓝（0,225）默认值 225
-     * @return false|int|resource
-     * @context 设置填充颜色
+     * @return false|int 返回结果值或失败状态
      */
     function setColor($red = 255, $green = 255, $blue = 255)
     {
@@ -205,6 +209,7 @@ class Graph
     }
 
     /**
+     * 画圆
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
@@ -215,8 +220,7 @@ class Graph
      * 2.IMG_ARC_CHORD 产生圆形边界，IMG_ARC_PIE 和 IMG_ARC_CHORD 是互斥的
      * 3.IMG_ARC_NOFILL 指明弧或弦只有轮廓，不填充
      * 4.MG_ARC_EDGED 指明用直线将起始和结束点与中心点相连，和 IMG_ARC_NOFILL 一起使用是画饼状图轮廓的好方法（而不用填充）
-     * @return boolean
-     * @context 画圆
+     * @return boolean 返回执行状态值
      */
     function circle($point_x = 0, $point_y = 0, $radius = 5, $color = null, $type = 0)
     {
@@ -224,6 +228,7 @@ class Graph
     }
 
     /**
+     * 画弧
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
@@ -237,8 +242,7 @@ class Graph
      * 2.IMG_ARC_CHORD 产生圆形边界，IMG_ARC_PIE 和 IMG_ARC_CHORD 是互斥的
      * 3.IMG_ARC_NOFILL 指明弧或弦只有轮廓，不填充
      * 4.MG_ARC_EDGED 指明用直线将起始和结束点与中心点相连，和 IMG_ARC_NOFILL 一起使用是画饼状图轮廓的好方法（而不用填充）
-     * @return boolean
-     * @context 画弧
+     * @return boolean 返回执行状态值
      */
     function arc($point_x = 0, $point_y = 0, $width = 5, $height = 5, $start = 0, $end = 360, $color = null, $type = 0)
     {
@@ -252,6 +256,7 @@ class Graph
     }
 
     /**
+     * 画椭圆
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
@@ -259,8 +264,7 @@ class Graph
      * @param int $height 高，默认值 5
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
-     * @return boolean
-     * @context 画椭圆
+     * @return boolean 返回执行状态值
      */
     function ellipse($point_x = 0, $point_y = 0, $width = 5, $height = 5, $color = null, $type = 0)
     {
@@ -274,14 +278,14 @@ class Graph
     }
 
     /**
+     * 画多边形
      * @access public
      * @param array $points 坐标信息数组 array(
      *     array($point_x,$point_y),
      * )
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充，2 非闭合多边划线
-     * @return boolean
-     * @context 画多边形
+     * @return boolean 返回执行状态值
      */
     function polygon($points, $color = null, $type = 0)
     {
@@ -297,14 +301,14 @@ class Graph
     }
 
     /**
+     * 画正方形
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param int $long 边长，初始值 5
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
-     * @return boolean
-     * @context 画正方形
+     * @return boolean 返回执行状态值
      */
     function square($point_x = 0, $point_y = 0, $long = 5, $color = null, $type = 0)
     {
@@ -312,6 +316,7 @@ class Graph
     }
 
     /**
+     * 画矩形
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
@@ -319,8 +324,7 @@ class Graph
      * @param int $height 高 初始值 5
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
-     * @return boolean
-     * @context 画矩形
+     * @return boolean 返回执行状态值
      */
     function rectangle($point_x = 0, $point_y = 0, $width = 5, $height = 5, $color = null, $type = 0)
     {
@@ -334,14 +338,14 @@ class Graph
     }
 
     /**
+     * 画直线
      * @access public
      * @param int $start_x 定位坐标x，默认值 0
      * @param int $start_y 定位坐标y，默认值 0
      * @param int $end_x 定位坐标x，默认值 5
      * @param int $end_y 定位坐标y，默认值 5
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
-     * @return boolean
-     * @context 画直线
+     * @return boolean 返回执行状态值
      */
     function line($start_x = 0, $start_y = 0, $end_x = 5, $end_y = 5, $color = null)
     {
@@ -352,14 +356,14 @@ class Graph
     }
 
     /**
+     * 画虚线，需要画布创建为真彩
      * @access public
      * @param array $style
      * @param int $start_x 定位坐标x，默认值 0
      * @param int $start_y 定位坐标y，默认值 0
      * @param int $end_x 定位坐标x，默认值 5
      * @param int $end_y 定位坐标y，默认值 5
-     * @return boolean
-     * @context 画虚线，需要画布创建为真彩
+     * @return boolean 返回执行状态值
     */
     function dotted($style, $start_x = 0, $start_y = 0, $end_x = 5, $end_y = 5)
     {
@@ -370,6 +374,7 @@ class Graph
     }
 
     /**
+     * 画字符串
      * @access public
      * @param string $str 输入字符串
      * @param int $font 字体参数 默认值 1 （1-5）为内部字体
@@ -377,8 +382,7 @@ class Graph
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
-     * @return boolean
-     * @context 画字符串
+     * @return boolean 返回执行状态值
      */
     function string($str, $font = 1, $type = 0, $point_x = 0, $point_y = 0, $color = null)
     {
@@ -392,6 +396,7 @@ class Graph
     }
 
     /**
+     * 画字符
      * @access public
      * @param string $str 输入字符串
      * @param int $font 字体参数 默认值 1 （1-5）为内部字体
@@ -399,8 +404,7 @@ class Graph
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
-     * @return boolean
-     * @context 画字符串
+     * @return boolean 返回执行状态值
      */
     function char($str, $font = 1, $type = 0, $point_x = 0, $point_y = 0, $color = null)
     {
@@ -414,12 +418,12 @@ class Graph
     }
 
     /**
+     * 画像素
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
-     * @return boolean
-     * @context 画字符串
+     * @return boolean 返回执行状态值
      */
     function pixel($point_x = 0, $point_y = 0, $color = null)
     {
@@ -430,6 +434,7 @@ class Graph
     }
 
     /**
+     * 图片渲染（反转）
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
      * @param int $type 反转类型
@@ -444,8 +449,7 @@ class Graph
      * IMG_FILTER_SELECTIVE_BLUR：模糊图像。
      * IMG_FILTER_MEAN_REMOVAL：用平均移除法来达到轮廓效果。
      * IMG_FILTER_SMOOTH：使图像更柔滑。用 arg1 设定柔滑级别。
-     * @return boolean
-     * @context 图片渲染（反转）
+     * @return boolean 返回执行状态值
     */
     function filter($pic,$type)
     {
@@ -453,6 +457,7 @@ class Graph
     }
 
     /**
+     * 图片截取
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
      * @param int $start_x 定位坐标x，默认值 0
@@ -461,8 +466,7 @@ class Graph
      * @param int $height 高，默认值 5
      * @param int $canvas_x 图像显示位置坐标x，默认值 0
      * @param int $canvas_y 图像显示位置坐标y，默认值 0
-     * @return boolean
-     * @context 图片截取
+     * @return boolean 返回执行状态值
     */
     function cut($pic, $start_x=0, $start_y=0, $width=5, $height=5, $canvas_x=0, $canvas_y=0)
     {
@@ -470,13 +474,13 @@ class Graph
     }
 
     /**
+     * 旋转
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
      * @param float $angle 旋转角度 默认值 0.0
      * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $transparent 是否支持透明默认值 0 不支持，1支持
-     * @return boolean
-     * @context 旋转
+     * @return boolean 返回执行状态值
     */
     function rotate($pic, $angle=0.0, $color=null, $transparent=0)
     {
@@ -487,11 +491,11 @@ class Graph
     }
 
     /**
+     * 设置空间填充
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
-     * @return boolean
-     * @context 设置空间填充
+     * @return boolean 返回执行状态值
     */
     function fill($point_x=0, $point_y=0)
     {
@@ -499,10 +503,11 @@ class Graph
     }
 
     /**
+     * 输出图像
      * @access public
      * @param string $type 图片类型
      * @param string|null $uri 存储（相对，根地址：项目根目录）路径 默认值 null
-     * @context 输出图像
+     * @return void
      */
     function output($type="jpg",$uri=null)
     {

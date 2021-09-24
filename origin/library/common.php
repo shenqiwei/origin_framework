@@ -11,10 +11,10 @@ include("initialize.php");
 include("exception.php");
 
 /**
+ * 文件地址链接符转化
  * @access public
  * @param string $uri 文件路径
- * @return string
- * @context 文件地址链接符转化
+ * @return string 返回转化后路径内容
 */
 function replace($uri)
 {
@@ -22,11 +22,11 @@ function replace($uri)
 }
 
 /**
+ * 改变数组内容值全大写或全小写
  * @access public
  * @param array $array $对象数组
  * @param int $case 改变类型
- * @return array
- * @context 改变数组内容值全大写或全小写
+ * @return array 返回执行后数组
  */
 function array_change_value_case($array,$case=CASE_LOWER)
 {

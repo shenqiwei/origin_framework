@@ -10,11 +10,11 @@ namespace Origin\Package;
 class Queue
 {
     /**
+     * 创建任务队列目录
      * @access public
      * @static
      * @param string $queue 创建队列名称
-     * @return boolean
-     * @context 创建任务队列目录
+     * @return boolean 返回执行结果状态值
      */
     static function make($queue)
     {
@@ -33,11 +33,11 @@ class Queue
     }
 
     /**
+     * 获取当前队列任务数量
      * @access public
      * @static
      * @param string $queue 队列名称
-     * @return int|false
-     * @context 获取当前队列任务数量
+     * @return int|false 返回查询结果或者失败状态
      */
     static function count($queue)
     {
@@ -54,12 +54,12 @@ class Queue
     }
 
     /**
+     * 插入队列
      * @access public
      * @static
      * @param string $queue 队列名称
      * @param array $set 参数集合
-     * @return boolean
-     * @context 插入队列
+     * @return boolean 返回执行结果状态值
      */
     static function push($queue,$set)
     {
@@ -86,11 +86,11 @@ class Queue
     }
 
     /**
+     * 抽取第一个任务信息
      * @access public
      * @static
      * @param string $queue 队列名称
-     * @return array|boolean
-     * @context 抽取第一个任务信息
+     * @return array|false 返回抽取对象数组或失败状态
      */
     static function extract($queue)
     {
@@ -115,7 +115,7 @@ class Queue
      * @access public
      * @static
      * @param string $queue 队列名称
-     * @return boolean
+     * @return boolean 返回执行结果状态值
      * @context 清空队列
      */
     static function clear($queue)

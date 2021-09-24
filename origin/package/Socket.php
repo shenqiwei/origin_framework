@@ -52,11 +52,11 @@ class Socket
     protected $Error=null;
 
     /**
+     * 构造函数，预创建套字节
      * @access public
      * @param string $ip ip地址（ipv4|ipv6）
      * @param int $port 端口号，默认值 0 <无效端口号>，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
      * @return void
-     * @context 构造函数，预创建套字节
     */
     function __construct($ip,$port=0)
     {
@@ -77,8 +77,9 @@ class Socket
     }
 
     /**
+     * 创建TCP连接
      * @access public
-     * @context 创建TCP连接
+     * @return void
     */
     function tcp()
     {
@@ -86,8 +87,9 @@ class Socket
     }
 
     /**
+     * 创建UDP连接
      * @access public
-     * @context 创建UDP连接
+     * @return void
      */
     function udp()
     {
@@ -95,8 +97,9 @@ class Socket
     }
 
     /**
+     * 创建数据包连接
      * @access public
-     * @context 创建数据包连接
+     * @return void
      */
     function packet()
     {
@@ -104,8 +107,9 @@ class Socket
     }
 
     /**
+     * 创建icmp连接
      * @access public
-     * @context 创建icmp连接
+     * @return void
      */
     function icmp()
     {
@@ -113,8 +117,9 @@ class Socket
     }
 
     /**
+     * 创建远程部署管理连接
      * @access public
-     * @context 创建远程部署管理连接
+     * @return void
      */
     function rdm()
     {
@@ -122,9 +127,9 @@ class Socket
     }
 
     /**
+     * 建立连接，函数（IPV4，UNIX）默认对该连接地址进行名称绑定,若绑定失败，可以在getError函数中获取错误信息
      * @access public
-     * @return boolean
-     * @context 建立连接，函数（IPV4，UNIX）默认对该连接地址进行名称绑定,若绑定失败，可以在getError函数中获取错误信息
+     * @return boolean 返回服务连接状态
     */
     function connect()
     {
@@ -135,9 +140,9 @@ class Socket
     }
 
     /**
+     * 获取套字节连接
      * @access public
-     * @return resource
-     * @context 获取套字节连接
+     * @return resource 返回链接源
     */
     function accept()
     {
@@ -145,10 +150,10 @@ class Socket
     }
 
     /**
+     * 执行监听，该函数仅在使用 tcp(),packet()函数生效
      * @access public
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
-     * @return boolean
-     * @context 执行监听，该函数仅在使用 tcp(),packet()函数生效
+     * @return boolean 返回监听状态
     */
     function listen($max=1024)
     {
@@ -156,11 +161,11 @@ class Socket
     }
 
     /**
+     * 标注新的监听端口，创建连接
      * @access public
      * @param int $port 端口号，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
-     * @return boolean
-     * @context 标注新的监听端口，创建连接
+     * @return boolean 返回监听状态
     */
     function newListen($port, $max=1024)
     {
@@ -168,10 +173,10 @@ class Socket
     }
 
     /**
+     * 连接阻塞状态
      * @access public
      * @param int $status 状态默认值 0：非阻塞，1：阻塞
-     * @return boolean
-     * @context 连接阻塞状态
+     * @return boolean 返回设置状态
     */
     function block($status=0)
     {
@@ -182,10 +187,10 @@ class Socket
     }
 
     /**
+     * 读取数据
      * @access public
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
-     * @return string|boolean
-     * @context 读取数据
+     * @return string|false 返回读取内容或失败状态
     */
     function read($max=1024)
     {
@@ -193,11 +198,11 @@ class Socket
     }
 
     /**
+     * 写入数据
      * @access public
      * @param string $string 发送内容
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
-     * @return boolean
-     * @context 写入数据
+     * @return boolean 返回写入状态
     */
     function write($string, $max=1024)
     {
@@ -205,6 +210,7 @@ class Socket
     }
 
     /**
+     * 获取信息
      * @access public
      * @param string $buffer 缓冲变量
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -214,7 +220,6 @@ class Socket
      * MSG_WAITALL	在接收到至少 len 字节的数据之前，造成一个阻塞，并暂停脚本运行（block）。但是， 如果接收到中断信号，或远程服务器断开连接，该函数将返回少于 len 字节的数据。
      * MSG_DONTWAIT	如果制定了该flag，函数将不会造成阻塞，即使在全局设置中指定了阻塞设置。
      * @return int 返回字节数
-     * @context 获取信息
     */
     function recv(&$buffer, $max=1024, $flag=MSG_DONTWAIT)
     {
@@ -222,6 +227,7 @@ class Socket
     }
 
     /**
+     * 获取信息，忽略连接状态
      * @access public
      * @param string $buffer 缓冲变量，获取内容
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -233,7 +239,6 @@ class Socket
      * @param string|null $addr 地址信息（ipv4|unix），默认值 null
      * @param int $port 端口号，默认值 0，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
      * @return int 返回字节数
-     * @context 获取信息，忽略连接状态
      */
     function recvf(&$buffer, $max=1024, $flag=MSG_DONTWAIT, $addr=null, $port=0)
     {
@@ -241,6 +246,7 @@ class Socket
     }
 
     /**
+     * 获取信息
      * @access public
      * @param array $buffer 缓冲变量，获取内容
      * @param int $flag 获取方式，获取内容，默认值 MSG_DONTWAIT
@@ -249,7 +255,6 @@ class Socket
      * MSG_WAITALL    在接收到至少 len 字节的数据之前，造成一个阻塞，并暂停脚本运行（block）。但是， 如果接收到中断信号，或远程服务器断开连接，该函数将返回少于 len 字节的数据。
      * MSG_DONTWAIT    如果制定了该flag，函数将不会造成阻塞，即使在全局设置中指定了阻塞设置。
      * @return int 返回字节数
-     * @context 获取信息
      */
     function recvm(&$buffer, $flag=MSG_DONTWAIT)
     {
@@ -257,6 +262,7 @@ class Socket
     }
 
     /**
+     * 发送信息
      * @access public
      * @param string $buffer 缓冲变量，获取内容
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -265,8 +271,7 @@ class Socket
      * MSG_EOR	标出一个记录标记。发送的数据完成记录。
      * MSG_EOF	关闭套接字的发送方端，并在发送的数据的末尾包含相应的通知。发送的数据完成事务。
      * MSG_DONTROUTE 绕过路由，使用直接接口。
-     * @return int
-     * @context 发送信息
+     * @return int 返回字节数
     */
     function send($buffer, $max=1024, $flag=MSG_DONTROUTE)
     {
@@ -274,6 +279,7 @@ class Socket
     }
 
     /**
+     * 发送信息,或略连接状态
      * @access public
      * @param string $buffer 缓冲变量，获取内容
      * @param int $max 最大传递数量(byte)，默认值 1024 (1kb)
@@ -284,8 +290,7 @@ class Socket
      * MSG_DONTROUTE 绕过路由，使用直接接口。
      * @param string|null $addr 地址信息（ipv4|unix），默认值 null
      * @param int $port 端口号，默认值 0，1-1024服务端口<非必要，请勿占用>，1025-65535<可定义端口>
-     * @return int
-     * @context 发送信息,或略连接状态
+     * @return int 返回字节数
      */
     function sendf($buffer, $max=1024, $flag=MSG_DONTROUTE, $addr=null, $port=0)
     {
@@ -293,6 +298,7 @@ class Socket
     }
 
     /**
+     * 发送信息
      * @access public
      * @param array $buffer 缓冲变量，获取内容
      * @param int $flag 获取方式，默认值 MSG_DONTROUTE
@@ -300,8 +306,7 @@ class Socket
      * MSG_EOR	标出一个记录标记。发送的数据完成记录。
      * MSG_EOF	关闭套接字的发送方端，并在发送的数据的末尾包含相应的通知。发送的数据完成事务。
      * MSG_DONTROUTE 绕过路由，使用直接接口。
-     * @return int
-     * @context 发送信息
+     * @return int 返回字节数
      */
     function sendm($buffer,  $flag=MSG_DONTROUTE)
     {
@@ -309,10 +314,10 @@ class Socket
     }
 
     /**
+     * 注销行为
      * @access public
      * @param int $type 默认值 2，注销类型 0：注销读取行为，1：注销写入行为，2：注销全部行为
-     * @return boolean
-     * @context 注销行为
+     * @return boolean 返回执行状态值
      */
     function shutdown($type=2)
     {
@@ -324,9 +329,9 @@ class Socket
     }
 
     /**
+     * 关闭套字节请求
      * @access public
      * @return void
-     * @context 关闭套字节请求
      */
     function close()
     {
@@ -334,9 +339,9 @@ class Socket
     }
 
     /**
+     * 清空错误信息
      * @access public
      * @return void
-     * @context 清空错误信息
     */
     function clear()
     {
@@ -344,9 +349,9 @@ class Socket
     }
 
     /**
+     * 获取错误信息
      * @access public
-     * @return mixed
-     * @context 获取错误信息
+     * @return string|null 返回异常信息
     */
     function getError()
     {

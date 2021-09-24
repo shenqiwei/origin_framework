@@ -12,8 +12,8 @@ use Exception;
 class File extends Folder
 {
     /**
+     * 操作常量
      * @access public
-     * @context 操作常量
     */
     const FILE_READ = "r";
     const FILE_READ_WRITE = "rw";
@@ -26,12 +26,12 @@ class File extends Folder
     const FILE_CONTENT_WRITE = "cw";
 
     /**
+     * 创建文件夹
      * @access public
      * @param string $file 文件地址
      * @param boolean $autocomplete 自动补全完整路径，默认值 false
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 创建文件夹
+     * @return boolean 返回执行结果状态值
      */
     function create($file, $autocomplete=false,$throw=false)
     {
@@ -72,11 +72,11 @@ class File extends Folder
     }
 
     /**
+     * 删除文件夹
      * @access public
      * @param string $file 文件夹地址
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 删除文件夹
+     * @return boolean 返回执行结果状态值
      */
     function remove($file,$throw=false){
         # 设置返回对象
@@ -101,12 +101,12 @@ class File extends Folder
     }
 
     /**
+     * 文件重命名
      * @access public
      * @param string $folder 文件地址
      * @param string $name 新名称
      * @param boolean $throw 捕捉异常
-     * @return boolean
-     * @context 文件重命名
+     * @return boolean 返回执行结果状态值
      */
     function rename($folder, $name, $throw=false)
     {
@@ -140,18 +140,18 @@ class File extends Folder
     }
 
     /**
-     * @access public
-     * @param string $file 文件路径
-     * @param string $operate 操作类型
-     * @param int $size 限定读取大小
-     * @param boolean $throw 捕捉异常
-     * @return mixed
-     * @contact 内容信息读取
+     * 内容信息读取
      * Operate 说明：
      * r:读取操作 操作方式：r
      * rw:读写操作 操作方式：r+
      * sr: 数据结构读取操作 操作对应函数file
      * cr: 读取全文 调用对应函数 file_get_contents
+     * @access public
+     * @param string $file 文件路径
+     * @param string $operate 操作类型
+     * @param int $size 限定读取大小
+     * @param boolean $throw 捕捉异常
+     * @return string|false 返回文件内容或失败状态
      */
     function read($file,$operate=self::FILE_READ,$size=0,$throw=false)
     {
@@ -192,19 +192,19 @@ class File extends Folder
     }
 
     /**
-     * @access public
-     * @param string $file 文件路径
-     * @param string $operate 操作类型
-     * @param string|null $msg 写入值
-     * @param boolean $throw 捕捉异常
-     * @return mixed
-     * @contact 内容信息更新
+     * 内容信息更新
      * Operate 说明：
      * w：写入操作 操作方式：w
      * lw：前写入 操作方式：w+
      * bw：后写入 操作方式：a
      * fw：补充写入 操作方式：a+
      * cw：重写 调用对应函数 file_put_contents
+     * @access public
+     * @param string $file 文件路径
+     * @param string $operate 操作类型
+     * @param string|null $msg 写入值
+     * @param boolean $throw 捕捉异常
+     * @return boolean 返回写入结果状态值
      */
     function write($file,$operate=self::FILE_WRITE,$msg=null,$throw=false)
     {
@@ -251,14 +251,14 @@ class File extends Folder
     }
 
     /**
+     * 获取文件夹信息
      * @access public
      * @param string $file 文件夹地址
-     * @return mixed
-     * @context 获取文件夹信息
+     * @return array|false 返回文件信息或失败状态
      */
     function get($file)
     {
-        $_receipt = null;
+        $_receipt = false;
         if(file_exists($_file = replace(ROOT.DS.$file))){
             $_receipt = array(
                 "file_name" => $file,

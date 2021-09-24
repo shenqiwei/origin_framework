@@ -15,8 +15,8 @@ use Exception;
 abstract class Query
 {
     /**
+     * 操作常量
      * @access public
-     * @context 操作常量
      */
     const FETCH_NORMAL = "normal";
     const FETCH_KEY_VALUE = "key_value";
@@ -59,10 +59,10 @@ abstract class Query
     protected $DataType = 0;
 
     /**
+     * 回传类对象信息
      * @access public
      * @param object $object
      * @return void
-     * @context 回传类对象信息
      */
     function __setSQL($object)
     {
@@ -70,9 +70,9 @@ abstract class Query
     }
 
     /**
+     * 获取类对象信息,仅类及其子类能够使用
      * @access public
-     * @return object
-     * @context 获取类对象信息,仅类及其子类能够使用
+     * @return object 返回数据库连接对象
      */
     protected function __getSQL()
     {
@@ -86,10 +86,10 @@ abstract class Query
     protected $Primary = null;
 
     /**
+     * 设置自增主键字段名信息
      * @access public
      * @param string $field 主键名称
-     * @return object
-     * @context 设置自增主键字段名信息
+     * @return object 返回数据库连接对象
      */
     function setPrimary($field)
     {
@@ -101,18 +101,17 @@ abstract class Query
 
     /**
      * @access protected
-     * @var string $Table 数据库表名，
-     * @context 表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
+     * @var string $Table 数据库表名，表名与映射结构及Model结构可以同时使用，当使用映射结构和model结构时，表名只做辅助
      */
     protected $Table = null;
     protected $AsTable = null;
 
     /**
+     * 表名获取方法
      * @access public
      * @param string $table 表名
      * @param string|null $table_as 表别名
-     * @return object
-     * @context 表名获取方法
+     * @return object 返回数据库连接对象
      */
     function table($table,$table_as=null)
     {
@@ -153,9 +152,8 @@ abstract class Query
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if(is_true($this->CommaConfine, $table)){
             $this->Table = strtolower($table);
-            if(!is_null($table_as) and is_true($this->CommaConfine, $table_as)){
+            if(!is_null($table_as) and is_true($this->CommaConfine, $table_as))
                 $this->AsTable = "as ".$table_as;
-            }
         }else{
             try{
                 throw new Exception('Table name is not in conformity with the naming conventions');
@@ -174,16 +172,16 @@ abstract class Query
     protected $JoinOn = null;
 
     /**
+     * 多表关系匹配 join 语句，支持多表联查，根据join特性join后接表名为单表
+     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
+     * 当有多个条件时，可以使用数组进行结构导入
      * @access public
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
      * @param string|null $join_table_as 关联表别名
      * @param string|null $join_type 关联类型
-     * @return object
-     * @context 多表关系匹配 join 语句，支持多表联查，根据join特性join后接表名为单表
-     * 多表联合匹配条件 on，与join联合使用，当field只有一个值时，系统会自动调用表格中，同名字段名
-     * 当有多个条件时，可以使用数组进行结构导入
+     * @return object 返回数据库连接对象
      */
     function join($join_table,$join_field,$major_field,$join_table_as=null,$join_type=null)
     {
@@ -236,13 +234,13 @@ abstract class Query
     }
 
     /**
+     * 多表关系匹配 inner join 语句，利用join语法演化方法
      * @access public
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
      * @param string|null $join_table_as 关联表别名
-     * @return object
-     * @context 多表关系匹配 inner join 语句，利用join语法演化方法
+     * @return object 返回数据库连接对象
      */
     function iJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
@@ -252,13 +250,13 @@ abstract class Query
     }
 
     /**
+     * 多表关系匹配 left join 语句，利用join语法演化方法
      * @access public
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
      * @param string|null $join_table_as 关联表别名
-     * @return object
-     * @context 多表关系匹配 left join 语句，利用join语法演化方法
+     * @return object 返回数据库连接对象
      */
     function lJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
@@ -268,13 +266,13 @@ abstract class Query
     }
 
     /**
+     * 多表关系匹配 right join 语句，利用join语法演化方法
      * @access public
      * @param string $join_table 关联表名
      * @param string $join_field 关联表外键名
      * @param string $major_field 主表关联建名
      * @param string|null $join_table_as 关联表别名
-     * @return object
-     * @context 多表关系匹配 right join 语句，利用join语法演化方法
+     * @return object 返回数据库连接对象
      */
     function rJoin($join_table,$join_field,$major_field,$join_table_as=null)
     {
@@ -290,11 +288,11 @@ abstract class Query
     protected $Top = null;
 
     /**
+     * Top 语句结构
      * @access public
      * @param int $number 显示数量
      * @param boolean $percent 是否启用比例显示
-     * @return object
-     * @context Top 语句结构
+     * @return object 返回数据库连接对象
      */
     function top($number, $percent=false)
     {
@@ -321,10 +319,10 @@ abstract class Query
     protected $Total = null;
 
     /**
+     * 返回指定数据表数据总数
      * @access public
      * @param string $field 字段名
-     * @return object
-     * @context 返回指定数据表数据总数
+     * @return object 返回数据库连接对象
      */
     function total($field='*')
     {
@@ -340,10 +338,10 @@ abstract class Query
     protected $Field = '*';
 
     /**
+     * 查询字段名，默认信息是符号（*），当传入值是数组时，$key为原字段名，$value为简写名
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 查询字段名，默认信息是符号（*），当传入值是数组时，$key为原字段名，$value为简写名
+     * @return object 返回数据库连接对象
      */
     function field($field)
     {
@@ -404,11 +402,11 @@ abstract class Query
     protected $Distinct = null;
 
     /**
+     * 列出单列字段名不同值 distinct 语句，该语句仅支持单列字段显示，如果需要显示多列信息，需要时group
+     * 在一些应用场景中，可以把distinct看作是group的简化功能结构
      * @access public
      * @param string $field 字段名
-     * @return object
-     * @context 列出单列字段名不同值 distinct 语句，该语句仅支持单列字段显示，如果需要显示多列信息，需要时group
-     * 在一些应用场景中，可以把distinct看作是group的简化功能结构
+     * @return object 返回数据库连接对象
      */
     function distinct($field)
     {
@@ -425,11 +423,11 @@ abstract class Query
     protected $Union = null;
 
     /**
+     * 对多个查询语句的相同字段中的相同数据进行合并,当前版本仅支持两个表单字段查询，并对输入结构进行验证和隔离
      * @access public
      * @param string $table 比对表名
      * @param string $field 字段名
-     * @return object
-     * @context 对多个查询语句的相同字段中的相同数据进行合并,当前版本仅支持两个表单字段查询，并对输入结构进行验证和隔离
+     * @return object 返回数据库连接对象
      */
     function union($table, $field)
     {
@@ -465,16 +463,14 @@ abstract class Query
     protected $Data = array();
 
     /**
+     * 添加修改值获取方法,传入值结构为数组，数组key为字段名，数组value为传入值
      * @access public
      * @param array $field 字段名（列表list）
-     * @return object
-     * @context 添加修改值获取方法,传入值结构为数组，数组key为字段名，数组value为传入值
+     * @return object 返回数据库连接对象
      */
     function data($field)
     {
-        /**
-         * 验证传入值结构，符合数组要求时，进行内容验证
-         */
+        # 验证传入值结构，符合数组要求时，进行内容验证
         # 判断传入值是否为数组
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
@@ -512,23 +508,22 @@ abstract class Query
     protected $Where = null;
 
     /**
-     * @access public
-     * @param mixed $condition 条件参数，可以是条件内容（string）也可以条件集合（array）
-     * @return object
-     * @context 条件信息加载方法，传入值类型支持字符串、数组，数组结构可以为多级数组
+     * 条件信息加载方法，传入值类型支持字符串、数组，数组结构可以为多级数组
      * 1.当数组key为字段名，数组value为条件值，条件表述为等于条件，若数组value为数组结构
      * 2.当数组key为特定字符串（$and 或 $or）,数组value必须为数组结构，数组结构表述与表述 1要求相同
      * 3.数组关系结构中，同级条件结构放在同一个上级数组内容
      * 3.当为字符串，要求条件信息符合SQL语句规则
+     * @access public
+     * @param mixed $condition 条件参数，可以是条件内容（string）也可以条件集合（array）
+     * @return object 返回数据库连接对象
      */
     function where($condition)
     {
-        /**
-         * 区别数据类型使用SQL命名规则对输入的字段名进行验证
-         */
-        if(is_array($condition)){# 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
+        # 区别数据类型使用SQL命名规则对输入的字段名进行验证
+        if(is_array($condition))
+            # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             $this->Where = " where ".$this->multiWhere($condition);
-        }else{
+        else{
             # 对输入字符串进行特殊字符转义，降低XSS攻击
             # 用预设逻辑语法数组替代特殊运算符号
             if(!empty($condition)){
@@ -542,10 +537,10 @@ abstract class Query
     }
 
     /**
+     * 条件拆分函数
      * @access private
      * @param array $where
-     * @return string
-     * @context 条件拆分函数
+     * @return string 返回语句运算符号
     */
     private function multiWhere($where)
     {
@@ -644,10 +639,10 @@ abstract class Query
     protected $Group = null;
 
     /**
+     * 去重（指定字段名）显示列表信息
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 去重（指定字段名）显示列表信息
+     * @return object 返回数据库连接对象
      */
     function group($field)
     {
@@ -700,10 +695,10 @@ abstract class Query
     protected $Abs = null;
 
     /**
+     * 求正整数值
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 求正整数值
+     * @return object 返回数据库连接对象
     */
     function abs($field)
     {
@@ -711,11 +706,10 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Abs .= "{$_symbol}abs({$field[$_i]})";
-                }else{
+                else
                     $this->Abs .= "{$_symbol}abs(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -731,10 +725,10 @@ abstract class Query
     protected $Avg = null;
 
     /**
+     * 查询语句指定字段值平均数，支持单字段名
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 查询语句指定字段值平均数，支持单字段名
+     * @return object 返回数据库连接对象
      */
     function avg($field)
     {
@@ -742,11 +736,10 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Avg .= "{$_symbol}avg({$field[$_i]})";
-                }else{
+                else
                     $this->Avg .= "{$_symbol}avg(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -762,10 +755,10 @@ abstract class Query
     protected $Max = null;
 
     /**
+     * 查询语句指定字段中最大值，支持单字段名
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 查询语句指定字段中最大值，支持单字段名
+     * @return object 返回数据库连接对象
      */
     function max($field)
     {
@@ -773,11 +766,10 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Max .= "{$_symbol}max({$field[$_i]})";
-                }else{
+                else
                     $this->Max .= "{$_symbol}max(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -793,10 +785,10 @@ abstract class Query
     protected $Min = null;
 
     /**
+     * 查询语句指定字段中最小值，支持单字段名
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 查询语句指定字段中最小值，支持单字段名
+     * @return object 返回数据库连接对象
      */
     function min($field)
     {
@@ -804,11 +796,10 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Min .= "{$_symbol}min({$field[$_i]})";
-                }else{
+                else
                     $this->Min .= "{$_symbol}min(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -824,10 +815,10 @@ abstract class Query
     protected $Sum = null;
 
     /**
+     * 返回指定字段下所有列值的总和，只支持数字型字段列
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 返回指定字段下所有列值的总和，只支持数字型字段列
+     * @return object 返回数据库连接对象
      */
     function sum($field)
     {
@@ -835,11 +826,10 @@ abstract class Query
             for($_i=0;$_i<count($field);$_i++){
                 $_symbol = '';
                 if($_i!=0) $_symbol = ',';
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Sum .= "{$_symbol}sum({$field[$_i]})";
-                }else{
+                else
                     $this->Sum .= "{$_symbol}sum(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -855,17 +845,16 @@ abstract class Query
     protected $Mod = null;
 
     /**
+     * 取余
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param int $second 精度
-     * @return object
-     * @context 取余
+     * @return object 返回数据库连接对象
     */
     function mod($field,$second=0)
     {
         switch($this->DataType){
             case self::RESOURCE_TYPE_SQLITE:
-                null;
                 break;
             case self::RESOURCE_TYPE_MSSQL:
             case self::RESOURCE_TYPE_MARIADB:
@@ -874,11 +863,10 @@ abstract class Query
             default:
                 if(is_array($field)){
                     for($_i=0;$_i<count($field);$_i++){
-                        if(!key_exists("as_name",$field[$_i])){
+                        if(!key_exists("as_name",$field[$_i]))
                             $this->Mod = ",mod({$field[$_i]["first"]},{$field[$_i]["second"]})";
-                        }else{
+                        else
                             $this->Mod = ",mod({$field[$_i]["first"]},{$field[$_i]["second"]}}) as {$field[$_i]["as_name"]}";
-                        }
                     }
                 }else{
                     if(is_true($this->NameConfine, $field))
@@ -896,9 +884,9 @@ abstract class Query
     protected $Random = null;
 
     /**
+     * 求随机数
      * @access public
-     * @return object
-     * @context 求随机数
+     * @return object 返回数据库连接对象
     */
     function random()
     {
@@ -926,11 +914,11 @@ abstract class Query
     protected $LTrim = null;
 
     /**
+     * 去除左边指定字符（空格）
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param string|null $str 消除符号
-     * @return object
-     * @context 去除左边指定字符（空格）
+     * @return object 返回数据库连接对象
     */
     function lTrim($field,$str=null)
     {
@@ -947,14 +935,12 @@ abstract class Query
                     case self::RESOURCE_TYPE_MSSQL:
                     case self::RESOURCE_TYPE_MARIADB:
                     default:
-                        null;
                         break;
                 }
-                if(!key_exists("as_name",$field[$_i])){
+                if(!key_exists("as_name",$field[$_i]))
                     $this->LTrim = ",ltrim({$field[$_i]["field"]}{$_str})";
-                }else{
+                else
                     $this->LTrim = ",ltrim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
-                }
             }
         }else{
             $_str = null;
@@ -968,7 +954,6 @@ abstract class Query
                 case self::RESOURCE_TYPE_MSSQL:
                 case self::RESOURCE_TYPE_MARIADB:
                 default:
-                    null;
                     break;
             }
             if(is_true($this->NameConfine, $field))
@@ -984,11 +969,11 @@ abstract class Query
     protected $Trim = null;
 
     /**
+     * 去除指定字符（空格）
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param string|null $str 消除符号
-     * @return object
-     * @context 去除指定字符（空格）
+     * @return object 返回数据库连接对象
      */
     function trim($field,$str=null)
     {
@@ -1005,14 +990,12 @@ abstract class Query
                             break;
                         case self::RESOURCE_TYPE_MARIADB:
                         default:
-                            null;
                             break;
                     }
-                    if(!key_exists("as_name",$field[$_i])){
+                    if(!key_exists("as_name",$field[$_i]))
                         $this->Trim = ",trim({$field[$_i]["field"]}{$_str})";
-                    }else{
+                    else
                         $this->Trim = ",trim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
-                    }
                 }
             }else{
                 $_str = null;
@@ -1025,7 +1008,6 @@ abstract class Query
                         break;
                     case self::RESOURCE_TYPE_MARIADB:
                     default:
-                        null;
                         break;
                 }
                 if(is_true($this->NameConfine, $field))
@@ -1042,11 +1024,11 @@ abstract class Query
     protected $RTrim = null;
 
     /**
+     * 去除右边指定字符（空格）
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param string|null $str 消除符号
-     * @return object
-     * @context 去除右边指定字符（空格）
+     * @return object 返回数据库连接对象
      */
     function rTrim($field,$str=null)
     {
@@ -1063,14 +1045,12 @@ abstract class Query
                     case self::RESOURCE_TYPE_MSSQL:
                     case self::RESOURCE_TYPE_MARIADB:
                     default:
-                        null;
                         break;
                 }
-                if(!key_exists("as_name",$field[$_i])){
+                if(!key_exists("as_name",$field[$_i]))
                     $this->RTrim = ",rtrim({$field[$_i]["field"]}{$_str})";
-                }else{
+                else
                     $this->RTrim = ",rtrim({$field[$_i]["field"]}{$_str}) as ".$field[$_i]["as_name"];
-                }
             }
         }else{
             $_str = null;
@@ -1084,7 +1064,6 @@ abstract class Query
                 case self::RESOURCE_TYPE_MSSQL:
                 case self::RESOURCE_TYPE_MARIADB:
                 default:
-                    null;
                     break;
             }
             if(is_true($this->NameConfine, $field))
@@ -1100,22 +1079,21 @@ abstract class Query
     protected $Replace = null;
 
     /**
+     * 指定字符替换
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param string|null $pattern 检索内容
      * @param string|null $replace 替换内容
-     * @return object
-     * @context 指定字符替换
+     * @return object 返回数据库连接对象
     */
     function replace($field,$pattern=null,$replace=null)
     {
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
-                if(!key_exists("as_name",$field[$_i])){
+                if(!key_exists("as_name",$field[$_i]))
                     $this->Replace .= ",replace({$field[$_i]["field"]},{$field[$_i]["pattern"]},{$field[$_i]["replace"]})";
-                }else{
+                else
                     $this->Replace .= ",replace({$field[$_i]["field"]},{$field[$_i]["pattern"]},{$field[$_i]["replace"]}) as ".$field[$_i]["as_name"];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -1131,22 +1109,21 @@ abstract class Query
     protected $UpperCase = null;
 
     /**
+     * 返回指定字段信息中的字母全部大写，支持数组及字符串
+     * 当含有多个字段名，使用数组，单个字段使用字符串
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 返回指定字段信息中的字母全部大写，支持数组及字符串
-     * 当含有多个字段名，使用数组，单个字段使用字符串
+     * @return object 返回数据库连接对象
      */
     function upper($field)
     {
         # 区别数据类型使用SQL命名规则对输入的字段名进行验证
         if(is_array($field)){
             for($_i=0;$_i<count($field);$_i++){
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->UpperCase .= ",upper({$field[$_i]})";
-                }else{
+                else
                     $this->UpperCase .= ",upper({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -1162,11 +1139,11 @@ abstract class Query
     protected $LowerCase = null;
 
     /**
+     * 返回指定字段信息中的字母全部小写，支持数组及字符串
+     * 当含有多个字段名，使用数组，单个字段使用字符串
      * @access public
      * @param mixed $field 字段名（列表list）
-     * @return object
-     * @context 返回指定字段信息中的字母全部小写，支持数组及字符串
-     * 当含有多个字段名，使用数组，单个字段使用字符串
+     * @return object 返回数据库连接对象
      */
     function lower($field)
     {
@@ -1174,11 +1151,10 @@ abstract class Query
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             for($_i=0;$_i<count($field);$_i++){
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->LowerCase = ",lower({$field[$_i]})";
-                }else{
+                else
                     $this->LowerCase = ",lower({".array_keys($field)[$_i]."}) as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -1194,12 +1170,12 @@ abstract class Query
     protected $Mid = null;
 
     /**
+     * 查询语句对指定字段进行截取
      * @access public
      * @param string|array $field 字段名（列表list）
      * @param int $start 起始位置
      * @param int $length 截取长度
-     * @return object
-     * @context 查询语句对指定字段进行截取
+     * @return object 返回数据库连接对象
     */
     function mid($field, $start=0, $length=0)
     {
@@ -1216,22 +1192,20 @@ abstract class Query
                             if(array_key_exists('as', $_value)) $_as = ' as '.$_value['as'];
                             # 判断字段名是否符合命名规则
                             if(is_true($this->NameConfine, $_key)){
-                                if($_value['length'] > 0){
+                                if($_value['length'] > 0)
                                     $this->Mid .= ', mid(' . $_key . ','.intval($_value['start']).','.intval($_value['length']).')'.$_as;
-                                }else{
+                                else
                                     $this->Mid .= ', mid(' . $_key . ','.intval($_value['start']).')'.$_as;
-                                }
                             }
                         }
                     }
                 }else {
                     # 当传入值为字符串结构，判断字段名是否符合命名规则
                     if (is_true($this->NameConfine, $field) and $start >= 0){
-                        if ($length > 0){
+                        if ($length > 0)
                             $this->Mid = ', mid(' . $field . ','.intval($start).','.intval($length).')';
-                        }else {
+                        else
                             $this->Mid = ', mid(' . $field . ',' . intval($start) . ')';
-                        }
                     }
                 }
                 break;
@@ -1248,12 +1222,12 @@ abstract class Query
     protected $Length = null;
 
     /**
-     * @access public
-     * @param string $field 字段名（列表list）
-     * @return object
-     * @context 计算指定字段列记录值长度，一般只应用于文本格式信息
+     * 计算指定字段列记录值长度，一般只应用于文本格式信息
      * 方法支持两种数据类型，如果只对一个字段进行操作，使用字符串类型
      * 对多个字段进行操作，则使用自然数标记数组
+     * @access public
+     * @param string $field 字段名（列表list）
+     * @return object 返回数据库连接对象
      */
     function length($field)
     {
@@ -1268,11 +1242,10 @@ abstract class Query
         if(is_array($field)){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
             for($_i=0;$_i<count($field);$_i++){
-                if(is_numeric(array_keys($field)[0])){
+                if(is_numeric(array_keys($field)[0]))
                     $this->Length .= ",{$_func}({$field[$_i]})";
-                }else{
+                else
                     $this->Length .= ",{$_func}(".array_keys($field)[$_i].") as ".$field[array_keys($field)[$_i]];
-                }
             }
         }else{
             if(is_true($this->NameConfine, $field))
@@ -1288,12 +1261,12 @@ abstract class Query
     protected $Round = null;
 
     /**
+     * 对指定字段进行限定小数长度的四舍五入运算，参数同时支持
      * @access public
      * @param mixed $field 字段名（列表list）
      * @param int $decimals 取舍精度
      * @param int $accuracy 截断精度 mssql支持语法参数项
-     * @return object
-     * @context 对指定字段进行限定小数长度的四舍五入运算，参数同时支持
+     * @return object 返回数据库连接对象
     */
     function round($field, $decimals = 0,$accuracy=0)
     {
@@ -1335,9 +1308,9 @@ abstract class Query
     protected $Now = null;
 
     /**
+     * 返回当前数据库时间
      * @access public
-     * @return object
-     * @context 返回当前数据库时间
+     * @return object 返回数据库连接对象
      */
     function now()
     {
@@ -1356,7 +1329,7 @@ abstract class Query
      * @access public
      * @param mixed $field
      * @param string|null $format
-     * @return object
+     * @return object 返回数据库连接对象
     */
     function format($field, $format = null)
     {
@@ -1397,13 +1370,13 @@ abstract class Query
     protected $Having = null;
 
     /**
+     * 函数结构应用, 单项内容操作
      * @access public
      * @param string $func 函数
      * @param string $field 字段名
      * @param string $symbol 符号
      * @param int $value 参数值
-     * @return object
-     * @context 函数结构应用, 单项内容操作
+     * @return object 返回数据库连接对象
     */
     function having($func, $field, $symbol, $value)
     {
@@ -1421,10 +1394,9 @@ abstract class Query
                     $_symbol = array('gt' => '>', 'lt' => '<', 'et'=> '=', 'eq' => '==','neq' => '!=', 'ge' => '>=', 'le' => '<=','heq' => '===', 'nheq' => '!==');
                     if(array_key_exists(trim(strtolower($symbol)), $_symbol))
                         $_symbol = $_symbol[trim(strtolower($symbol))];
-                    if(is_numeric($value)){
+                    if(is_numeric($value))
                         # 创建having信息数组
                         $this->Having = " having {$func}({$field}) {$_symbol} {$value}";
-                    }
                 }
             }
         }
@@ -1438,11 +1410,11 @@ abstract class Query
     protected $Order = null;
 
     /**
+     * 查询语句排序条件
      * @access public
      * @param string $field 字段名（列表list）
      * @param string $type 排序列表，默认 asc 升序，desc降序
-     * @return object
-     * @context 查询语句排序条件
+     * @return object 返回数据库连接对象
     */
     function order($field, $type='asc')
     {
@@ -1484,11 +1456,11 @@ abstract class Query
     protected $Limit = null;
 
     /**
+     * 查询语句查询限制，有两个参数构成，起始位置，显示长度
      * @access public
      * @param int $start 起始位置
      * @param int $length 读取长度
-     * @return object
-     * @context 查询语句查询限制，有两个参数构成，起始位置，显示长度
+     * @return object 返回数据库连接对象
     */
     function limit($start, $length=0)
     {
@@ -1500,7 +1472,6 @@ abstract class Query
                         $this->Limit = " limit {$length} offset {$start}";
                         break;
                     case self::RESOURCE_TYPE_MSSQL: # mssql不支持limit语法
-                        null;
                         break;
                     case self::RESOURCE_TYPE_ORACLE:
                         $this->Limit = " rownum <= {$start}";
@@ -1532,13 +1503,13 @@ abstract class Query
     protected $FetchType = self::FETCH_NORMAL;
 
     /**
+     * 加载列表显示结构限制
      * @access public
      * @param mixed $fetch_type 查询结果显示方式，默认值：FETCH_NORMAL<0>
      * 默认读取数据结构类型 <0>: FETCH_NORMAL
      * 整数与值数据结构类型 <1>: FETCH_NUMBER_VALUE
      * 键名与值数据结构类型 <2>: FETCH_KEY_VALUE
-     * @return object
-     * @context 加载列表显示结构限制
+     * @return object 返回数据库连接对象
     */
     function fetch($fetch_type=self::FETCH_NORMAL)
     {
@@ -1554,38 +1525,49 @@ abstract class Query
 
     /**
      * 查询总数结构方法，返回一个整数结果
+     * @access public
+     * @return int 返回索引数据条数
     */
     abstract function count();
 
     /**
      * 查询表格信息方法，并返回数组结果集
-    */
+     * @access public
+     * @return array 返回查询结果数组
+     */
     abstract function select();
 
     /**
      * 向表插入信息方法，并返回插入成功后插入后数据id
+     * @access public
+     * @return int 返回数据插入主键值
     */
     abstract function insert();
 
     /**
      * 删除指定数据记录，并返回执行结果信息
+     * @access public
+     * @return int 返回影响数据条数
     */
     abstract function delete();
     /**
      * 修改指定数据记录，并返回执行结果信息
+     * @access public
+     * @return int 返回影响数据条数
      */
     abstract function update();
 
     /**
      * 执行自定义查询语句,并返回执行结果
      * @param string $query
+     * @return array|int 返回语句执行结果
     */
     abstract function query($query);
 
     /**
+     * 返回错误信息
      * @access public
-     * @return string
-     * @context 返回错误信息
+     * @return string|null 返回异常信息
     */
     function getErrorMsg()
     {

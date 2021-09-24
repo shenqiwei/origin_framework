@@ -16,10 +16,10 @@ class Lists
     private $Connect;
 
     /**
+     * 构造函数，装在redis数据源连接对象
      * @access public
      * @param object $connect redis主类链接信息
      * @return void
-     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
@@ -27,11 +27,11 @@ class Lists
     }
 
     /**
+     * 移出并获取列表的第一个元素
      * @access public
      * @param array $keys 索引元素对象列表
      * @param int $time 最大等待时长
-     * @return mixed
-     * @context 移出并获取列表的第一个元素
+     * @return mixed 返回索引结果
      */
     function removeFirst($keys,$time)
     {
@@ -42,11 +42,11 @@ class Lists
     }
 
     /**
+     * 获取列表的最后一个元素
      * @access public
      * @param array $keys 索引元素对象列表
      * @param int $time 最大等待时长
-     * @return mixed
-     * @context 获取列表的最后一个元素
+     * @return mixed 返回索引结果
      */
     function removeLast($keys,$time)
     {
@@ -57,12 +57,12 @@ class Lists
     }
 
     /**
+     * 抽取元素对象值内容，转存至目标元素对象中
      * @access public
      * @param string $key 索引元素对象键
      * @param string $write 转存目标对象键
      * @param int $time 最大等待时长
-     * @return mixed
-     * @context 抽取元素对象值内容，转存至目标元素对象中
+     * @return mixed 返回索引结果
      */
     function reIn($key,$write,$time)
     {
@@ -73,11 +73,11 @@ class Lists
     }
 
     /**
+     * 索引元素对象，并返回内容信息（大于0从左开始，小于0从右侧开始）
      * @access public
      * @param string $key 索引元素对象键
      * @param int $index 索引位置参数
-     * @return mixed
-     * @context 索引元素对象，并返回内容信息（大于0从左开始，小于0从右侧开始）
+     * @return mixed 返回索引结果
      */
     function index($key,$index)
     {
@@ -88,13 +88,13 @@ class Lists
     }
 
     /**
+     * 在列表的元素前或者后插入元素
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 目标元素值
      * @param mixed $write 写入值
      * @param string $be 插入位置
-     * @return int
-     * @context 在列表的元素前或者后插入元素
+     * @return int 返回执行结果
      */
     function insert($key,$value,$write,$be="after")
     {
@@ -107,10 +107,10 @@ class Lists
     }
 
     /**
+     * 返回列表的长度
      * @access public
      * @param string $key 索引元素对象键
-     * @return int
-     * @context 返回列表的长度
+     * @return int 返回执行结果
      */
     function count($key)
     {
@@ -118,10 +118,10 @@ class Lists
     }
 
     /**
+     * 移除并返回列表的第一个元素
      * @access public
      * @param string $key 索引元素对象键
-     * @return mixed
-     * @context 移除并返回列表的第一个元素
+     * @return mixed 返回索引结果
      */
     function popFirst($key)
     {
@@ -132,10 +132,10 @@ class Lists
     }
 
     /**
+     * 移除并返回列表的最后一个元素
      * @access public
      * @param string $key 索引元素对象键
-     * @return mixed
-     * @context 移除并返回列表的最后一个元素
+     * @return mixed 返回索引结果
      */
     function popLast($key)
     {
@@ -146,11 +146,11 @@ class Lists
     }
 
     /**
+     * 将元素对象列表的最后一个元素移除并返回，并将该元素添加到另一个列表
      * @access public
-     * @param string $key
-     * @param string $write
-     * @return mixed
-     * @context 将元素对象列表的最后一个元素移除并返回，并将该元素添加到另一个列表
+     * @param string $key 索引元素对象键
+     * @param string $write 写入对象列表名
+     * @return mixed 返回执行结果
      */
     function popWrite($key,$write)
     {
@@ -161,11 +161,11 @@ class Lists
     }
 
     /**
+     * 在列表头部插入一个或多个值
      * @access public
      * @param string $key 索引元素对象键
      * @param  mixed $value 插入对象值
-     * @return int
-     * @context 在列表头部插入一个或多个值
+     * @return int 返回执行结果
      */
     function inFirst($key,$value)
     {
@@ -173,11 +173,11 @@ class Lists
     }
 
     /**
+     * 在列表尾部插入一个或多个值
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 插入对象值
-     * @return int
-     * @context 在列表尾部插入一个或多个值
+     * @return int 返回执行结果
      */
     function inLast($key,$value)
     {
@@ -185,11 +185,11 @@ class Lists
     }
 
     /**
+     * 在已存在的列表头部插入一个值
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 插入对象值
-     * @return int
-     * @context 在已存在的列表头部插入一个值
+     * @return int 返回执行结果
      */
     function inFFirst($key,$value)
     {
@@ -197,11 +197,11 @@ class Lists
     }
 
     /**
+     * 在已存在的列表尾部插入一个值
      * @access public
      * @param string $key 索引元素对象键
      * @param mixed $value 插入对象值
-     * @return int
-     * @context 在已存在的列表尾部插入一个值
+     * @return int 返回执行结果
      */
     function inFLast($key,$value)
     {
@@ -209,12 +209,12 @@ class Lists
     }
 
     /**
+     * 返回列表中指定区间内的元素
      * @access public
      * @param string $key 索引元素对象键
      * @param int $start 起始位置参数
      * @param int $end 结束位置参数
-     * @return int
-     * @context 返回列表中指定区间内的元素
+     * @return int 返回执行结果
      */
     function range($key,$start,$end)
     {
@@ -222,12 +222,12 @@ class Lists
     }
 
     /**
+     * 根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素
      * @access public
      * @param string $key 索引元素对象键
      * @param int $count 执行(总数)系数 (count > 0: 从表头开始向表尾搜索,count < 0:从表尾开始向表头搜索，count = 0: 删除所有与value相同的)
      * @param mixed $value 操作值
-     * @return int
-     * @context 根据参数 COUNT 的值，移除列表中与参数 VALUE 相等的元素
+     * @return int 返回执行结果
      */
     function rem($key,$count,$value)
     {
@@ -235,12 +235,12 @@ class Lists
     }
 
     /**
+     * 设置索引元素对象
      * @access public
      * @param string $key 索引元素对象键
      * @param int $index 索引系数
      * @param mixed $value 设置值
-     * @return mixed
-     * @context 设置索引元素对象
+     * @return mixed 返回索引结果
      */
     function indexSet($key,$index,$value)
     {
@@ -248,12 +248,12 @@ class Lists
     }
     
     /**
+     * 保留指定区间内的元素
      * @access public
      * @param string $key 索引元素对象键
      * @param int $start 起始位置系数
      * @param int $end 结束位置系数
-     * @return mixed
-     * @context 保留指定区间内的元素
+     * @return mixed 返回执行结果
      */
     function trim($key,$start,$end)
     {

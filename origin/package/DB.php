@@ -10,10 +10,10 @@ namespace Origin\Package;
 class DB
 {
     /**
+     * Mysql数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context Mysql数据库操作方法
+     * @return object 返回mysql数据源连接对象
      */
     static function mysql($connect_name=null)
     {
@@ -23,10 +23,10 @@ class DB
     }
 
     /**
+     * PostgreSQL数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context PostgreSQL数据库操作方法
+     * @return object 返回pgsql数据源连接对象
      */
     static function pgsql($connect_name=null)
     {
@@ -36,10 +36,10 @@ class DB
     }
 
     /**
+     * SQL server数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context SQL server数据库操作方法
+     * @return object 返回mssql数据源连接对象
      */
     static function mssql($connect_name=null)
     {
@@ -49,10 +49,10 @@ class DB
     }
 
     /**
+     * sqlite数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context sqlite数据库操作方法
+     * @return object 返回sqlite数据源连接对象
      */
     static function sqlite($connect_name=null)
     {
@@ -62,10 +62,10 @@ class DB
     }
 
     /**
+     * Oracle数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context SQL server数据库操作方法
+     * @return object 返回oracle数据源连接对象
      */
     static function oracle($connect_name=null)
     {
@@ -75,10 +75,10 @@ class DB
     }
 
     /**
+     * Redis数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context Redis数据库操作方法
+     * @return object 返回redis数据源连接对象
      */
     static function redis($connect_name=null)
     {
@@ -87,10 +87,10 @@ class DB
     }
 
     /**
+     * MongoDB数据库操作方法
      * @access public
      * @param string|null $connect_name 链接名
-     * @return object
-     * @context MongoDB数据库操作方法
+     * @return object 返回mongodb数据源连接对象
      */
     static function mongodb($connect_name=null)
     {

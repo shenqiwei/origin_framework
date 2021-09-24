@@ -13,8 +13,8 @@ use PDO;
 class Database extends Query
 {
     /**
+     * 操作常量
      * @access public
-     * @context 操作常量
      */
     const QUERY_SELECT = "select";
     const QUERY_INSERT = "insert";
@@ -50,11 +50,11 @@ class Database extends Query
     private $RowCount = 0;
 
     /**
+     * 构造函数，用于预加载数据源配置信息
      * @access public
      * @param string|null $connect_name 数据源配置名称
      * @param int $type 数据库类型，默认值 0 <mysql|mariadb>
      * @return void
-     * @context 构造函数，用于预加载数据源配置信息
     */
     function __construct($connect_name=null,$type=0)
     {
@@ -96,7 +96,7 @@ class Database extends Query
                     $_DSN = "mysql:host={$_connect_config["DATA_HOST"]};port={$_connect_config["DATA_PORT"]};dbname={$_connect_config["DATA_DB"]}";
                     break;
             }
-            if(!in_array($this->DataType,array(self::RESOURCE_TYPE_SQLITE))){
+            if($this->DataType != self::RESOURCE_TYPE_SQLITE){
                 # 创建数据库链接地址，端口，应用数据库信息变量
                 $_username = $_connect_config['DATA_USER']; # 数据库登录用户
                 $_password = $_connect_config['DATA_PWD']; # 登录密码
@@ -128,9 +128,9 @@ class Database extends Query
     }
 
     /**
+     * 返回查询信息的总数
      * @access public
-     * @return int
-     * @context 返回查询信息的总数
+     * @return int 返回索引数据条数
      */
     function count()
     {
@@ -142,9 +142,9 @@ class Database extends Query
     }
 
     /**
+     * 查询信息函数
      * @access public
-     * @return mixed
-     * @context 查询信息函数
+     * @return array 返回索引结果数组
      */
     function select()
     {
@@ -186,9 +186,9 @@ class Database extends Query
     }
 
     /**
+     * 插入信息函数
      * @access public
-     * @return mixed
-     * @context 插入信息函数
+     * @return int 返回插入数据的主键值
      */
     function insert()
     {
@@ -218,9 +218,9 @@ class Database extends Query
     }
 
     /**
+     * 修改信息函数
      * @access public
-     * @return mixed
-     * @context 修改信息函数
+     * @return int 返回影响数据数量
      */
     function update()
     {
@@ -247,9 +247,9 @@ class Database extends Query
     }
 
     /**
+     * 删除信息函数
      * @access public
-     * @return mixed
-     * @context 删除信息函数
+     * @return int 返回影响数据数量
      */
     function delete()
     {
@@ -260,10 +260,10 @@ class Database extends Query
     }
 
     /**
+     * 自定义语句执行函数
      * @access public
      * @param string $query sql语句
-     * @return mixed
-     * @context 自定义语句执行函数
+     * @return array|int 返回语句执行内容
      */
     function query($query)
     {
@@ -320,9 +320,9 @@ class Database extends Query
     }
 
     /**
+     * 执行事务提交
      * @access public
      * @return void
-     * @context 执行事务提交
      */
     function getCommit()
     {
@@ -330,9 +330,9 @@ class Database extends Query
     }
 
     /**
+     * 执行事务回滚
      * @access public
      * @return void
-     * @context 执行事务回滚
      */
     function getRollBack()
     {
@@ -340,9 +340,9 @@ class Database extends Query
     }
 
     /**
+     * 返回select查询条数信息
      * @access public
-     * @return int
-     * @contact 返回select查询条数信息
+     * @return int 返回语句数量
      */
     function getRowCount()
     {
@@ -350,14 +350,14 @@ class Database extends Query
     }
 
     /**
+     * 分页函数
      * @access public
      * @param string $url 链接
      * @param int $count 总数
      * @param int $current 当前页
      * @param int $row 分页大小
      * @param string|null $search 搜索条件
-     * @return array
-     * @contact 分页
+     * @return array 返回分页结构数组
      */
     function paging($url,$count,$current=1,$row=10,$search=null){
         $page=array(
@@ -406,11 +406,11 @@ class Database extends Query
     }
 
     /**
+     * 页脚扩展函数
      * @access public
      * @param array $page 分页数组
      * @param int $cols 页码数量
-     * @return array
-     * @contact 页脚
+     * @return array 返回分页页脚结构数据
      */
     function footer($page,$cols=5){
         //执行数字页码
@@ -439,9 +439,9 @@ class Database extends Query
     }
 
     /**
+     * 析构函数：数据库链接释放
      * @access public
      * @return void
-     * @contact 析构函数：数据库链接释放
      */
     function __destruct()
     {

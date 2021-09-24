@@ -36,11 +36,11 @@ class Verify
     private $HeightFold;
 
     /**
+     * 构造方法，对参数结构进行预设
      * @access public
      * @param int $width 画布宽度
      * @param int $height 画布高度
      * @return void
-     * @context 构造方法，对参数结构进行预设
     */
     function __construct($width=120,$height=50)
     {
@@ -51,10 +51,10 @@ class Verify
     }
 
     /**
+     * 字母混合验证码主执行方法
      * @access public
      * @param string $data 传入值
      * @return void
-     * @context 字母混合验证码主执行方法
     */
     private function execute($data)
     {
@@ -112,9 +112,9 @@ class Verify
     }
 
     /**
+     * 字母数字混合验证码主执行方法
      * @access public
      * @return void
-     * @context 字母数字混合验证码主执行方法
      */
     function main()
     {
@@ -122,9 +122,9 @@ class Verify
     }
 
     /**
+     * 数字验证码主执行方法
      * @access public
      * @return void
-     * @context 数字验证码主执行方法
      */
     function number()
     {
@@ -132,9 +132,9 @@ class Verify
     }
 
     /**
+     * 字母验证码主执行方法
      * @access public
      * @return void
-     * @context 字母验证码主执行方法
      */
     function letter()
     {
@@ -142,10 +142,9 @@ class Verify
     }
 
     /**
-     *
+     * 汉字验证码主执行方法
      * @access public
      * @return void
-     * @context 汉字验证码主执行方法
     */
     function han()
     {
@@ -246,9 +245,9 @@ class Verify
     }
 
     /**
+     * 数学一元运算验证码
      * @access public
      * @return void
-     * @context 数学一元运算验证码
     */
     function math()
     {

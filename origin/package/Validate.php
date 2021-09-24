@@ -21,10 +21,10 @@ class Validate
     private $Error = null;
 
     /**
+     * 执行空值验证
      * @access public
      * @param mixed $variable 验证对象变量
-     * @return boolean
-     * @context 执行空值验证
+     * @return boolean 返回验证状态
     */
     public function _empty($variable)
     {
@@ -36,7 +36,7 @@ class Validate
             # 使用empty函数判断参数值是否为空
             if(!empty($variable))
                 $_return = true;
-            elseif(empty($variable) and !is_null($variable)){
+            elseif(!is_null($variable)){
                 # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                 if(is_int($variable) and $variable == 0)
                     $_return = true;
@@ -49,26 +49,23 @@ class Validate
                 else
                     # error: Verify the value is null
                     $this->Error = 'Verify the value is null';
-            }else{
-                if(!is_null($variable))
-                    $_return = true;
             }
         }
         return $_return;
     }
 
     /**
-     * @access public
-     * @param mixed $variable 验证对象变量
-     * @param int|float $min
-     * @param int|float $max
-     * @return boolean
-     * @context 执行值长度范围验证
+     * 执行值长度范围验证
      * 1.最小范围值大于最大范围值，验证参数数值对调
      * 2.最小范围值等于最大范围值，值进行大于等于值的验证
      * 3.最小范围值大于0，最大范围值小于等于0，值进行大于等于值的验证
      * 4.最小范围值等于小于0，最大范围值大于等于0，值进行小于等于值的验证、
      * 5.最小范围值和最小范围值小于等于0，则不限制大小，参数值全部默认等于0
+     * @access public
+     * @param mixed $variable 验证对象变量
+     * @param int|float $min
+     * @param int|float $max
+     * @return boolean 返回验证状态
     */
     public function _size($variable,$min=0,$max=0)
     {
@@ -135,11 +132,11 @@ class Validate
     }
 
     /**
+     * 执行正则比对验证
      * @access public
      * @param mixed $variable 验证对象变量
      * @param string $format
-     * @return boolean
-     * @context 执行正则比对验证
+     * @return boolean 返回验证状态
     */
     function _type($variable,$format)
     {
@@ -165,10 +162,10 @@ class Validate
     }
 
     /**
+     * 执行ipv4地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
      * @access public
      * @param mixed $variable 验证对象变量
-     * @return boolean
-     * @context 执行ipv4地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
+     * @return boolean 返回验证状态
     */
     function _ipv4($variable)
     {
@@ -206,10 +203,10 @@ class Validate
     }
 
     /**
+     * 执行ipv6地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
      * @access public
      * @param mixed $variable 验证对象变量
-     * @return boolean
-     * @context 执行ipv6地址验证，当is_null为true时，且参数值为空，则不进行验证，反之进行验证
+     * @return boolean 返回验证状态
      */
     function _ipv6($variable)
     {
@@ -276,9 +273,9 @@ class Validate
     }
 
     /**
+     * 获取错误信息
      * @access public
-     * @return string|null
-     * @context 获取错误信息
+     * @return string|null 返回异常信息
      */
     function getError(){
         return $this->Error;

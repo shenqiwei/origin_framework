@@ -5,11 +5,11 @@
  * @copyright 2015-2017
  */
 /**
+ * 日志写入
  * @access public
  * @param string $folder 日志路径
  * @param string $context 日志模板
- * @return  boolean
- * @content 日志写入
+ * @return  boolean 返回执行结果状态
  */
 function _log($folder,$context)
 {
@@ -39,10 +39,10 @@ function _log($folder,$context)
 }
 
 /**
+ * 异常记录日志 error log
  * @access public
  * @param string $msg 日志模板信息
- * @return mixed
- * @context 异常记录日志 error log
+ * @return bool 返回执行结果状态
  */
 function errorLog($msg)
 {

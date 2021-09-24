@@ -19,46 +19,47 @@ abstract class Thread
     */
     protected $Array;
     protected $Thread;
+
     /**
+     * 传入值
      * @access public
      * @param string $name 传入值名称
      * @param mixed $value 传入值
      * @return void
-     * @context 传入值
      */
     abstract function set($name,$value);
 
     /**
+     * 获取值内容
      * @access public
      * @return void
-     * @context 获取值内容
      */
     abstract function get($name);
 
     /**
+     * 拦截器
      * @access public
      * @param string $name 拦截器名称
      * @param string $function 拦截器方法
      * @param array $param 拦截器参数
      * @return void
-     * @context 拦截器
      */
     abstract function filter($name,$function,$param);
 
     /**
+     * 执行函数，该函数用于封装操作内容
      * @access public
      * @param object $channel 通道对象
      * @return void
-     * @context 执行函数，该函数用于封装操作内容
      */
     abstract function action($channel);
 
     /**
+     * 线程主执行函数
      * @access public
      * @static
      * @param object $object 执行对象
-     * @return mixed
-     * @context 线程主执行函数
+     * @return mixed 返回执行结果
     */
     function parallel($object)
     {

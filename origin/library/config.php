@@ -5,10 +5,10 @@
  * @copyright 2015-2017
  */
 /**
+ * Config公共配置信息调用方法,优先调用用户配置文件，在用户配置文件不存在或者无配置项时，调用系统配置文件
  * @access public
  * @param string $item 配置项
- * @return mixed
- * @context Config公共配置信息调用方法,优先调用用户配置文件，在用户配置文件不存在或者无配置项时，调用系统配置文件
+ * @return mixed 返回配置信息或配置列表
  */
 function config($item)
 {

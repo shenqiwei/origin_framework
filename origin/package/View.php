@@ -12,13 +12,14 @@ use Exception;
 class View
 {
     /**
+     * 模板页加载方法
      * @access public
      * @param string $dir 地址目录
      * @param string $page 模板信息
      * @param array $param 参数值内容
      * @param float $time 起始加载时间
      * @return void
-     * @context 模板页加载方法
+     * @context
     */
     static function view($dir,$page,$param,$time)
     {

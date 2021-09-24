@@ -10,9 +10,10 @@ namespace Origin\Package;
 class Output
 {
     /**
+     * Json字符串界面内容输出
      * @access public
      * @param array $array 数据
-     * @context Json字符串界面内容输出
+     * @return void
     */
     static function json($array)
     {
@@ -22,13 +23,13 @@ class Output
     }
 
     /**
+     * 输出预设模板内容
      * @access public
      * @param int $time 倒计时时间
      * @param string|null $message 提示信息
      * @param string $url 跳转地址
      * @param array $setting 模板显示内容设置
      * @return void
-     * @context 输出预设模板内容
     */
     static function output($time=5,$message=null,$url="#",$setting=array())
     {

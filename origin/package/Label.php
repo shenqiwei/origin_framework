@@ -39,6 +39,7 @@ class Label
     private $Include = '/\<include\s+href\s*=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?>/';
 
     /**
+     * 逻辑判断标记规则
      * @access private
      * @var string $JudgeCi condition_information : 'variable eq conditions_variable'
      * @var string $JudgeSi Symbol
@@ -46,7 +47,6 @@ class Label
      * @var string $JudgeEF elseif <elseif condition = 'variable eq conditions_variable'/>
      * @var string $JudgeEl else <else/>
      * @var string $JudgeEl end </if>
-     * @context 逻辑判断标记规则
      */
     private $JudgeIf = '/\<if\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $JudgeEF = '/\<elseif\s+condition\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*[\/]?\>/';
@@ -54,30 +54,30 @@ class Label
     private $JudgeIe = '/\<[\/]if\s*\>/';
 
     /**
+     * 循环执行标签规则
      * @access private
      * @var string $ForOperation 'variable to circulation_count'
      * @var string $ForBegin <for operation = 'variable to circulation_count'>
      * @var string $ForEnd </for>
-     * @context 循环执行标签规则
      */
     private $ForBegin = '/\<for\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $ForEnd = '/<\/for\s*>/';
 
     /**
+     * foreach循环标签规则
      * @access private
      * @var string $ForeachOperation 'variable (as mark_variable)'
      * @var string $ForeachBegin <foreach operation = 'variable (as mark_variable)'>
      * @var string $ForeachEnd </foreach>
-     * @context foreach循环标签规则
      */
     private $ForeachBegin = '/\<foreach\s+operation\s*\=\s*(\'[^\<\>]+\'|\"[^\<\>]+\")\s*\>/';
     private $ForeachEnd = '/\<[\/]foreach\s*\>/';
 
     /**
+     * 构造方法 获取引用页面地址信息
      * @access public
      * @param string $page 视图模板内容信息
      * @return void
-     * @context 构造方法 获取引用页面地址信息
      */
     function __construct($page)
     {
@@ -85,9 +85,9 @@ class Label
     }
 
     /**
+     * 默认函数，用于对模板中标签进行转化和结构重组
      * @access public
      * @return string
-     * @context 默认函数，用于对模板中标签进行转化和结构重组
     */
     function execute()
     {
@@ -118,10 +118,10 @@ class Label
     }
 
     /**
+     * 引入结构标签解释方法
      * @access protected
      * @param string $obj 解析代码段
      * @return string
-     * @context 引入结构标签解释方法
      */
     function __include($obj)
     {
@@ -143,10 +143,10 @@ class Label
     }
 
     /**
+     * 变量标签解释方法
      * @access protected
      * @param string $obj 解析代码段
      * @return string
-     * @context 变量标签解释方法
     */
     function variable($obj)
     {
@@ -236,10 +236,10 @@ class Label
     }
 
     /**
+     * 逻辑判断标签解释方法
      * @access protected
      * @param string $obj 解析代码段
      * @return string
-     * @context 逻辑判断标签解释方法
     */
     function __if($obj)
     {
@@ -295,10 +295,10 @@ class Label
     }
 
     /**
+     * 逻辑批处理方法
      * @access protected
      * @param string $symbol 运算符号
      * @return string
-     * @context 逻辑批处理方法
     */
     function symbol($symbol)
     {
@@ -315,10 +315,10 @@ class Label
     }
 
     /**
+     * for标签结构解释方法
      * @access public
      * @param string $obj 进行解析的代码段
      * @return string
-     * @context for标签结构解释方法
      */
     function __for($obj)
     {
@@ -400,10 +400,10 @@ class Label
     }
 
     /**
+     * foreach循环标签解释方法
      * @access protected
      * @param string $obj 解析代码段
      * @return string
-     * @context foreach循环标签解释方法
     */
     function __foreach($obj)
     {

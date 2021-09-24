@@ -1,11 +1,11 @@
 <?php
 /**
+ * 应用异常显示模块
  * @access public
  * @param string $error_title 异常标题
  * @param string|array $error_msg 异常信息数组
  * @param array $error_file 异常文件描述数组
  * @return void
- * @context 应用异常显示模块
  */
 function exception($error_title,$error_msg,$error_file)
 {

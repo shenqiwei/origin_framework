@@ -16,10 +16,10 @@ class Str
     private $Connect;
 
     /**
+     * 构造函数，装在redis数据源连接对象
      * @access public
      * @param object $connect redis主类链接信息
      * @return void
-     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
@@ -27,11 +27,11 @@ class Str
     }
 
     /**
+     * 创建元素对象值内容
      * @access public
      * @param string $key 被创建对象键名
      * @param mixed $value 被创建元素对象内容值
-     * @return mixed
-     * @context 创建元素对象值内容
+     * @return bool 返回执行结果状态值
      */
     function create($key,$value)
     {
@@ -44,12 +44,12 @@ class Str
     }
 
     /**
+     * 创建元素对象，并设置生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param mixed $value 被创建元素对象内容值
      * @param int $second 生命周期时间（second）
      * @return boolean
-     * @context 创建元素对象，并设置生命周期
      */
     function createSec($key,$value,$second=0)
     {
@@ -62,11 +62,11 @@ class Str
     }
 
     /**
+     * 非覆盖创建元素对象值
      * @access public
      * @param string $key 被检索对象键名
      * @param mixed $value 被创建元素对象内容值
-     * @return int
-     * @context 非覆盖创建元素对象值
+     * @return int 返回影响数据数量
      */
     function createOnly($key,$value)
     {
@@ -74,12 +74,12 @@ class Str
     }
 
     /**
+     * 创建元素对象，并设置生命周期
      * @access public
      * @param string $key 被检索对象键名
      * @param mixed $value 被创建元素对象内容值
      * @param int $milli 生命周期时间（milli）
-     * @return boolean
-     * @context 创建元素对象，并设置生命周期
+     * @return boolean 返回执行结果状态值
      */
     function createMil($key,$value,$milli=0)
     {
@@ -92,10 +92,10 @@ class Str
     }
 
     /**
+     * 获取内容
      * @access public
      * @param string $key
-     * @return mixed
-     * @context 获取内容
+     * @return mixed 返回存入值
      */
     function get($key)
     {
@@ -106,11 +106,11 @@ class Str
     }
 
     /**
+     * 叠加（创建）对象元素值内容
      * @access public
      * @param string $key 被创建对象键名
      * @param mixed $value 被创建元素对象内容值
-     * @return int
-     * @context 叠加（创建）对象元素值内容
+     * @return int 返回影响数据数量
      */
     function append($key,$value)
     {
@@ -118,12 +118,12 @@ class Str
     }
 
     /**
+     * 设置元素对象偏移值
      * @access public
      * @param string $key 被创建对象键名
      * @param int $value 被创建元素对象内容值
      * @param int $offset 偏移系数
-     * @return int
-     * @context 设置元素对象偏移值
+     * @return int 返回执行结果
      */
     function cBit($key,$value,$offset)
     {
@@ -131,11 +131,11 @@ class Str
     }
 
     /**
+     * 获取元素对象偏移值
      * @access public
      * @param string $key 被检索对象键名
      * @param int $value 被创建元素对象内容值
-     * @return int
-     * @context 获取元素对象偏移值
+     * @return int 返回执行结果
      */
     function gBit($key,$value)
     {
@@ -143,10 +143,10 @@ class Str
     }
 
     /**
+     * 检索元素对象值内容长度
      * @access public
      * @param string $key 被检索对象键名
-     * @return int
-     * @context 检索元素对象值内容长度
+     * @return int 返回长度信息
      */
     function getLen($key)
     {
@@ -154,12 +154,12 @@ class Str
     }
 
     /**
+     * 检索元素对象值（区间截取）内容，（大于0的整数从左开始执行，小于0的整数从右开始执行）
      * @access public
      * @param string $key 被检索对象键名
      * @param int $start 起始位置参数
      * @param int $end 结束位置参数
-     * @return object
-     * @context 检索元素对象值（区间截取）内容，（大于0的整数从左开始执行，小于0的整数从右开始执行）
+     * @return mixed 返回检索数据
      */
     function getRange($key,$start=1,$end=-1)
     {
@@ -170,11 +170,11 @@ class Str
     }
 
     /**
+     * 替换原有值内容，并返回原有值内容
      * @access public
      * @param string $key 被检索对象键名
      * @param mixed $value 被创建元素对象内容值
-     * @return mixed
-     * @context 替换原有值内容，并返回原有值内容
+     * @return mixed 返回执行对象值
      */
     function getRollback($key,$value)
     {
@@ -185,10 +185,10 @@ class Str
     }
 
     /**
+     * 创建元素列表
      * @access public
      * @param array $columns 对应元素列表数组
-     * @return boolean
-     * @context 创建元素列表
+     * @return boolean 返回执行结果状态值
      */
     function createList($columns)
     {
@@ -201,10 +201,10 @@ class Str
     }
 
     /**
+     * 非替换创建元素列表
      * @access public
      * @param array $columns 对应元素列表数组
-     * @return int
-     * @context 非替换创建元素列表
+     * @return int 返回执行结果状态值
      */
     function createListOnly($columns)
     {
@@ -212,10 +212,10 @@ class Str
     }
 
     /**
+     * 检索元素列表
      * @access public
      * @param array $keys 对应元素列表数组
-     * @return mixed
-     * @context 检索元素列表
+     * @return mixed 返回检索结果
      */
     function getList($keys)
     {
@@ -226,11 +226,11 @@ class Str
     }
 
     /**
+     * 对应元素（数据）指定值自增
      * @access public
      * @param string $key 被检索对象键名
      * @param int $increment 自增系数值
-     * @return mixed
-     * @context 对应元素（数据）指定值自增
+     * @return mixed 返回执行结果
      */
     function plus($key,$increment=1)
     {
@@ -249,11 +249,11 @@ class Str
     }
 
     /**
+     * 对应元素（数据）指定值自减
      * @access public
      * @param string $key 被检索对象键名
      * @param int $decrement 自减系数值
-     * @return mixed
-     * @context 对应元素（数据）指定值自减
+     * @return mixed 返回执行结果
      */
     function minus($key,$decrement=1)
     {

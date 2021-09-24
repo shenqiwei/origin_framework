@@ -16,10 +16,10 @@ class Hash
     private $Connect;
 
     /**
+     * 构造函数，装在redis数据源连接对象
      * @access public
      * @param object $connect redis主类链接信息
      * @return void
-     * @context 构造函数，装在redis数据源连接对象
      */
     function __construct($connect)
     {
@@ -27,12 +27,12 @@ class Hash
     }
 
     /**
+     * 创建hash元素对象内容
      * @access public
      * @param string $key 创建对象元素键
      * @param string $field hash对象字段名(域)
      * @param mixed $value 内容值
-     * @return int
-     * @context 创建hash元素对象内容
+     * @return int 返回执行结果
      */
     function create($key,$field,$value)
     {
@@ -40,11 +40,11 @@ class Hash
     }
 
     /**
+     * 获取指定元素内容
      * @access public
      * @param string $key 创建对象元素键
      * @param array $array 字段数组列表
-     * @return mixed
-     * @context 获取指定元素内容
+     * @return mixed 返回索引结果
      */
     function createList($key,$array)
     {
@@ -52,12 +52,12 @@ class Hash
     }
 
     /**
+     * 非替换创建hash元素对象内容
      * @access public
      * @param string $key 创建对象元素键
      * @param string $field hash对象字段名(域)
      * @param mixed $value 内容值
-     * @return int
-     * @context 非替换创建hash元素对象内容
+     * @return int 返回执行结果
      */
     function createNE($key,$field,$value)
     {
@@ -65,11 +65,11 @@ class Hash
     }
 
     /**
+     * 获取hash元素对象内容
      * @access public
      * @param string $key 索引对象元素键
      * @param string $field hash对象字段名(域)
-     * @return mixed
-     * @context 获取hash元素对象内容
+     * @return mixed 返回索引结果集
      */
     function get($key,$field)
     {
@@ -88,10 +88,10 @@ class Hash
     }
 
     /**
+     * 返回hash元素对象列表
      * @access public
      * @param string $key 索引对象元素键
-     * @return mixed
-     * @context 返回hash元素对象列表
+     * @return mixed 返回索引结果
      */
     function lists($key)
     {
@@ -106,11 +106,11 @@ class Hash
     }
 
     /**
+     * 获取hash元素对象内容
      * @access public
      * @param string $key 索引对象元素键
      * @param array $fields 字段数组列表
-     * @return mixed
-     * @context 获取hash元素对象内容
+     * @return mixed 返回索引结果
      */
     function getList($key,$fields)
     {
@@ -125,13 +125,13 @@ class Hash
     }
 
     /**
+     * 获取hash元素对象区间列表内容(用于redis翻页功能)
      * @access public
      * @param string $key 索引对象元素键
      * @param int $start 起始位置标记
      * @param string $pattern 执行模板(搜索模板)
      * @param int $count 显示总数
-     * @return mixed
-     * @context 获取hash元素对象区间列表内容(用于redis翻页功能)
+     * @return mixed 返回索引结果集
      */
     function limit($key,$start,$pattern,$count)
     {
@@ -142,10 +142,10 @@ class Hash
     }
 
     /**
+     * 返回hash元素对象列表
      * @access public
      * @param string $key 索引对象元素键
-     * @return mixed
-     * @context 返回hash元素对象列表
+     * @return mixed 返回执行结果
      */
     function values($key)
     {
@@ -153,11 +153,11 @@ class Hash
     }
 
     /**
+     * 删除元素对象内容
      * @access public
      * @param string $key 索引对象元素键
      * @param string $field hash对象字段名(域)
-     * @return int
-     * @context 删除元素对象内容
+     * @return int 返回执行结果
      */
     function del($key,$field)
     {
@@ -165,12 +165,12 @@ class Hash
     }
 
     /**
+     * 设置hash元素对象增量值
      * @access public
      * @param string $key 索引对象元素键
      * @param string $field hash对象字段名(域)
      * @param int $value 增量值
-     * @return mixed
-     * @context 设置hash元素对象增量值
+     * @return mixed 返回执行结果
      */
     function plus($key,$field,$value)
     {
@@ -183,10 +183,10 @@ class Hash
     }
 
     /**
+     * 获取hash元素对象全部字段名(域)
      * @access public
      * @param string $key 索引元素对象键
-     * @return mixed
-     * @context 获取hash元素对象全部字段名(域)
+     * @return mixed 返回执行结果
      */
     function fields($key)
     {
@@ -194,10 +194,10 @@ class Hash
     }
 
     /**
+     * 获取hash元素对象字段内容（域）长度
      * @access public
      * @param string $key 索引元素对象键s
-     * @return int
-     * @context 获取hash元素对象字段内容（域）长度
+     * @return int 返回执行结果
      */
     function len($key)
     {

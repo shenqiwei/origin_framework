@@ -10,9 +10,9 @@ namespace Origin\Package;
 class Cookie
 {
     /**
+     * 构造函数，激活会话服务
      * @access public
      * @return void
-     * @context 构造函数
      */
     function __construct()
     {
@@ -20,11 +20,11 @@ class Cookie
     }
 
     /**
+     * cookie会话设置
      * @access public
      * @param string $option 设置项
      * @param string $value 会话值
-     * @return mixed
-     * @context cookie会话设置
+     * @return false|string|null 返回操作结果
      */
     function edit($option,$value)
     {
@@ -37,11 +37,11 @@ class Cookie
     }
 
     /**
+     * 创建会话值内容
      * @access public
      * @param string $key 会话键名
      * @param mixed $value 值
      * @return void
-     * @context 创建会话值内容
      */
     function set($key,$value)
     {
@@ -49,10 +49,10 @@ class Cookie
     }
 
     /**
+     * 获取会话值内容
      * @access public
      * @param string $key 会话键名
-     * @return mixed
-     * @context 获取会话值内容
+     * @return mixed 返回存储值
      */
     function get($key)
     {
@@ -60,9 +60,9 @@ class Cookie
     }
 
     /**
+     * 析构函数
      * @access public
      * @return void
-     * @context 析构函数
      */
     function __destruct()
     {
