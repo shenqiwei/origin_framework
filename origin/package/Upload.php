@@ -58,32 +58,27 @@ class Upload
     );
 
     /**
-     * 上传条件设置函数
      * @access public
      * @param string $input 表单名称 form type is 'multipart/form-data' 该结构有效
      * @param array $type 上传文件类型
      * @param int $size 上传文件大小，默认值 0
+     * @param string|null $guide 上传文件存储路径
      * @return void
-    */
-    function condition($input, $type, $size=0)
+     * @context 上传条件设置函数
+     */
+    function condition($input, $type, $size=0,$guide=null)
     {
+        # 对条件变量进行赋值
         $this->Input = $input;
         $this->Type = $type;
         if(!empty(intval($size)))
             $this->Size = $size;
-        # 初始化异常信息
+        # 重置上传组件异常信息
         $this->Error = null;
-    }
-
-    /**
-     * 主目录设置函数
-     * @access public
-     * @param string|null $guide 上传文件存储路径
-     */
-    function store($guide=null)
-    {
-        if(!is_null($guide))
+        if(!is_null($this->Store) and !is_null($guide))
             $this->Store = replace($guide);
+        else
+            $this->Store = $guide;
     }
 
     /**

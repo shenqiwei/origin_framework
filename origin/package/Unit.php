@@ -15,6 +15,11 @@ use Exception;
 abstract class Unit
 {
     /**
+     * 请求器类型约束常量 */
+    const REQUEST_GET = "get"; # get 请求类型
+    const REQUEST_POST = "post"; # post 请求类型
+
+    /**
      * @access private
      * @var array $Param 装载参数信息数组
     */
