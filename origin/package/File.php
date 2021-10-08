@@ -159,7 +159,7 @@ class File extends Folder
         $_receipt = false;
         # 判断错误编号是否为初始状态
         # 调用路径文件验证
-        if(!is_file($_folder = replace(ROOT.DS.$file))){
+        if(is_file($_folder = replace(ROOT.DS.$file))){
             switch ($operate) {
                 case self::FILE_SEQ_READ: # 序列化读取
                     $_receipt = file($_folder);
