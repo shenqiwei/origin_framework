@@ -247,7 +247,7 @@ class Junction
         End:
         if(is_null($_receipt)){
             $_start = 0;
-            if(strpos("/",$uri) == 0)
+            if(strpos($uri,"/") == 0)
                 $_start = 1;
             if(strpos($uri,'.'))
                 $_path = substr($uri, $_start, strpos($uri,'.')-1);
