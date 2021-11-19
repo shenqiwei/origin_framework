@@ -37,12 +37,12 @@ return [
         "/main/index" => ["mapping" => 'home'],
         "home"=>[
             "method" => "get",
-            "class" => "Application/Home/Classes/Index",
+            "classes" => "Application/Home/Classes/Index",
             "functions"=>"index"
         ],
         "/main/s" => [
             "method" => "get",
-            "class" => "Application/Home/Classes/Index",
+            "classes" => "Application/Home/Classes/Index",
             "functions"=>"welcome"
         ]
     ],

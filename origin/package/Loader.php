@@ -67,9 +67,9 @@ class Loader
                         $file[$i] = strtolower($file[$i]);
                 }
                 $catalogue = $file[1];
-                $class_path = implode(DS,$file);
+                $class_path = implode(DS,$file).".php";
                 $class_namespace = str_replace("/","\\",$classes);
-                if($methods != $type){
+                if($methods != strtolower($type)){
                     unset($class_path);
                     unset($class_namespace);
                 }
@@ -235,7 +235,7 @@ class Loader
         $configure = include(replace(ROOT."/common/config/route.php"));
         # 比对路由信息内容
         if(key_exists($uri, $configure)){
-            $config = array_change_value_case($configure[$uri]);
+            $config = array_change_key_case($configure[$uri]);
             if(key_exists("classes",$config) and key_exists("functions",$config)){
                 $method = key_exists("method",$config)?strtolower($config["method"]):"get";
                 $receipt = [$config["classes"],$config["functions"],$method];
@@ -245,7 +245,7 @@ class Loader
                 if(key_exists("mapping",$config)){
                     $key = $config["mapping"];
                     if(key_exists($key, $configure)){
-                        $config = array_change_value_case($configure[$uri]);
+                        $config = array_change_key_case($configure[$key]);
                         if(key_exists("classes",$config) and key_exists("functions",$config)){
                             $method = key_exists("method",$config)?strtolower($config["method"]):"get";
                             $receipt = [$config["classes"],$config["functions"],$method];
