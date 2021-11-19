@@ -37,6 +37,10 @@ return array(
             'DATA_USE_BUFFER' => false, # mysql是否使用缓冲查询 默认值false
         ),
     ),
+    // 限定访问文件类型
+    'REQUEST_FILE_TYPE' => ".html",
+    //路由状态设置
+    'ROUTE_USE' => false, // 路由结构使用状态
     //缓存设置
     'ROOT_USE_BUFFER' => false, // 缓存文件使用状态
     // 访问数据缓冲及显示模式设置
