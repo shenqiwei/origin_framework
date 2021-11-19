@@ -78,10 +78,10 @@ class Sequence
      */
     function ai($key,$increment,$value)
     {
-        $_receipt = $this->Connect->zIncrBy($key,$increment,$value);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->zIncrBy($key,$increment,$value);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -159,10 +159,10 @@ class Sequence
      */
     function index($key,$value)
     {
-        $_receipt = $this->Connect->zRank($key,$value);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->zRank($key,$value);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -226,10 +226,10 @@ class Sequence
      */
     function descRange($key,$start,$end)
     {
-        $_receipt = $this->Connect->zRevRange($key,$start,$end);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->zRevRange($key,$start,$end);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -241,9 +241,9 @@ class Sequence
      */
     function score($key,$value)
     {
-        $_receipt = $this->Connect->zScore($key,$value);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->zScore($key,$value);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 }

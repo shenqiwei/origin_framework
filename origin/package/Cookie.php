@@ -23,17 +23,15 @@ class Cookie
      * cookie会话设置
      * @access public
      * @param string $option 设置项
-     * @param string $value 会话值
+     * @param string|null $value 会话值
      * @return false|string|null 返回操作结果
      */
-    function edit($option,$value)
+    function edit(string $option, ?string $value=null)
     {
-        $_receipt = null;
         if(is_null($value))
-            ini_set('session.'.strtolower($option), $value);
+            return ini_set('session.'.strtolower($option), $value);
         else
-            $_receipt = ini_get('session.'.strtolower($option));
-        return $_receipt;
+            return ini_get('session.'.strtolower($option));
     }
 
     /**
@@ -43,7 +41,7 @@ class Cookie
      * @param mixed $value 值
      * @return void
      */
-    function set($key,$value)
+    function set(string $key, $value)
     {
         setcookie($key, $value, config('COOKIE_LIFETIME'),  config('COOKIE_PATH'),  config('COOKIE_DOMAIN'));
     }
@@ -54,7 +52,7 @@ class Cookie
      * @param string $key 会话键名
      * @return mixed 返回存储值
      */
-    function get($key)
+    function get(string $key)
     {
         return $_COOKIE[$key];
     }

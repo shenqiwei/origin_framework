@@ -18,7 +18,7 @@ class Redis
 {
     /**
      * @access protected
-     * @var Redis|object $_Connect 数据库链接对象
+     * @var Redis|object $Connect 数据库链接对象
     */
     protected $Connect;
 
@@ -30,36 +30,36 @@ class Redis
     */
     function __construct($connect_name=null)
     {
-        $_connect_config = config('DATA_MATRIX_CONFIG');
-        if(is_array($_connect_config)){
-            for($_i = 0;$_i < count($_connect_config);$_i++){
+        $connect_config = config('DATA_MATRIX_CONFIG');
+        if(is_array($connect_config)){
+            for($i = 0;$i < count($connect_config);$i++){
                 # 判断数据库类型
-                if(key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis"
-                    and key_exists("DATA_NAME",$_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name){
-                    $_connect_conf = $_connect_config[$_i];
+                if(key_exists("DATA_TYPE",$connect_config[$i]) and strtolower(trim($connect_config[$i]["DATA_TYPE"])) === "redis"
+                    and key_exists("DATA_NAME",$connect_config[$i]) and $connect_config[$i]['DATA_NAME'] === $connect_name){
+                    $connect_conf = $connect_config[$i];
                     break;
                 }
             }
-            if(!isset($_connect_conf)) {
-                for ($_i = 0; $_i < count($_connect_config); $_i++) {
+            if(!isset($connect_conf)) {
+                for ($i = 0; $i < count($connect_config); $i++) {
                     # 判断数据库对象
-                    if (key_exists("DATA_TYPE",$_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "redis") {
-                        $_connect_conf = $_connect_config[$_i];
+                    if (key_exists("DATA_TYPE",$connect_config[$i]) and strtolower(trim($connect_config[$i]["DATA_TYPE"])) === "redis") {
+                        $connect_conf = $connect_config[$i];
                         break;
                     }
                 }
             }else
-                $_connect_config = $_connect_conf;
+                $connect_config = $connect_conf;
             # 创建数据库链接地址，端口，应用数据库信息变量
-            $_redis_host = strtolower(trim($_connect_config['DATA_HOST']));
-            $_redis_port = intval(strtolower(trim($_connect_config['DATA_PORT'])))?intval(strtolower(trim($_connect_config['DATA_PORT']))):6379;
+            $host = strtolower(trim($connect_config['DATA_HOST']));
+            $port = intval(strtolower(trim($connect_config['DATA_PORT'])))?intval(trim($connect_config['DATA_PORT'])):6379;
             $this->Connect = new \Redis();
-            if($_connect_config['DATA_P_CONNECT'])
-                $this->Connect->pconnect($_redis_host,$_redis_port);
+            if($connect_config['DATA_P_CONNECT'])
+                $this->Connect->pconnect($host,$port);
             else
-                $this->Connect->connect($_redis_host,$_redis_port);
-            if(!is_null($_connect_config['DATA_PWD']) and !empty($_connect_conf['DATA_PWD']))
-                $this->Connect->auth($_connect_conf['DATA_PWD']);
+                $this->Connect->connect($host,$port);
+            if(!is_null($connect_config['DATA_PWD']) and !empty($connect_conf['DATA_PWD']))
+                $this->Connect->auth($connect_conf['DATA_PWD']);
         }
     }
 
@@ -132,11 +132,11 @@ class Redis
     function flush($obj="all")
     {
         if($obj == "db" or $obj == 1){
-            $_receipt = $this->Connect->flushDB();
+            $receipt = $this->Connect->flushDB();
         }else{
-            $_receipt = $this->Connect->flushAll();
+            $receipt = $this->Connect->flushAll();
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**

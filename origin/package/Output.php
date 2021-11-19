@@ -15,9 +15,9 @@ class Output
      * @param array $array 数据
      * @return void
     */
-    static function json($array)
+    static function json(array $array)
     {
-        if(is_array($array)) $array = json_encode($array);
+        $array = json_encode($array);
         header("Content-Type:application/json;charset=utf-8");
         echo($array);
     }
@@ -31,24 +31,22 @@ class Output
      * @param array $setting 模板显示内容设置
      * @return void
     */
-    static function output($time=5,$message=null,$url="#",$setting=array())
+    static function output(int $time=5, string $message=null, string $url="#", array $setting=[])
     {
-        $_time = htmlspecialchars(trim($time));
-        $_message =  htmlspecialchars(trim($message));
-        $_url = htmlspecialchars(trim($url));
-        $_setting = $setting;
-        if(strtolower($setting["title"]) == "success"){
-            $_model = replace(ROOT_RESOURCE."/public/template/200.html");
-        }elseif(strtolower($setting["title"]) == "error"){
-            $_model = replace(ROOT_RESOURCE."/public/template/400.html");
-        }
-        if(!isset($_model) or !is_file($_model))
-            $_model = replace(ORIGIN.'template/201.html');
-        include("{$_model}");
-        if($_time) unset($_time);
-        if($_message) unset($_message);
-        if($_url) unset($_url);
-        if($_setting) unset($_setting);
+        $time = htmlspecialchars(trim($time));
+        $message =  htmlspecialchars(trim($message));
+        $url = htmlspecialchars(trim($url));
+        if(strtolower($setting["title"]) == "success")
+            $model = replace(ROOT_RESOURCE."/public/template/200.html");
+        elseif(strtolower($setting["title"]) == "error")
+            $model = replace(ROOT_RESOURCE."/public/template/400.html");
+        if(!isset($model) or !is_file($model))
+            $model = replace(ORIGIN.'template/201.html');
+        include("$model");
+        if($time) unset($time);
+        if($message) unset($message);
+        if($url) unset($url);
+        if($setting) unset($setting);
         exit(0);
     }
 }

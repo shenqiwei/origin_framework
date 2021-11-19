@@ -41,8 +41,8 @@ class Session
     */
     function edit($option,$key=null)
     {
-        $_receipt = null;
-        if($option == self::SESSION_ID) $_receipt = session_id();
+        $receipt = null;
+        if($option == self::SESSION_ID) $receipt = session_id();
         if($option == self::SESSION_CLOSE) session_unset();
         if($option == self::SESSION_CLEAR) session_destroy();
         if($option == self::SESSION_RELOAD) session_regenerate_id(false);
@@ -52,7 +52,7 @@ class Session
         if($option == self::SESSION_ENC) session_encode();
         if($option == self::SESSION_DEC)
             if(isset($_SESSION[$key])) session_decode($key);
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -79,14 +79,14 @@ class Session
                     exit();
                 }
             }else{
-                $_array_key = array_keys($key);
+                $array_key = array_keys($key);
                 # 符合维度要求
                 if(count($key) == 3){
                     # 当值参数不等于null时，则修改当前session会话内容，并对内容进行转码
-                    $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]][$key[$_array_key[2]]] = stripslashes($value);
+                    $_SESSION[$key[$array_key[0]]][$key[$array_key[1]]][$key[$array_key[2]]] = stripslashes($value);
                 }elseif(count($key) == 2){
                     # 当值参数不等于null时，则修改当前session会话内容，并对内容进行转码
-                    $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]] = stripslashes($value);
+                    $_SESSION[$key[$array_key[0]]][$key[$array_key[1]]] = stripslashes($value);
                 }else{
                     # 当值参数不等于null时，则修改当前session会话内容，并对内容进行转码
                     $_SESSION[$key[0]] = stripslashes($value);
@@ -106,7 +106,7 @@ class Session
     */
     function get($key)
     {
-        $_receipt = null;
+        $receipt = null;
         # 判断session传入参数是否有名称分割符号
         if(strpos($key, '.'))
             $key = array_filter(explode('.', $key));
@@ -122,27 +122,27 @@ class Session
                     exit();
                 }
             }else{
-                $_array_key = array_keys($key);
+                $array_key = array_keys($key);
                 # 符合维度要求
                 if(count($key) == 3){
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
                     if(isset($_SESSION[$key[0]][$key[1]][$key[2]]))
-                        $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]][$key[$_array_key[2]]];
+                        $receipt = $_SESSION[$key[$array_key[0]]][$key[$array_key[1]]][$key[$array_key[2]]];
                 }elseif(count($key) == 2){
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
-                    if(isset($_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]]))
-                        $_receipt = $_SESSION[$key[$_array_key[0]]][$key[$_array_key[1]]];
+                    if(isset($_SESSION[$key[$array_key[0]]][$key[$array_key[1]]]))
+                        $receipt = $_SESSION[$key[$array_key[0]]][$key[$array_key[1]]];
                 }else{
                     # 当参数值为空时，判断session会话是否存在，如果存在将session值内容赋入返回值中，反之返回null
-                    if(isset($_SESSION[$key[$_array_key[0]]]))
-                        $_receipt = $_SESSION[$key[$_array_key[0]]];
+                    if(isset($_SESSION[$key[$array_key[0]]]))
+                        $receipt = $_SESSION[$key[$array_key[0]]];
                 }
             }
         }else{
             if(isset($_SESSION[$key]))
-                $_receipt = $_SESSION[$key];
+                $receipt = $_SESSION[$key];
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**

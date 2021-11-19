@@ -37,9 +37,9 @@ class Mongodb
 
     /**
      * @access protected
-     * @var object $_Object 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
+     * @var object $Object 数据库对象，有外部实例化之后，装在进入对象内部，进行再操作
      */
-    protected $_Object = null;
+    protected $Object;
 
     /**
      * @access protected
@@ -59,40 +59,40 @@ class Mongodb
      * @param string|null $connect_name 配置源名称
      * @return void
      */
-    function __construct($connect_name=null)
+    function __construct(?string $connect_name=null)
     {
-        $_connect_config = config('DATA_MATRIX_CONFIG');
-        if(is_array($_connect_config)) {
-            for ($_i = 0; $_i < count($_connect_config); $_i++) {
+        $connect_config = config('DATA_MATRIX_CONFIG');
+        if(is_array($connect_config)) {
+            for ($i = 0; $i < count($connect_config); $i++) {
                 # 判断数据库对象
-                if (key_exists("DATA_TYPE", $_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "mongodb"
-                    and key_exists("DATA_NAME", $_connect_config[$_i]) and $_connect_config[$_i]['DATA_NAME'] === $connect_name) {
-                    $_connect_conf = $_connect_config[$_i];
+                if (key_exists("DATA_TYPE", $connect_config[$i]) and strtolower(trim($connect_config[$i]["DATA_TYPE"])) === "mongodb"
+                    and key_exists("DATA_NAME", $connect_config[$i]) and $connect_config[$i]['DATA_NAME'] === $connect_name) {
+                    $connect_conf = $connect_config[$i];
                     break;
                 }
             }
-            if(!isset($_connect_conf)) {
-                for ($_i = 0; $_i < count($_connect_config); $_i++) {
+            if(!isset($connect_conf)) {
+                for ($i = 0; $i < count($connect_config); $i++) {
                     # 判断数据库对象
-                    if (key_exists("DATA_TYPE", $_connect_config[$_i]) and strtolower(trim($_connect_config[$_i]["DATA_TYPE"])) === "mongodb") {
-                        $_connect_config = $_connect_config[$_i];
+                    if (key_exists("DATA_TYPE", $connect_config[$i]) and strtolower(trim($connect_config[$i]["DATA_TYPE"])) === "mongodb") {
+                        $connect_config = $connect_config[$i];
                         break;
                     }
                 }
             }else
-                $_connect_config = $_connect_conf;
+                $connect_config = $connect_conf;
             # 创建数据库链接地址，端口，应用数据库信息变量
-            $_mongo_host = $_connect_config['DATA_HOST'];
-            $_mongo_port = intval($_connect_config['DATA_PORT']) ? intval($_connect_config["DATA_PORT"]) : 27017;
-            if (!empty($_connect_config['DATA_USER']) and !is_null($_connect_config['DATA_USER']))
-                $_mongo_user = trim($_connect_config['DATA_USER']);
-            if (!empty($_connect_config['DATA_PWD']) and !is_null($_connect_config['DATA_PWD']))
-                $_mongo_pwd = trim($_connect_config['DATA_PWD']);
-            $_mongo_user_pwd = null;
-            if (isset($_mongo_user) and isset($_mongo_pwd))
-                $_mongo_user_pwd = $_mongo_user . ":" . $_mongo_pwd . "@";
-            $this->Connect = new Manager("mongodb://" . $_mongo_user_pwd . $_mongo_host . ":" . $_mongo_port);
-            $this->DB = $_connect_config['DATA_DB'];
+            $mongo_host = $connect_config['DATA_HOST'];
+            $mongo_port = intval($connect_config['DATA_PORT']) ? intval($connect_config["DATA_PORT"]) : 27017;
+            if (!empty($connect_config['DATA_USER']))
+                $mongo_user = trim($connect_config['DATA_USER']);
+            if (!empty($connect_config['DATA_PWD']))
+                $mongo_pwd = trim($connect_config['DATA_PWD']);
+            $mongo_user_pwd = null;
+            if (isset($mongo_user) and isset($mongo_pwd))
+                $mongo_user_pwd = $mongo_user . ":" . $mongo_pwd . "@";
+            $this->Connect = new Manager("mongodb://" . $mongo_user_pwd . $mongo_host . ":" . $mongo_port);
+            $this->DB = $connect_config['DATA_DB'];
         }
     }
 
@@ -101,9 +101,9 @@ class Mongodb
      * @access public
      * @param object $object 数据库链接对象
      */
-    function __setSQL($object)
+    function __setSQL(object $object)
     {
-        $this->_Object = $object;
+        $this->Object = $object;
     }
 
     /**
@@ -111,16 +111,16 @@ class Mongodb
      * @access public
      * @return object 返回链接对象
      */
-    protected function __getSQL()
+    protected function __getSQL(): object
     {
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var string $_Set 集合名称
+     * @var string $Set 集合名称
      */
-    protected $_Set = null;
+    protected $Set = null;
 
     /**
      * 集合（表）别名语法
@@ -128,7 +128,7 @@ class Mongodb
      * @param string $table 表信息
      * @return object 返回链接对象
     */
-    function table($table)
+    function table(string $table)
     {
         return $this->set($table);
     }
@@ -139,12 +139,12 @@ class Mongodb
      * @param string $set
      * @return object 返回链接对象
      */
-    function set($set)
+    function set(string $set): object
     {
-        $this->_Set = null;
+        $this->Set = null;
         # 根据SQL数据库命名规则判断数据表名是否符合规则要求，如果符合装在进SQL模块Table变量中
         if(is_true($this->CommaConfine, $set)){
-            $this->_Set = strtolower($set);
+            $this->Set = strtolower($set);
         }else{
             try{
                 throw new Exception('Set(table) name is not in conformity with the naming conventions');
@@ -153,14 +153,14 @@ class Mongodb
                 exit();
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var array $_Data 数据数组变量
+     * @var array $Data 数据数组变量
      */
-    protected $_Data = null;
+    protected $Data = null;
 
     /**
      * 数据数组方法
@@ -168,20 +168,20 @@ class Mongodb
      * @param array $data 数据数组
      * @return object 返回链接对象
      */
-    function data($data)
+    function data(array $data): object
     {
-        $this->_Data = null;
+        $this->Data = null;
         /**
          * 验证传入值结构，符合数组要求时，进行内容验证
-         * @var string $_key
-         * @var mixed $_value
+         * @var string $key
+         * @var mixed $value
          */
         # 判断传入值是否为数组
-        if(is_array($data)){
+        if($data){
             # 遍历数组，并对数组key值进行验证，如果不符合命名规则，抛出异常信息
-            foreach($data as $_key => $_value){
-                if(is_true($this->NameConfine, $_key)){
-                    $this->_Data[$_key] = $_value;
+            foreach($data as $key => $value){
+                if(is_true($this->NameConfine, $key)){
+                    $this->Data[$key] = $value;
                 }else{
                     # 异常处理：字段名不符合SQL命名规则
                     try{
@@ -201,14 +201,14 @@ class Mongodb
                 exit();
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var array $_Where 条件数组约束变量
+     * @var array $Where 条件数组约束变量
      */
-    protected $_Where = null;
+    protected $Where = null;
 
     /**
      * 条件约束方法
@@ -218,42 +218,42 @@ class Mongodb
      * @param string $symbol 运算符号
      * @return object 返回链接对象
      */
-    function where($field,$value=null,$symbol="eq")
+    function where($field, $value=null, string $symbol="eq"): object
     {
         if(is_array($field)){
-            $this->_Where = $field;
+            $this->Where = $field;
         }else{
             if(is_true($this->NameConfine, $field)){
                 switch(strtolower(trim($symbol))){
                     case "lt":
-                        $this->_Where = array($field=>array("\$lt"=>$value));
+                        $this->Where = array($field=>array("\$lt"=>$value));
                         break;
                     case "gt":
-                        $this->_Where = array($field=>array("\$gt"=>$value));
+                        $this->Where = array($field=>array("\$gt"=>$value));
                         break;
                     case "lte":
-                        $this->_Where = array($field=>array("\$lte"=>$value));
+                        $this->Where = array($field=>array("\$lte"=>$value));
                         break;
                     case "gte":
-                        $this->_Where = array($field=>array("\$gte"=>$value));
+                        $this->Where = array($field=>array("\$gte"=>$value));
                         break;
                     case "in":
-                        $this->_Where = array($field=>array("\$in"=>$value));
+                        $this->Where = array($field=>array("\$in"=>$value));
                         break;
                     case "nin":
-                        $this->_Where = array($field=>array("\$nin"=>$value));
+                        $this->Where = array($field=>array("\$nin"=>$value));
                         break;
                     case "like":
-                        $this->_Where = array($field=>array("\$regex"=>"{$value}"));
+                        $this->Where = array($field=>array("\$regex"=>"^$value^"));
                         break;
                     case "slike":
-                        $this->_Where = array($field=>array("\$regex"=>"^{$value}"));
+                        $this->Where = array($field=>array("\$regex"=>"^$value"));
                         break;
                     case "elike":
-                        $this->_Where = array($field=>array("\$regex"=>"{$value}^"));
+                        $this->Where = array($field=>array("\$regex"=>"$value^"));
                         break;
                     default:
-                        $this->_Where = array($field=>array("\$eq"=>$value));
+                        $this->Where = array($field=>array("\$eq"=>$value));
                 }
             }else{
                 # 异常处理：字段名不符合SQL命名规则
@@ -265,14 +265,14 @@ class Mongodb
                 }
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var array $_Projection 映射数组约束变量
+     * @var array $Projection 映射数组约束变量
      */
-    protected $_Projection = null;
+    protected $Projection = null;
 
     /**
      * 映射约束方法
@@ -280,10 +280,10 @@ class Mongodb
      * @param array $projection 投射参数
      * @return object 返回链接对象
      */
-    function projection($projection)
+    function projection(array $projection): object
     {
-        if(is_array($projection)){
-            $this->_Projection = $projection;
+        if($projection){
+            $this->Projection = $projection;
         }else{
             # 异常处理：条件内容格式不对
             try{
@@ -293,13 +293,13 @@ class Mongodb
                 exit();
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
-     * @var array $_Sort 排序数组约束变量
+     * @var array $Sort 排序数组约束变量
      */
-    protected $_Sort = null;
+    protected $Sort = null;
 
     /**
      * 排序别名语法
@@ -308,7 +308,7 @@ class Mongodb
      * @param string $type 排序方式
      * @return object 返回链接对象
      */
-    function order($field,$type)
+    function order(string $field, string $type): object
     {
         return $this->sort($field,$type);
     }
@@ -320,46 +320,46 @@ class Mongodb
      * @param string $type 排序方式
      * @return object 返回链接对象
      */
-    function sort($field,$type="asc")
+    function sort(string $field, string $type="asc"): object
     {
-        $this->_Sort = null;
+        $this->Sort = null;
         # 使用字符串作为唯一数据类型，通过对参数进行验证，判断参数数据结构，创建排序参数变量
-        $_regular_order_confine = '/^(asc|desc)$/';
+        $regular_order_confine = '/^(asc|desc)$/';
         # 判断排序信息
         if(is_array($field)){
-            $_i = 0;
-            foreach($field as $_key => $_type){
-                if(is_true($this->NameConfine, $field)){
-                    if(is_true($_regular_order_confine, $type)){
+            $i = 0;
+            foreach($field as $key => $type){
+                if(is_true($this->NameConfine, $key)){
+                    if(is_true($regular_order_confine, $type)){
                         if($type == "asc")
-                            $_type = 1;
+                            $type = 1;
                         else
-                            $_type = -1;
+                            $type = -1;
                     }else
-                        $_type = 1;
-                    $this->_Sort[$_key] = $_type;
-                    $_i++;
+                        $type = 1;
+                    $this->Sort[$key] = $type;
+                    $i++;
                 }
             }
         }else{
             if(is_true($this->NameConfine, $field)){
-                if(is_true($_regular_order_confine, $type)){
+                if(is_true($regular_order_confine, $type)){
                     if($type == "asc")
-                        $_type = 1;
+                        $type = 1;
                     else
-                        $_type = -1;
-                    $this->_Sort[$field] = $_type;
+                        $type = -1;
+                    $this->Sort[$field] = $type;
                 }
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var array $_Limit 显示数量数组约束变量
+     * @var array $Limit 显示数量数组约束变量
      */
-    protected $_Limit = null;
+    protected $Limit = null;
 
     /**
      * 显示数量方法
@@ -368,24 +368,24 @@ class Mongodb
      * @param int $length 显示数量
      * @return object 返回链接对象
      */
-    function limit($start, $length=0)
+    function limit(int $start, int $length=0): object
     {
-        if(is_int($start) and $start >= 0){
+        if($start >= 0){
             if(is_int($length) and $length > 0){
-                $this->_Skip = $start;
-                $this->_Limit = $length;
+                $this->Skip = $start;
+                $this->Limit = $length;
             }else{
-                $this->_Limit = $start;
+                $this->Limit = $start;
             }
         }
-        return $this->_Object;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var array $_Skip 跳出数量数组约束变量
+     * @var array $Skip 跳出数量数组约束变量
      */
-    protected $_Skip = null;
+    protected $Skip = null;
 
     /**
      * 跳过数量方法
@@ -393,17 +393,17 @@ class Mongodb
      * @param array $skip
      * @return object 返回链接对象
      */
-    function skip($skip)
+    function skip(array $skip): object
     {
-        $this->_Skip = intval($skip);
-        return $this->_Object;
+        $this->Skip = intval($skip);
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var boolean $_Multi 执行符合要求更新
+     * @var boolean $Multi 执行符合要求更新
      */
-    protected $_Multi = false;
+    protected $Multi = false;
 
     /**
      * 执行同步更新设置函数
@@ -411,19 +411,17 @@ class Mongodb
      * @param boolean $set
      * @return object 返回链接对象
      */
-    function multi($set=false)
+    function multi(bool $set): object
     {
-        if(is_bool($set)){
-            $this->_Multi = $set;
-        }
-        return $this->_Object;
+        $this->Multi = $set;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var boolean $_Upset 执行无效对象新建
+     * @var boolean $Upset 执行无效对象新建
      */
-    protected $_Upsert = false;
+    protected $Upsert = false;
 
     /**
      * 执行无效对象新建设置函数
@@ -431,19 +429,17 @@ class Mongodb
      * @param boolean $set
      * @return object 返回链接对象
      */
-    function upsert($set=false)
+    function upsert(bool $set): object
     {
-        if(is_bool($set)){
-            $this->_Upsert = $set;
-        }
-        return $this->_Object;
+        $this->Upsert = $set;
+        return $this->Object;
     }
 
     /**
      * @access protected
-     * @var boolean $_ReadPreference 执行读写分离
+     * @var boolean $ReadPreference 执行读写分离
      */
-    protected  $_ReadPreference = false;
+    protected  $ReadPreference = false;
 
     /**
      * 执行读取分离设置函数
@@ -451,12 +447,10 @@ class Mongodb
      * @param boolean $set
      * @return object 返回链接对象
      */
-    function readPreference($set=false)
+    function readPreference(bool $set): object
     {
-        if(is_bool($set)){
-            $this->_ReadPreference = $set;
-        }
-        return $this->_Object;
+        $this->ReadPreference = $set;
+        return $this->Object;
     }
 
     /**
@@ -465,23 +459,23 @@ class Mongodb
      * @throws
      * @return int
      */
-    function count()
+    function count(): int
     {
         try{
-            if(is_null($this->_Where) or !is_array($this->_Where))
-                $_where = array();
+            if(is_null($this->Where) or !is_array($this->Where))
+                $where = array();
             else
-                $_where = $this->_Where;
-            $_option = array();
-            if(is_array($this->_Skip))
-                $_option["skip"] = $this->_Skip;
+                $where = $this->Where;
+            $option = array();
+            if(is_array($this->Skip))
+                $option["skip"] = $this->Skip;
             # 调用执行语句驱动类
-            $_query = new Query($_where,$_option);
+            $query = new Query($where,$option);
             # 调用Mongo命令函数count运算标明对象集合
-            $_command = new Command(array("count"=>$this->_Set,"query"=>$_query));
+            $command = new Command(array("count"=>$this->Set,"query"=>$query));
             # 执行select操作并赋值到返回值变量中
-            $_cursor = $this->Connect->executeCommand($this->DB,$_command);
-            $_receipt = $_cursor->toArray()[0]->n;
+            $cursor = $this->Connect->executeCommand($this->DB,$command);
+            $receipt = $cursor->toArray()[0]->n;
         }catch(ConnectionTimeoutException | ConnectionException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
@@ -489,7 +483,7 @@ class Mongodb
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -498,44 +492,44 @@ class Mongodb
      * @throws
      * @return array
      */
-    function select()
+    function select(): ?array
     {
-        $_receipt = null;
+        $receipt = null;
         try{
-            if(is_null($this->_Where) or !is_array($this->_Where))
-                $_where = array();
+            if(is_null($this->Where) or !is_array($this->Where))
+                $where = array();
             else
-                $_where = $this->_Where;
-            $_option = array();
-            if(is_array($this->_Projection))
-                $_option["projection"] = $this->_Projection;
-            if(is_array($this->_Sort))
-                $_option["sort"] = $this->_Sort;
-            if(is_array($this->_Limit))
-                $_option["limit"] = $this->_Limit;
-            if(is_array($this->_Skip))
-                $_option["skip"] = $this->_Skip;
+                $where = $this->Where;
+            $option = array();
+            if(is_array($this->Projection))
+                $option["projection"] = $this->Projection;
+            if(is_array($this->Sort))
+                $option["sort"] = $this->Sort;
+            if(is_array($this->Limit))
+                $option["limit"] = $this->Limit;
+            if(is_array($this->Skip))
+                $option["skip"] = $this->Skip;
             # 调用执行语句驱动类
-            $_query = new Query($_where,$_option);
+            $query = new Query($where,$option);
             # 读写分离设置
-            $_readPreference = null;
-            if($this->_ReadPreference)
-                $_readPreference = new ReadPreference(ReadPreference::RP_PRIMARY);
+            $readPreference = null;
+            if($this->ReadPreference)
+                $readPreference = new ReadPreference(ReadPreference::RP_PRIMARY);
             # 执行select操作并赋值到返回值变量中
-            $_cursor = $this->Connect->executeQuery($this->DB.".".$this->_Set,$_query,$_readPreference);
+            $cursor = $this->Connect->executeQuery($this->DB.".".$this->Set,$query,$readPreference);
             # 执行列表转化
-            foreach($_cursor as $_document)
+            foreach($cursor as $document)
             {
                 # 转化主返回参数变量
-                if(!is_array($_receipt)) $_receipt = array();
+                if(!is_array($receipt)) $receipt = array();
                 # 传入内容值
-                array_push($_receipt,(array)$_document);
+                array_push($receipt,(array)$document);
             }
         }catch(ConnectionTimeoutException | ConnectionException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -543,28 +537,28 @@ class Mongodb
      * @access public
      * @return int
      */
-    function insert()
+    function insert(): int
     {
         try{
             # 调用映射id生成类
-            $this->_Data["_id"] = new ObjectId();
+            $this->Data["_id"] = new ObjectId();
             # 自定义唯一识别标记
-            $this->_Data["_origin_id"] = strval($this->_Data["_id"]);
+            $this->Data["_origin_id"] = strval($this->Data["_id"]);
             # 调用数据写入驱动类
-            $_insert = new BulkWrite();
+            $insert = new BulkWrite();
             # 执行写入操作
-            $_insert->insert($this->_Data);
+            $insert->insert($this->Data);
             # 调用写入关系类，并设置超时时间
-            $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
+            $write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_insert,$_write);
+            $result = $this->Connect->executeBulkWrite($this->DB.".".$this->Set,$insert,$write);
             # 返回执行参数
-            $_receipt = $_result->getInsertedCount();
+            $receipt = $result->getInsertedCount();
         }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -572,23 +566,23 @@ class Mongodb
      * @access public
      * @return int
      */
-    function update()
+    function update(): int
     {
         try{
-            $_update = new BulkWrite();
+            $update = new BulkWrite();
             # 执行更新操作
-            $_update->update($this->_Where,array('$set'=>$this->_Data),array("multi"=>$this->_Multi,"upsert"=>$this->_Upsert));
+            $update->update($this->Where,array('$set'=>$this->Data),array("multi"=>$this->Multi,"upsert"=>$this->Upsert));
             # 调用写入关系类，并设置超时时间
-            $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
+            $write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
+            $result = $this->Connect->executeBulkWrite($this->DB.".".$this->Set,$update,$write);
             # 返回执行参数
-            $_receipt = $_result->getModifiedCount();
+            $receipt = $result->getModifiedCount();
         }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -596,22 +590,22 @@ class Mongodb
      * @access public
      * @return int
      */
-    function delete()
+    function delete(): int
     {
         try{
-            $_update = new BulkWrite();
+            $update = new BulkWrite();
             # 执行删除操作
-            $_update->delete($this->_Where,$this->_Limit);
+            $update->delete($this->Where,$this->Limit);
             # 调用写入关系类，并设置超时时间
-            $_write = new WriteConcern(WriteConcern::MAJORITY,1000);
+            $write = new WriteConcern(WriteConcern::MAJORITY,1000);
             # 执行数据写入
-            $_result = $this->Connect->executeBulkWrite($this->DB.".".$this->_Set,$_update,$_write);
+            $result = $this->Connect->executeBulkWrite($this->DB.".".$this->Set,$update,$write);
             # 返回执行参数
-            $_receipt = $_result->getDeletedCount();
+            $receipt = $result->getDeletedCount();
         }catch (BulkWriteException | WriteConcernException | Exception $e){
             exception("Mongo Error",$e->getMessage(),debug_backtrace(0,1));
             exit();
         }
-        return $_receipt;
+        return $receipt;
     }
 }

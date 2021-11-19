@@ -20,16 +20,16 @@
     <div class="content">
         <table class="table">
             <tr>
-                <td class="table_context">File : <?php echo($_error_msg["file"]);?></td>
+                <td class="table_context">File : <?php echo($error["file"]);?></td>
             </tr>
             <tr>
-                <td class="table_context">Line : <?php echo($_error_msg["line"]);?></td>
+                <td class="table_context">Line : <?php echo($error["line"]);?></td>
             </tr>
             <tr>
-                <td class="table_context">Use : <?php echo($_error_msg["class"]);?>::<?php echo($_error_msg["function"]);?>()</td>
+                <td class="table_context">Use : <?php echo($error["class"]);?>::<?php echo($error["function"]);?>()</td>
             </tr>
             <tr>
-                <td class="table_context">Error : <?php echo($_error_msg["msg"]);?></td>
+                <td class="table_context">Error : <?php echo($error["msg"]);?></td>
             </tr>
         </table>
     </div>

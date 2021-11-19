@@ -35,7 +35,7 @@ class Upload
 
     /**
      * @access private
-     * @var string $_Error 错误信息
+     * @var string $Error 错误信息
      */
     private $Error;
 
@@ -88,84 +88,84 @@ class Upload
      */
     function update()
     {
-        $_receipt = false;
+        $receipt = false;
         # 存储目录
-        $_dir = date("Ymd",time());
+        $dir = date("Ymd",time());
         # 验证存储主目录是否有效
         if(!isset($this->Store) or is_null($this->Store))
-            $this->Store = replace("resource/upload/".$_dir);
+            $this->Store = replace("resource/upload/".$dir);
         else
-            $this->Store .= $_dir;
+            $this->Store .= $dir;
         if(!is_dir(replace(ROOT.DS.$this->Store))){
-            $_file = new Folder();
-            $_file->create(str_replace(DS,"/",$this->Store),true);
+            $file = new Folder();
+            $file->create(str_replace(DS, "/", $this->Store), true);
         }
         if(!$this->Input)
             $this->Error = "Upload file input is invalid";
         else{
-            $_file = $_FILES[$this->Input];
-            if(is_array($_file["name"])){
-                $_folder = array();
-                for($_i = 0;$_i < count($_file["name"]);$_i++){
-                    if(key_exists($_file["type"][$_i],$this->TypeArray))
-                        $_suffix = $this->TypeArray[$_file["type"][$_i]];
-                    if(!isset($_suffix)){
-                        $_suffix = explode(".",$_file["name"][$_i])[1];
+            $file = $_FILES[$this->Input];
+            if(is_array($file["name"])){
+                $folder = array();
+                for($i = 0;$i < count($file["name"]);$i++){
+                    if(key_exists($file["type"][$i],$this->TypeArray))
+                        $suffix = $this->TypeArray[$file["type"][$i]];
+                    if(!isset($suffix)){
+                        $suffix = explode(".",$file["name"][$i])[1];
                     }
-                    if(isset($_suffix)){
+                    if(isset($suffix)){
                         if(!empty($this->Type)){
-                            if(!in_array($_suffix,$this->Type))
+                            if(!in_array($suffix,$this->Type))
                                 $this->Error = "Files type is invalid";
                         }
                     }else{
                         $this->Error = "Files type is invalid";
                     }
                     if(is_null($this->Error)){
-                        if($this->Size and $_file["size"][$_i] > $this->Size)
+                        if($this->Size and $file["size"][$i] > $this->Size)
                             $this->Error = "Files size greater than defined value";
                     }
                     if(is_null($this->Error)){
-                        $_upload_file = sha1($_file["tmp_name"][$_i]).time().".".$_suffix;
-                        if(move_uploaded_file($_file['tmp_name'][$_i],
-                            replace(ROOT.DS.$this->Store).DS.$_upload_file)){
-                            array_push($_folder,$_dir."/".$_upload_file);
+                        $upload_file = sha1($file["tmp_name"][$i]).time().".".$suffix;
+                        if(move_uploaded_file($file['tmp_name'][$i],
+                            replace(ROOT.DS.$this->Store).DS.$upload_file)){
+                            array_push($folder,$dir."/".$upload_file);
                         }else{
                             $this->Error = "Files upload failed";
                             break;
                         }
                     }
                 }
-                $_receipt = $_folder;
+                $receipt = $folder;
             }else{
-                if(key_exists($_file["type"],$this->TypeArray))
-                    $_suffix = $this->TypeArray[$_file["type"]];
-                if(!isset($_suffix)){
-                    $_suffix = explode(".",$_file["name"])[1];
+                if(key_exists($file["type"],$this->TypeArray))
+                    $suffix = $this->TypeArray[$file["type"]];
+                if(!isset($suffix)){
+                    $suffix = explode(".",$file["name"])[1];
                 }
-                if(isset($_suffix)){
+                if(isset($suffix)){
                     if(!is_null($this->Type)){
-                        if(!in_array($_suffix,$this->Type))
+                        if(!in_array($suffix,$this->Type))
                             $this->Error = "Files type is invalid";
                     }
                 }else{
                     $this->Error = "Files type is invalid";
                 }
                 if(is_null($this->Error)){
-                    if($this->Size and $_file["size"] > $this->Size)
+                    if($this->Size and $file["size"] > $this->Size)
                         $this->Error = "Files size greater than defined value";
                 }
                 if(is_null($this->Error)){
-                    $_upload_file = sha1($_file["tmp_name"]).time().".".$_suffix;
-                    if(move_uploaded_file($_file['tmp_name'],
-                        replace(ROOT.DS.$this->Store).DS.$_upload_file)){
-                        $_receipt = $_dir."/".$_upload_file;
+                    $upload_file = sha1($file["tmp_name"]).time().".".$suffix;
+                    if(move_uploaded_file($file['tmp_name'],
+                        replace(ROOT.DS.$this->Store).DS.$upload_file)){
+                        $receipt = $dir."/".$upload_file;
                     }else{
                         $this->Error = "Files upload failed";
                     }
                 }
             }
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**

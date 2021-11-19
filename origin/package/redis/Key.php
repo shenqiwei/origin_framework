@@ -34,12 +34,10 @@ class Key
      */
     function del($key)
     {
-        if($this->Connect->exists($key)){
-            $_receipt = $this->Connect->del($key);
-        }else{
-            $_receipt = false;
-        }
-        return $_receipt;
+        if($this->Connect->exists($key))
+            return $this->Connect->del($key);
+        else
+            return false;
     }
 
     /**
@@ -51,13 +49,12 @@ class Key
     function dump($key)
     {
         if($this->Connect->exists($key)){
-            $_receipt = $this->Connect->dump($key);
-            if($_receipt === "nil")
-                $_receipt = null;
-        }else{
-            $_receipt = null;
-        }
-        return $_receipt;
+            $receipt = $this->Connect->dump($key);
+            if($receipt === "nil")
+                $receipt = null;
+        }else
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -149,10 +146,10 @@ class Key
      */
     function keys($closeKey)
     {
-        $_receipt = $this->Connect->keys($closeKey);
-        if($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->keys($closeKey);
+        if($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -162,10 +159,10 @@ class Key
      */
     function randKey()
     {
-        $_receipt = $this->Connect->randomKey();
-        if($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->randomKey();
+        if($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -177,12 +174,10 @@ class Key
      */
     function rnKey($key,$newKey)
     {
-        if($this->Connect->exists($key)){
-            $_receipt = $this->Connect->rename($key, $newKey);
-        }else{
-            $_receipt = false;
-        }
-        return $_receipt;
+        if($this->Connect->exists($key))
+            return $this->Connect->rename($key, $newKey);
+        else
+            return false;
     }
 
     /**

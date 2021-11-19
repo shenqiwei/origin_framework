@@ -35,10 +35,10 @@ class Lists
      */
     function removeFirst($keys,$time)
     {
-        $_receipt = $this->Connect->blPop($keys,$time);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->blPop($keys,$time);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -50,10 +50,10 @@ class Lists
      */
     function removeLast($keys,$time)
     {
-        $_receipt = $this->Connect->brPop($keys,$time);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->brPop($keys,$time);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -66,10 +66,10 @@ class Lists
      */
     function reIn($key,$write,$time)
     {
-        $_receipt = $this->Connect->brpoplpush($key,$write,$time);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->brpoplpush($key,$write,$time);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -81,10 +81,10 @@ class Lists
      */
     function index($key,$index)
     {
-        $_receipt = $this->Connect->lIndex($key,$index);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->lIndex($key,$index);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -98,12 +98,11 @@ class Lists
      */
     function insert($key,$value,$write,$be="after")
     {
-        if($be === "before"){
-            $_location = 0;
-        }else{
-            $_location = 1;
-        }
-        return $this->Connect->lInsert($key,$_location,$value,$write);
+        if($be === "before")
+            $location = 0;
+        else
+            $location = 1;
+        return $this->Connect->lInsert($key,$location,$value,$write);
     }
 
     /**
@@ -125,10 +124,10 @@ class Lists
      */
     function popFirst($key)
     {
-        $_receipt = $this->Connect->lPop($key);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->lPop($key);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -139,10 +138,10 @@ class Lists
      */
     function popLast($key)
     {
-        $_receipt = $this->Connect->rPop($key);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->rPop($key);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -154,10 +153,10 @@ class Lists
      */
     function popWrite($key,$write)
     {
-        $_receipt = $this->Connect->rpoplpush($key,$write);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->rpoplpush($key,$write);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**

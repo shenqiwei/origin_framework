@@ -6,16 +6,16 @@
  * @return bool
  * @context 框架初始化函数
  */
-function initialize()
+function initialize(): bool
 {
-    $_log = LOG_INITIALIZE.'initialize.log';
+    $log = LOG_INITIALIZE.'initialize.log';
     # 判断日志文件
-    if(!is_file(replace(ROOT.DS.$_log))){
-        $_date = date("Y-m-d");
+    if(!is_file(replace(ROOT.DS.$log))){
+        $date = date("Y-m-d");
         # 调用日志
-       _log($_log,"Origin framework initialization on {$_date} ".PHP_EOL);
+       _log($log,"Origin framework initialization on $date".PHP_EOL);
         # 创建初始化列表
-        $_ini = array(
+        $ini = array(
             "catalog" => array( # 根目录
                 ROOT."/application", # 应用目录
                 ROOT."/application/common", # 应用公共函数目录
@@ -51,48 +51,48 @@ function initialize()
                 ),
             )
         );
-       _log($_log,"Origin initialize ...".PHP_EOL);
+       _log($log,"Origin initialize ...".PHP_EOL);
         # 遍历配置数组
-        foreach($_ini as $_key => $_array){
+        foreach($ini as $key => $array){
             # 配置信息为主目录
-            if(strtolower($_key) == "catalog"){
+            if(strtolower($key) == "catalog"){
                 # 遍历数组内容
-                for($_i = 0;$_i < count($_array);$_i++){
-                    $_datetime = date("Y-m-d H:i:s",time());
+                for($i = 0;$i < count($array);$i++){
+                    $datetime = date("Y-m-d H:i:s",time());
                     # 判断文件目录是否创建
-                    if(is_dir($_array[$_i])){
-                       _log($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...".PHP_EOL);
+                    if(is_dir($array[$i])){
+                       _log($log,"[$datetime] directory：$array[$i], created...".PHP_EOL);
                     }else{
                         # 创建目录
-                        if(mkdir(replace($_array[$_i]),0777)){
-                           _log($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[complete]".PHP_EOL);
+                        if(mkdir(replace($array[$i]))){
+                           _log($log,"[$datetime] directory：$array[$i], created...[complete]".PHP_EOL);
                         }else{
-                           _log($_log,"[{$_datetime}] directory：{$_array[$_i]}, created...[failed]".PHP_EOL);
+                           _log($log,"[$datetime] directory：$array[$i], created...[failed]".PHP_EOL);
                         }
                     }
                 }
-            }elseif(strtolower($_key) == "folder"){
+            }elseif(strtolower($key) == "folder"){
                 # 遍历二级配置目录
-                foreach($_array as $_directory => $_dir){
+                foreach($array as $directory => $dir){
                     # 遍历数组内容
-                    for($_i = 0;$_i < count($_dir); $_i++) {
+                    for($i = 0;$i < count($dir); $i++) {
                         # 写入日志
-                        $_datetime = date("Y-m-d H:i:s",time());
+                        $datetime = date("Y-m-d H:i:s",time());
                         # 判断文件目录是否创建
-                        if(is_file($_directory.replace("/{$_dir[$_i]}"))){
-                           _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, created...".PHP_EOL);
+                        if(is_file($directory.replace("/$dir[$i]"))){
+                           _log($log,"[$datetime] file：$dir[$i], created...".PHP_EOL);
                         }else{
                             # 拷贝应用预设文件
-                            if(copy(ROOT.replace("/origin/library/storage/{$_dir[$_i]}"),$_directory.replace("/{$_dir[$_i]}"))){
-                               _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[complete]".PHP_EOL);
+                            if(copy(ROOT.replace("/origin/library/storage/$dir[$i]"),$directory.replace("/$dir[$i]"))){
+                               _log($log,"[$datetime] file：$dir[$i], copy...[complete]".PHP_EOL);
                             }else{
-                               _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, copy...[failed]".PHP_EOL);
+                               _log($log,"[$datetime] file：$dir[$i], copy...[failed]".PHP_EOL);
                             }
                             # 修改权限
-                            if(chmod(ROOT."/application".replace("/{$_dir[$_i]}"),0777)){
-                               _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit ...[complete]".PHP_EOL);
+                            if(chmod(ROOT."/application".replace("/$dir[$i]"),0777)){
+                               _log($log,"[$datetime] file：$dir[$i], changed limit ...[complete]".PHP_EOL);
                             }else{
-                               _log($_log,"[{$_datetime}] file：{$_dir[$_i]}, changed limit...[failed]".PHP_EOL);
+                               _log($log,"[$datetime] file：$dir[$i], changed limit...[failed]".PHP_EOL);
                             }
                         }
                     }
@@ -100,7 +100,7 @@ function initialize()
             }
         }
         # 调用日志
-       _log($_log,"Initialization complete, thank you for use Origin framework ... :P".PHP_EOL);
+       _log($log,"Initialization complete, thank you for use Origin framework ... :P".PHP_EOL);
         return true;
     }else{
         return false;

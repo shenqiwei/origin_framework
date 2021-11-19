@@ -7,7 +7,7 @@
  * Origin单向入口操作文件
  */
 # 版本控制
-if((float)PHP_VERSION < 5.5) die('this program is support to lowest php version 5.5');
+if((float)PHP_VERSION < 7.3) die('this program is support to lowest php version 7.3');
 # DIRECTORY_SEPARATOR：PHP内建常量，用来返回当前系统文件夹连接符号LINUX（/）,WINNER（\）
 # 系统类型
 const OS = PHP_OS;
@@ -84,6 +84,6 @@ else error_reporting(0);
 # 引入主方法文件
 include('library/common.php');
 # 调用加载
-include('package/Junction.php');
+include('package/Loader.php');
 # 启动加载函数
-Origin\Package\Junction::initialize();
+Origin\Package\Loader::initialize();

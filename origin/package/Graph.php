@@ -59,7 +59,7 @@ class Graph
      * @param boolean $true 是否使用真彩创建
      * @return void
      */
-    function Canvas($width, $height, $true=false)
+    function Canvas(int $width, int $height, bool $true=false)
     {
         $this->CanvasWidth = $width;
         $this->CanvasHeight = $height;
@@ -81,7 +81,7 @@ class Graph
      * @param int $blue 设置色偏值 蓝（0,225）默认值 225
      * @return void
      */
-    function setBgColor($red = 255, $green = 255, $blue = 255)
+    function setBgColor(int $red=255, int $green=255, int $blue=255)
     {
         $this->Color = imagecolorallocate($this->Canvas, $red, $green, $blue);
     }
@@ -92,10 +92,10 @@ class Graph
      * @param string $uri 设置字体文件路径
      * @return void
      */
-    function setFont($uri)
+    function setFont(string $uri)
     {
-        if (is_file($_uri = replace(ROOT . DS . $uri)))
-            $this->Font = $_uri;
+        if (is_file($uri = replace(ROOT . DS . $uri)))
+            $this->Font = $uri;
     }
 
     /**
@@ -104,20 +104,21 @@ class Graph
      * @param int $size 设置字体显示大小
      * @return void
      */
-    function setFontSize($size)
+    function setFontSize(int $size)
     {
         if ($size > 0)
-            $this->FontSize = intval($size);
+            $this->FontSize = $size;
     }
 
     /**
+     * 设置字体颜色
      * @access public
      * @param int $red 设置色偏值 红（0,225）默认值 225
      * @param int $green 设置色偏值 绿（0,225）默认值 225
      * @param int $blue 设置色偏值 蓝（0,225）默认值 225
-     * @context 设置字体颜色
+     * @return void
      */
-    function setFontColor($red = 255, $green = 255, $blue = 255)
+    function setFontColor(int $red=255, int $green=255, int $blue=255)
     {
         $this->FontColor = imagecolorallocate($this->Canvas, $red, $green, $blue);
     }
@@ -131,7 +132,7 @@ class Graph
      * @param int|float $angle 旋转角度（0-90度） 默认值 0
      * @return void
      */
-    function imText($text, $point_x = 0, $point_y = 0, $angle = 0)
+    function imText(string $text, int $point_x=0, int $point_y=0, $angle=0)
     {
         imagefttext($this->Canvas, $this->FontSize, $angle, $point_x, $point_y, $this->FontColor, $this->Font, $text);
     }
@@ -145,54 +146,54 @@ class Graph
      * @param int $percent 缩小比例，相对于画布大小
      * @return boolean 返回引用状态值
      */
-    function imPic($uri, $point_x = 0, $point_y = 0, $percent = 100)
+    function imPic(string $uri, int $point_x=0, int $point_y=0, int $percent=100): bool
     {
-        $_receipt = false;
-        list($_width, $_height) = getimagesize($uri);
-        if (is_file($_uri = replace(ROOT . DS . $uri))) {
+        $receipt = false;
+        list($width, $height) = getimagesize($uri);
+        if (is_file($uri = replace(ROOT . DS . $uri))) {
             # 设置默认图片类型
-            $_type = "jpg";
+            $type = "jpg";
             if (strrpos(".", $uri)) {
-                $_type = strtolower(substr($uri, strrpos(".", $uri) + 1));
+                $type = strtolower(substr($uri, strrpos(".", $uri) + 1));
             }
-            switch ($_type) {
+            switch ($type) {
                 case "png":
-                    $_pic = imagecreatefrompng($_uri);
+                    $pic = imagecreatefrompng($uri);
                     break;
                 case "bmp":
-                    $_pic = imagecreatefrombmp($_uri);
+                    $pic = imagecreatefrombmp($uri);
                     break;
                 case "gif":
-                    $_pic = imagecreatefromgif($_uri);
+                    $pic = imagecreatefromgif($uri);
                     break;
                 case "gd":
-                    $_pic = imagecreatefromgd($_uri);
+                    $pic = imagecreatefromgd($uri);
                     break;
                 case "gd2":
-                    $_pic = imagecreatefromgd2($_uri);
+                    $pic = imagecreatefromgd2($uri);
                     break;
                 case "wbmp":
-                    $_pic = imagecreatefromwbmp($_uri);
+                    $pic = imagecreatefromwbmp($uri);
                     break;
                 case "webp":
-                    $_pic = imagecreatefromwebp($_uri);
+                    $pic = imagecreatefromwebp($uri);
                     break;
                 case "xbm":
-                    $_pic = imagecreatefromxbm($_uri);
+                    $pic = imagecreatefromxbm($uri);
                     break;
                 case "xpm":
-                    $_pic = imagecreatefromxpm($_uri);
+                    $pic = imagecreatefromxpm($uri);
                     break;
                 case "jpeg":
                 case "jpg":
                 default:
-                    $_pic = imagecreatefromjpeg($_uri);
+                    $pic = imagecreatefromjpeg($uri);
                     break;
             }
-            if (isset($_pic))
-                $_receipt = imagecopyresized($this->Canvas, $_pic, $point_x, $point_y = 0, 0, 0, intval($_width * $percent / 100), intval($_height * $percent / 100), $_width, $_height);
+            if (isset($pic))
+                $receipt = imagecopyresized($this->Canvas, $pic, $point_x, $point_y, 0, 0, intval($width * $percent / 100), intval($height * $percent / 100), $width, $height);
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -203,7 +204,7 @@ class Graph
      * @param int $blue 设置色偏值 蓝（0,225）默认值 225
      * @return false|int 返回结果值或失败状态
      */
-    function setColor($red = 255, $green = 255, $blue = 255)
+    function setColor(int $red=255, int $green=255, int $blue=255)
     {
         return imagecolorallocate($this->Canvas, $red, $green, $blue);
     }
@@ -214,15 +215,14 @@ class Graph
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param int|float $radius 圆半径,初始值 5
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
-     * @param int $type 填充状态，默认值 0 不填充
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * 1.IMG_ARC_PIE 只用直线连接了起始和结束点
      * 2.IMG_ARC_CHORD 产生圆形边界，IMG_ARC_PIE 和 IMG_ARC_CHORD 是互斥的
      * 3.IMG_ARC_NOFILL 指明弧或弦只有轮廓，不填充
      * 4.MG_ARC_EDGED 指明用直线将起始和结束点与中心点相连，和 IMG_ARC_NOFILL 一起使用是画饼状图轮廓的好方法（而不用填充）
      * @return boolean 返回执行状态值
      */
-    function circle($point_x = 0, $point_y = 0, $radius = 5, $color = null, $type = 0)
+    function circle(int $point_x=0, int $point_y=0, $radius=5, ?int $color=null): bool
     {
         return $this->arc($point_x, $point_y, $radius, $radius, 0, 360, $color);
     }
@@ -236,7 +236,7 @@ class Graph
      * @param int $height 弧高，默认值 5
      * @param int $start 起始角度，默认值 0
      * @param int $end 结束角度，默认值 360
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充
      * 1.IMG_ARC_PIE 只用直线连接了起始和结束点
      * 2.IMG_ARC_CHORD 产生圆形边界，IMG_ARC_PIE 和 IMG_ARC_CHORD 是互斥的
@@ -244,15 +244,14 @@ class Graph
      * 4.MG_ARC_EDGED 指明用直线将起始和结束点与中心点相连，和 IMG_ARC_NOFILL 一起使用是画饼状图轮廓的好方法（而不用填充）
      * @return boolean 返回执行状态值
      */
-    function arc($point_x = 0, $point_y = 0, $width = 5, $height = 5, $start = 0, $end = 360, $color = null, $type = 0)
+    function arc(int $point_x=0, int $point_y=0, int $width=5, int $height=5, int $start=0, int $end=360, ?int $color=null, int $type=0): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type > 0)
-            return imagefilledarc($this->Canvas, $point_x, $point_y, $width, $height, $start, $end, $_color, $type);
+            return imagefilledarc($this->Canvas, $point_x, $point_y, $width, $height, $start, $end, $color, $type);
         else
-            return imagearc($this->Canvas, $point_x, $point_y, $width, $height, $start, $end, $_color);
+            return imagearc($this->Canvas, $point_x, $point_y, $width, $height, $start, $end, $color);
     }
 
     /**
@@ -262,19 +261,18 @@ class Graph
      * @param int $point_y 定位坐标y，默认值 0
      * @param int $width 宽,默认值 5
      * @param int $height 高，默认值 5
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
      * @return boolean 返回执行状态值
      */
-    function ellipse($point_x = 0, $point_y = 0, $width = 5, $height = 5, $color = null, $type = 0)
+    function ellipse(int $point_x=0, int $point_y=0, int $width=5, int $height=5, ?int $color=null, int $type=0): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type > 0)
-            return imagefilledellipse($this->Canvas, $point_x, $point_y, $width, $height, $_color);
+            return imagefilledellipse($this->Canvas, $point_x, $point_y, $width, $height, $color);
         else
-            return imageellipse($this->Canvas, $point_x, $point_y, $width, $height, $_color);
+            return imageellipse($this->Canvas, $point_x, $point_y, $width, $height, $color);
     }
 
     /**
@@ -283,21 +281,20 @@ class Graph
      * @param array $points 坐标信息数组 array(
      *     array($point_x,$point_y),
      * )
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充，2 非闭合多边划线
      * @return boolean 返回执行状态值
      */
-    function polygon($points, $color = null, $type = 0)
+    function polygon(array $points, ?int $color=null, int $type=0): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type === 1)
-            return imagefilledpolygon($this->Canvas, $points, count($points), $_color);
+            return imagefilledpolygon($this->Canvas, $points, count($points), $color);
         elseif ($type === 2)
-            return imageopenpolygon($this->Canvas, $points, count($points), $_color);
+            return imageopenpolygon($this->Canvas, $points, count($points), $color);
         else
-            return imagepolygon($this->Canvas, $points, count($points), $_color);
+            return imagepolygon($this->Canvas, $points, count($points), $color);
     }
 
     /**
@@ -306,13 +303,13 @@ class Graph
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
      * @param int $long 边长，初始值 5
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
      * @return boolean 返回执行状态值
      */
-    function square($point_x = 0, $point_y = 0, $long = 5, $color = null, $type = 0)
+    function square(int $point_x=0, int $point_y=0, int $long=5, ?int $color=null, int $type=0): bool
     {
-        return $this->rectangle($point_x = 0, $point_y = 0, $long = 5, $long = 5, $color = null, $type = 0);
+        return $this->rectangle($point_x, $point_y, $long, $long, $color, $type);
     }
 
     /**
@@ -322,19 +319,18 @@ class Graph
      * @param int $point_y 定位坐标y，默认值 0
      * @param int $width 宽 初始值 5
      * @param int $height 高 初始值 5
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $type 填充状态，默认值 0 不填充，1 填充
      * @return boolean 返回执行状态值
      */
-    function rectangle($point_x = 0, $point_y = 0, $width = 5, $height = 5, $color = null, $type = 0)
+    function rectangle(int $point_x=0, int $point_y=0, int $width=5, int $height=5, ?int $color=null, int $type=0): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type > 0)
-            return imagefilledrectangle($this->Canvas, $point_x, $point_y, $width, $height, $_color);
+            return imagefilledrectangle($this->Canvas, $point_x, $point_y, $width, $height, $color);
         else
-            return imagerectangle($this->Canvas, $point_x, $point_y, $width, $height, $_color);
+            return imagerectangle($this->Canvas, $point_x, $point_y, $width, $height, $color);
     }
 
     /**
@@ -344,15 +340,14 @@ class Graph
      * @param int $start_y 定位坐标y，默认值 0
      * @param int $end_x 定位坐标x，默认值 5
      * @param int $end_y 定位坐标y，默认值 5
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @return boolean 返回执行状态值
      */
-    function line($start_x = 0, $start_y = 0, $end_x = 5, $end_y = 5, $color = null)
+    function line(int $start_x=0, int $start_y=0, int $end_x=5, int $end_y=5, ?int $color=null): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
-        return imageline($this->Canvas, $start_x, $start_y, $end_x, $end_y, $_color);
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
+        return imageline($this->Canvas, $start_x, $start_y, $end_x, $end_y, $color);
     }
 
     /**
@@ -365,10 +360,10 @@ class Graph
      * @param int $end_y 定位坐标y，默认值 5
      * @return boolean 返回执行状态值
     */
-    function dotted($style, $start_x = 0, $start_y = 0, $end_x = 5, $end_y = 5)
+    function dotted(array $style, int $start_x=0, int $start_y=0, int $end_x=5, int $end_y=5): bool
     {
         if(imagesetstyle($this->Canvas,$style))
-            return imageline($this->Canvas, 0, 0, 100, 100, IMG_COLOR_STYLED);
+            return imageline($this->Canvas, $start_x, $start_y, $end_x, $end_y, IMG_COLOR_STYLED);
         else
             return false;
     }
@@ -381,18 +376,17 @@ class Graph
      * @param int $type 排列方向 0 横向，1 竖向
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @return boolean 返回执行状态值
      */
-    function string($str, $font = 1, $type = 0, $point_x = 0, $point_y = 0, $color = null)
+    function string(string $str, int $font=1, int $type=0, int $point_x=0, int $point_y=0, ?int $color=null): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type > 0)
-            return imagestring($this->Canvas, $font, $point_x, $point_y, $str, $_color);
+            return imagestring($this->Canvas, $font, $point_x, $point_y, $str, $color);
         else
-            return imagestringup($this->Canvas, $font, $point_x, $point_y, $str, $_color);
+            return imagestringup($this->Canvas, $font, $point_x, $point_y, $str, $color);
     }
 
     /**
@@ -403,18 +397,17 @@ class Graph
      * @param int $type 排列方向 0 横向，1 竖向
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @return boolean 返回执行状态值
      */
-    function char($str, $font = 1, $type = 0, $point_x = 0, $point_y = 0, $color = null)
+    function char(string $str, int $font = 1, int $type = 0, int $point_x = 0, int $point_y = 0, ?int $color = null): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
         if ($type > 0)
-            return imagechar($this->Canvas, $font, $point_x, $point_y, $str, $_color);
+            return imagechar($this->Canvas, $font, $point_x, $point_y, $str, $color);
         else
-            return imagecharup($this->Canvas, $font, $point_x, $point_y, $str, $_color);
+            return imagecharup($this->Canvas, $font, $point_x, $point_y, $str, $color);
     }
 
     /**
@@ -422,15 +415,14 @@ class Graph
      * @access public
      * @param int $point_x 定位坐标x，默认值 0
      * @param int $point_y 定位坐标y，默认值 0
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @return boolean 返回执行状态值
      */
-    function pixel($point_x = 0, $point_y = 0, $color = null)
+    function pixel(int $point_x = 0, int $point_y = 0, ?int $color = null)
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
-        return imagesetpixel($this->Canvas, $point_x, $point_y, $_color);
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
+        return imagesetpixel($this->Canvas, $point_x, $point_y, $color);
     }
 
     /**
@@ -451,7 +443,7 @@ class Graph
      * IMG_FILTER_SMOOTH：使图像更柔滑。用 arg1 设定柔滑级别。
      * @return boolean 返回执行状态值
     */
-    function filter($pic,$type)
+    function filter($pic, int $type): bool
     {
         return imagefilter($pic,$type);
     }
@@ -468,7 +460,7 @@ class Graph
      * @param int $canvas_y 图像显示位置坐标y，默认值 0
      * @return boolean 返回执行状态值
     */
-    function cut($pic, $start_x=0, $start_y=0, $width=5, $height=5, $canvas_x=0, $canvas_y=0)
+    function cut($pic, int $start_x=0, int $start_y=0, int $width=5, int $height=5, int $canvas_x=0, int $canvas_y=0): bool
     {
         return imagecopy($this->Canvas,$pic,$start_x,$start_y,$width,$height,$canvas_x,$canvas_y);
     }
@@ -478,16 +470,15 @@ class Graph
      * @access public
      * @param resource $pic 引入图片源 imPic返回值
      * @param float $angle 旋转角度 默认值 0.0
-     * @param resource|int|null $color 初始值 null，默认填充色 RGB(255,255,255)
+     * @param int|null $color 初始值 null，默认填充色 RGB(255,255,255)
      * @param int $transparent 是否支持透明默认值 0 不支持，1支持
      * @return boolean 返回执行状态值
     */
-    function rotate($pic, $angle=0.0, $color=null, $transparent=0)
+    function rotate($pic, float $angle=0.0, ?int $color=null, int $transparent=0): bool
     {
-        $_color = $this->Color;
-        if (!is_null($color) and (is_resource($color) or is_int($color)))
-            $_color = $color;
-        return imagerotate($pic,$angle,$_color,$transparent);
+        if (is_null($color) and (!is_resource($color) and !is_int($color)))
+            $color = $this->Color;
+        return imagerotate($pic,$angle,$color,$transparent);
     }
 
     /**
@@ -497,9 +488,9 @@ class Graph
      * @param int $point_y 定位坐标y，默认值 0
      * @return boolean 返回执行状态值
     */
-    function fill($point_x=0, $point_y=0)
+    function fill(int $point_x=0, int $point_y=0): bool
     {
-        return imagefill($this->Canvas, 0, 0, $this->Color);
+        return imagefill($this->Canvas, $point_x, $point_y, $this->Color);
     }
 
     /**
@@ -509,38 +500,37 @@ class Graph
      * @param string|null $uri 存储（相对，根地址：项目根目录）路径 默认值 null
      * @return void
      */
-    function output($type="jpg",$uri=null)
+    function output(string $type="jpg", ?string $uri=null)
     {
-        $_uri = null;
         if(!is_null($uri))
-            $_uri = replace(ROOT.DS.$_uri);
+            $uri = replace(ROOT.DS.$uri);
         switch($type){
             case "png":
-                imagepng($this->Canvas,$_uri);
+                imagepng($this->Canvas,$uri);
                 break;
             case "bmp":
-                imagebmp($this->Canvas,$_uri);
+                imagebmp($this->Canvas,$uri);
                 break;
             case "gif":
-                imagegif($this->Canvas,$_uri);
+                imagegif($this->Canvas,$uri);
                 break;
             case "gd":
-                imagegd($this->Canvas,$_uri);
+                imagegd($this->Canvas,$uri);
                 break;
             case "gd2":
-                imagegd2($this->Canvas,$_uri);
+                imagegd2($this->Canvas,$uri);
                 break;
             case "wbmp":
-                imagewbmp($this->Canvas,$_uri);
+                imagewbmp($this->Canvas,$uri);
                 break;
             case "webp":
-                imagewebp($this->Canvas,$_uri);
+                imagewebp($this->Canvas,$uri);
                 break;
             case "xbm":
-                imagexbm($this->Canvas,$_uri);
+                imagexbm($this->Canvas,$uri);
                 break;
             default:
-                imagejpeg($this->Canvas,$_uri);
+                imagejpeg($this->Canvas,$uri);
                 break;
         }
         imagedestroy($this->Canvas);

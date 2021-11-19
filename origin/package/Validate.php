@@ -28,30 +28,30 @@ class Validate
     */
     public function _empty($variable)
     {
-        $_return = false;
+        $return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($variable) and !empty($this->_Variable)){
-            $_return = true;
+            $return = true;
         }else{
             # 使用empty函数判断参数值是否为空
             if(!empty($variable))
-                $_return = true;
+                $return = true;
             elseif(!is_null($variable)){
                 # 由于empty函数特性，设置例外参数数据类型的验证，保证验证精度，由于当前版本值支持字符串验证，所以本结构段只有少量结构代码会被执行
                 if(is_int($variable) and $variable == 0)
-                    $_return = true;
+                    $return = true;
                 elseif((is_float($variable) or is_double($variable)) and $variable == 0.0)
-                    $_return = true;
+                    $return = true;
                 elseif(is_bool($variable) and $variable == false)
-                    $_return = true;
+                    $return = true;
                 elseif(is_string($variable) and $variable == '0')
-                    $_return = true;
+                    $return = true;
                 else
                     # error: Verify the value is null
                     $this->Error = 'Verify the value is null';
             }
         }
-        return $_return;
+        return $return;
     }
 
     /**
@@ -70,9 +70,9 @@ class Validate
     public function _size($variable,$min=0,$max=0)
     {
         /**
-         * @var mixed $_return
+         * @var mixed $return
         */
-        $_return = false;
+        $return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($variable)){
             # Origin Class Error: Unable to verify the array
@@ -89,9 +89,9 @@ class Validate
                 }
                 # 比对范围值大小，如果最小范围值大于最大范围值，执行参数值置换
                 if ($min > $max and $max > 0) {
-                    $_middle = $min;
+                    $middle = $min;
                     $min = $max;
-                    $max = $_middle;
+                    $max = $middle;
                 }
                 # 当最大范围值和最小范围值相等时
                 if(($min == $max) and $min > 0){
@@ -127,8 +127,8 @@ class Validate
             # 如果最小范围值和最大范围值都等于0，则不作任何判断
         }
         if(is_null($this->Error))
-            $_return = true;
-        return $_return;
+            $return = true;
+        return $return;
     }
 
     /**
@@ -141,9 +141,9 @@ class Validate
     function _type($variable,$format)
     {
         /**
-         * @var mixed $_return
+         * @var mixed $return
          */
-        $_return = false;
+        $return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         # Origin Class Error: Unable to verify the array
         if(is_array($variable)){
@@ -154,11 +154,11 @@ class Validate
                 if(!preg_match($format, $variable)){
                     $this->Error = 'Variable type error';
                 }else{
-                    $_return = true;
+                    $return = true;
                 }
             }
         }
-        return $_return;
+        return $return;
     }
 
     /**
@@ -170,11 +170,11 @@ class Validate
     function _ipv4($variable)
     {
         /**
-         * @var mixed $_return
+         * @var mixed $return
          * @var array _array
          * @var int i
          */
-        $_return = false;
+        $return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         # error: Verify the value format does not accord with requirements
         if(is_array($variable)){
@@ -182,11 +182,11 @@ class Validate
         }else {
             if(!empty(trim($variable)) or strlen(trim($variable)) > 0){
                 # 拆分ip地址，将字符串转化为数组结构
-                $_array = explode('.', $variable);
+                $array = explode('.', $variable);
                 # 判断转化后数组状态，是否可以进行进一步验证
-                if (is_array($_array) and count($_array) == 4) {
+                if (is_array($array) and count($array) == 4) {
                     # 循环遍历数组元素，进行ip地址信息特性验证
-                    for ($i = 0; $i < count($_array); $i++) {
+                    for ($i = 0; $i < count($array); $i++) {
                         if ($i < 0 or $i > 255) {
                             $this->Error = 'Verify the value format does not accord with requirements';
                             break;
@@ -198,8 +198,8 @@ class Validate
             }
         }
         if(is_null($this->Error))
-            $_return = true;
-        return $_return;
+            $return = true;
+        return $return;
     }
 
     /**
@@ -211,14 +211,14 @@ class Validate
     function _ipv6($variable)
     {
         /**
-         * @var mixed $_return
+         * @var mixed $return
          * @var array _array
          * @var int i
          * @var int k
-         * @var string $_keys
-         * @var string $_regular
+         * @var string $keys
+         * @var string $regular
          */
-        $_return = false;
+        $return = false;
         # 判断验证参数是否为数据类型，如果是则跳过验证直接返回错误提示
         if(is_array($variable)){
             $this->Error = ' Verify the value format does not accord with requirements';
@@ -227,31 +227,31 @@ class Validate
                 # 判断ip地址是否为初始地址，即：0:0:0:0:0:0:0:0 或者 ::
                 if($variable != '0:0:0:0:0:0:0:0' and $variable != '::'){
                     # 拆分ip地址，将字符串转化为数组结构
-                    $_array = explode(':', $variable);
+                    $array = explode(':', $variable);
                     # 判断转化后数组状态，是否可以进行进一步验证
-                    if (is_array($_array) and count($_array) >2 and count($_array) < 9) {
+                    if (is_array($array) and count($array) >2 and count($array) < 9) {
                         $k = 0;
-                        $_keys = null;
+                        $keys = null;
                         # 循环遍历数组元素，进行ip地址信息特性验证
-                        for ($i = 0; $i < count($_array); $i++) {
-                            $_regular = '/^([0-9A-F]{1,4}|[0-9a-f]|)$/';
-                            if (!preg_match($_regular, $_array[$i])) {
+                        for ($i = 0; $i < count($array); $i++) {
+                            $regular = '/^([0-9A-F]{1,4}|[0-9a-f]|)$/';
+                            if (!preg_match($regular, $array[$i])) {
                                 # error: Verify the value format does not accord with requirements
                                 $this->Error = 'Verify the value format does not accord with requirements';
                                 break;
                             }else{
                                 # 查找ipv6数组中有多少个空元素
-                                if($_array[$i] == ''){
+                                if($array[$i] == ''){
                                     # 当存在空元素时，将其键存入预设变量中，并进行累加
                                     if($k == 0)
-                                        $_keys .= $i;
+                                        $keys .= $i;
                                     else
-                                        $_keys .= ','.$i;
+                                        $keys .= ','.$i;
                                     $k += 1;
                                     # 当空元素值大于2个时，根据ipv6语法特性进行，结构运算
                                     if($k >2){
-                                        $_keys = explode(',',$_keys);
-                                        if(intval($_keys[0]) + 1 == intval($_keys[1]) and intval($_keys[0]) + 2 == intval($_keys[2])){
+                                        $keys = explode(',',$keys);
+                                        if(intval($keys[0]) + 1 == intval($keys[1]) and intval($keys[0]) + 2 == intval($keys[2])){
                                             $this->Error = 'Variable type error';
                                             break;
                                         }
@@ -268,8 +268,8 @@ class Validate
             }
         }
         if(is_null($this->Error))
-            $_return = true;
-        return $_return;
+            $return = true;
+        return $return;
     }
 
     /**

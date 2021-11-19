@@ -64,20 +64,20 @@ abstract class Thread
     function parallel($object)
     {
         # 创建返回值变量
-        $_receipt = null;
+        $receipt = null;
         # 声明线程对象
-        $_thread = new Runtion;
+        $thread = new Runtion;
         # 声明通道对象
-        $_channel = new Channel;
+        $channel = new Channel;
         # 执行线程
-        $_future = $_thread->run(function () use ($object, $_channel) {
-            $object->action($_channel);
+        $future = $thread->run(function () use ($object, $channel) {
+            $object->action($channel);
         });
         # 获取执行后内容
-        $_receipt = $_channel->recv();
+        $receipt = $channel->recv();
         # 判断线程状态
-        if ($_future->done)
-            $_thread->close();
-        return $_receipt;
+        if ($future->done)
+            $thread->close();
+        return $receipt;
     }
 }

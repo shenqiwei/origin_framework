@@ -103,10 +103,8 @@ class Stream
     function accept(&$socketName, $cycle=null)
     {
         if(is_null($cycle))
-            $_cycle = floatval(ini_get("default_socket_timeout"));
-        else
-            $_cycle = $cycle;
-        return $this->Accept = stream_socket_accept($this->Socket,$_cycle,$socketName);
+            $cycle = floatval(ini_get("default_socket_timeout"));
+        return $this->Accept = stream_socket_accept($this->Socket,$cycle,$socketName);
     }
 
     /**
@@ -165,10 +163,8 @@ class Stream
     function filterAp($name, $resource=null, $type=STREAM_FILTER_ALL,$param=null)
     {
         if(is_null($resource))
-            $_resource = $this->Stream;
-        else
-            $_resource = $resource;
-        return stream_filter_append($_resource,$name,$type,$param);
+            $resource = $this->Stream;
+        return stream_filter_append($resource,$name,$type,$param);
     }
 
     /**
@@ -186,10 +182,8 @@ class Stream
     function filterPre($name, $resource=null, $type=STREAM_FILTER_ALL,$param=null)
     {
         if(is_null($resource))
-            $_resource = $this->Stream;
-        else
-            $_resource = $resource;
-        return stream_filter_prepend($_resource,$name,$type,$param);
+            $resource = $this->Stream;
+        return stream_filter_prepend($resource,$name,$type,$param);
     }
 
     /**
@@ -201,10 +195,8 @@ class Stream
     function filterRe($resource=null)
     {
         if(is_null($resource))
-            $_resource = $this->Stream;
-        else
-            $_resource = $resource;
-        return stream_filter_remove($_resource);
+            $resource = $this->Stream;
+        return stream_filter_remove($resource);
     }
 
     /**

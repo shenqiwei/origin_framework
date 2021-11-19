@@ -35,12 +35,11 @@ class Str
      */
     function create($key,$value)
     {
-        $_receipt = $this->Connect->set($key,$value);
-        if(strtolower($_receipt) === "ok")
-            $_receipt = true;
+        $receipt = $this->Connect->set($key,$value);
+        if(strtolower($receipt) === "ok")
+            return true;
         else
-            $_receipt = false;
-        return $_receipt;
+            return false;
     }
 
     /**
@@ -53,12 +52,11 @@ class Str
      */
     function createSec($key,$value,$second=0)
     {
-        $_receipt = $this->Connect->setex($key,$value,intval($second));
-        if(strtolower($_receipt) === "ok")
-            $_receipt = true;
+        $receipt = $this->Connect->setex($key,$value,intval($second));
+        if(strtolower($receipt) === "ok")
+            return true;
         else
-            $_receipt = false;
-        return $_receipt;
+            return false;
     }
 
     /**
@@ -83,12 +81,11 @@ class Str
      */
     function createMil($key,$value,$milli=0)
     {
-        $_receipt = $this->Connect->psetex($key,$value,intval($milli));
-        if(strtolower($_receipt) === "ok")
-            $_receipt = true;
+        $receipt = $this->Connect->psetex($key,$value,intval($milli));
+        if(strtolower($receipt) === "ok")
+            return true;
         else
-            $_receipt = false;
-        return $_receipt;
+            return false;
     }
 
     /**
@@ -99,10 +96,10 @@ class Str
      */
     function get($key)
     {
-        $_receipt = $this->Connect->get($key);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->get($key);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -163,10 +160,10 @@ class Str
      */
     function getRange($key,$start=1,$end=-1)
     {
-        $_receipt = $this->Connect->getRange($key,$start,$end);
-        if($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->getRange($key,$start,$end);
+        if($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -178,10 +175,10 @@ class Str
      */
     function getRollback($key,$value)
     {
-        $_receipt = $this->Connect->getSet($key,$value);
-        if($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->getSet($key,$value);
+        if($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -192,12 +189,11 @@ class Str
      */
     function createList($columns)
     {
-        $_receipt = $this->Connect->mset($columns);
-        if(strtolower($_receipt) === "ok")
-            $_receipt = true;
+        $receipt = $this->Connect->mset($columns);
+        if(strtolower($receipt) === "ok")
+            return true;
         else
-            $_receipt = false;
-        return $_receipt;
+            return false;
     }
 
     /**
@@ -219,10 +215,10 @@ class Str
      */
     function getList($keys)
     {
-        $_receipt = $this->Connect->mget($keys);
-        if($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->mget($keys);
+        if($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -238,14 +234,13 @@ class Str
         if(intval($increment) > 1){
             if(is_int($increment))
                 # 执行自定义递增操作
-                $_receipt = $this->Connect->incrBy($key,intval($increment));
+                return $this->Connect->incrBy($key,intval($increment));
             else
                 # 执行自定义递增(float,double)操作
-                $_receipt = $this->Connect->incrByFloat($key,floatval($increment));
+                return $this->Connect->incrByFloat($key,floatval($increment));
         }else
             # 执行递增1操作
-            $_receipt = $this->Connect->incr($key);
-        return $_receipt;
+            return $this->Connect->incr($key);
     }
 
     /**
@@ -260,10 +255,9 @@ class Str
         # 判断系数条件是否为大于的参数值
         if(intval($decrement) > 1)
             # 执行自定义递减操作
-            $_receipt = $this->Connect->decrBy($key,intval($decrement));
+            return $this->Connect->decrBy($key,intval($decrement));
         else
             # 执行递减1操作
-            $_receipt = $this->Connect->decr($key);
-        return $_receipt;
+            return $this->Connect->decr($key);
     }
 }

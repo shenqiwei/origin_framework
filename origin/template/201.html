@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Origin Message Receipt</title>
     <script type="text/javascript">
-        let time = parseInt("<?php echo($_time);?>"); // 倒计时时间
+        let time = parseInt("<?php echo($time);?>"); // 倒计时时间
         let status = 'true';
         function cd() {
             if(time <= 1){
@@ -13,7 +13,7 @@
             document.getElementById('time').innerHTML = time;
         }
         function redirect(){
-            let url = '<?php echo($_url);?>';
+            let url = '<?php echo($url);?>';
             if(url === '#') window.history.back();
             else location.href = url;
         }
@@ -31,7 +31,7 @@
         setInterval("cd()",1000);
     </script>
     <style>
-        body{background-color:<?php echo($_setting["bgcolor"]);?>; font-family:微软雅黑; font-size:14px; color:<?php echo($_setting["color"]);?>; top:0; left:0;}
+        body{background-color:<?php echo($setting["bgcolor"]);?>; font-family:微软雅黑; font-size:14px; color:<?php echo($setting["color"]);?>; top:0; left:0;}
         .main{width:90%; min-width:480px; padding: 0 0 0 0; margin: 0 auto;}
         .status{font-size:60px; padding-top:20px; padding-bottom: 20px;}
         .content{min-height:120px; padding-bottom: 20px;}
@@ -42,12 +42,12 @@
 </head>
 <body>
 <div class="main">
-    <div class="status">&lt;<?php echo($_setting["title"]);?>:&gt;</div>
-    <div class="content"><?php echo($_message);?></div>
+    <div class="status">&lt;<?php echo($setting["title"]);?>:&gt;</div>
+    <div class="content"><?php echo($message);?></div>
     <div class="jump">
         <a onclick="redirect()">[OK]</a> or
         <a id="pause" onclick="pause()">[Pause]</a> or
-        <span id="time"><?php echo($_time);?></span> seconds after jump
+        <span id="time"><?php echo($time);?></span> seconds after jump
     </div>
     <div class="origin">Origin Framework. 2019.</div>
 </div>

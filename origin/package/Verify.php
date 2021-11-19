@@ -44,10 +44,10 @@ class Verify
     */
     function __construct($width=120,$height=50)
     {
-        $this->WidthFold = round($width/$this->Width, 2);
-        $this->HeightFold = round($height/$this->Height, 2);
         $this->Width = $width;
         $this->Height = $height;
+        $this->WidthFold = round($width/$this->Width, 2);
+        $this->HeightFold = round($height/$this->Height, 2);
     }
 
     /**
@@ -59,56 +59,56 @@ class Verify
     private function execute($data)
     {
         # 创建图形对象变量
-        $_image = imagecreate($this->Width, $this->Height);
+        $image = imagecreate($this->Width, $this->Height);
         # 设置图像背景
-        $_bg = imagecolorallocate($_image, 255, 255, 255);
+        $bg = imagecolorallocate($image, 255, 255, 255);
         # 填充画板
-        imagefill($_image, 0, 0, $_bg);
+        imagefill($image, 0, 0, $bg);
         # 创建随机参数项变量
-        $_var = '';
-        for($_i=0; $_i<4; $_i++){
+        $var = '';
+        for($i=0; $i<4; $i++){
             # 设置字体大小
-            $_font_size = $this->WidthFold * 12;
+            $font_size = $this->WidthFold * 12;
             # 字体随机颜色
-            $_font_color = imagecolorallocate($_image, rand(0,200), rand(0,200), rand(0,200));
+            $font_color = imagecolorallocate($image, rand(0,200), rand(0,200), rand(0,200));
             # 设置参数字符串
-            $_rand_data = $data;
+            $rand_data = $data;
             # 获取对象字符
-            $_obj = substr($_rand_data,rand(0, strlen($_rand_data)-1), 1);
+            $obj = substr($rand_data,rand(0, strlen($rand_data)-1), 1);
             # 拼接对象信息参数
-            $_var .= $_obj;
+            $var .= $obj;
             # 设置坐标信息X轴，Y轴
-            $_X = ($_i*100/4)*$this->WidthFold+rand(15 * $this->WidthFold, 25 * $this->WidthFold);
-            $_Y = rand(15 * $this->HeightFold, 40 * $this->HeightFold);
-            $_bool = rand(0,1);
-            if($_bool > 0) $_obj = strtoupper($_obj);
-            $_font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
-            $_font_angle = rand(-60,60);
-            imagettftext($_image, $_font_size,$_font_angle, $_X, $_Y, $_font_color, $_font_family, $_obj);
+            $X = ($i*100/4)*$this->WidthFold+rand(15 * $this->WidthFold, 25 * $this->WidthFold);
+            $Y = rand(15 * $this->HeightFold, 40 * $this->HeightFold);
+            $bool = rand(0,1);
+            if($bool > 0) $obj = strtoupper($obj);
+            $font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
+            $font_angle = rand(-60,60);
+            imagettftext($image, $font_size,$font_angle, $X, $Y, $font_color, $font_family, $obj);
         }
         # 增加斑点
-        for($_i=0; $_i<(rand(200, 300) * $this->WidthFold); $_i++){
+        for($i=0; $i<(rand(200, 300) * $this->WidthFold); $i++){
             # 设置点颜色
-            $_point_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
+            $point_color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
             # 创建斑点图像
-            imagesetpixel($_image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $_point_color);
+            imagesetpixel($image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $point_color);
         }
         # 增加横线
-        for($_i=0; $_i<rand(3,6); $_i++){
+        for($i=0; $i<rand(3,6); $i++){
             # 设置线颜色
-            $_line_color = imagecolorallocate($_image, rand(100,230), rand(100,230), rand(100,230));
+            $line_color = imagecolorallocate($image, rand(100,230), rand(100,230), rand(100,230));
             # 创建线图像
-            imageline($_image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
-                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $_line_color);
+            imageline($image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
+                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $line_color);
         }
         # 将对想信息存入session会话中
-        $_session = new Session();
-        $_session->set('Verify', $_var);
+        $session = new Session();
+        $session->set('Verify', $var);
         # 设置页面输出格式
         header('Content-Type: image/png');
         # 以png形式输出图形信息
-        imagepng($_image);
-        imagedestroy($_image);
+        imagepng($image);
+        imagedestroy($image);
     }
 
     /**
@@ -149,20 +149,20 @@ class Verify
     function han()
     {
         # 创建一个对象变量
-        $_image = imagecreate($this->Width, $this->Height);
+        $image = imagecreate($this->Width, $this->Height);
         # 设置图像背景
-        $_bg = imagecolorallocate($_image, 255, 255, 255);
+        $bg = imagecolorallocate($image, 255, 255, 255);
         # 填充画板
-        imagefill($_image, 0, 0, $_bg);
+        imagefill($image, 0, 0, $bg);
         # 创建随机参数项变量
-        $_var = '';
-        for($_i=0; $_i<rand(2,4); $_i++){
+        $var = '';
+        for($i=0; $i<rand(2,4); $i++){
             # 设置字体大小
-            $_font_size = $this->WidthFold * 15;
+            $font_size = $this->WidthFold * 15;
             # 字体随机颜色
-            $_font_color = imagecolorallocate($_image, rand(0,200), rand(0,200), rand(0,200));
+            $font_color = imagecolorallocate($image, rand(0,200), rand(0,200), rand(0,200));
             # 设置参数字符串
-            $_rand_data = '一乙二十丁厂七卜人入八九几儿了力乃刀又三于干亏士工土才寸下大丈与万上小口巾山千乞川亿个勺久凡及'
+            $rand_data = '一乙二十丁厂七卜人入八九几儿了力乃刀又三于干亏士工土才寸下大丈与万上小口巾山千乞川亿个勺久凡及'
             .'夕丸么广亡门义之尸弓己已子卫也女飞刃习叉马乡丰王井开夫天无元专云扎艺木五支厅不太犬区历尤友匹车巨牙屯比互切瓦止'
             .'少日中冈贝内水见午牛手毛气升长仁什片仆化仇币仍仅斤爪反介父从今凶分乏公仓月氏勿欠风丹匀乌凤勾文六方火为斗忆订计'
             .'户认心尺引丑巴孔队办以允予劝双书幻玉刊示末未击打巧正扑扒功扔去甘世古节本术可丙左厉右石布龙平灭轧东卡北占业旧帅'
@@ -209,39 +209,39 @@ class Verify
             .'遵潜潮懂额慰劈操燕薯薪薄颠橘整融醒餐嘴蹄器赠默镜赞篮邀衡膨雕磨凝辨辩糖糕燃澡激懒壁避缴戴擦鞠藏霜霞瞧蹈螺穗繁辫'
             .'赢糟糠燥臂翼骤鞭覆蹦镰翻鹰警攀蹲颤瓣爆疆壤耀躁嚼嚷籍魔灌蠢霸露囊罐';
             # 获取对象字符
-            $_obj = mb_substr($_rand_data, rand(0, mb_strlen($_rand_data)), 1, 'utf-8');
+            $obj = mb_substr($rand_data, rand(0, mb_strlen($rand_data)), 1, 'utf-8');
             # 拼接对象信息参数
-            $_var .= $_obj;
+            $var .= $obj;
             # 设置坐标信息X轴，Y轴
-            $_X = ($_i*100/4)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
-            $_Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
-            $_font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
-            $_font_angle = rand(-60,60);
-            imagettftext($_image, $_font_size,$_font_angle, $_X, $_Y, $_font_color, $_font_family, $_obj);
+            $X = ($i*100/4)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
+            $Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
+            $font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
+            $font_angle = rand(-60,60);
+            imagettftext($image, $font_size,$font_angle, $X, $Y, $font_color, $font_family, $obj);
         }
         # 增加斑点
-        for($_i=0; $_i<(rand(200, 300) * $this->WidthFold); $_i++){
+        for($i=0; $i<(rand(200, 300) * $this->WidthFold); $i++){
             # 设置点颜色
-            $_point_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
+            $point_color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
             # 创建斑点图像
-            imagesetpixel($_image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $_point_color);
+            imagesetpixel($image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $point_color);
         }
         # 增加横线
-        for($_i=0; $_i<rand(3,6); $_i++){
+        for($i=0; $i<rand(3,6); $i++){
             # 设置线颜色
-            $_line_color = imagecolorallocate($_image, rand(100,230), rand(100,230), rand(100,230));
+            $line_color = imagecolorallocate($image, rand(100,230), rand(100,230), rand(100,230));
             # 创建线图像
-            imageline($_image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
-                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $_line_color);
+            imageline($image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
+                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $line_color);
         }
         # 将对想信息存入session会话中
-        $_session = new Session();
-        $_session->set('Verify', $_var);
+        $session = new Session();
+        $session->set('Verify', $var);
         # 设置页面输出格式
         header('Content-Type: image/png');
         # 以png形式输出图形信息
-        imagepng($_image);
-        imagedestroy($_image);
+        imagepng($image);
+        imagedestroy($image);
     }
 
     /**
@@ -252,103 +252,103 @@ class Verify
     function math()
     {
         # 创建一个图形对象
-        $_image = imagecreate($this->Width, $this->Height);
+        $image = imagecreate($this->Width, $this->Height);
         # 设置背景颜色
-        $_bg = imagecolorallocate($_image, 255, 255, 255);
+        $bg = imagecolorallocate($image, 255, 255, 255);
         # 填充画板
-        imagefill($_image, 0 , 0, $_bg);
+        imagefill($image, 0 , 0, $bg);
         # 创建一元方程成员变量
-        $_second_number = rand(1,9);
-        $_symbol = array('+','-','*','/');
-        $_math_symbol = $_symbol[rand(0,3)];
+        $second_number = rand(1,9);
+        $symbol = array('+','-','*','/');
+        $math_symbol = $symbol[rand(0,3)];
         # 根据不能有余数，不能有负数的原则，对运算符号进行运算值范围限定
         # 对值进行运算，并装入Session对象中
-        switch($_math_symbol){
+        switch($math_symbol){
             case '/':
-                $_first_symbol = $_second_number * rand(0,5);
-                $_result = ($_first_symbol/$_second_number) > 0 ? strval($_first_symbol/$_second_number) : '0';
+                $first_symbol = $second_number * rand(0,5);
+                $result = ($first_symbol/$second_number) > 0 ? strval($first_symbol/$second_number) : '0';
                 break;
             case '*':
-                $_first_symbol = rand(0,9);
-                $_result = ($_first_symbol*$_second_number) > 0 ? strval($_first_symbol*$_second_number): '0';
+                $first_symbol = rand(0,9);
+                $result = ($first_symbol*$second_number) > 0 ? strval($first_symbol*$second_number): '0';
                 break;
             case '-':
-                $_first_symbol = $_second_number + rand(0,9);
-                $_result = ($_first_symbol-$_second_number) > 0 ? strval($_first_symbol-$_second_number) : '0';
+                $first_symbol = $second_number + rand(0,9);
+                $result = ($first_symbol-$second_number) > 0 ? strval($first_symbol-$second_number) : '0';
                 break;
             case '+':
             default:
-            $_first_symbol = rand(0,9);
-            $_result = ($_first_symbol+$_second_number) > 0 ? strval($_first_symbol+$_second_number) : '0';
+            $first_symbol = rand(0,9);
+            $result = ($first_symbol+$second_number) > 0 ? strval($first_symbol+$second_number) : '0';
             break;
         }
-        $_session = new Session();
-        $_session->set('Verify', $_result);
+        $session = new Session();
+        $session->set('Verify', $result);
         # 创建比对数组
-        $_han_lower = array('0'=>'零','1'=>'一','2'=>'二','3'=>'三','4'=>'四','5'=>'五','6'=>'六','7'=>'七','8'=>'八','9'=>'九');
-        $_han_upper = array('0'=>'零','1'=>'壹','2'=>'贰','3'=>'叁','4'=>'肆','5'=>'伍','6'=>'陆','7'=>'七','8'=>'捌','9'=>'玖');
-        $_han_symbol = array('+'=>'加','-'=>'减','*'=>'乘','/'=>'除');
+        $han_lower = array('0'=>'零','1'=>'一','2'=>'二','3'=>'三','4'=>'四','5'=>'五','6'=>'六','7'=>'七','8'=>'八','9'=>'九');
+        $han_upper = array('0'=>'零','1'=>'壹','2'=>'贰','3'=>'叁','4'=>'肆','5'=>'伍','6'=>'陆','7'=>'七','8'=>'捌','9'=>'玖');
+        $han_symbol = array('+'=>'加','-'=>'减','*'=>'乘','/'=>'除');
         # 进行显示结构组装
         # 设置字体参数
-        $_font_size = $this->WidthFold * 15;
-        $_font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
+        $font_size = $this->WidthFold * 15;
+        $font_family = replace(RESOURCE_PUBLIC.'/font/origin001.ttf');
         # 设置字体颜色
-        $_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
-        if($_first_symbol < 10){
-            $_num = rand(0, 2);
-            if($_num == 1) $_first_symbol = $_han_lower[$_first_symbol];
-            if($_num == 2) $_first_symbol = $_han_upper[$_first_symbol];
+        $color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
+        if($first_symbol < 10){
+            $num = rand(0, 2);
+            if($num == 1) $first_symbol = $han_lower[$first_symbol];
+            if($num == 2) $first_symbol = $han_upper[$first_symbol];
         }
         # 设置坐标信息X轴，Y轴
-        $_X = rand(15 * $this->WidthFold, 20 * $this->WidthFold);
-        $_Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
+        $X = rand(15 * $this->WidthFold, 20 * $this->WidthFold);
+        $Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
         # 输出文字信息
-        imagettftext($_image, $_font_size, rand(-60,60), $_X, $_Y, $_color, $_font_family, $_first_symbol);
-        $_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
-        if(rand(0,1) == 1) $_math_symbol = $_han_symbol[$_math_symbol];
+        imagettftext($image, $font_size, rand(-60,60), $X, $Y, $color, $font_family, $first_symbol);
+        $color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
+        if(rand(0,1) == 1) $math_symbol = $han_symbol[$math_symbol];
         # 设置坐标信息X轴，Y轴
-        $_X = rand(25,35)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
-        $_Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
+        $X = rand(25,35)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
+        $Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
         # 输出文字信息
-        imagettftext($_image, $_font_size, 0, $_X, $_Y, $_color, $_font_family, $_math_symbol);
-        $_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
-        if($_second_number < 10){
-            $_num = rand(0, 2);
-            if($_num == 1) $_second_number = $_han_lower[$_second_number];
-            if($_num == 2) $_second_number = $_han_upper[$_second_number];
+        imagettftext($image, $font_size, 0, $X, $Y, $color, $font_family, $math_symbol);
+        $color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
+        if($second_number < 10){
+            $num = rand(0, 2);
+            if($num == 1) $second_number = $han_lower[$second_number];
+            if($num == 2) $second_number = $han_upper[$second_number];
         }
         # 设置坐标信息X轴，Y轴
-        $_X = rand(50,60)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
-        $_Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
+        $X = rand(50,60)*$this->WidthFold+rand(8 * $this->WidthFold, 20 * $this->WidthFold);
+        $Y = rand(20 * $this->HeightFold, 35 * $this->HeightFold);
         # 输出文字信息
-        imagettftext($_image, $_font_size, rand(-60,60), $_X, $_Y, $_color, $_font_family, $_second_number);
+        imagettftext($image, $font_size, rand(-60,60), $X, $Y, $color, $font_family, $second_number);
         if(rand(0, 1) == 1){
-            $_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
+            $color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
             # 设置坐标信息X轴，Y轴
-            $_X = 75*$this->WidthFold+rand(10 * $this->WidthFold, 20 * $this->WidthFold);
-            $_Y = rand(22 * $this->HeightFold, 35 * $this->HeightFold);
+            $X = 75*$this->WidthFold+rand(10 * $this->WidthFold, 20 * $this->WidthFold);
+            $Y = rand(22 * $this->HeightFold, 35 * $this->HeightFold);
             # 输出文字信息
-            imagettftext($_image, $_font_size, rand(-30,30), $_X, $_Y, $_color, $_font_family, '=?');
+            imagettftext($image, $font_size, rand(-30,30), $X, $Y, $color, $font_family, '=?');
         }
         # 增加斑点
-        for($_i=0; $_i<(rand(200, 300) * $this->WidthFold); $_i++){
+        for($i=0; $i<(rand(200, 300) * $this->WidthFold); $i++){
             # 设置点颜色
-            $_point_color = imagecolorallocate($_image, rand(50,220), rand(50,220), rand(50,220));
+            $point_color = imagecolorallocate($image, rand(50,220), rand(50,220), rand(50,220));
             # 创建斑点图像
-            imagesetpixel($_image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $_point_color);
+            imagesetpixel($image, rand(0, 120 * $this->WidthFold), rand(0,50 * $this->HeightFold), $point_color);
         }
         # 增加横线
-        for($_i=0; $_i<rand(3,6); $_i++){
+        for($i=0; $i<rand(3,6); $i++){
             # 设置线颜色
-            $_line_color = imagecolorallocate($_image, rand(210,255), rand(210,255), rand(210,255));
+            $line_color = imagecolorallocate($image, rand(210,255), rand(210,255), rand(210,255));
             # 创建线图像
-            imageline($_image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
-                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $_line_color);
+            imageline($image, rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold,45 * $this->HeightFold),
+                rand(5 * $this->WidthFold,115 * $this->WidthFold), rand(5 * $this->HeightFold, 45 * $this->HeightFold), $line_color);
         }
         # 设置页面输出格式
         header('Content-Type: image/png');
         # 以png形式输出图形信息
-        imagepng($_image);
-        imagedestroy($_image);
+        imagepng($image);
+        imagedestroy($image);
     }
 }

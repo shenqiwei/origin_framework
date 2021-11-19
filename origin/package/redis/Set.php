@@ -58,10 +58,10 @@ class Set
      */
     function diff($key,$second)
     {
-        $_receipt = $this->Connect->sDiff($key,$second);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->sDiff($key,$second);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -97,10 +97,10 @@ class Set
      */
     function reSet($key)
     {
-        $_receipt = $this->Connect->sMembers($key);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->sMembers($key);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -123,10 +123,10 @@ class Set
      */
     function pop($key)
     {
-        $_receipt = $this->Connect->sPop($key);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->sPop($key);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -139,12 +139,12 @@ class Set
     function randMember($key,$count=1)
     {
         if($count > 1)
-            $_receipt = $this->Connect->sRandMember($key);
+            $receipt = $this->Connect->sRandMember($key);
         else
-            $_receipt = $this->Connect->sRandMember($key,$count);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+            $receipt = $this->Connect->sRandMember($key,$count);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -168,10 +168,10 @@ class Set
      */
     function merge($key,$second)
     {
-        $_receipt = $this->Connect->sUnion($key,$second);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->sUnion($key,$second);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -198,9 +198,9 @@ class Set
      */
     function tree($key,$value,$cursor=0,$pattern="match")
     {
-        $_receipt = $this->Connect->sScan($key,$cursor,$pattern,$value);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->sScan($key,$cursor,$pattern,$value);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 }

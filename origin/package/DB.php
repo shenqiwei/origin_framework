@@ -17,9 +17,9 @@ class DB
      */
     static function mysql($connect_name=null)
     {
-        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_MYSQL);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Database($connect_name, Query::RESOURCE_TYPE_MYSQL);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 
     /**
@@ -30,9 +30,9 @@ class DB
      */
     static function pgsql($connect_name=null)
     {
-        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_PGSQL);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Database($connect_name, Query::RESOURCE_TYPE_PGSQL);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 
     /**
@@ -41,11 +41,11 @@ class DB
      * @param string|null $connect_name 链接名
      * @return object 返回mssql数据源连接对象
      */
-    static function mssql($connect_name=null)
+    static function mssql(?string $connect_name=null)
     {
-        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_MSSQL);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Database($connect_name, Query::RESOURCE_TYPE_MSSQL);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 
     /**
@@ -54,11 +54,11 @@ class DB
      * @param string|null $connect_name 链接名
      * @return object 返回sqlite数据源连接对象
      */
-    static function sqlite($connect_name=null)
+    static function sqlite(?string $connect_name=null)
     {
-        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_SQLITE);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Database($connect_name, Query::RESOURCE_TYPE_SQLITE);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 
     /**
@@ -67,11 +67,11 @@ class DB
      * @param string|null $connect_name 链接名
      * @return object 返回oracle数据源连接对象
      */
-    static function oracle($connect_name=null)
+    static function oracle(?string $connect_name=null)
     {
-        $_dao = new Database($connect_name,Database::RESOURCE_TYPE_ORACLE);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Database($connect_name, Query::RESOURCE_TYPE_ORACLE);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 
     /**
@@ -80,7 +80,7 @@ class DB
      * @param string|null $connect_name 链接名
      * @return object 返回redis数据源连接对象
      */
-    static function redis($connect_name=null)
+    static function redis(?string $connect_name=null)
     {
         # 调用Redis数据库核心包
         return new Redis($connect_name);
@@ -92,10 +92,10 @@ class DB
      * @param string|null $connect_name 链接名
      * @return object 返回mongodb数据源连接对象
      */
-    static function mongodb($connect_name=null)
+    static function mongodb(?string $connect_name=null)
     {
-        $_dao = new Mongodb($connect_name);
-        $_dao->__setSQL($_dao);
-        return $_dao;
+        $dao = new Mongodb($connect_name);
+        $dao->__setSQL($dao);
+        return $dao;
     }
 }

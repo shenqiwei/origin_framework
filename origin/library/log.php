@@ -11,31 +11,30 @@
  * @param string $context 日志模板
  * @return  boolean 返回执行结果状态
  */
-function _log($folder,$context)
+function _log(string $folder, string $context): bool
 {
-    $_receipt = false;
+    $receipt = false;
     logWrite:
     # 使用写入方式进行日志创建创建和写入
-    $_handle = fopen(ROOT.DS.replace($folder),"a");
-    if($_handle){
+    $handle = fopen(ROOT.DS.replace($folder),"a");
+    if($handle){
         # 执行写入操作，并返回操作回执
-        $_receipt = fwrite($_handle,$context);
+        $receipt = fwrite($handle,$context);
         # 关闭文件源
-        fclose($_handle);
+        fclose($handle);
     }else{
         if(!file_exists(ROOT.DS.replace($folder))){
-            $_dir = explode(DS,$folder);
-            $_new = null;
-            for($_i = 0;$_i < count($_dir)-1;$_i++){
-                $_new .= DS.$_dir[$_i];
-                if(!is_dir(ROOT.DS.$_new)){
-                    mkdir(ROOT.DS.$_new,0777);
-                }
+            $dir = explode(DS,$folder);
+            $new = null;
+            for($i = 0;$i < count($dir)-1;$i++){
+                $new .= DS.$dir[$i];
+                if(!is_dir(ROOT.DS.$new))
+                    mkdir(ROOT.DS.$new);
             }
             goto logWrite;
         }
     }
-    return $_receipt;
+    return $receipt;
 }
 
 /**
@@ -44,9 +43,9 @@ function _log($folder,$context)
  * @param string $msg 日志模板信息
  * @return bool 返回执行结果状态
  */
-function errorLog($msg)
+function errorLog(string $msg): bool
 {
-    $_uri = LOG_EXCEPTION.date('Ymd').'.log';
-    $_model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
-    return _log($_uri,$_model_msg);
+    $uri = LOG_EXCEPTION.date('Ymd').'.log';
+    $model_msg = date("Y/m/d H:i:s")." [Note]: ".$msg.PHP_EOL;
+    return _log($uri,$model_msg);
 }

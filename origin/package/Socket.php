@@ -61,11 +61,11 @@ class Socket
     function __construct($ip,$port=0)
     {
         $this->IP = $ip;
-        $_validate = new Validate();
-        if($_validate->_ipv4($ip)){
+        $validate = new Validate();
+        if($validate->_ipv4($ip)){
             $this->IPType = AF_INET;
             $this->IPDomain = 1;
-        }elseif($_validate->_ipv6($ip)){
+        }elseif($validate->_ipv6($ip)){
             $this->IPType = AF_INET6;
             $this->IPDomain = 2;
         }else{
@@ -321,11 +321,9 @@ class Socket
      */
     function shutdown($type=2)
     {
-        if($type === 1 or $type === 2)
-            $_type = $type;
-        else
-            $_type = 2;
-        return socket_shutdown($this->Socket,$_type);
+        if($type != 1 and $type != 2)
+            $type = 2;
+        return socket_shutdown($this->Socket,$type);
     }
 
     /**

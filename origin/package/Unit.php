@@ -42,9 +42,9 @@ abstract class Unit
     */
     protected function param($key, $value)
     {
-        $_regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
-        if(is_true($_regular, $key)){
-            $this->Param[Junction::$Class][$key] = $value;
+        $regular = '/^[^\_\W]+(\_[^\_\W]+)*$/';
+        if(is_true($regular, $key)){
+            $this->Param[Loader::$Class][$key] = $value;
         }else{
             # 异常提示：变量名称包含非合法符号
             try{
@@ -65,16 +65,16 @@ abstract class Unit
      */
     protected function template($template=null)
     {
-        $_page = Junction::$Function;
-        $_regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
-        $_dir = str_replace("classes/", '',
+        $page = Loader::$Function;
+        $regular = '/^[^\_\W]+(\_[^\_\W]+)*(\:[^\_\W]+(\_[^\_\W]+)*)*$/';
+        $dir = str_replace("classes/", '',
                 str_replace(DEFAULT_APPLICATION."/", '',
                     str_replace('application/', '',
-                        str_replace('\\', '/', strtolower(Junction::$Class)))));
-        if(!is_null($template) and is_true($_regular, $template)){
-            $_page = $template;
+                        str_replace('\\', '/', strtolower(Loader::$Class)))));
+        if(!is_null($template) and is_true($regular, $template)){
+            $page = $template;
         }
-        View::view($_dir, $_page,$this->Param[Junction::$Class],Junction::$LoadTime);
+        View::view($dir, $page,$this->Param[Loader::$Class],Loader::$LoadTime);
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class Unit
      */
     protected function get_class()
     {
-        return Junction::$Class;
+        return Loader::$Class;
     }
 
     /**
@@ -94,7 +94,7 @@ abstract class Unit
      */
     protected function get_function()
     {
-        return Junction::$Function;
+        return Loader::$Function;
     }
 
     /**
@@ -107,8 +107,8 @@ abstract class Unit
     */
     protected function success($message='success',$url='#',$time=3)
     {
-        $_setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
-        Output::output($time, $message, $url, $_setting);
+        $setting = array("bgcolor"=>"floralwhite","color"=>"#000000","title"=>"Success");
+        Output::output($time, $message, $url, $setting);
     }
 
     /**
@@ -121,8 +121,8 @@ abstract class Unit
     */
     protected function error($message='error',$url='#',$time=3)
     {
-        $_setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
-        Output::output($time, $message, $url, $_setting);
+        $setting = array("bgcolor"=>"orangered","color"=>"floralwhite","title"=>"Error");
+        Output::output($time, $message, $url, $setting);
     }
 
     /**

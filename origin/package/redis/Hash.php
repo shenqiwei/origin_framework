@@ -11,7 +11,7 @@ class Hash
 {
     /**
      * @access private
-     * @var object $_Connect 数据库链接对象
+     * @var object $Connect 数据库链接对象
      */
     private $Connect;
 
@@ -75,16 +75,14 @@ class Hash
     {
         if($this->Connect->exists($key)) {
             if ($this->Connect->hExists($key, $field)) {
-                $_receipt = $this->Connect->hGet($key, $field);
-                if ($_receipt === "nil")
-                    $_receipt = null;
-            }else{
-                $_receipt = null;
-            }
-        }else{
-            $_receipt = null;
-        }
-        return $_receipt;
+                $receipt = $this->Connect->hGet($key, $field);
+                if ($receipt === "nil")
+                    $receipt = null;
+            }else
+                $receipt = null;
+        }else
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -96,13 +94,12 @@ class Hash
     function lists($key)
     {
         if($this->Connect->exists($key)) {
-            $_receipt = $this->Connect->hGetAll($key);
-            if ($_receipt === "nil")
-                $_receipt = null;
-        }else{
-            $_receipt = null;
-        }
-        return $_receipt;
+            $receipt = $this->Connect->hGetAll($key);
+            if ($receipt === "nil")
+                $receipt = null;
+        }else
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -115,13 +112,12 @@ class Hash
     function getList($key,$fields)
     {
         if($this->Connect->exists($key)) {
-            $_receipt = $this->Connect->hMGet($key,$fields);
-            if ($_receipt === "nil")
-                $_receipt = null;
-        }else{
-            $_receipt = null;
-        }
-        return $_receipt;
+            $receipt = $this->Connect->hMGet($key,$fields);
+            if ($receipt === "nil")
+                $receipt = null;
+        }else
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -135,10 +131,10 @@ class Hash
      */
     function limit($key,$start,$pattern,$count)
     {
-        $_receipt = $this->Connect->hScan($key,$start,$pattern,$count);
-        if ($_receipt === "nil")
-            $_receipt = null;
-        return $_receipt;
+        $receipt = $this->Connect->hScan($key,$start,$pattern,$count);
+        if ($receipt === "nil")
+            $receipt = null;
+        return $receipt;
     }
 
     /**
@@ -174,12 +170,10 @@ class Hash
      */
     function plus($key,$field,$value)
     {
-        if (is_float($value)) {
-            $_receipt = $this->Connect->hIncrByFloat($key, $field, $value);
-        } else {
-            $_receipt = $this->Connect->hIncrBy($key, $field, intval($value));
-        }
-        return $_receipt;
+        if (is_float($value))
+             return $this->Connect->hIncrByFloat($key, $field, $value);
+        else
+            return $this->Connect->hIncrBy($key, $field, intval($value));
     }
 
     /**

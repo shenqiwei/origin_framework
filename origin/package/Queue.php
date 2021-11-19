@@ -16,20 +16,21 @@ class Queue
      * @param string $queue 创建队列名称
      * @return boolean 返回执行结果状态值
      */
-    static function make($queue)
+    static function make(string $queue): bool
     {
+        $dir = RESOURCE_PUBLIC."/queue";
         # 创建返回值变量
-        $_receipt = false;
-        if(!file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            $_dir = new Folder(replace(RESOURCE_PUBLIC."/queue"));
-            $_receipt = $_dir->create($queue,true);
-            if($_receipt){
-                $_file = new File($_queue);
-                $_receipt = $_file->create("origin_queue.tmp",true);
-                $_file->write("origin_queue.tmp","w",json_encode(array("list"=>null,"create_time"=>time())));
+        $receipt = false;
+        if(!file_exists("$dir/$queue")){
+            $folder = new Folder($dir);
+            $receipt = $folder->create($queue, true);
+            if($receipt){
+                $file = new File("$dir/$queue");
+                $receipt = $file->create("origin_queue.tmp", true);
+                $file->write("origin_queue.tmp","w",json_encode(array("list"=>null,"create_time"=>time())));
             }
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -39,14 +40,15 @@ class Queue
      * @param string $queue 队列名称
      * @return int|false 返回查询结果或者失败状态
      */
-    static function count($queue)
+    static function count(string $queue)
     {
-        if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-           if(is_file(replace("{$_queue}/origin_queue.tmp"))){
-               $_file = new File($_queue);
-               $_string = $_file->read("origin_queue.tmp");
-               $_array = json_decode($_string,true);
-               return count($_array["list"]);
+        $dir = RESOURCE_PUBLIC."/queue/$queue";
+        if(file_exists($dir)){
+           if(is_file("$dir/origin_queue.tmp")){
+               $file = new File($dir);
+               $string = $file->read("origin_queue.tmp");
+               $array = json_decode($string,true);
+               return count($array["list"]);
            }else
                return false;
         }else
@@ -61,28 +63,27 @@ class Queue
      * @param array $set 参数集合
      * @return boolean 返回执行结果状态值
      */
-    static function push($queue,$set)
+    static function push(string $queue, array $set): bool
     {
-        $_receipt = false;
-        if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            if(is_file(replace("{$_queue}/origin_queue.tmp"))){
-                $_file = new File($_queue);
-                $_string = $_file->read("origin_queue.tmp");
-                $_array = json_decode($_string,true);
-                if(is_array($set)){
-                    $_string = json_encode($set);
-                    $_files = sha1($_string)."tmp";
-                    if($_file->create($_files)){
-                        if($_file->write($_files,"w",$_string)){
-                            array_push($_array["list"],array("tmp"=>$_files));
-                            $_file->write("origin_queue.tmp","w",json_encode($_array));
-                            $_receipt = true;
-                        }
+        $dir = RESOURCE_PUBLIC."/queue/$queue";
+        $receipt = false;
+        if(file_exists($dir)){
+            if(is_file(replace("$dir/origin_queue.tmp"))){
+                $file = new File($dir);
+                $string = $file->read("origin_queue.tmp");
+                $array = json_decode($string,true);
+                $string = json_encode($set);
+                $files = sha1($string)."tmp";
+                if($file->create($files)){
+                    if($file->write($files,"w",$string)){
+                        array_push($array["list"],array("tmp"=>$files));
+                        $file->write("origin_queue.tmp","w",json_encode($array));
+                        $receipt = true;
                     }
                 }
             }
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -92,23 +93,26 @@ class Queue
      * @param string $queue 队列名称
      * @return array|false 返回抽取对象数组或失败状态
      */
-    static function extract($queue)
+    static function extract(string $queue)
     {
-        $_receipt = false;
-        if(file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            if(is_file(replace("{$_queue}/origin_queue.tmp"))){
-                $_file = new File($_queue);
-                $_string = $_file->read("origin_queue.tmp");
-                $_array = json_decode($_string,true);
-                $_set = array_shift($_array["list"]);
-                $_tmp = $_set["tmp"];
-                if(is_file($_queue.DS.$_tmp)){
-                    $_receipt = $_file->read($_queue.DS.$_tmp);
-                    unlink($_queue.DS.$_tmp);
+        $dir = RESOURCE_PUBLIC."/queue/{$queue}";
+        $receipt = false;
+        if(file_exists($dir)){
+            if(is_file(replace("{$dir}/origin_queue.tmp"))){
+                $file = new File($dir);
+                $string = $file->read("origin_queue.tmp");
+                $array = json_decode($string,true);
+                $set = array_shift($array["list"]);
+                $tmp = $set["tmp"];
+                if(is_file($queue.DS.$tmp)){
+                    $receipt = $file->read($tmp);
+                    $file->write("origin_queue.tmp","w",json_encode($array));
+                    unlink($queue.DS.$tmp);
+                    $receipt = json_decode($receipt,true);
                 }
             }
         }
-        return $_receipt;
+        return $receipt;
     }
 
     /**
@@ -118,21 +122,21 @@ class Queue
      * @return boolean 返回执行结果状态值
      * @context 清空队列
      */
-    static function clear($queue)
+    static function clear(string $queue): bool
     {
-        # 创建返回值变量
-        $_receipt = false;
-        if(!file_exists($_queue = replace(RESOURCE_PUBLIC."/queue/{$queue}"))){
-            $_dir = new Folder(replace(RESOURCE_PUBLIC."/queue"));
-            $_list = $_dir->get($queue);
-            if($_count = count($_list)){
-                for($_i = 0;$_i < $_count;$_i++){
-                    if(is_file($_list[$_i]["folder_uri"]))
-                        unlink($_list[$_i]["folder_uri"]);
+        $dir = RESOURCE_PUBLIC."/queue";
+        $receipt = false;
+        if(!file_exists("{$dir}/{$queue}")){
+            $folder = new Folder($dir);
+            $list = $folder->get($queue);
+            if($count = count($list)){
+                for($i = 0;$i < $count;$i++){
+                    if(is_file($dir."/{$queue}".$list[$i]["folder_uri"]))
+                        unlink($dir."/{$queue}".$list[$i]["folder_uri"]);
                 }
             }
-            $_receipt = $_dir->remove($_queue);
+            $receipt = $folder->remove($queue);
         }
-        return $_receipt;
+        return $receipt;
     }
 }
