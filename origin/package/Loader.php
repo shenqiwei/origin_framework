@@ -138,7 +138,7 @@ class Loader
                             $class_namespace .= "\\Classes\\".ucfirst(DEFAULT_CLASS);
                         }
                         if(!isset($function)){
-                            if($i < (count( $path_array) -1))
+                            if($i < (count($path_array) - 1))
                                 $functions = $path_array[$i+1];
                         }else
                             $functions = $function;
