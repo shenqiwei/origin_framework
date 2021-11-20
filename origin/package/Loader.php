@@ -94,6 +94,12 @@ class Loader
                                 $symbol = DS;
                                 $namespace_symbol = "\\";
                             }
+                            if(strpos($path_array[$i],'_') !== false ){
+                                $mark = explode('_',strtolower($path_array[$i]));
+                                foreach($mark as &$item)
+                                    $item = ucfirst($item);
+                                $path_array[$i] = implode('',$mark);
+                            }
                             if(is_file(ROOT.$class_path.$symbol."classes".DS.ucfirst($path_array[$i]).".php")){
                                 $class_path .= $symbol."classes".DS.ucfirst($path_array[$i]).".php";
                                 $class_namespace .= $namespace_symbol."Classes\\".ucfirst($path_array[$i]);
